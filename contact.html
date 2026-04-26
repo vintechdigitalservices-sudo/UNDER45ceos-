@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Under 45 CEOs Business & Leadership Summit 2026</title>
+    <meta name="description" content="Get in touch with the Under 45 CEOs team for inquiries about tickets, sponsorship, partnerships, or general questions.">
+    <meta name="author" content="UDUF Africa">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Contact Us | Under 45 CEOs Summit 2026">
+    <meta property="og:description" content="Contact the Under 45 CEOs team for inquiries about tickets, sponsorship, or partnerships.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://under45ceos.udufafrica.org/contact.html">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #053c40;
+            --teal: #0e6b73;
+            --teal-light: #1a8a94;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --off-white: #f5f3ef;
+            --gray-400: #c0c0c0;
+            --gray-700: #3a3a3a;
+            --black: #0a0a0a;
+            --success: #10b981;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --shadow-card: 0 8px 40px rgba(0,0,0,0.2);
+            --shadow-deep: 0 24px 80px rgba(0,0,0,0.35);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--teal-darker); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .85rem 2rem;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: .9rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .btn--primary { background: var(--orange); color: var(--white); border-color: var(--orange); }
+        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
+        .btn--outline { background: transparent; color: var(--orange); border-color: var(--orange); }
+        .btn--outline:hover { background: var(--orange); color: var(--white); }
+        .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 6px; }
+        .pulse-btn { animation: pulseCTA 2.5s ease-in-out infinite; }
+        @keyframes pulseCTA { 0%,100% { box-shadow: 0 0 0 0 rgba(240,125,26,.6); } 50% { box-shadow: 0 0 0 10px rgba(240,125,26,0); } }
+
+        /* Navigation */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; transition: all .35s; padding: 1.2rem 0; background: transparent; }
+        .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.3); padding: .7rem 0; }
+        .nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
+        .nav__logos { display: flex; align-items: center; gap: .8rem; margin-right: auto; }
+        .nav__logo-uduf { display: flex; align-items: center; gap: .4rem; }
+        .nav__logo-divider { color: rgba(255,255,255,.3); font-size: .9rem; }
+        .nav__logo { display: flex; align-items: center; gap: .3rem; }
+        .nav__links { display: flex; gap: 1.8rem; align-items: center; }
+        .nav__links a { color: rgba(255,255,255,.9); font-size: .875rem; font-weight: 600; transition: color .2s; }
+        .nav__links a:hover { color: var(--orange); }
+        .nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .nav__hamburger span { width: 24px; height: 2px; background: var(--white); transition: all .3s; }
+        .nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav__hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav__mobile { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--teal-darker); position: fixed; top: 70px; left: 0; right: 0; z-index: 998; }
+        .nav__mobile.open { display: flex; }
+        .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 600; font-size: 1rem; padding: 0.5rem; }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 120px 20px 40px;
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            letter-spacing: 1px;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .page-header p {
+            color: rgba(255,255,255,0.75);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        /* Contact Grid */
+        .contact-main {
+            padding: 3rem 0 5rem;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        /* Contact Info Cards */
+        .info-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(240,125,26,0.3);
+        }
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(240,125,26,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--orange);
+        }
+        .info-content h3 {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+        .info-content p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .info-content a {
+            color: var(--orange);
+            transition: color 0.2s;
+        }
+        .info-content a:hover {
+            color: var(--white);
+        }
+
+        /* Team Section */
+        .team-section {
+            margin-top: 2rem;
+        }
+        .team-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--orange);
+            margin-bottom: 1rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .team-member {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+        }
+        .team-member:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateX(5px);
+        }
+        .team-avatar {
+            width: 55px;
+            height: 55px;
+            background: rgba(240,125,26,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .team-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .team-avatar .no-image {
+            font-size: 1.5rem;
+            color: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        .team-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+        .team-info p {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Contact Form */
+        .form-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .form-card h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--orange);
+            margin-bottom: 0.5rem;
+        }
+        .form-card p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--orange);
+            background: rgba(255,255,255,0.12);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        /* Map Section */
+        .map-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+        .map-section h3 {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .map-placeholder {
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-top: 1rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Success & Error Messages */
+        .success-message {
+            background: rgba(16,185,129,0.15);
+            border: 1px solid var(--success);
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--success);
+            display: none;
+        }
+        .success-message.show {
+            display: block;
+        }
+        .error-message {
+            background: rgba(239,68,68,0.15);
+            border: 1px solid #ef4444;
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #ef4444;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+
+        /* Footer */
+        .footer { background: var(--black); padding: 4rem 0 2rem; margin-top: 0; }
+        .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer__logo-uduf { display: flex; align-items: center; gap: .3rem; }
+        .footer__brand p { font-size: .8rem; color: rgba(255,255,255,.5); max-width: 260px; font-weight: 500; }
+        .footer__links h4 { font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+        .footer__links ul { display: flex; flex-direction: column; gap: .5rem; }
+        .footer__links a { color: rgba(255,255,255,.5); font-size: .8rem; transition: color .2s; font-weight: 500; }
+        .footer__links a:hover { color: var(--white); }
+        .social-icons { display: flex; gap: .8rem; }
+        .social-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); color: rgba(255,255,255,.6); transition: all .25s; }
+        .social-icon:hover { background: var(--orange); border-color: var(--orange); color: var(--white); transform: translateY(-3px); }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.3); font-weight: 500; }
+
+        @media (max-width: 1024px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer__inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav__links, .nav > .btn--nav { display: none; }
+            .nav__hamburger { display: flex; }
+            .footer__inner { grid-template-columns: 1fr; }
+            .info-card { padding: 1rem; }
+            .form-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav__inner">
+            <div class="nav__logos">
+                <div class="nav__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 65px; width: auto; display: block;"></div>
+                <div class="nav__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto; display: block;"></div>
+            </div>
+            <ul class="nav__links">
+    
+                <li><a href="impact.html">Impact</a></li>
+                <li><a href="sponsor.html">Sponsors</a></li>
+                <li><a href="ticket.html">Tickets</a></li>
+            </ul>
+            <a href="ticket.html" class="btn btn--nav pulse-btn">REGISTER</a>
+            <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav__mobile" id="mobileMenu">
+            <a href="impact.html">Impact</a>
+            <a href="sponsor.html">Sponsors</a>
+            <a href="ticket.html">Tickets</a>
+            <a href="ticket.html" class="btn btn--nav">REGISTER</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you. Reach out with any questions or inquiries.</p>
+    </section>
+
+    <!-- Contact Main -->
+    <div class="contact-main">
+        <div class="container">
+            <div class="contact-grid">
+                <!-- Left Column - Contact Info -->
+                <div>
+                    <div class="info-card">
+                        <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="info-content">
+                            <h3>Event Venue</h3>
+                            <p>Onitsha, Anambra State, Nigeria</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="info-content">
+                            <h3>Email Us</h3>
+                            <p><a href="mailto:uduf.u45ceos@gmail.com">uduf.u45ceos@gmail.com</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div class="info-content">
+                            <h3>Call Us</h3>
+                            <p><a href="tel:+2348104044527">+234 810 404 4527</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="info-icon"><i class="fas fa-globe"></i></div>
+                        <div class="info-content">
+                            <h3>Website</h3>
+                            <p><a href="https://under45ceos.udufafrica.org" target="_blank">under45ceos.udufafrica.org</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Team Section with Images -->
+                    <div class="team-section">
+                        <h3 class="team-title">Meet Our Team</h3>
+                        
+                        <div class="team-member">
+                            <div class="team-avatar">
+                                <img src="speaker-ezuma-smart.jpg" alt="Dr. Ezuma Smart Chinedu" onerror="this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-user-tie\'></i></div>'">
+                            </div>
+                            <div class="team-info">
+                                <h4>Ezuma Smart Chinedu, PhD</h4>
+                                <p>Founding President, UDUF Africa</p>
+                            </div>
+                        </div>
+                        
+                        <div class="team-member">
+                            <div class="team-avatar">
+                                <img src="team-ezuma-amara.webp" alt="Ezuma Amara Rebecca" onerror="this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-user-circle\'></i></div>'">
+                            </div>
+                            <div class="team-info">
+                                <h4>Ezuma Amara Rebecca</h4>
+                                <p>Director, Under45CEOs 2026</p>
+                            </div>
+                        </div>
+                        
+                        <div class="team-member">
+                            <div class="team-avatar">
+                                <img src="team-joshua.jpg" alt="Joshua Iheancho" onerror="this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-user\'></i></div>'">
+                            </div>
+                            <div class="team-info">
+                                <h4>Joshua Iheancho</h4>
+                                <p>Deputy Director 1, Under45CEOs 2026</p>
+                            </div>
+                        </div>
+                        
+                        <div class="team-member">
+                            <div class="team-avatar">
+                                <img src="team-sarah.jpg" alt="Sarah Atelly" onerror="this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-user\'></i></div>'">
+                            </div>
+                            <div class="team-info">
+                                <h4>Sarah Atelly</h4>
+                                <p>Deputy Director 2, Under45CEOs 2026</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Contact Form -->
+                <div class="form-card">
+                    <h2>Send Us a Message</h2>
+                    <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+                    
+                    <div id="formSuccess" class="success-message">
+                        <i class="fas fa-check-circle"></i> Thank you! Your message has been sent. We'll respond within 24-48 hours.
+                    </div>
+                    <div id="formError" class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i> There was an error sending your message. Please try again.
+                    </div>
+                    
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="contactName" placeholder="John Okafor" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="contactEmail" placeholder="john@company.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="contactPhone" placeholder="+234 800 000 0000">
+                        </div>
+                        <div class="form-group">
+                            <label>Subject *</label>
+                            <select id="contactSubject" required>
+                                <option value="">Select a subject</option>
+                                <option value="Ticket Inquiry">Ticket Inquiry</option>
+                                <option value="Sponsorship">Sponsorship</option>
+                                <option value="Partnership">Partnership</option>
+                                <option value="Media/Press">Media/Press</option>
+                                <option value="General Question">General Question</option>
+                                <option value="Complaint">Complaint</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Message *</label>
+                            <textarea id="contactMessage" placeholder="Write your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full" id="submitBtn">
+                            Send Message <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="map-section">
+                <h3><i class="fas fa-map-pin"></i> Event Location</h3>
+                <p>Onitsha, Anambra State, Nigeria</p>
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marked-alt" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                    <p>📍 Under 45 CEOs Summit 2026 will be held in Onitsha, Anambra State. <br>Specific venue details will be shared with registered attendees.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <div class="footer__logos-wrap">
+                        <div class="footer__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 72px; width: auto;"></div>
+                        <div class="footer__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 56px; width: auto;"></div>
+                    </div>
+                    <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
+                </div>
+                             <div class="footer__links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="impact.html">Impact</a></li>
+                        <li><a href="ticket.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="faqs.html">FAQs</a></li>
+                    
+                        <li><a href="sponsor.html">Sponsor Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links footer__social"><h4>Follow Us</h4><div class="social-icons"><a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="https://x.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a></div></div>
+            </div>
+            <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p></div>
+        </div>
+    </footer>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc",
+            authDomain: "under45ceos-submit.firebaseapp.com",
+            projectId: "under45ceos-submit",
+            storageBucket: "under45ceos-submit.firebasestorage.app",
+            messagingSenderId: "801982436580",
+            appId: "1:801982436580:web:3769913cb6ec23fbaa88f1"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
+
+        // Mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (hamburger && mobileMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
+            });
+            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            }));
+        }
+
+        // Contact Form Submission
+        const contactForm = document.getElementById('contactForm');
+        const formSuccess = document.getElementById('formSuccess');
+        const formError = document.getElementById('formError');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Hide previous messages
+                formSuccess.classList.remove('show');
+                formError.classList.remove('show');
+                
+                // Get form values
+                const name = document.getElementById('contactName').value.trim();
+                const email = document.getElementById('contactEmail').value.trim();
+                const phone = document.getElementById('contactPhone').value.trim();
+                const subject = document.getElementById('contactSubject').value;
+                const message = document.getElementById('contactMessage').value.trim();
+                
+                // Validate
+                if (!name || !email || !subject || !message) {
+                    formError.textContent = 'Please fill in all required fields.';
+                    formError.classList.add('show');
+                    return;
+                }
+                
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    formError.textContent = 'Please enter a valid email address.';
+                    formError.classList.add('show');
+                    return;
+                }
+                
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                
+                try {
+                    // Generate a unique ID for the message
+                    const messageId = `MSG-${Date.now()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+                    
+                    // Save to Firestore
+                    await db.collection('contact_messages').doc(messageId).set({
+                        messageId: messageId,
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        subject: subject,
+                        message: message,
+                        status: 'unread',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Show success message
+                    formSuccess.classList.add('show');
+                    contactForm.reset();
+                    
+                    // Scroll to success message
+                    formSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    formError.textContent = 'Error sending message. Please try again or email us directly.';
+                    formError.classList.add('show');
+                } finally {
+                    // Re-enable button
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Message <i class="fas fa-paper-plane"></i>';
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        formSuccess.classList.remove('show');
+                    }, 5000);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

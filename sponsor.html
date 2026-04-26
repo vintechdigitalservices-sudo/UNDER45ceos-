@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partners & Sponsors | Under 45 CEOs Business & Leadership Summit 2026</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Partner with Africa's premier business summit for young entrepreneurs. Choose from Platinum (₦35M), Gold (₦20M), Silver (₦10M), or Strategic sponsorship packages. Reach 8,000+ entrepreneurs and 8.5M+ media impressions.">
+    <meta name="keywords" content="Under 45 CEOs, sponsorship, partnership, business summit, Nigeria, Onitsha, brand visibility, CSR, youth empowerment, entrepreneurship Africa">
+    <meta name="author" content="UDUF Africa">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / WhatsApp Sharing -->
+    <meta property="og:title" content="Partners & Sponsors | Under 45 CEOs Summit 2026">
+    <meta property="og:description" content="Partner with Africa's premier business summit. Reach 8,000+ entrepreneurs and 8.5M+ media impressions.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://under45ceos.udufafrica.org/sponsor.html">
+    <meta property="og:image" content="https://under45ceos.udufafrica.org/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://under45ceos.udufafrica.org/sponsor.html">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --teal-dark: #053c40;
+            --teal-darker: #022a2d;
+            --teal: #0e6b73;
+            --teal-light: #1a8a94;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --orange-glow: rgba(240,125,26,0.4);
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --off-white: #f5f3ef;
+            --gray-400: #b0b0b0;
+            --black: #0a0a0a;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow-card: 0 8px 40px rgba(0,0,0,0.3);
+            --shadow-deep: 0 24px 80px rgba(0,0,0,0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--teal-darker); color: var(--white); overflow-x: hidden; line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .85rem 2rem;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: .9rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .btn--primary { background: var(--orange); color: var(--white); border-color: var(--orange); }
+        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 0 20px var(--orange-glow); }
+        .btn--outline { background: transparent; color: var(--white); border-color: var(--orange); }
+        .btn--outline:hover { background: var(--orange); border-color: var(--orange); box-shadow: 0 0 20px var(--orange-glow); }
+        .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 3px; }
+        .btn--sm { padding: .5rem 1.2rem; font-size: .75rem; }
+        .pulse-btn { animation: pulseCTA 2.5s ease-in-out infinite; }
+        @keyframes pulseCTA { 0%,100% { box-shadow: 0 0 0 0 rgba(240,125,26,.6); } 50% { box-shadow: 0 0 0 10px rgba(240,125,26,0); } }
+
+        /* Sticky Banner */
+        .sticky-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            transform: translateY(-100%);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .sticky-banner.visible { transform: translateY(0); }
+        .sticky-banner__inner { max-width: 1280px; margin: 0 auto; padding: 0.75rem 2rem; }
+        .sticky-banner__content { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+        .sticky-banner__icon { background: var(--orange); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.2rem; }
+        .sticky-banner__text { flex: 1; }
+        .sticky-banner__title { font-weight: 700; color: var(--white); font-size: 0.9rem; display: block; }
+        .sticky-banner__subtitle { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+        .sticky-banner__timer { display: flex; gap: 0.8rem; }
+        .timer-block { text-align: center; background: rgba(255,255,255,0.1); padding: 0.3rem 0.6rem; border-radius: 8px; min-width: 55px; }
+        .timer-block span:first-child { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--orange); display: block; line-height: 1.2; text-shadow: 0 0 5px var(--orange-glow); }
+        .timer-label { font-size: 0.55rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em; }
+        .sticky-banner__close { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 1.5rem; cursor: pointer; padding: 0 0.5rem; transition: color 0.2s; }
+        .sticky-banner__close:hover { color: var(--orange); }
+
+        /* Navigation - Fixed Logo Visibility (increased opacity) */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; transition: all .35s; padding: 1.2rem 0; background: transparent; }
+        .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.3); padding: .7rem 0; }
+        .nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
+        .nav__logos { display: flex; align-items: center; gap: .8rem; margin-right: auto; }
+        .nav__logo-uduf img, .nav__logo img { filter: none; opacity: 1; }
+        .nav__logo-divider { color: rgba(255,255,255,.5); font-size: .9rem; }
+        .nav__links { display: flex; gap: 1.8rem; align-items: center; }
+        .nav__links a { color: rgba(255,255,255,.9); font-size: .875rem; font-weight: 600; transition: color .2s; }
+        .nav__links a:hover { color: var(--orange); }
+        .nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .nav__hamburger span { width: 24px; height: 2px; background: var(--white); transition: all .3s; }
+        .nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav__hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav__mobile { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--teal-darker); position: fixed; top: 70px; left: 0; right: 0; z-index: 998; }
+        .nav__mobile.open { display: flex; }
+        .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 600; font-size: 1rem; padding: 0.5rem; }
+
+        /* Hero Section with Background Image and Zoom Animation */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero__bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            transform: scale(1.1);
+            animation: zoomInBg 8s ease-out forwards;
+        }
+        @keyframes zoomInBg {
+            0% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 50%, var(--teal) 100%);
+            opacity: 0.88;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .hero-content { position: relative; z-index: 2; }
+        .hero__badge { display: inline-block; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; color: var(--orange); text-transform: uppercase; margin-bottom: 1rem; text-shadow: 0 0 5px var(--orange-glow); }
+        .hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 10vw, 5.5rem); color: var(--white); line-height: 1.1; margin-bottom: 1rem; text-shadow: 0 0 15px rgba(0,0,0,0.3); }
+        .hero h1 span { color: var(--orange); text-shadow: 0 0 10px var(--orange-glow); }
+        .hero p { font-size: 1.1rem; max-width: 700px; margin: 0 auto 2rem; color: rgba(255,255,255,0.9); font-weight: 500; }
+
+        /* Section Common */
+        section { padding: 5rem 0; }
+        .section-label {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: .75rem;
+            text-align: center;
+            text-shadow: 0 0 5px var(--orange-glow);
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            color: var(--white);
+            line-height: 1.1;
+            letter-spacing: .02em;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        .highlight { color: var(--orange); text-shadow: 0 0 8px var(--orange-glow); }
+
+        /* About Section */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .about-content h2 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); color: var(--white); margin-bottom: 1rem; }
+        .about-content p { color: rgba(255,255,255,0.8); font-weight: 500; line-height: 1.7; margin-bottom: 1.5rem; }
+        .stats-row { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+        .stat-item { text-align: center; flex: 1; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: var(--radius); backdrop-filter: blur(10px); }
+        .stat-number { font-family: var(--font-display); font-size: 2.5rem; color: var(--orange); text-shadow: 0 0 10px var(--orange-glow); }
+        .stat-label { font-size: 0.7rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+        .about-image img { width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-deep); }
+
+        /* Why Partner Grid */
+        .why-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; margin: 3rem 0; }
+        .why-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 1.8rem; text-align: center; transition: all .4s; border: 1px solid rgba(255,255,255,0.08); }
+        .why-card:hover { transform: translateY(-8px); border-color: var(--orange); box-shadow: 0 0 30px rgba(240,125,26,0.15); }
+        .why-card i { font-size: 2.2rem; color: var(--orange); margin-bottom: 1rem; text-shadow: 0 0 8px var(--orange-glow); }
+        .why-card h3 { font-family: var(--font-serif); font-size: 1rem; color: var(--white); margin-bottom: 0.5rem; font-weight: 700; }
+        .why-card p { font-size: 0.8rem; color: rgba(255,255,255,0.7); line-height: 1.6; font-weight: 500; }
+
+        /* ROI Grid */
+        .roi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 3rem 0; }
+        .roi-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 1.8rem; text-align: center; transition: all .3s; border: 1px solid rgba(255,255,255,0.08); }
+        .roi-card:hover { transform: translateY(-5px); border-color: var(--orange); }
+        .roi-card i { font-size: 2rem; color: var(--orange); margin-bottom: 1rem; text-shadow: 0 0 8px var(--orange-glow); }
+        .roi-card h3 { font-family: var(--font-serif); font-size: 1.1rem; color: var(--white); margin-bottom: 0.5rem; font-weight: 700; }
+        .roi-card p { font-size: 0.8rem; color: rgba(255,255,255,0.7); font-weight: 500; }
+
+        /* Sponsorship Tiers */
+        .tiers-section { background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%); }
+        .tiers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; }
+        .tier-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            transition: all .4s;
+            position: relative;
+            overflow: hidden;
+        }
+        .tier-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--orange);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+        .tier-card:hover { transform: translateY(-10px); border-color: var(--orange); box-shadow: 0 0 40px rgba(240,125,26,0.2); }
+        .tier-card:hover::before { transform: scaleX(1); }
+        .tier-card--platinum::before { background: #e5e4e2; }
+        .tier-card--gold::before { background: var(--gold); }
+        .tier-card--silver::before { background: #c0c0c0; }
+        .tier-card--strategic::before { background: var(--orange); }
+        .tier-name { font-family: var(--font-serif); font-size: 1.6rem; color: var(--white); margin-bottom: 0.5rem; font-weight: 700; }
+        .tier-price { font-family: var(--font-display); font-size: 2rem; color: var(--orange); margin-bottom: 0.5rem; text-shadow: 0 0 8px var(--orange-glow); }
+        .tier-exclusive { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-bottom: 1rem; font-weight: 500; }
+        .tier-features { list-style: none; margin: 1rem 0; }
+        .tier-features li { font-size: 0.75rem; color: rgba(255,255,255,0.75); padding-left: 1.2rem; position: relative; margin-bottom: 0.5rem; font-weight: 500; }
+        .tier-features li::before { content: '✓'; position: absolute; left: 0; color: var(--orange); }
+        .tier-value { font-size: 0.7rem; color: var(--gold-light); margin: 1rem 0; font-weight: 600; }
+        .tier-btn { width: 100%; justify-content: center; margin-top: 0.5rem; }
+
+        /* Projected Reach */
+        .reach-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .reach-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center; }
+        .reach-stat .stat-number { font-size: 2.8rem; margin-bottom: 0.5rem; }
+        .reach-stat .stat-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.7); font-weight: 600; }
+
+        /* Custom Activations */
+        .activations-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 2rem 0; }
+        .activation-tag { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 3rem; padding: 0.7rem 1.2rem; text-align: center; font-size: 0.8rem; color: rgba(255,255,255,0.85); font-weight: 600; transition: all .3s; }
+        .activation-tag:hover { background: var(--orange); border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 0 20px var(--orange-glow); }
+        .activation-tag i { margin-right: 0.5rem; color: var(--orange); }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--teal-darker);
+            border-radius: var(--radius-lg);
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 2rem;
+            border: 1px solid var(--orange);
+            box-shadow: 0 0 50px rgba(240,125,26,0.3);
+        }
+        .modal-content h2 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.5rem; text-align: center; }
+        .modal-content p { text-align: center; margin-bottom: 1.5rem; color: rgba(255,255,255,0.7); }
+        .modal-form .form-group { margin-bottom: 1rem; }
+        .modal-form input, .modal-form select, .modal-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            font-family: var(--font-body);
+        }
+        .modal-form input:focus, .modal-form select:focus, .modal-form textarea:focus { outline: none; border-color: var(--orange); }
+        .modal-form label { display: block; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.8rem; color: var(--orange); }
+        .modal-close { position: absolute; top: 20px; right: 30px; font-size: 2rem; cursor: pointer; color: var(--white); transition: color 0.2s; }
+        .modal-close:hover { color: var(--orange); }
+
+        /* Custom Error Message */
+        .error-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(135deg, #2d0a0a 0%, #1a0505 100%);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            z-index: 2002;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e53;
+            box-shadow: 0 0 60px rgba(229,51,51,0.4);
+            max-width: 400px;
+            width: 90%;
+        }
+        .error-message.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .error-message i { font-size: 3rem; color: #e53; margin-bottom: 1rem; }
+        .error-message h3 { font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 0.5rem; color: #e53; }
+        .error-message p { color: rgba(255,255,255,0.8); margin-bottom: 1rem; line-height: 1.6; }
+        .error-close { background: #e53; color: var(--white); border: none; margin-top: 1rem; cursor: pointer; }
+
+        /* Thank You Message Card */
+        .thankyou-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            text-align: center;
+            z-index: 2001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--orange);
+            box-shadow: 0 0 60px rgba(240,125,26,0.4);
+            max-width: 450px;
+            width: 90%;
+        }
+        .thankyou-message.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .thankyou-message i { font-size: 4rem; color: var(--orange); margin-bottom: 1rem; }
+        .thankyou-message h3 { font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .thankyou-message p { color: rgba(255,255,255,0.8); margin-bottom: 1rem; line-height: 1.6; }
+        .thankyou-message .btn-home { margin-top: 1rem; }
+
+        /* Contact Section */
+        .contact-section { background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%); text-align: center; }
+        .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+        .contact-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 2rem; transition: all .3s; border: 1px solid rgba(255,255,255,0.08); }
+        .contact-card:hover { transform: translateY(-5px); border-color: var(--orange); }
+        .contact-card i { font-size: 2rem; color: var(--orange); margin-bottom: 1rem; text-shadow: 0 0 8px var(--orange-glow); }
+        .contact-card h3 { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 700; }
+        .contact-card p { font-size: 0.85rem; opacity: 0.8; font-weight: 500; }
+        .contact-card a { display: inline-block; margin-top: 0.5rem; color: var(--orange); font-weight: 600; }
+        .contact-card a:hover { text-decoration: underline; }
+
+        /* CTA Section */
+        .cta-section { text-align: center; background: linear-gradient(135deg, var(--orange) 0%, var(--orange-deep) 100%); }
+        .cta-section h2 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); color: var(--white); margin-bottom: 1rem; }
+        .cta-section p { max-width: 600px; margin: 0 auto 2rem; font-weight: 600; }
+        .cta-section .btn--primary { background: var(--white); color: var(--orange); border-color: var(--white); }
+        .cta-section .btn--primary:hover { background: transparent; color: var(--white); border-color: var(--white); }
+
+        /* Footer */
+        .footer { background: var(--teal-darker); padding: 4rem 0 2rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer__logo-uduf img, .footer__logo img { filter: none; opacity: 1; }
+        .footer__brand p { font-size: .8rem; color: rgba(255,255,255,.5); max-width: 260px; font-weight: 500; }
+        .footer__links h4 { font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+        .footer__links ul { display: flex; flex-direction: column; gap: .5rem; }
+        .footer__links a { color: rgba(255,255,255,.5); font-size: .8rem; transition: color .2s; font-weight: 500; }
+        .footer__links a:hover { color: var(--white); }
+        .social-icons { display: flex; gap: .8rem; }
+        .social-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); color: rgba(255,255,255,.6); transition: all .25s; }
+        .social-icon:hover { background: var(--orange); border-color: var(--orange); color: var(--white); transform: translateY(-3px); }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.3); font-weight: 500; }
+
+        /* Scroll Reveal */
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal-up.visible { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: .1s; }
+        .delay-2 { transition-delay: .2s; }
+        .delay-3 { transition-delay: .3s; }
+        .delay-4 { transition-delay: .4s; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .why-grid { grid-template-columns: repeat(2, 1fr); }
+            .tiers-grid { grid-template-columns: repeat(2, 1fr); }
+            .roi-grid { grid-template-columns: repeat(2, 1fr); }
+            .activations-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer__inner { grid-template-columns: 1fr 1fr; }
+            .about-grid { grid-template-columns: 1fr; }
+            .reach-stats { grid-template-columns: 1fr; gap: 1rem; }
+        }
+        @media (max-width: 768px) {
+            .nav__links, .nav > .btn--nav { display: none; }
+            .nav__hamburger { display: flex; }
+            .why-grid { grid-template-columns: 1fr; }
+            .tiers-grid { grid-template-columns: 1fr; }
+            .roi-grid { grid-template-columns: 1fr; }
+            .activations-grid { grid-template-columns: 1fr; }
+            .footer__inner { grid-template-columns: 1fr; }
+            .stats-row { flex-direction: column; gap: 1rem; }
+            .sticky-banner__timer { order: 2; width: 100%; justify-content: center; }
+            .sticky-banner__text { order: 1; text-align: center; }
+            .sticky-banner__icon { order: 0; }
+            .sticky-banner__close { order: 3; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Banner -->
+    <div class="sticky-banner" id="stickyBanner">
+        <div class="sticky-banner__inner">
+            <div class="sticky-banner__content">
+                <div class="sticky-banner__icon"><i class="fas fa-ticket-alt"></i></div>
+                <div class="sticky-banner__text">
+                    <span class="sticky-banner__title">Early Bird Discount Ends Soon!</span>
+                    <span class="sticky-banner__subtitle">Get your ticket at a discounted price</span>
+                </div>
+                <div class="sticky-banner__timer" id="countdownTimer">
+                    <div class="timer-block"><span id="timerDays">00</span><span class="timer-label">Days</span></div>
+                    <div class="timer-block"><span id="timerHours">00</span><span class="timer-label">Hrs</span></div>
+                    <div class="timer-block"><span id="timerMinutes">00</span><span class="timer-label">Mins</span></div>
+                    <div class="timer-block"><span id="timerSeconds">00</span><span class="timer-label">Secs</span></div>
+                </div>
+                <a href="ticket.html" class="btn btn--primary btn--sm">Get Ticket →</a>
+                <button class="sticky-banner__close" id="closeBanner">×</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav__inner">
+            <div class="nav__logos">
+                <div class="nav__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 65px; width: auto;"></div>
+                <div class="nav__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto;"></div>
+            </div>
+            <ul class="nav__links">
+    
+                <li><a href="impact.html">Impact</a></li>
+                <li><a href="sponsor.html">Sponsors</a></li>
+                <li><a href="ticket.html">Tickets</a></li>
+            </ul>
+            <a href="ticket.html" class="btn btn--nav pulse-btn">REGISTER</a>
+            <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav__mobile" id="mobileMenu">
+            <a href="impact.html">Impact</a>
+            <a href="sponsor.html">Sponsors</a>
+            <a href="ticket.html">Tickets</a>
+            <a href="ticket.html" class="btn btn--nav">REGISTER</a>
+        </div>
+    </nav>
+
+
+    <!-- Hero Section with Background Image -->
+    <section class="hero">
+        <img src="gallery1.jpg" alt="Under45CEOs Summit" class="hero__bg">
+        <div class="hero-content">
+            <div class="hero__badge reveal-up">PARTNER WITH US</div>
+            <h1 class="reveal-up delay-1">Put Your Brand at the <span>Centre of Power.</span></h1>
+            <p class="reveal-up delay-2">Join forward-thinking companies that are choosing to be seen by Nigeria's next generation of C-suite leaders — all in one room, ready to do business.</p>
+            <div class="reveal-up delay-3"><a href="#contact" class="btn btn--primary btn--lg">Become a Sponsor →</a></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content reveal-up">
+                    <h2>About <span class="highlight">UNDER45CEOs</span></h2>
+                    <p>UNDER45CEOs is a high-impact leadership and enterprise platform designed to connect forward-thinking brands with Africa's next generation of entrepreneurs, executives, innovators, and decision-makers aged 18-45.</p>
+                    <p>Now in its 6th edition, the platform continues to grow in reach, credibility, and national and continental relevance, bringing together thousands of physical attendees and projecting over 8.5 million media impressions across digital and traditional platforms.</p>
+                    <div class="stats-row">
+                        <div class="stat-item"><div class="stat-number" data-count="6">0</div><div class="stat-label">Edition</div></div>
+                        <div class="stat-item"><div class="stat-number" data-count="8000">0</div><div class="stat-label">Physical Attendees</div></div>
+                        <div class="stat-item"><div class="stat-number" data-count="8500000">0</div><div class="stat-label">Media Impressions</div></div>
+                        <div class="stat-item"><div class="stat-number" data-count="75">0</div><div class="stat-label">Growth 2025→2026</div></div>
+                    </div>
+                </div>
+                <div class="about-image reveal-up delay-1">
+                    <img src="gallery3.jpg" alt="Under45CEOs Summit">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Partner Section -->
+    <section class="why-section">
+        <div class="container">
+            <div class="section-label reveal-up">WHY PARTNER WITH US</div>
+            <h2 class="section-title reveal-up delay-1">Strategic Value for <span class="highlight">Corporate Partners</span></h2>
+            <div class="why-grid">
+                <div class="why-card reveal-up"><i class="fas fa-chart-line"></i><h3>Market Expansion</h3><p>Connect with thousands of entrepreneurs across Africa</p></div>
+                <div class="why-card reveal-up delay-1"><i class="fas fa-eye"></i><h3>Brand Positioning</h3><p>Position as forward-thinking brand</p></div>
+                <div class="why-card reveal-up delay-2"><i class="fas fa-users"></i><h3>Talent Access</h3><p>Engage with emerging talent and innovators</p></div>
+                <div class="why-card reveal-up delay-3"><i class="fas fa-handshake"></i><h3>Business Development</h3><p>Partnerships, collaborations, distribution</p></div>
+                <div class="why-card reveal-up delay-4"><i class="fas fa-microphone-alt"></i><h3>Thought Leadership</h3><p>Keynote, panel, masterclass opportunities</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Section -->
+    <section class="roi-section">
+        <div class="container">
+            <div class="section-label reveal-up">RETURN ON INVESTMENT</div>
+            <h2 class="section-title reveal-up delay-1">What You <span class="highlight">Gain</span></h2>
+            <div class="roi-grid">
+                <div class="roi-card reveal-up"><i class="fas fa-chart-simple"></i><h3>Brand Exposure</h3><p>Event branding, logo placement, digital campaigns, media coverage</p></div>
+                <div class="roi-card reveal-up delay-1"><i class="fas fa-bullhorn"></i><h3>Direct Engagement</h3><p>Product demos, exhibition booths, brand activations</p></div>
+                <div class="roi-card reveal-up delay-2"><i class="fas fa-network-wired"></i><h3>Business Networking</h3><p>Connect with entrepreneurs, investors, decision-makers</p></div>
+                <div class="roi-card reveal-up delay-3"><i class="fas fa-user-plus"></i><h3>Talent Identification</h3><p>Discover high-potential young professionals</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sponsorship Tiers Section -->
+    <section class="tiers-section" id="tiers">
+        <div class="container">
+            <div class="section-label reveal-up">INVESTMENT PACKAGES</div>
+            <h2 class="section-title reveal-up delay-1">Choose Your <span class="highlight">Partnership Level</span></h2>
+            <div class="tiers-grid">
+                <div class="tier-card tier-card--platinum reveal-up">
+                    <div class="tier-name">Platinum Partner</div>
+                    <div class="tier-price">₦35,000,000</div>
+                    <div class="tier-exclusive">Exclusive: 1 per industry</div>
+                    <ul class="tier-features">
+                        <li>Headline "Powered By" recognition</li>
+                        <li>Keynote speaking slot</li>
+                        <li>Award naming rights</li>
+                        <li>Premium exhibition space</li>
+                        <li>Full media inclusion</li>
+                        <li>12-month digital brand integration</li>
+                        <li>Documentary-style brand spotlight</li>
+                        <li>Lead capture access</li>
+                        <li>Executive roundtable participation</li>
+                    </ul>
+                    <div class="tier-value">Estimated Value: ₦80M+ media equivalent</div>
+                    <button class="btn btn--outline tier-btn" data-tier="Platinum Partner" data-price="₦35,000,000">Inquire Now →</button>
+                </div>
+                <div class="tier-card tier-card--gold reveal-up delay-1">
+                    <div class="tier-name">Gold Partner</div>
+                    <div class="tier-price">₦20,000,000</div>
+                    <ul class="tier-features">
+                        <li>Panel speaking opportunity</li>
+                        <li>High-level logo placement</li>
+                        <li>Branded masterclass session</li>
+                        <li>Exhibition space</li>
+                        <li>Media recognition</li>
+                        <li>6-month digital campaign inclusion</li>
+                        <li>Lead generation access</li>
+                    </ul>
+                    <div class="tier-value">Estimated Value: ₦45M+ media equivalent</div>
+                    <button class="btn btn--outline tier-btn" data-tier="Gold Partner" data-price="₦20,000,000">Inquire Now →</button>
+                </div>
+                <div class="tier-card tier-card--silver reveal-up delay-2">
+                    <div class="tier-name">Silver Partner</div>
+                    <div class="tier-price">₦10,000,000</div>
+                    <ul class="tier-features">
+                        <li>Event branding</li>
+                        <li>Exhibition booth</li>
+                        <li>Product sampling rights</li>
+                        <li>Social media recognition</li>
+                    </ul>
+                    <div class="tier-value">Estimated Value: ₦20M+ media equivalent</div>
+                    <button class="btn btn--outline tier-btn" data-tier="Silver Partner" data-price="₦10,000,000">Inquire Now →</button>
+                </div>
+                <div class="tier-card tier-card--strategic reveal-up delay-3">
+                    <div class="tier-name">Strategic/In-Kind</div>
+                    <div class="tier-price">₦5,000,000+ value</div>
+                    <ul class="tier-features">
+                        <li>Brand acknowledgment</li>
+                        <li>Activation opportunity</li>
+                        <li>On-stage recognition</li>
+                    </ul>
+                    <div class="tier-value">Custom value-based</div>
+                    <button class="btn btn--outline tier-btn" data-tier="Strategic/In-Kind Partner" data-price="₦5,000,000+">Inquire Now →</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Activations -->
+    <section class="activations-section">
+        <div class="container">
+            <div class="section-label reveal-up">CUSTOM INDUSTRY ACTIVATIONS</div>
+            <h2 class="section-title reveal-up delay-1">Tailored Engagement <span class="highlight">Opportunities</span></h2>
+            <div class="activations-grid">
+                <div class="activation-tag reveal-up"><i class="fas fa-chart-line"></i> Financial Literacy Sessions</div>
+                <div class="activation-tag reveal-up delay-1"><i class="fas fa-microchip"></i> Tech Innovation Showcase</div>
+                <div class="activation-tag reveal-up delay-2"><i class="fas fa-heartbeat"></i> Health & Wellness Campaigns</div>
+                <div class="activation-tag reveal-up delay-3"><i class="fas fa-flask"></i> Product Experience Zones</div>
+                <div class="activation-tag reveal-up delay-4"><i class="fas fa-briefcase"></i> SME Advisory Clinics</div>
+                <div class="activation-tag reveal-up delay-5"><i class="fas fa-graduation-cap"></i> Career Development Masterclasses</div>
+                <div class="activation-tag reveal-up"><i class="fas fa-trophy"></i> Startup Pitch Competitions</div>
+                <div class="activation-tag reveal-up delay-1"><i class="fas fa-gift"></i> Grants & Enterprise Support</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projected Reach -->
+    <section class="reach-section">
+        <div class="container">
+            <div class="section-label reveal-up">PROJECTED REACH 2026</div>
+            <h2 class="section-title reveal-up delay-1">75% Growth from <span class="highlight">2025</span></h2>
+            <div class="reach-card reveal-up delay-2" id="reachCard">
+                <div class="reach-stats">
+                    <div class="reach-stat">
+                        <div class="stat-number" data-count="8000">0</div>
+                        <div class="stat-label">Physical Attendees</div>
+                        <p>↑ 75% from 2025</p>
+                    </div>
+                    <div class="reach-stat">
+                        <div class="stat-number" data-count="1700000">0</div>
+                        <div class="stat-label">Digital Impressions</div>
+                        <p>↑ 75% from 2025</p>
+                    </div>
+                    <div class="reach-stat">
+                        <div class="stat-number" data-count="8500000">0</div>
+                        <div class="stat-label">Media Reach</div>
+                        <p>↑ 75% from 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-label reveal-up">GET IN TOUCH</div>
+            <h2 class="section-title reveal-up delay-1">Let's Build Africa's Next Generation of <span class="highlight">Ethical Leaders — Together.</span></h2>
+            <div class="contact-grid">
+                <div class="contact-card reveal-up">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>uduf.u45ceos@gmail.com</p>
+                    <a href="mailto:uduf.u45ceos@gmail.com">Send Email →</a>
+                </div>
+                <div class="contact-card reveal-up delay-1">
+                    <i class="fas fa-phone-alt"></i>
+                    <h3>Call Us</h3>
+                    <p>Ezuma Amara Rebecca - Director</p>
+                    <a href="tel:+2348104044527">+234 810 404 4527 →</a>
+                </div>
+                <div class="contact-card reveal-up delay-2">
+                    <i class="fas fa-globe"></i>
+                    <h3>Visit Us</h3>
+                    <p>www.under45ceos.udufafrica.com</p>
+                    <a href="https://under45ceos.udufafrica.com" target="_blank">Visit Website →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="reveal-up">Ready to Partner With Us?</h2>
+            <p class="reveal-up delay-1">Join Africa's most influential business leaders and investors at the premier summit for young entrepreneurs.</p>
+            <div class="reveal-up delay-2"><a href="ticket.html" class="btn btn--primary btn--lg">Get Your Ticket Now →</a></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <div class="footer__logos-wrap">
+                        <div class="footer__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 72px; width: auto;"></div>
+                        <div class="footer__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 56px; width: auto;"></div>
+                    </div>
+                    <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
+                </div>
+                <div class="footer__links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="impact.html">Impact</a></li>
+                        <li><a href="ticket.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="faqs.html">FAQs</a></li>
+                    
+                        <li><a href="sponsor.html">Sponsor Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links footer__social"><h4>Follow Us</h4><div class="social-icons"><a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="https://x.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a></div></div>
+            </div>
+            <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p></div>
+        </div>
+    </footer>
+
+    <!-- Modal Popup Form -->
+    <div id="sponsorModal" class="modal">
+        <span class="modal-close" onclick="closeSponsorModal()">&times;</span>
+        <div class="modal-content">
+            <h2>Sponsorship <span class="highlight">Inquiry</span></h2>
+            <p id="modalTierDisplay">Selected Tier: Platinum Partner</p>
+            <form class="modal-form" id="sponsorForm">
+                <input type="hidden" id="selectedTier" name="selectedTier">
+                <div class="form-group"><label>Full Name *</label><input type="text" id="fullName" placeholder="John Okafor" required></div>
+                <div class="form-group"><label>Job Title *</label><input type="text" id="jobTitle" placeholder="Marketing Director" required></div>
+                <div class="form-group"><label>Email Address *</label><input type="email" id="email" placeholder="john@company.com" required></div>
+                <div class="form-group"><label>Phone Number *</label><input type="tel" id="phone" placeholder="+234 800 000 0000" required></div>
+                <div class="form-group"><label>Company Name *</label><input type="text" id="companyName" placeholder="Coscharis Group" required></div>
+                <div class="form-group"><label>Additional Comments</label><textarea rows="3" id="comments" placeholder="Tell us about your sponsorship goals..."></textarea></div>
+                <button type="submit" class="btn btn--primary" style="width:100%">Submit Inquiry →</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Thank You Message Card -->
+    <div id="thankyouMessage" class="thankyou-message">
+        <i class="fas fa-check-circle"></i>
+        <h3>Thank You!</h3>
+        <p>Your sponsorship inquiry has been successfully submitted. Our partnership team will contact you within 48 hours.</p>
+        <a href="index.html" class="btn btn--primary btn-home">Back to Home →</a>
+    </div>
+
+    <!-- Custom Error Message Card -->
+    <div id="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Submission Failed</h3>
+        <p id="errorText">There was an error submitting your inquiry. Please check your internet connection and try again.</p>
+        <button class="btn error-close" onclick="closeErrorMessage()">Try Again</button>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc",
+            authDomain: "under45ceos-submit.firebaseapp.com",
+            projectId: "under45ceos-submit",
+            storageBucket: "under45ceos-submit.firebasestorage.app",
+            messagingSenderId: "801982436580",
+            appId: "1:801982436580:web:3769913cb6ec23fbaa88f1"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
+        
+        // Mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (hamburger && mobileMenu) {
+            hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
+            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); }));
+        }
+
+        // Sticky Banner
+        const stickyBanner = document.getElementById('stickyBanner');
+        const closeBanner = document.getElementById('closeBanner');
+        if (stickyBanner) {
+            window.addEventListener('scroll', () => { stickyBanner.classList.toggle('visible', window.scrollY > 300); });
+            if (closeBanner) closeBanner.addEventListener('click', () => { stickyBanner.style.display = 'none'; });
+        }
+
+        // Countdown Timer
+        function updateCountdown() {
+            const eventDate = new Date('October 10, 2026 00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+            if (distance < 0) return;
+            document.getElementById('timerDays').textContent = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+            document.getElementById('timerHours').textContent = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+            document.getElementById('timerMinutes').textContent = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            document.getElementById('timerSeconds').textContent = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Count Up Animation for About section
+        let aboutCountUpStarted = false;
+        function animateAboutNumbers() {
+            if (aboutCountUpStarted) return;
+            aboutCountUpStarted = true;
+            document.querySelectorAll('.about-section .stat-number[data-count]').forEach(el => {
+                const target = parseInt(el.getAttribute('data-count'));
+                let current = 0;
+                const duration = 2000;
+                const step = target / (duration / 16);
+                const counter = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        el.textContent = target.toLocaleString();
+                        clearInterval(counter);
+                    } else {
+                        el.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 16);
+            });
+        }
+
+        // Count Up Animation for Reach section
+        let reachCountUpStarted = false;
+        function animateReachNumbers() {
+            if (reachCountUpStarted) return;
+            reachCountUpStarted = true;
+            document.querySelectorAll('.reach-section .stat-number[data-count]').forEach(el => {
+                const target = parseInt(el.getAttribute('data-count'));
+                let current = 0;
+                const duration = 2000;
+                const step = target / (duration / 16);
+                const counter = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        el.textContent = target.toLocaleString();
+                        clearInterval(counter);
+                    } else {
+                        el.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 16);
+            });
+        }
+
+        // Scroll Reveal with Counter triggers
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    if (entry.target.classList.contains('stats-row')) {
+                        animateAboutNumbers();
+                    }
+                    if (entry.target.classList.contains('reach-card') || entry.target.id === 'reachCard') {
+                        animateReachNumbers();
+                    }
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        document.querySelectorAll('.reveal-up, .tier-card, .why-card, .roi-card, .activation-tag, .reach-card, .stats-row').forEach(el => revealObserver.observe(el));
+
+        // Modal Functions
+        function openSponsorModal(tier, price) {
+            document.getElementById('selectedTier').value = `${tier} - ${price}`;
+            document.getElementById('modalTierDisplay').innerHTML = `Selected Tier: <span class="highlight">${tier} (${price})</span>`;
+            document.getElementById('sponsorModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeSponsorModal() {
+            document.getElementById('sponsorModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        window.openSponsorModal = openSponsorModal;
+        window.closeSponsorModal = closeSponsorModal;
+
+        // Show Custom Error Message
+        function showErrorMessage(message) {
+            const errorMsg = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message || 'There was an error submitting your inquiry. Please check your internet connection and try again.';
+            errorMsg.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeErrorMessage() {
+            const errorMsg = document.getElementById('errorMessage');
+            errorMsg.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        window.closeErrorMessage = closeErrorMessage;
+
+        // Show Thank You Message
+        function showThankYouMessage() {
+            const thankYouMsg = document.getElementById('thankyouMessage');
+            thankYouMsg.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Attach event listeners to tier buttons
+        document.querySelectorAll('.tier-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tier = btn.getAttribute('data-tier');
+                const price = btn.getAttribute('data-price');
+                openSponsorModal(tier, price);
+            });
+        });
+
+        // Form submission to Firebase
+        const sponsorForm = document.getElementById('sponsorForm');
+        if (sponsorForm) {
+            sponsorForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitBtn = sponsorForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Submitting...';
+                submitBtn.disabled = true;
+                
+                // Validate required fields
+                const fullName = document.getElementById('fullName')?.value.trim();
+                const email = document.getElementById('email')?.value.trim();
+                const phone = document.getElementById('phone')?.value.trim();
+                const companyName = document.getElementById('companyName')?.value.trim();
+                
+                if (!fullName || !email || !phone || !companyName) {
+                    showErrorMessage('Please fill in all required fields.');
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    return;
+                }
+                
+                const formData = {
+                    fullName: fullName,
+                    jobTitle: document.getElementById('jobTitle')?.value || '',
+                    email: email,
+                    phone: phone,
+                    companyName: companyName,
+                    selectedTier: document.getElementById('selectedTier')?.value || '',
+                    comments: document.getElementById('comments')?.value || '',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'pending'
+                };
+                
+                try {
+                    await db.collection('sponsorship').add(formData);
+                    closeSponsorModal();
+                    sponsorForm.reset();
+                    showThankYouMessage();
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    showErrorMessage('Unable to submit. Please check your connection and try again.');
+                } finally {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

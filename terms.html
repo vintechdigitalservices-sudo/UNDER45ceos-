@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | Under 45 CEOs Business & Leadership Summit 2026</title>
+    <meta name="description" content="Terms and conditions for Under 45 CEOs Summit ticket purchases, attendance, and participation.">
+    <meta name="author" content="UDUF Africa">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Terms & Conditions | Under 45 CEOs Summit 2026">
+    <meta property="og:description" content="Terms and conditions for summit ticket purchases and attendance.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://under45ceos.udufafrica.org/terms.html">
+    
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #053c40;
+            --teal: #0e6b73;
+            --teal-light: #1a8a94;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --off-white: #f5f3ef;
+            --gray-400: #c0c0c0;
+            --gray-700: #3a3a3a;
+            --black: #0a0a0a;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --shadow-card: 0 8px 40px rgba(0,0,0,0.2);
+            --shadow-deep: 0 24px 80px rgba(0,0,0,0.35);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--teal-darker); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .85rem 2rem;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: .9rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .btn--primary { background: var(--orange); color: var(--white); border-color: var(--orange); }
+        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
+        .btn--outline { background: transparent; color: var(--orange); border-color: var(--orange); }
+        .btn--outline:hover { background: var(--orange); color: var(--white); }
+        .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 6px; }
+        .pulse-btn { animation: pulseCTA 2.5s ease-in-out infinite; }
+        @keyframes pulseCTA { 0%,100% { box-shadow: 0 0 0 0 rgba(240,125,26,.6); } 50% { box-shadow: 0 0 0 10px rgba(240,125,26,0); } }
+
+        /* Navigation */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; transition: all .35s; padding: 1.2rem 0; background: transparent; }
+        .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.3); padding: .7rem 0; }
+        .nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
+        .nav__logos { display: flex; align-items: center; gap: .8rem; margin-right: auto; }
+        .nav__logo-uduf { display: flex; align-items: center; gap: .4rem; }
+        .nav__logo-divider { color: rgba(255,255,255,.3); font-size: .9rem; }
+        .nav__logo { display: flex; align-items: center; gap: .3rem; }
+        .nav__links { display: flex; gap: 1.8rem; align-items: center; }
+        .nav__links a { color: rgba(255,255,255,.9); font-size: .875rem; font-weight: 600; transition: color .2s; }
+        .nav__links a:hover { color: var(--orange); }
+        .nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .nav__hamburger span { width: 24px; height: 2px; background: var(--white); transition: all .3s; }
+        .nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav__hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav__mobile { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--teal-darker); position: fixed; top: 70px; left: 0; right: 0; z-index: 998; }
+        .nav__mobile.open { display: flex; }
+        .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 600; font-size: 1rem; padding: 0.5rem; }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 120px 20px 40px;
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            letter-spacing: 1px;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .page-header p {
+            color: rgba(255,255,255,0.75);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .last-updated {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.3rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2rem;
+            font-size: 0.75rem;
+        }
+
+        /* Terms Content */
+        .terms-content {
+            padding: 3rem 0 5rem;
+        }
+        .terms-card {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .terms-section {
+            margin-bottom: 2rem;
+        }
+        .terms-section h2 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--orange);
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .terms-section h3 {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            color: var(--white);
+            margin: 1rem 0 0.5rem;
+        }
+        .terms-section p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 0.8rem;
+            line-height: 1.7;
+        }
+        .terms-section ul, .terms-section ol {
+            padding-left: 1.5rem;
+            margin: 0.8rem 0;
+        }
+        .terms-section li {
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        .terms-section a {
+            color: var(--orange);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer { background: var(--black); padding: 4rem 0 2rem; margin-top: 0; }
+        .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer__logo-uduf { display: flex; align-items: center; gap: .3rem; }
+        .footer__brand p { font-size: .8rem; color: rgba(255,255,255,.5); max-width: 260px; font-weight: 500; }
+        .footer__links h4 { font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+        .footer__links ul { display: flex; flex-direction: column; gap: .5rem; }
+        .footer__links a { color: rgba(255,255,255,.5); font-size: .8rem; transition: color .2s; font-weight: 500; }
+        .footer__links a:hover { color: var(--white); }
+        .social-icons { display: flex; gap: .8rem; }
+        .social-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); color: rgba(255,255,255,.6); transition: all .25s; }
+        .social-icon:hover { background: var(--orange); border-color: var(--orange); color: var(--white); transform: translateY(-3px); }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.3); font-weight: 500; }
+
+        @media (max-width: 1024px) {
+            .footer__inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav__links, .nav > .btn--nav { display: none; }
+            .nav__hamburger { display: flex; }
+            .footer__inner { grid-template-columns: 1fr; }
+            .terms-card { padding: 1.5rem; }
+            .terms-section h2 { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav__inner">
+            <div class="nav__logos">
+                <div class="nav__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 65px; width: auto; display: block;"></div>
+                <div class="nav__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto; display: block;"></div>
+            </div>
+                       <ul class="nav__links">
+    
+                <li><a href="impact.html">Impact</a></li>
+                <li><a href="sponsor.html">Sponsors</a></li>
+                <li><a href="ticket.html">Tickets</a></li>
+            </ul>
+            <a href="ticket.html" class="btn btn--nav pulse-btn">REGISTER</a>
+            <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav__mobile" id="mobileMenu">
+            <a href="impact.html">Impact</a>
+            <a href="sponsor.html">Sponsors</a>
+            <a href="ticket.html">Tickets</a>
+            <a href="ticket.html" class="btn btn--nav">REGISTER</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Terms & Conditions</h1>
+        <p>Please read these terms carefully before registering for the summit</p>
+        <div class="last-updated">Last Updated: April 24, 2026</div>
+    </section>
+
+    <!-- Terms Content -->
+    <div class="terms-content">
+        <div class="container">
+            <div class="terms-card">
+                
+                <div class="terms-section">
+                    <h2>1. Introduction</h2>
+                    <p>Welcome to Under 45 CEOs ("we," "our," or "us"). These Terms and Conditions govern your registration, attendance, and participation in the Under 45 CEOs Business & Leadership Summit 2026 (the "Event"). By registering for the Event, you agree to be bound by these Terms and Conditions.</p>
+                    <p>The Event is organized by <strong>Ultimate Destiny Uplifters Foundation (UDUF Africa)</strong>, a non-profit organization dedicated to empowering entrepreneurs and leaders across Africa. The Event takes place on <strong>October 10, 2026</strong> in <strong>Onitsha, Anambra State, Nigeria</strong>.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>2. Ticket Purchase & Payment</h2>
+                    <p>2.1 All ticket prices are listed in Nigerian Naira (₦) and are inclusive of applicable taxes.</p>
+                    <p>2.2 Early Bird discounts are available until the specified deadline. After the deadline, regular ticket prices apply.</p>
+                    <p>2.3 Payment must be made via bank transfer to the official account details provided during checkout.</p>
+                    <p>2.4 Your registration is only confirmed after we receive your payment and verify your receipt.</p>
+                    <p>2.5 All ticket sales are <strong>final and non-refundable</strong>. However, tickets may be transferred to another person upon written request to our support team.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>3. Attendee Information</h2>
+                    <p>3.1 You agree to provide accurate, complete, and truthful information during the registration process.</p>
+                    <p>3.2 Each attendee must be registered individually with their own information.</p>
+                    <p>3.3 Attendees under 18 years of age must be accompanied by a parent or legal guardian.</p>
+                    <p>3.4 Under 45 CEOs reserves the right to refuse entry or eject any attendee whose behavior is disruptive, harassing, or violates our code of conduct.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>4. Event Changes & Cancellations</h2>
+                    <p>4.1 Under 45 CEOs reserves the right to make changes to the event program, schedule, speakers, and venue at any time without prior notice.</p>
+                    <p>4.2 In the event of cancellation of the Event due to circumstances beyond our control (force majeure), tickets will be converted to virtual access or transferred to the next edition. Refunds may be offered at our discretion.</p>
+                    <p>4.3 Force majeure includes but is not limited to acts of God, natural disasters, government restrictions, public health emergencies, strikes, or any other event outside our reasonable control.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>5. Code of Conduct</h2>
+                    <p>By attending the Event, you agree to:</p>
+                    <ul>
+                        <li>Treat all attendees, speakers, sponsors, and staff with respect and professionalism.</li>
+                        <li>Refrain from any form of harassment, discrimination, or disruptive behavior.</li>
+                        <li>Comply with all venue rules and safety instructions.</li>
+                        <li>Not record, livestream, or distribute sessions without explicit permission.</li>
+                        <li>Not engage in unauthorized commercial activities or solicitation at the Event.</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h2>6. Photography & Media Consent</h2>
+                    <p>6.1 By attending the Event, you grant Under 45 CEOs and UDUF Africa the irrevocable right to take photographs and record video/audio of the Event.</p>
+                    <p>6.2 You agree that these materials may be used for promotional, marketing, and archival purposes without compensation to you.</p>
+                    <p>6.3 If you do not wish to be photographed, please inform a member of our staff or avoid designated photography areas.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>7. Intellectual Property</h2>
+                    <p>7.1 All content presented at the Event, including but not limited to presentations, slides, handouts, and recordings, is the intellectual property of Under 45 CEOs or the respective speakers.</p>
+                    <p>7.2 You may not reproduce, distribute, modify, or create derivative works from any Event content without explicit written permission.</p>
+                    <p>7.3 The Under 45 CEOs name, logo, and branding are trademarks owned by UDUF Africa and may not be used without permission.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>8. Limitation of Liability</h2>
+                    <p>8.1 To the maximum extent permitted by law, Under 45 CEOs and UDUF Africa shall not be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising from your attendance at the Event.</p>
+                    <p>8.2 You acknowledge that attendance at the Event is voluntary and assumes all risks associated with travel, participation, and interaction with others.</p>
+                    <p>8.3 Under 45 CEOs is not responsible for loss or damage to personal property, personal injury, or any other harm occurring at the Event.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>9. Privacy & Data Protection</h2>
+                    <p>Your privacy is important to us. We collect and process your personal information in accordance with our <a href="privacy.html">Privacy Policy</a>. By registering, you consent to such collection and use of your information.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>10. Governing Law</h2>
+                    <p>These Terms and Conditions are governed by and construed in accordance with the laws of the Federal Republic of Nigeria. Any disputes arising from these Terms shall be subject to the exclusive jurisdiction of the courts of Anambra State, Nigeria.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>11. Amendments</h2>
+                    <p>Under 45 CEOs reserves the right to modify these Terms and Conditions at any time without prior notice. Your continued participation in the Event constitutes acceptance of any changes.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h2>12. Contact Information</h2>
+                    <p>If you have any questions, concerns, or requests regarding these Terms and Conditions, please contact us:</p>
+                    <ul>
+                        <li><strong>Email:</strong> <a href="mailto:uduf.u45ceos@gmail.com">uduf.u45ceos@gmail.com</a></li>
+                        <li><strong>Phone:</strong> <a href="tel:+2348104044527">+234 810 404 4527</a></li>
+                        <li><strong>Contact Person:</strong> Ezuma Amara Rebecca - Director, Under45CEOs 2026</li>
+                        <li><strong>Organizer:</strong> Ultimate Destiny Uplifters Foundation (UDUF Africa)</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h2>13. Acceptance of Terms</h2>
+                    <p>By completing your registration and/or attending the Event, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions. If you do not agree to these Terms, please do not register for or attend the Event.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <div class="footer__logos-wrap">
+                        <div class="footer__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 72px; width: auto;"></div>
+                        <div class="footer__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 56px; width: auto;"></div>
+                    </div>
+                    <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
+                </div>
+                <div class="footer__links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="impact.html">Impact</a></li>
+                        <li><a href="ticket.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="faqs.html">FAQs</a></li>
+                    
+                        <li><a href="sponsor.html">Sponsor Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links footer__social"><h4>Follow Us</h4><div class="social-icons"><a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="https://x.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a></div></div>
+            </div>
+            <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p></div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
+
+        // Mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (hamburger && mobileMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
+            });
+            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            }));
+        }
+    </script>
+</body>
+</html>

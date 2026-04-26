@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Impact | Under 45 CEOs Business & Leadership Summit 2026</title>
+    <meta name="description" content="Discover the impact of Under 45 CEOs Summit - transforming lives and businesses across Africa through entrepreneurship training, mentorship, and business development.">
+    <meta name="author" content="UDUF Africa">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Our Impact | Under 45 CEOs Summit 2026">
+    <meta property="og:description" content="Transforming lives and businesses across Africa through entrepreneurship education and mentorship.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://under45ceos.udufafrica.org/impact.html">
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #053c40;
+            --teal: #0e6b73;
+            --teal-light: #1a8a94;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --off-white: #f5f3ef;
+            --gray-400: #c0c0c0;
+            --gray-700: #3a3a3a;
+            --black: #0a0a0a;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --shadow-card: 0 8px 40px rgba(0,0,0,0.2);
+            --shadow-deep: 0 24px 80px rgba(0,0,0,0.35);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--teal-darker); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .85rem 2rem;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: .9rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .btn--primary { background: var(--orange); color: var(--white); border-color: var(--orange); }
+        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
+        .btn--outline { background: transparent; color: var(--orange); border-color: var(--orange); }
+        .btn--outline:hover { background: var(--orange); color: var(--white); }
+        .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 6px; }
+        .pulse-btn { animation: pulseCTA 2.5s ease-in-out infinite; }
+        @keyframes pulseCTA { 0%,100% { box-shadow: 0 0 0 0 rgba(240,125,26,.6); } 50% { box-shadow: 0 0 0 10px rgba(240,125,26,0); } }
+
+        /* Navigation */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; transition: all .35s; padding: 1.2rem 0; background: transparent; }
+        .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.3); padding: .7rem 0; }
+        .nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
+        .nav__logos { display: flex; align-items: center; gap: .8rem; margin-right: auto; }
+        .nav__logo-uduf { display: flex; align-items: center; gap: .4rem; }
+        .nav__logo-divider { color: rgba(255,255,255,.3); font-size: .9rem; }
+        .nav__logo { display: flex; align-items: center; gap: .3rem; }
+        .nav__links { display: flex; gap: 1.8rem; align-items: center; }
+        .nav__links a { color: rgba(255,255,255,.9); font-size: .875rem; font-weight: 600; transition: color .2s; }
+        .nav__links a:hover { color: var(--orange); }
+        .nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .nav__hamburger span { width: 24px; height: 2px; background: var(--white); transition: all .3s; }
+        .nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav__hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav__mobile { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--teal-darker); position: fixed; top: 70px; left: 0; right: 0; z-index: 998; }
+        .nav__mobile.open { display: flex; }
+        .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 600; font-size: 1rem; padding: 0.5rem; }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 120px 20px 40px;
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            letter-spacing: 1px;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .page-header p {
+            color: rgba(255,255,255,0.75);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 3rem 0;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(240,125,26,0.3);
+        }
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--orange);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        /* Mission & Vision */
+        .mission-vision {
+            padding: 3rem 0;
+        }
+        .mv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .mv-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+        }
+        .mv-card i {
+            font-size: 2.5rem;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+        .mv-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .mv-card p {
+            color: rgba(255,255,255,0.75);
+            line-height: 1.7;
+        }
+
+        /* Impact Areas */
+        .impact-areas {
+            padding: 3rem 0;
+            background: rgba(255,255,255,0.02);
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .section-title span {
+            color: var(--orange);
+        }
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .impact-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+        }
+        .impact-card:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-5px);
+        }
+        .impact-icon {
+            font-size: 2rem;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+        .impact-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+        .impact-card p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            padding: 3rem 0;
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .testimonial-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+        }
+        .testimonial-card i.quote-icon {
+            font-size: 2rem;
+            color: var(--orange);
+            opacity: 0.3;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+        .testimonial-text {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--orange);
+        }
+        .testimonial-title {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(240,125,26,0.1) 0%, rgba(2,42,45,0.1) 100%);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .cta-section h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .cta-section p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        .footer { background: var(--black); padding: 4rem 0 2rem; margin-top: 0; }
+        .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer__logo-uduf { display: flex; align-items: center; gap: .3rem; }
+        .footer__brand p { font-size: .8rem; color: rgba(255,255,255,.5); max-width: 260px; font-weight: 500; }
+        .footer__links h4 { font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+        .footer__links ul { display: flex; flex-direction: column; gap: .5rem; }
+        .footer__links a { color: rgba(255,255,255,.5); font-size: .8rem; transition: color .2s; font-weight: 500; }
+        .footer__links a:hover { color: var(--white); }
+        .social-icons { display: flex; gap: .8rem; }
+        .social-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); color: rgba(255,255,255,.6); transition: all .25s; }
+        .social-icon:hover { background: var(--orange); border-color: var(--orange); color: var(--white); transform: translateY(-3px); }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.3); font-weight: 500; }
+
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .impact-grid { grid-template-columns: repeat(2, 1fr); }
+            .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer__inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav__links, .nav > .btn--nav { display: none; }
+            .nav__hamburger { display: flex; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .mv-grid { grid-template-columns: 1fr; }
+            .impact-grid { grid-template-columns: 1fr; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .footer__inner { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav__inner">
+            <div class="nav__logos">
+                <div class="nav__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 65px; width: auto; display: block;"></div>
+                <div class="nav__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto; display: block;"></div>
+            </div>
+            <ul class="nav__links">
+    
+                <li><a href="impact.html">Impact</a></li>
+                <li><a href="sponsor.html">Sponsors</a></li>
+                <li><a href="ticket.html">Tickets</a></li>
+            </ul>
+            <a href="ticket.html" class="btn btn--nav pulse-btn">REGISTER</a>
+            <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav__mobile" id="mobileMenu">
+            <a href="impact.html">Impact</a>
+            <a href="sponsor.html">Sponsors</a>
+            <a href="ticket.html">Tickets</a>
+            <a href="ticket.html" class="btn btn--nav">REGISTER</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Our Impact</h1>
+        <p>Transforming lives and businesses across Africa</p>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" data-count="5000">0</div>
+                    <div class="stat-label">Entrepreneurs Trained</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="5">₦0</div>
+                    <div class="stat-label">Million+ Prizes Won</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="50">0</div>
+                    <div class="stat-label">Business Mentors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-count="300">0</div>
+                    <div class="stat-label">SMEs Launched</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="mission-vision">
+        <div class="container">
+            <div class="mv-grid">
+                <div class="mv-card">
+                    <i class="fas fa-bullseye"></i>
+                    <h3>Our Mission</h3>
+                    <p>To empower young entrepreneurs and professionals with the knowledge, mindset, skills, and connections required to build scalable, profitable, and impact-driven businesses that solve real problems in Africa.</p>
+                </div>
+                <div class="mv-card">
+                    <i class="fas fa-eye"></i>
+                    <h3>Our Vision</h3>
+                    <p>To become Africa's leading platform for shaping the next generation of ethical, innovative, and globally competitive business leaders who drive economic transformation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Areas -->
+    <section class="impact-areas">
+        <div class="container">
+            <h2 class="section-title">Areas of <span>Impact</span></h2>
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <div class="impact-icon"><i class="fas fa-chalkboard-user"></i></div>
+                    <h3>Entrepreneurship Education</h3>
+                    <p>Providing practical business training, masterclasses, and mentorship to over 5,000 entrepreneurs across Nigeria, equipping them with skills to build sustainable enterprises.</p>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <h3>Access to Funding</h3>
+                    <p>Connecting young business owners with financial institutions, investors, and grant opportunities. Over ₦5 million in prizes awarded through pitch competitions.</p>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon"><i class="fas fa-users"></i></div>
+                    <h3>Mentorship & Networking</h3>
+                    <p>Facilitating connections between emerging entrepreneurs and over 50 experienced business mentors, creating lasting partnerships and business opportunities.</p>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon"><i class="fas fa-briefcase"></i></div>
+                    <h3>SME Support</h3>
+                    <p>Helping over 300 SMEs launch and scale their operations through advisory clinics, business development support, and strategic guidance.</p>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon"><i class="fas fa-trophy"></i></div>
+                    <h3>Pitch Competitions</h3>
+                    <p>Providing a platform for startups to showcase their innovations, compete for prizes, and attract investment from industry leaders and investors.</p>
+                </div>
+                <div class="impact-card">
+                    <div class="impact-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Business Growth</h3>
+                    <p>Empowering entrepreneurs to move from survival-driven hustle to structured, scalable, and profitable business models that create jobs and drive economic growth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Be Part of the Movement?</h2>
+            <p>Join thousands of entrepreneurs and business leaders who are shaping Africa's future.</p>
+            <a href="ticket.html" class="btn btn--primary btn--lg">Get Your Ticket Now →</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <div class="footer__logos-wrap">
+                        <div class="footer__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 72px; width: auto;"></div>
+                        <div class="footer__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 56px; width: auto;"></div>
+                    </div>
+                    <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
+                </div>
+                <div class="footer__links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="impact.html">Impact</a></li>
+                        <li><a href="ticket.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="faqs.html">FAQs</a></li>
+                    
+                        <li><a href="sponsor.html">Sponsor Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links footer__social"><h4>Follow Us</h4><div class="social-icons"><a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="https://x.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a></div></div>
+            </div>
+            <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p></div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
+
+        // Mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (hamburger && mobileMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
+            });
+            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            }));
+        }
+
+        // Count Up Animation for Stats
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const originalText = el.getAttribute('data-count');
+                        if (!originalText) return;
+                        
+                        let target = 0;
+                        let prefix = '';
+                        let suffix = '';
+                        
+                        if (originalText.includes('₦')) {
+                            prefix = '₦';
+                            target = parseInt(originalText.replace('₦', '').replace('Million+', ''));
+                            suffix = 'Million+';
+                        } else {
+                            target = parseInt(originalText);
+                            suffix = originalText.includes('Million+') ? 'Million+' : '';
+                        }
+                        
+                        let start = 0;
+                        const duration = 1500;
+                        const increment = target / (duration / 16);
+                        const counter = setInterval(() => {
+                            start = Math.min(start + increment, target);
+                            let displayValue = Math.floor(start);
+                            if (target >= 1000) {
+                                displayValue = displayValue.toLocaleString();
+                            }
+                            if (prefix === '₦') {
+                                el.textContent = `${prefix}${displayValue}${suffix}`;
+                            } else {
+                                el.textContent = `${displayValue}${suffix}`;
+                            }
+                            if (start >= target) clearInterval(counter);
+                        }, 16);
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            statNumbers.forEach(el => observer.observe(el));
+        }
+        
+        animateStats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | Under 45 CEOs Business & Leadership Summit 2026</title>
+    <meta name="description" content="Privacy Policy for Under 45 CEOs Summit. Learn how we collect, use, and protect your personal information when you register for our events.">
+    <meta name="author" content="UDUF Africa">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Privacy Policy | Under 45 CEOs Summit 2026">
+    <meta property="og:description" content="Learn how we protect your personal information at Under 45 CEOs Summit.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://under45ceos.udufafrica.org/privacy-policy.html">
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #043a3e;
+            --teal: #0e6b73;
+            --teal-light: #1a8a94;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --white: #ffffff;
+            --gray-400: #b0b0b0;
+            --black: #0a0a0a;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --shadow-card: 0 8px 30px rgba(0,0,0,0.15);
+            --shadow-deep: 0 20px 50px rgba(0,0,0,0.25);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--teal-darker); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .85rem 2rem;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: .9rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .btn--primary { background: var(--orange); color: var(--white); border-color: var(--orange); }
+        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
+        .btn--outline { background: transparent; color: var(--orange); border-color: var(--orange); }
+        .btn--outline:hover { background: var(--orange); color: var(--white); }
+        .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 6px; }
+        .pulse-btn { animation: pulseCTA 2.5s ease-in-out infinite; }
+        @keyframes pulseCTA { 0%,100% { box-shadow: 0 0 0 0 rgba(240,125,26,.6); } 50% { box-shadow: 0 0 0 10px rgba(240,125,26,0); } }
+
+        /* Navigation */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; transition: all .35s; padding: 1.2rem 0; background: transparent; }
+        .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.3); padding: .7rem 0; }
+        .nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
+        .nav__logos { display: flex; align-items: center; gap: .8rem; margin-right: auto; }
+        .nav__logo-uduf { display: flex; align-items: center; gap: .4rem; }
+        .nav__logo-divider { color: rgba(255,255,255,.3); font-size: .9rem; }
+        .nav__logo { display: flex; align-items: center; gap: .3rem; }
+        .nav__links { display: flex; gap: 1.8rem; align-items: center; }
+        .nav__links a { color: rgba(255,255,255,.9); font-size: .875rem; font-weight: 600; transition: color .2s; }
+        .nav__links a:hover { color: var(--orange); }
+        .nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .nav__hamburger span { width: 24px; height: 2px; background: var(--white); transition: all .3s; }
+        .nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav__hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav__mobile { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--teal-darker); position: fixed; top: 70px; left: 0; right: 0; z-index: 998; }
+        .nav__mobile.open { display: flex; }
+        .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 600; font-size: 1rem; padding: 0.5rem; }
+
+        /* Page Header */
+        .privacy-header {
+            text-align: center;
+            padding: 120px 20px 40px;
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUpFade 0.6s ease-out forwards;
+        }
+        .privacy-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .privacy-header p {
+            color: rgba(255,255,255,0.75);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .last-updated {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.3rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2rem;
+            font-size: 0.75rem;
+        }
+        @keyframes slideUpFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Privacy Content */
+        .privacy-content {
+            padding: 3rem 0 5rem;
+        }
+        .privacy-card {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .privacy-section {
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUpFade 0.5s ease-out forwards;
+        }
+        .privacy-section:nth-child(1) { animation-delay: 0.05s; }
+        .privacy-section:nth-child(2) { animation-delay: 0.1s; }
+        .privacy-section:nth-child(3) { animation-delay: 0.15s; }
+        .privacy-section:nth-child(4) { animation-delay: 0.2s; }
+        .privacy-section:nth-child(5) { animation-delay: 0.25s; }
+        .privacy-section:nth-child(6) { animation-delay: 0.3s; }
+        .privacy-section:nth-child(7) { animation-delay: 0.35s; }
+        .privacy-section:nth-child(8) { animation-delay: 0.4s; }
+        .privacy-section:nth-child(9) { animation-delay: 0.45s; }
+        .privacy-section:nth-child(10) { animation-delay: 0.5s; }
+        .privacy-section:nth-child(11) { animation-delay: 0.55s; }
+        .privacy-section:nth-child(12) { animation-delay: 0.6s; }
+        .privacy-section:last-child {
+            margin-bottom: 0;
+        }
+        .privacy-section h2 {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            color: var(--orange);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .privacy-section h3 {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: var(--white);
+            margin-bottom: 0.8rem;
+            margin-top: 1.2rem;
+        }
+        .privacy-section p {
+            color: rgba(255,255,255,0.8);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        .privacy-section ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .privacy-section li {
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        .privacy-section a {
+            color: var(--orange);
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+        .privacy-section a:hover {
+            color: var(--white);
+        }
+        .contact-box {
+            background: rgba(240,125,26,0.1);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(240,125,26,0.2);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .contact-box:hover {
+            transform: translateY(-3px);
+            border-color: rgba(240,125,26,0.4);
+        }
+        .contact-box p {
+            margin-bottom: 0.5rem;
+        }
+        .contact-box i {
+            color: var(--orange);
+            margin-right: 0.5rem;
+            width: 24px;
+        }
+
+        /* Footer */
+        .footer { background: var(--black); padding: 4rem 0 2rem; margin-top: 0; }
+        .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer__logo-uduf { display: flex; align-items: center; gap: .3rem; }
+        .footer__brand p { font-size: .8rem; color: rgba(255,255,255,.5); max-width: 260px; font-weight: 500; }
+        .footer__links h4 { font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+        .footer__links ul { display: flex; flex-direction: column; gap: .5rem; }
+        .footer__links a { color: rgba(255,255,255,.5); font-size: .8rem; transition: color .2s; font-weight: 500; }
+        .footer__links a:hover { color: var(--white); }
+        .social-icons { display: flex; gap: .8rem; }
+        .social-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); color: rgba(255,255,255,.6); transition: all .25s; }
+        .social-icon:hover { background: var(--orange); border-color: var(--orange); color: var(--white); transform: translateY(-3px); }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.35); font-weight: 500; }
+
+        @media (max-width: 1024px) {
+            .footer__inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav__links, .nav > .btn--nav { display: none; }
+            .nav__hamburger { display: flex; }
+            .footer__inner { grid-template-columns: 1fr; }
+            .privacy-card { padding: 1.5rem; }
+            .privacy-section h2 { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav__inner">
+            <div class="nav__logos">
+                <div class="nav__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 65px; width: auto; display: block;"></div>
+                <div class="nav__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto; display: block;"></div>
+            </div>
+            <ul class="nav__links">
+    
+                <li><a href="impact.html">Impact</a></li>
+                <li><a href="sponsor.html">Sponsors</a></li>
+                <li><a href="ticket.html">Tickets</a></li>
+            </ul>
+            <a href="ticket.html" class="btn btn--nav pulse-btn">REGISTER</a>
+            <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav__mobile" id="mobileMenu">
+            <a href="impact.html">Impact</a>
+            <a href="sponsor.html">Sponsors</a>
+            <a href="ticket.html">Tickets</a>
+            <a href="ticket.html" class="btn btn--nav">REGISTER</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="privacy-header">
+        <h1>Privacy Policy</h1>
+        <p>How we collect, use, and protect your information</p>
+        <div class="last-updated">Last Updated: April 24, 2026</div>
+    </section>
+
+    <!-- Privacy Content -->
+    <div class="privacy-content">
+        <div class="container">
+            <div class="privacy-card">
+                
+                <div class="privacy-section">
+                    <h2>1. Introduction</h2>
+                    <p>Welcome to Under 45 CEOs ("we," "our," or "us"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, register for our events, or interact with our services. We are committed to protecting your privacy and ensuring transparency about our data practices.</p>
+                    <p>Under 45 CEOs is organized by <strong>Ultimate Destiny Uplifters Foundation (UDUF Africa)</strong>, a non-profit organization dedicated to empowering entrepreneurs and leaders across Africa. Our summit takes place on <strong>October 10, 2026</strong> in <strong>Onitsha, Anambra State, Nigeria</strong>.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>2. Information We Collect</h2>
+                    <p>We collect information that you voluntarily provide to us when you:</p>
+                    <ul>
+                        <li><strong>Register for tickets:</strong> Full name, email address, phone number, company name, location, age range, social status, and ticket preferences.</li>
+                        <li><strong>Fill out attendee forms:</strong> First name, middle name, last name, phone number, company/business, location/address, age range, social status, and ticket tier for each attendee.</li>
+                        <li><strong>Submit sponsorship inquiries:</strong> Company name, industry, number of employees, sponsorship tier interest, and additional comments.</li>
+                        <li><strong>Upload payment receipts:</strong> Payment date, amount paid, and receipt images for verification purposes.</li>
+                        <li><strong>Subscribe to updates:</strong> Email address for newsletters and event updates.</li>
+                    </ul>
+                    <p>We may also automatically collect certain information about your device, including IP address, browser type, operating system, and referring URLs when you interact with our website.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>3. How We Use Your Information</h2>
+                    <p>We use the information we collect for the following purposes:</p>
+                    <ul>
+                        <li><strong>Event Registration & Management:</strong> To process your ticket purchases, manage attendee lists, and facilitate event check-in.</li>
+                        <li><strong>Payment Verification:</strong> To verify your payment and issue e-tickets upon confirmation.</li>
+                        <li><strong>Communication:</strong> To send you important updates about the event, ticket confirmations, payment receipts, and post-event follow-ups.</li>
+                        <li><strong>Sponsorship Outreach:</strong> To respond to sponsorship inquiries and manage partnership agreements.</li>
+                        <li><strong>Marketing & Promotions:</strong> To send you information about future events, programs, and initiatives (you may opt out at any time).</li>
+                        <li><strong>Improving Our Services:</strong> To analyze attendance patterns, audience demographics, and improve future events.</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>4. How We Protect Your Information</h2>
+                    <p>We implement industry-standard security measures to protect your personal information:</p>
+                    <ul>
+                        <li><strong>SSL Encryption:</strong> Our website uses SSL (Secure Socket Layer) encryption to protect data transmitted between your browser and our servers.</li>
+                        <li><strong>Secure Data Storage:</strong> Your information is stored in secure Firebase databases with access controls and authentication requirements.</li>
+                        <li><strong>Limited Access:</strong> Only authorized personnel have access to your personal information, and only for legitimate business purposes.</li>
+                        <li><strong>Payment Security:</strong> Payment receipts are stored securely, and we do not store full bank account details or payment card information.</li>
+                    </ul>
+                    <p>While we strive to protect your personal information, no method of transmission over the Internet or electronic storage is 100% secure. We cannot guarantee absolute security.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>5. Information Sharing & Disclosure</h2>
+                    <p>We do not sell, trade, or rent your personal information to third parties. We may share your information in the following limited circumstances:</p>
+                    <ul>
+                        <li><strong>Service Providers:</strong> We may share information with trusted third-party service providers who assist us in operating our website, processing payments, or managing event logistics (e.g., email service providers, database hosting).</li>
+                        <li><strong>Legal Requirements:</strong> We may disclose your information if required to do so by law or in response to valid requests by public authorities.</li>
+                        <li><strong>Event Partners:</strong> With your explicit consent, we may share attendee information with sponsors or partners for networking purposes.</li>
+                        <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your information may be transferred as part of that transaction.</li>
+                    </ul>
+                    <p>We require all third-party service providers to maintain the confidentiality of your information and to use it only for the purposes for which it was shared.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>6. Data Retention</h2>
+                    <p>We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. Specifically:</p>
+                    <ul>
+                        <li><strong>Registration Data:</strong> Retained for event records and future event communications (you may opt out).</li>
+                        <li><strong>Payment Records:</strong> Retained for financial audit and verification purposes for up to 7 years.</li>
+                        <li><strong>Attendee Information:</strong> Retained for event attendance records and post-event analysis.</li>
+                    </ul>
+                    <p>You may request deletion of your personal information at any time by contacting us.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>7. Your Rights & Choices</h2>
+                    <p>Depending on your location, you may have the following rights regarding your personal information:</p>
+                    <ul>
+                        <li><strong>Access:</strong> Request a copy of the personal information we hold about you.</li>
+                        <li><strong>Correction:</strong> Request correction of inaccurate or incomplete information.</li>
+                        <li><strong>Deletion:</strong> Request deletion of your personal information.</li>
+                        <li><strong>Opt-Out:</strong> Unsubscribe from marketing communications at any time by clicking the "unsubscribe" link in our emails.</li>
+                        <li><strong>Data Portability:</strong> Request transfer of your data to another controller.</li>
+                    </ul>
+                    <p>To exercise any of these rights, please contact us using the information in Section 10.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>8. Cookies & Tracking Technologies</h2>
+                    <p>Our website uses cookies and similar tracking technologies to enhance your browsing experience. Cookies are small text files stored on your device that help us:</p>
+                    <ul>
+                        <li>Remember your cart items (localStorage).</li>
+                        <li>Understand how you interact with our website.</li>
+                        <li>Improve website performance and user experience.</li>
+                    </ul>
+                    <p>You can control cookie settings through your browser preferences. However, disabling cookies may affect the functionality of our website, particularly the ticket cart feature.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>9. Children's Privacy</h2>
+                    <p>Our services are intended for individuals aged 18 and above. We do not knowingly collect personal information from children under 13. If we become aware that we have inadvertently collected personal information from a child under 13, we will take steps to delete that information promptly.</p>
+                    <p>Attendees under 18 must be accompanied by a parent or legal guardian.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>10. Contact Information</h2>
+                    <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
+                    <div class="contact-box">
+                        <p><i class="fas fa-envelope"></i> <strong>Email:</strong> <a href="mailto:uduf.u45ceos@gmail.com">uduf.u45ceos@gmail.com</a></p>
+                        <p><i class="fas fa-phone-alt"></i> <strong>Phone:</strong> <a href="tel:+2348104044527">+234 810 404 4527</a></p>
+                        <p><i class="fas fa-user"></i> <strong>Contact Person:</strong> Ezuma Amara Rebecca - Director, Under45CEOs 2026</p>
+                        <p><i class="fas fa-building"></i> <strong>Organizer:</strong> Ultimate Destiny Uplifters Foundation (UDUF Africa)</p>
+                        <p><i class="fas fa-map-marker-alt"></i> <strong>Event Venue:</strong> Onitsha, Anambra State, Nigeria</p>
+                    </div>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>11. Changes to This Privacy Policy</h2>
+                    <p>We may update this Privacy Policy from time to time to reflect changes in our practices or for legal reasons. We will notify you of any material changes by posting the updated policy on this page and updating the "Last Updated" date.</p>
+                    <p>We encourage you to review this Privacy Policy periodically to stay informed about how we are protecting your information.</p>
+                </div>
+
+                <div class="privacy-section">
+                    <h2>12. Acceptance of Terms</h2>
+                    <p>By using our website, registering for our events, or providing us with your information, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy.</p>
+                    <p>If you do not agree with this Privacy Policy, please do not use our website or register for our events.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <div class="footer__logos-wrap">
+                        <div class="footer__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 72px; width: auto;"></div>
+                        <div class="footer__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 56px; width: auto;"></div>
+                    </div>
+                    <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
+                </div>
+                <div class="footer__links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="impact.html">Impact</a></li>
+                        <li><a href="ticket.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="faqs.html">FAQs</a></li>
+                    
+                        <li><a href="sponsor.html">Sponsor Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links footer__social"><h4>Follow Us</h4><div class="social-icons"><a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="https://x.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a></div></div>
+            </div>
+            <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p></div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
+        
+        // Mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (hamburger && mobileMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
+            });
+            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            }));
+        }
+    </script>
+</body>
+</html>
