@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
     <meta property="og:title" content="Order Status | Under 45 CEOs Summit 2026">
     <meta property="og:description" content="Track your order status for Nigeria's premier business summit.">
     <meta property="og:type" content="website">
-    <link rel="canonical" href="https://under45ceos.udufafrica.org/status.html">
+    <link rel="canonical" href="https://under45ceos.com/status.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -112,10 +112,14 @@
         .status-main { padding: 2rem 0 5rem; }
         .status-grid { max-width: 700px; margin: 0 auto; }
 
-        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 1.8rem; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; opacity: 0; transform: translateY(20px); animation: cardReveal 0.5s ease-out forwards; position: relative; overflow: hidden;}
+        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 1.8rem; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; opacity: 0; transform: translateY(20px); animation: cardReveal 0.5s ease-out forwards; }
         @keyframes cardReveal { to { opacity: 1; transform: translateY(0); } }
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
         .card h3 { font-family: var(--font-display); font-size: 1.2rem; color: var(--orange); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        
+        .card h3 i { margin-right: 0.5rem; }
+
         .order-item { display: flex; justify-content: space-between; padding: 0.6rem 0; font-size: 0.9rem; color: rgba(255,255,255,0.85); }
         .order-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 0.8rem 0; }
         .order-total { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.1rem; color: var(--white); margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
@@ -125,67 +129,10 @@
         .status-badge.approved { background: rgba(16,185,129,0.15); color: var(--approved); border: 1px solid rgba(16,185,129,0.3); }
         .status-badge.rejected { background: rgba(239,68,68,0.15); color: var(--rejected); border: 1px solid rgba(239,68,68,0.3); }
 
-        /* ─── ENHANCED AUTHENTIC STAMP DESIGN ─── */
-        .stamp-container { position: relative; margin: 2rem auto; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; transform: rotate(-12deg); filter: drop-shadow(2px 4px 10px rgba(0,0,0,0.3)); }
-        
-        .stamp { 
-            position: relative;
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-family: var(--font-display);
-            border: 4px double currentColor;
-            background: transparent;
-            /* Grungy texture using a noise mask */
-            mask-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-            -webkit-mask-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-        }
-
-        /* The Jagged Outer Edge */
-        .stamp::before {
-            content: '';
-            position: absolute;
-            top: -12px; left: -12px; right: -12px; bottom: -12px;
-            border: 2px solid currentColor;
-            border-radius: 50%;
-            clip-path: polygon(100% 50%, 98% 59%, 92% 67%, 85% 74%, 75% 79%, 66% 83%, 58% 87%, 50% 100%, 42% 87%, 34% 83%, 25% 79%, 15% 74%, 8% 67%, 2% 59%, 0% 50%, 2% 41%, 8% 33%, 15% 26%, 25% 21%, 34% 17%, 42% 13%, 50% 0%, 58% 13%, 66% 17%, 75% 21%, 85% 26%, 92% 33%, 98% 41%);
-            z-index: -1;
-        }
-
-        /* Banner across the middle */
-        .stamp-banner {
-            background: var(--teal-darker);
-            width: 130%;
-            padding: 4px 0;
-            border-top: 3px solid currentColor;
-            border-bottom: 3px solid currentColor;
-            transform: rotate(0deg);
-            z-index: 2;
-            color: currentColor;
-            font-size: 1.8rem;
-            letter-spacing: 2px;
-            font-weight: 900;
-            text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
-        }
-
-        .stamp-text-top, .stamp-text-bottom {
-            position: absolute;
-            font-size: 0.9rem;
-            font-weight: 800;
-            color: currentColor;
-        }
-        .stamp-text-top { top: 15%; }
-        .stamp-text-bottom { bottom: 15%; }
-
-        /* Status-specific coloring */
-        .stamp-container.approved { color: var(--approved); }
-        .stamp-container.pending { color: var(--pending); }
-        .stamp-container.rejected { color: var(--rejected); }
+        .stamp { display: inline-block; padding: 0.5rem 1.2rem; font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; transform: rotate(-8deg); border: 3px solid; background: transparent; margin-top: 0.5rem; }
+        .stamp.pending { color: var(--pending); border-color: var(--pending); }
+        .stamp.approved { color: var(--approved); border-color: var(--approved); }
+        .stamp.rejected { color: var(--rejected); border-color: var(--rejected); }
 
         .instruction-box { background: rgba(255,255,255,0.05); border-radius: var(--radius); padding: 1.2rem; margin-top: 1rem; }
         .instruction-box h4 { font-family: var(--font-serif); font-size: 1rem; color: var(--orange); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem; }
@@ -197,6 +144,7 @@
         .action-buttons { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
         .action-buttons .btn { flex: 1; justify-content: center; }
 
+        /* Lookup form for users who land directly */
         .lookup-form { max-width: 500px; margin: 0 auto; }
         .lookup-form .form-group { margin-bottom: 1rem; }
         .lookup-form label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem; }
@@ -219,7 +167,7 @@
         .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.3); font-weight: 500; }
 
         @media (max-width: 1024px) { .footer__inner { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 768px) { .nav__links, .nav > .btn--nav { display: none; } .nav__hamburger { display: flex; } .footer__inner { grid-template-columns: 1fr; } .action-buttons { flex-direction: column; } .progress-steps { flex-direction: column; gap: 0.5rem; } .step-line { display: none; } .stamp-container { width: 140px; height: 140px; } .stamp { width: 120px; height: 120px; } .stamp-banner { font-size: 1.2rem; } }
+        @media (max-width: 768px) { .nav__links, .nav > .btn--nav { display: none; } .nav__hamburger { display: flex; } .footer__inner { grid-template-columns: 1fr; } .action-buttons { flex-direction: column; } .stamp { font-size: 1rem; padding: 0.3rem 0.8rem; } .progress-steps { flex-direction: column; gap: 0.5rem; } .step-line { display: none; } }
     </style>
 </head>
 <body>
@@ -231,18 +179,19 @@
                 <div class="nav__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto; display: block;"></div>
             </div>
             <ul class="nav__links">
-    
-                <li><a href="impact.html">Impact</a></li>
-                <li><a href="sponsor.html">Sponsors</a></li>
+                <li><a href="index.html#speakers">Speakers</a></li>
+                <li><a href="index.html#why">Why Attend?</a></li>
+                <li><a href="index.html#impact">Impact</a></li>
+                <li><a href="index.html#sponsors">Sponsors</a></li>
                 <li><a href="ticket.html">Tickets</a></li>
             </ul>
             <a href="ticket.html" class="btn btn--nav pulse-btn">REGISTER</a>
-            <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
-                <span></span><span></span><span></span>
-            </button>
+            <button class="nav__hamburger" id="hamburger"><span></span><span></span><span></span></button>
         </div>
         <div class="nav__mobile" id="mobileMenu">
-            <a href="impact.html">Impact</a>
+            <a href="index.html#speakers">Speakers</a>
+            <a href="index.html#why">Why Attend?</a>
+            <a href="index.html#impact">Impact</a>
             <a href="sponsor.html">Sponsors</a>
             <a href="ticket.html">Tickets</a>
             <a href="ticket.html" class="btn btn--nav">REGISTER</a>
@@ -254,6 +203,7 @@
         <p>Track your payment verification and ticket access</p>
     </section>
 
+    <!-- Progress Steps -->
     <div class="progress-steps">
         <div class="step completed"><span class="step-num"><i class="fas fa-check" style="font-size:0.6rem;"></i></span><span>Checkout</span></div>
         <div class="step-line"></div>
@@ -283,29 +233,16 @@
                     </div>
                     <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
                 </div>
-                <div class="footer__links">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="impact.html">Impact</a></li>
-                        <li><a href="ticket.html">Register</a></li>
-                    </ul>
-                </div>
-                <div class="footer__links">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="faqs.html">FAQs</a></li>
-                    
-                        <li><a href="sponsor.html">Sponsor Us</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
+                <div class="footer__links"><h4>Quick Links</h4><ul><li><a href="index.html#speakers">Speakers</a></li><li><a href="index.html#why">Why Attend</a></li><li><a href="index.html#impact">Impact</a></li><li><a href="ticket.html">Register</a></li></ul></div>
+                <div class="footer__links"><h4>Resources</h4><ul><li><a href="#">FAQs</a></li><li><a href="#">Accommodations</a></li><li><a href="sponsor.html">Sponsor Us</a></li><li><a href="#">Contact</a></li></ul></div>
                 <div class="footer__links footer__social"><h4>Follow Us</h4><div class="social-icons"><a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="https://x.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a></div></div>
             </div>
-            <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p></div>
+            <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="#">Privacy Policy</a> · <a href="#">Terms</a></p></div>
         </div>
     </footer>
 
     <script>
+        // ─── Firebase init ────────────────────────────────────────────────────────────
         const firebaseConfig = {
             apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc",
             authDomain: "under45ceos-submit.firebaseapp.com",
@@ -317,16 +254,22 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // ─── Robust order ID retrieval ───────────────────────────────────────────────
+        // Priority: URL hash → localStorage → sessionStorage → URL query param
         function getOrderRef() {
             const hash = window.location.hash ? window.location.hash.slice(1) : '';
             if (hash && hash.startsWith('U45-')) return hash;
+
             const ls = localStorage.getItem('current_order_id');
             if (ls && ls.startsWith('U45-')) return ls;
+
             const ss = sessionStorage.getItem('current_order_id');
             if (ss && ss.startsWith('U45-')) return ss;
+
             const urlParams = new URLSearchParams(window.location.search);
             const qp = urlParams.get('ref');
             if (qp && qp.startsWith('U45-')) return qp;
+
             return null;
         }
 
@@ -335,14 +278,16 @@
         let autoRefreshInterval = null;
         let currentStatus = null;
 
+        // ─── Status normalization ──────────────────────────────────────────────────────
         function normalizeStatus(s) {
             if (!s) return 'pending';
             const v = s.toLowerCase();
             if (v === 'approved' || v === 'verified' || v === 'approve') return 'approved';
             if (v === 'rejected') return 'rejected';
-            return 'pending';
+            return 'pending'; // pending, awaiting_verification, awaiting verification, etc.
         }
 
+        // ─── Copy helper ──────────────────────────────────────────────────────────────
         function copyToClipboardWithFeedback(button, text) {
             navigator.clipboard.writeText(text).then(() => {
                 const orig = button.innerHTML;
@@ -353,111 +298,295 @@
         }
         window.copyToClipboardWithFeedback = copyToClipboardWithFeedback;
 
+        // ─── Nav ──────────────────────────────────────────────────────────────────────
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60), { passive: true });
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobileMenu');
         if (hamburger && mobileMenu) {
             hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
+            mobileMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); }));
         }
 
+        // ─── Show error ───────────────────────────────────────────────────────────────
         function showError(title, msg) {
             if (autoRefreshInterval) { clearInterval(autoRefreshInterval); autoRefreshInterval = null; }
             document.getElementById('statusContent').innerHTML = `
                 <div class="status-grid">
                     <div class="card" style="text-align:center; padding:3rem 2rem;">
                         <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:var(--warning); margin-bottom:1rem; display:block;"></i>
-                        <h3 style="color:var(--orange);">${title}</h3>
+                        <h3 style="font-family:var(--font-display); font-size:1.6rem; color:var(--orange); margin-bottom:1rem;">${title}</h3>
                         <p style="color:rgba(255,255,255,0.75); margin-bottom:2rem;">${msg}</p>
                         <div class="lookup-form">
-                            <div class="form-group"><label>Order Reference</label><input type="text" id="manualOrderRef" placeholder="U45-2026-XXXXXXXX"></div>
-                            <button class="btn btn--primary btn--full" onclick="lookupByManualRef()">Track Order</button>
+                            <div class="form-group">
+                                <label>Enter Your Order Reference</label>
+                                <input type="text" id="manualOrderRef" placeholder="U45-2026-XXXXXXXX" style="text-transform:uppercase;">
+                            </div>
+                            <button class="btn btn--primary btn--full" onclick="lookupByManualRef()">
+                                <i class="fas fa-search"></i> Track My Order
+                            </button>
                         </div>
+                        <p style="margin-top:1.5rem; font-size:0.8rem; color:rgba(255,255,255,0.5);">
+                            Or <a href="checkout.html" style="color:var(--orange); text-decoration:underline;">go back to checkout</a>
+                        </p>
                     </div>
                 </div>`;
         }
 
         function lookupByManualRef() {
-            const val = document.getElementById('manualOrderRef').value.trim().toUpperCase();
-            if (!val.startsWith('U45-')) return;
+            const input = document.getElementById('manualOrderRef');
+            if (!input) return;
+            const val = input.value.trim().toUpperCase();
+            if (!val.startsWith('U45-')) {
+                input.style.borderColor = 'var(--rejected)';
+                return;
+            }
             orderRef = val;
+            localStorage.setItem('current_order_id', orderRef);
+            sessionStorage.setItem('current_order_id', orderRef);
+            document.getElementById('statusContent').innerHTML = `
+                <div class="page-loader">
+                    <div class="loader-spinner"></div>
+                    <p class="loader-text">Looking up your order...</p>
+                </div>`;
             loadOrder();
         }
+        window.lookupByManualRef = lookupByManualRef;
 
+        // ─── Main init ────────────────────────────────────────────────────────────────
         async function init() {
+            // Small delay ensures localStorage is settled after page navigation
             await new Promise(r => setTimeout(r, 150));
+
             orderRef = getOrderRef();
-            if (!orderRef) { showError('Order Not Found', 'Please enter your Reference ID.'); return; }
+
+            if (!orderRef) {
+                showError('Order Reference Not Found', 'We could not detect your order automatically. Please enter your Order Reference below.');
+                return;
+            }
+
+            // Keep both storages in sync
+            localStorage.setItem('current_order_id', orderRef);
+            sessionStorage.setItem('current_order_id', orderRef);
+
             loadOrder();
         }
 
+        // ─── Firestore fetch ─────────────────────────────────────────────────────────
         async function loadOrder() {
             try {
                 const doc = await db.collection('checkouts').doc(orderRef).get();
-                if (!doc.exists) { showError('Order Not Found', 'Check your reference ID.'); return; }
+
+                if (!doc.exists) {
+                    showError('Order Not Found', `No order found for reference <strong>${orderRef}</strong>. Please check the reference or go back to checkout.`);
+                    return;
+                }
+
                 const newData = doc.data();
                 newData.id = doc.id;
                 const newStatus = normalizeStatus(newData.paymentStatus);
+
                 orderData = newData;
-                if (currentStatus !== newStatus) { currentStatus = newStatus; renderStatusPage(); }
-            } catch (err) { console.error(err); }
+
+                if (currentStatus !== newStatus) {
+                    currentStatus = newStatus;
+                    renderStatusPage();
+                } else {
+                    // Just update the dynamic parts without full re-render
+                    updateStatusOnly();
+                }
+
+            } catch (err) {
+                console.error('Firestore error:', err);
+                // Don't wipe the page on auto-refresh errors
+                if (!autoRefreshInterval) {
+                    showError('Connection Error', 'There was a problem loading your order. Please check your internet and refresh.');
+                }
+            }
+        }
+
+        // ─── Lightweight status update (for auto-refresh) ─────────────────────────────
+        function updateStatusOnly() {
+            if (!orderData) return;
+            const normalized = normalizeStatus(orderData.paymentStatus);
+
+            const badge = document.getElementById('statusBadge');
+            const stamp = document.getElementById('stamp');
+            const instructionContent = document.getElementById('instructionContent');
+            const actionButtons = document.getElementById('actionButtons');
+
+            if (badge) {
+                badge.className = `status-badge ${normalized}`;
+                badge.innerHTML = statusBadgeHTML(normalized);
+            }
+            if (stamp) {
+                stamp.className = `stamp ${normalized}`;
+                stamp.textContent = normalized.toUpperCase();
+            }
+            if (instructionContent && actionButtons) {
+                renderInstructionsAndButtons(instructionContent, actionButtons, normalized);
+            }
+        }
+
+        function statusBadgeHTML(status) {
+            if (status === 'approved') return '<i class="fas fa-check-circle"></i> APPROVED';
+            if (status === 'rejected') return '<i class="fas fa-times-circle"></i> REJECTED';
+            return '<i class="fas fa-hourglass-half"></i> PENDING VERIFICATION';
         }
 
         function renderInstructionsAndButtons(container, btnContainer, status) {
             if (status === 'pending') {
-                container.innerHTML = `<div class="instruction-box"><h4><i class="fas fa-clock"></i> Awaiting Verification</h4><p>We are reviewing your payment. Check back soon.</p></div>`;
-                btnContainer.innerHTML = `<button class="btn btn--pending" onclick="window.location.reload()">Refresh Status</button>`;
+                container.innerHTML = `
+                    <div class="instruction-box">
+                        <h4><i class="fas fa-clock"></i> What Next?</h4>
+                        <p>Your payment receipt has been submitted and is awaiting review. This typically takes 24–48 hours.</p>
+                        <p style="margin-top:0.8rem;">Once approved, your tickets will be available for download directly from this page.</p>
+                    </div>`;
+                btnContainer.innerHTML = `
+                    ${orderData.receiptUrl ? `<button class="btn btn--outline" onclick="window.open('${orderData.receiptUrl}','_blank')"><i class="fas fa-download"></i> Download Receipt</button>` : ''}
+                    <button class="btn btn--pending" onclick="window.location.reload()"><i class="fas fa-sync-alt"></i> Refresh Status</button>`;
+
             } else if (status === 'approved') {
-                container.innerHTML = `<div class="instruction-box"><h4><i class="fas fa-check-circle"></i> Verified!</h4><p>Your tickets are ready for download.</p></div>`;
-                btnContainer.innerHTML = `<button class="btn btn--success" onclick="goToTicket()">Get Tickets →</button>`;
+                container.innerHTML = `
+                    <div class="instruction-box">
+                        <h4><i class="fas fa-check-circle"></i> Your Tickets Are Ready!</h4>
+                        <p>Your payment has been verified. Click below to generate and download your official event ticket(s).</p>
+                    </div>`;
+                btnContainer.innerHTML = `
+                    <button class="btn btn--success" onclick="goToTicket()"><i class="fas fa-ticket-alt"></i> Get Your Ticket →</button>
+                    ${orderData.receiptUrl ? `<button class="btn btn--outline" onclick="window.open('${orderData.receiptUrl}','_blank')"><i class="fas fa-download"></i> Download Receipt</button>` : ''}`;
+
             } else if (status === 'rejected') {
-                container.innerHTML = `<div class="instruction-box"><h4><i class="fas fa-times-circle"></i> Issue Detected</h4><p>Payment verification failed. Contact support.</p></div>`;
-                btnContainer.innerHTML = `<button class="btn btn--primary" onclick="goToPayment()">Retry Payment</button>`;
+                container.innerHTML = `
+                    <div class="instruction-box">
+                        <h4><i class="fas fa-times-circle"></i> Payment Verification Failed</h4>
+                        <p>Your payment could not be verified. This may be due to an incorrect amount, invalid receipt, or transaction reference mismatch.</p>
+                        <p style="margin-top:0.8rem;">Please contact support or submit a new payment with correct details.</p>
+                    </div>`;
+                btnContainer.innerHTML = `
+                    <button class="btn btn--primary" onclick="goToPayment()"><i class="fas fa-credit-card"></i> Submit New Payment</button>
+                    <button class="btn btn--outline" onclick="window.location.href='mailto:support@under45ceos.com'"><i class="fas fa-headset"></i> Contact Support</button>`;
             }
         }
 
-        function goToTicket() { window.location.href = 'ticket-view.html#' + orderRef; }
-        function goToPayment() { window.location.href = 'payment.html#' + orderRef; }
+        // Pass orderRef via hash so the ticket page always gets it
+        function goToTicket() {
+            window.location.href = 'ticket-view.html#' + orderRef;
+        }
+        window.goToTicket = goToTicket;
 
+        function goToPayment() {
+            window.location.href = 'payment.html#' + orderRef;
+        }
+        window.goToPayment = goToPayment;
+
+        // ─── Full page render ─────────────────────────────────────────────────────────
         function renderStatusPage() {
             const normalized = normalizeStatus(orderData.paymentStatus || 'pending');
+
             let totalAmount = 0;
+            const ticketSummary = [];
             const priceMap = { regular: 12500, standard: 20000, premium: 150000 };
+            const nameMap = { regular: 'Regular', standard: 'Standard', premium: 'Premium' };
+
             if (orderData.tickets) {
                 for (const [tier, qty] of Object.entries(orderData.tickets)) {
-                    if (qty > 0 && priceMap[tier]) totalAmount += (priceMap[tier] * qty);
+                    if (qty > 0 && priceMap[tier]) {
+                        const lineTotal = priceMap[tier] * qty;
+                        totalAmount += lineTotal;
+                        ticketSummary.push({ name: nameMap[tier], qty, lineTotal });
+                    }
                 }
             }
 
-            document.getElementById('statusContent').innerHTML = `
+            const orderDateStr = orderData.orderDate
+                ? new Date(orderData.orderDate.toDate()).toLocaleDateString('en-NG', { day: 'numeric', month: 'long', year: 'numeric' })
+                : 'N/A';
+
+            const html = `
                 <div class="status-grid">
+                    <!-- Order Summary -->
                     <div class="card">
-                        <h3><i class="fas fa-hashtag"></i> Order Tracking</h3>
-                        <div class="order-item"><span>Ref ID:</span><span>${orderRef}</span></div>
-                        <div class="order-item"><span>Total:</span><span>₦${totalAmount.toLocaleString()}</span></div>
-                        
-                        <div class="stamp-container ${normalized}">
-                            <div class="stamp">
-                                <div class="stamp-text-top">OFFICIAL</div>
-                                <div class="stamp-banner">${normalized.toUpperCase()}</div>
-                                <div class="stamp-text-bottom">100% SUMMIT</div>
-                            </div>
+                        <h3><i class="fas fa-receipt"></i> Order Summary</h3>
+                        ${ticketSummary.map(i => `
+                            <div class="order-item">
+                                <span>${i.name} Ticket × ${i.qty}</span>
+                                <span>₦${i.lineTotal.toLocaleString()}</span>
+                            </div>`).join('')}
+                        <div class="order-divider"></div>
+                        <div class="order-total"><span>Total Amount</span><span>₦${totalAmount.toLocaleString()}</span></div>
+                    </div>
+
+                    <!-- Order Info + Status -->
+                    <div class="card">
+                        <h3><i class="fas fa-hashtag"></i> Order Information</h3>
+                        <div class="order-item">
+                            <span>Order ID:</span>
+                            <span>
+                                ${orderRef}
+                                <button class="copy-btn" id="copyRefBtn"><i class="fas fa-copy"></i></button>
+                            </span>
+                        </div>
+                        <div class="order-item">
+                            <span>Order Date:</span>
+                            <span>${orderDateStr}</span>
+                        </div>
+                        ${orderData.customer ? `
+                        <div class="order-item">
+                            <span>Name:</span>
+                            <span>${orderData.customer.fullName || 'N/A'}</span>
+                        </div>
+                        <div class="order-item">
+                            <span>Email:</span>
+                            <span>${orderData.customer.email || 'N/A'}</span>
+                        </div>` : ''}
+                        <div class="order-item" style="align-items:center;">
+                            <span>Payment Status:</span>
+                            <span id="statusBadge" class="status-badge ${normalized}">${statusBadgeHTML(normalized)}</span>
+                        </div>
+                        <div style="text-align:center; margin-top:1rem;">
+                            <div id="stamp" class="stamp ${normalized}">${normalized.toUpperCase()}</div>
                         </div>
                     </div>
 
+                    <!-- Instructions + Actions -->
                     <div class="card">
-                        <h3><i class="fas fa-info-circle"></i> Status Update</h3>
+                        <h3><i class="fas fa-info-circle"></i> ${normalized === 'approved' ? 'Download Your Tickets' : normalized === 'rejected' ? 'Action Required' : 'What Happens Next'}</h3>
                         <div id="instructionContent"></div>
                         <div id="actionButtons" class="action-buttons"></div>
                     </div>
+
+                    <div class="auto-refresh">
+                        <i class="fas fa-sync-alt fa-fw"></i> This page auto-refreshes every 30 seconds
+                    </div>
                 </div>`;
 
-            renderInstructionsAndButtons(document.getElementById('instructionContent'), document.getElementById('actionButtons'), normalized);
-            
+            document.getElementById('statusContent').innerHTML = html;
+
+            // Wire copy button
+            const copyBtn = document.getElementById('copyRefBtn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', function() { copyToClipboardWithFeedback(this, orderRef); });
+            }
+
+            // Fill instructions
+            const instructionContent = document.getElementById('instructionContent');
+            const actionButtons = document.getElementById('actionButtons');
+            renderInstructionsAndButtons(instructionContent, actionButtons, normalized);
+
+            // Start auto-refresh
             if (autoRefreshInterval) clearInterval(autoRefreshInterval);
-            autoRefreshInterval = setInterval(() => { if (!document.hidden) loadOrder(); }, 30000);
+            autoRefreshInterval = setInterval(() => {
+                if (!document.hidden) loadOrder();
+            }, 30000);
         }
 
+        // Cleanup on unload
+        window.addEventListener('beforeunload', () => {
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+        });
+
+        // ─── Kick off ─────────────────────────────────────────────────────────────────
         init();
     </script>
 </body>
