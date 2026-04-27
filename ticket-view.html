@@ -550,7 +550,6 @@
 
         function generateQRCode(elementId, qrData) {
             return new Promise((resolve) => {
-                // Clear the container
                 const container = document.getElementById(elementId);
                 if (!container) {
                     resolve(false);
@@ -559,7 +558,6 @@
                 container.innerHTML = '';
                 
                 try {
-                    // Create QR code
                     new QRCode(elementId, {
                         text: qrData,
                         width: 120,
@@ -569,7 +567,6 @@
                         correctLevel: QRCode.CorrectLevel.M
                     });
                     
-                    // Wait a bit for QR to generate
                     setTimeout(() => {
                         resolve(true);
                     }, 100);
@@ -579,6 +576,11 @@
                     resolve(false);
                 }
             });
+        }
+
+        // Helper function to sanitize filename
+        function sanitizeFilename(name) {
+            return name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
         }
 
         async function renderTickets() {
@@ -622,11 +624,9 @@
                 const ticketInfo = ticketMap[ticketTier] || ticketMap.regular;
                 const isPremium = ticketTier === 'premium';
                 
-                // Generate unique QR data
                 const qrData = `U45|${orderRef}|${i + 1}|${ticketTier}`;
                 const qrId = `qr_${i}`;
                 
-                // Get ticket price display
                 let ticketPrice = '';
                 if (ticketTier === 'regular') ticketPrice = '₦12,500';
                 else if (ticketTier === 'standard') ticketPrice = '₦20,000';
@@ -686,7 +686,6 @@
             ticketsHtml += `</div>`;
             document.getElementById('ticketContent').innerHTML = ticketsHtml;
 
-            // Generate QR codes after DOM is updated
             for (let i = 0; i < attendees.length; i++) {
                 const attendee = attendees[i];
                 const ticketTier = (attendee.ticketTier || '').toLowerCase();
@@ -695,7 +694,6 @@
                 await generateQRCode(qrId, qrData);
             }
 
-            // Add PDF download functionality
             document.getElementById('downloadPDFBtn').addEventListener('click', downloadPDF);
         }
 
@@ -706,24 +704,59 @@
             return div.innerHTML;
         }
 
+        async function downloadSingleTicket(ticketElement, attendeeName, ticketTier, index) {
+            const cloneContainer = document.createElement('div');
+            cloneContainer.appendChild(ticketElement.cloneNode(true));
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                .ticket-card { break-inside: avoid; page-break-inside: avoid; margin: 0; }
+                .ticket-card .ticket-event-name { color: #f07d1a; }
+                .ticket-card .ticket-attendee { color: #333; }
+                .ticket-card .detail-label { color: #999; }
+                .ticket-card .detail-value { color: #333; }
+                .ticket-qr { background: #f5f5f5; }
+                .action-bar, .btn, .ticket-header, .footer, nav { display: none; }
+            `;
+            cloneContainer.appendChild(style);
+            
+            const sanitizedName = sanitizeFilename(attendeeName);
+            const sanitizedTier = sanitizeFilename(ticketTier);
+            const filename = `${sanitizedName}_${sanitizedTier}_${orderRef}_${String(index + 1).padStart(3, '0')}.pdf`;
+            
+            const opt = {
+                margin: [0.5, 0.5, 0.5, 0.5],
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            
+            return html2pdf().set(opt).from(cloneContainer).save();
+        }
+
         async function downloadPDF() {
             const ticketsContainer = document.getElementById('ticketsContainer');
             if (!ticketsContainer) return;
             
-            const originalDisplay = ticketsContainer.style.display;
-            const actionBar = document.querySelector('.action-bar');
+            const ticketCards = document.querySelectorAll('.ticket-card');
+            const attendees = orderData.attendees || [];
             
-            // Hide action bar for PDF
+            if (ticketCards.length === 1) {
+                const attendee = attendees[0];
+                const ticketTier = (attendee.ticketTier || '').toLowerCase();
+                const fullName = `${attendee.firstname || ''} ${attendee.lastname || ''}`.trim() || 'Attendee';
+                await downloadSingleTicket(ticketCards[0], fullName, ticketTier, 0);
+                return;
+            }
+            
+            const actionBar = document.querySelector('.action-bar');
             if (actionBar) actionBar.style.display = 'none';
             
-            // Create a clone for PDF generation
             const element = document.getElementById('ticketContent').cloneNode(true);
-            
-            // Ensure action bar is hidden in clone
             const clonedActionBar = element.querySelector('.action-bar');
             if (clonedActionBar) clonedActionBar.style.display = 'none';
             
-            // Add print styles to clone
             const style = document.createElement('style');
             style.textContent = `
                 .ticket-card { break-inside: avoid; page-break-inside: avoid; margin-bottom: 20px; }
@@ -731,6 +764,7 @@
                 .ticket-card .ticket-attendee { color: #333; }
                 .ticket-card .detail-label { color: #999; }
                 .ticket-card .detail-value { color: #333; }
+                .ticket-qr { background: #f5f5f5; }
                 body { background: white; }
             `;
             element.appendChild(style);
@@ -750,11 +784,9 @@
                 alert('Error generating PDF. Please try again or use the print option.');
             }
             
-            // Restore action bar
             if (actionBar) actionBar.style.display = 'flex';
         }
 
-        // Start loading order
         loadOrder();
     </script>
 </body>
