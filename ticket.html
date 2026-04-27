@@ -100,37 +100,87 @@
         .nav__mobile.open { display: flex; }
         .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 700; font-size: 1rem; padding: 0.5rem; }
 
-        /* Page Header */
-        .page-header {
-            text-align: center;
-            padding: 120px 20px 40px;
-            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .page-header.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .page-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)" opacity="0.05"/%3E%3C/svg%3E');
-            background-size: 200px;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-        .page-header span { color: var(--orange); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; font-size: 0.8rem; display: block; margin-bottom: 0.5rem; }
-        .page-header h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 8vw, 4rem); letter-spacing: 1px; margin: 10px 0; color: var(--white); font-weight: 700; }
-        .page-header p { color: rgba(255,255,255,0.75); font-weight: 600; }
+/* Page Header */
+.page-header {
+    text-align: center;
+    padding: 130px 20px 55px;
+    background:
+        radial-gradient(circle at top right, rgba(240,125,26,.18), transparent 35%),
+        radial-gradient(circle at bottom left, rgba(26,138,148,.15), transparent 35%),
+        linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+.page-header.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, transparent, rgba(255,255,255,.03), transparent);
+    pointer-events: none;
+}
+
+.page-header span {
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 800;
+    font-size: 0.8rem;
+    display: inline-block;
+    padding: .45rem 1rem;
+    border: 1px solid rgba(240,125,26,.35);
+    border-radius: 40px;
+    background: rgba(240,125,26,.08);
+    margin-bottom: 1rem;
+}
+
+.page-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 8vw, 4.5rem);
+    letter-spacing: 1px;
+    margin: 0;
+    color: var(--white);
+    line-height: 1;
+    font-weight: 700;
+}
+
+.page-header p {
+    margin: 1.3rem auto 0;
+    max-width: 760px;
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 3vw, 1.7rem);
+    letter-spacing: .12em;
+    line-height: 1.45;
+    text-transform: uppercase;
+    color: var(--white);
+    font-weight: 700;
+    padding: 1rem 1.3rem;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    background: rgba(255,255,255,.04);
+    box-shadow: 0 12px 35px rgba(0,0,0,.18);
+}
+
+@media (max-width:768px){
+    .page-header{
+        padding:110px 18px 45px;
+    }
+
+    .page-header p{
+        letter-spacing: .08em;
+        padding: .9rem 1rem;
+    }
+}
         /* Pricing Grid */
         .pricing-section { padding: 4rem 0; }
         .pricing-grid {
@@ -159,8 +209,9 @@
         }
         .ticket-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,.25); box-shadow: var(--shadow-deep); }
 
+        /* Reduced brightness for featured card */
         .ticket-card--featured {
-            background: var(--orange);
+            background: rgba(240, 125, 26, 0.75);
             border-color: var(--orange);
         }
         .ticket-card--featured:hover { transform: translateY(-10px); }
@@ -230,6 +281,18 @@
             color: var(--white);
             font-weight: 800;
             margin-bottom: 0.75rem;
+        }
+        .ticket-subheader {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            color: var(--white);
+            text-transform: uppercase;
+            margin-top: -0.3rem;
+            margin-bottom: 0.6rem;
+        }
+        .ticket-card--premium .ticket-subheader {
+            color: var(--gold-light);
         }
         .ticket-desc {
             font-size: 0.85rem;
@@ -965,13 +1028,16 @@
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="page-header" id="pageHeader">
-        <span>SECURE YOUR SEAT</span>
-        <h1>Ready to <span style="color: var(--orange);">Elevate?</span></h1>
-        <p>Seats are strictly limited. All registration fees are non-refundable.</p>
-    </section>
-
+<!-- Page Header -->
+<section class="page-header" id="pageHeader">
+    <span>SECURE YOUR SEAT</span>
+    <h1>Ready to <span style="color: var(--orange); border:none; background:none; padding:0; margin:0;">Elevate?</span></h1>
+    <p>
+        SELECT YOUR ENTRY <span style="color:var(--orange); border:none; background:none; padding:0;">•</span>
+        LINK WITH POWER <span style="color:var(--orange); border:none; background:none; padding:0;">•</span>
+        EMBRACE THE FUTURE
+    </p>
+</section>
     <!-- Pricing Section -->
     <div class="pricing-section">
         <div class="container">
@@ -981,7 +1047,7 @@
                 <div class="ticket-card" data-delay="0">
                     <div class="ticket-tier">TIER 01 / ENTRY</div>
                     <div class="ticket-name">Regular</div>
-                    <p class="ticket-desc">Step into the room. Connect with fellow entrepreneurs and absorb the energy of Africa's most ambitious business gathering for young leaders.</p>
+                    <p class="ticket-desc">Step into the room. Connect with fellow entrepreneurs and absorb the energy of Onitsha's most ambitious business gathering for young leaders.</p>
                     <div class="ticket-price-section">
                         <div class="ticket-price">₦12,500</div>
                         <div class="ticket-price-note">Fixed price · Day 1 only · No early bird required</div>
@@ -1001,8 +1067,10 @@
                     <div class="savings-ribbon">-33% OFF</div>
                     <div class="ticket-badge">MOST POPULAR</div>
                     <div class="ticket-tier" style="color:rgba(255,255,255,.7)">TIER 02 / CORE</div>
-                    <div class="ticket-name">Standard</div>
-                    <p class="ticket-desc">Get on the pitch stage. Build your credibility, grow your network, and leave Onitsha with recognised credentials for your business journey.</p>
+                    <div class="ticket-name">STANDARD</div>
+                    <div class="ticket-subheader">PITCH STAGE ACCESS</div>
+                    <p class="ticket-desc">Have access to grant to fund your business... 
+                    Get on the pitch stage. Build your credibility, grow your network, and leave Onitsha with recognised credentials for your business journey.</p>
                     <div class="ticket-price-section">
                         <div class="ticket-price-row--dual">
                             <div>
@@ -1032,6 +1100,7 @@
                     <div class="ticket-badge ticket-badge--gold">★ MOST EXCLUSIVE</div>
                     <div class="ticket-tier" style="color:rgba(240,192,64,.6)">TIER 03 / PREMIUM</div>
                     <div class="ticket-name">Premium</div>
+                    <div class="ticket-subheader">FOUNDER'S CORNER</div>
                     <p class="ticket-desc">Two full days of the Under45CEOs experience — masterclass, private speaker access, executive hospitality, and a complimentary night in Onitsha.</p>
                     <div class="ticket-price-section">
                         <div class="ticket-price-row--dual">
