@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Your Tickets | Under 45 CEOs Business & Leadership Summit 2026</title>
-    <meta name="description" content="Download and print your e-tickets for the Under 45 CEOs Summit. Each ticket includes a unique QR code for event check-in.">
+    <meta name="description" content="Enter your Order ID to view, download and print your e-tickets for the Under 45 CEOs Summit. Each ticket includes a unique QR code for event check-in.">
     <meta name="author" content="UDUF Africa">
     <meta name="robots" content="noindex, nofollow">
     
@@ -55,6 +55,75 @@
         ul { list-style: none; }
         .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
 
+        /* Order ID Input Section */
+        .order-input-section {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .order-input-section h2 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--orange);
+            margin-bottom: 0.5rem;
+        }
+        .order-input-section p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .order-input-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .order-input-group input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .order-input-group input:focus {
+            outline: none;
+            border-color: var(--orange);
+        }
+        .order-input-group input::placeholder {
+            color: rgba(255,255,255,0.4);
+            letter-spacing: normal;
+        }
+        .order-input-group button {
+            padding: 0.85rem 2rem;
+            border-radius: var(--radius);
+            border: none;
+            background: var(--orange);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .order-input-group button:hover {
+            background: var(--orange-deep);
+            transform: translateY(-2px);
+        }
+        .order-input-group button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         /* Buttons */
         .btn {
             display: inline-flex;
@@ -76,8 +145,6 @@
         .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
         .btn--outline { background: transparent; color: var(--orange); border-color: var(--orange); }
         .btn--outline:hover { background: var(--orange); color: var(--white); }
-        .btn--gold { background: var(--gold); color: var(--black); border-color: var(--gold); font-weight: 800; }
-        .btn--gold:hover { background: var(--gold-light); transform: translateY(-3px); }
         .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 6px; }
 
         /* Navigation */
@@ -86,7 +153,6 @@
         .nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
         .nav__logos { display: flex; align-items: center; gap: .8rem; margin-right: auto; }
         .nav__logo-uduf { display: flex; align-items: center; gap: .4rem; }
-        .nav__logo-divider { color: rgba(255,255,255,.3); font-size: .9rem; }
         .nav__links { display: flex; gap: 1.8rem; align-items: center; }
         .nav__links a { color: rgba(255,255,255,.9); font-size: .875rem; font-weight: 600; transition: color .2s; }
         .nav__links a:hover { color: var(--orange); }
@@ -173,7 +239,6 @@
             border-color: rgba(240,125,26,0.3);
         }
         
-        /* Premium Ticket Styling */
         .ticket-card.premium {
             border: 2px solid var(--gold);
             background: linear-gradient(135deg, rgba(212,160,23,0.1) 0%, rgba(255,255,255,0.03) 100%);
@@ -221,10 +286,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .ticket-qr .qr-code {
-            width: 120px;
-            height: 120px;
         }
         .ticket-qr .qr-label {
             margin-top: 0.8rem;
@@ -312,6 +373,9 @@
             color: var(--orange);
             margin-bottom: 1rem;
         }
+        .error-card .btn {
+            margin-top: 1rem;
+        }
 
         /* Footer */
         .footer { background: var(--black); padding: 4rem 0 2rem; margin-top: 2rem; }
@@ -348,6 +412,8 @@
             .footer__inner { grid-template-columns: 1fr; }
             .action-bar { flex-direction: column; align-items: stretch; }
             .action-bar .btn { justify-content: center; }
+            .order-input-group { flex-direction: column; }
+            .order-input-group button { width: 100%; }
         }
         
         @media print {
@@ -355,7 +421,7 @@
                 background: white;
                 color: black;
             }
-            .nav, .action-bar, .footer, .ticket-header {
+            .nav, .action-bar, .footer, .ticket-header, .order-input-section {
                 display: none;
             }
             .ticket-card {
@@ -392,7 +458,6 @@
                 </div>
             </div>
             <ul class="nav__links">
-    
                 <li><a href="impact.html">Impact</a></li>
                 <li><a href="sponsor.html">Sponsors</a></li>
                 <li><a href="ticket.html">Tickets</a></li>
@@ -412,14 +477,19 @@
 
     <section class="ticket-header">
         <h1>Your E-Tickets</h1>
-        <p>Present these tickets at the event entrance. Each ticket has a unique QR code for check-in.</p>
+        <p>Enter your Order ID below to view, download and print your tickets</p>
     </section>
 
     <div class="container">
         <div id="ticketContent">
-            <div class="page-loader">
-                <div class="loader-spinner"></div>
-                <p>Loading your tickets...</p>
+            <!-- Order ID Input Section -->
+            <div class="order-input-section" id="orderInputSection">
+                <h2>Get Your Tickets</h2>
+                <p>Please enter the Order ID you received in your confirmation email</p>
+                <div class="order-input-group">
+                    <input type="text" id="orderIdInput" placeholder="Enter Order ID (e.g., ABC123XYZ)" autocomplete="off">
+                    <button id="fetchOrderBtn">View My Tickets</button>
+                </div>
             </div>
         </div>
     </div>
@@ -445,7 +515,6 @@
                     <h4>Resources</h4>
                     <ul>
                         <li><a href="faqs.html">FAQs</a></li>
-                    
                         <li><a href="sponsor.html">Sponsor Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -467,22 +536,10 @@
             appId: "1:801982436580:web:3769913cb6ec23fbaa88f1"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Get order reference from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        let orderRef = urlParams.get('ref');
-        
-        // Fallback to localStorage
-        if (!orderRef) {
-            orderRef = localStorage.getItem('current_order_id');
-        }
-        if (!orderRef) {
-            orderRef = sessionStorage.getItem('current_order_id');
-        }
-
+        let currentOrderRef = null;
         let orderData = null;
 
         // Navbar scroll
@@ -503,84 +560,130 @@
             }));
         }
 
-        // Load order from Firestore
-        async function loadOrder() {
-            if (!orderRef) {
-                showError('No Order Reference', 'No order reference found. Please go back to the status page.', 'status.html');
+        // Check URL parameter on load
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlOrderRef = urlParams.get('ref');
+        if (urlOrderRef) {
+            document.getElementById('orderIdInput').value = urlOrderRef;
+            loadOrderByRef(urlOrderRef);
+        }
+
+        // Fetch button click handler
+        document.getElementById('fetchOrderBtn').addEventListener('click', () => {
+            const orderId = document.getElementById('orderIdInput').value.trim();
+            if (!orderId) {
+                alert('Please enter your Order ID');
                 return;
             }
+            loadOrderByRef(orderId);
+        });
 
+        // Enter key handler
+        document.getElementById('orderIdInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('fetchOrderBtn').click();
+            }
+        });
+
+        async function loadOrderByRef(orderRef) {
+            const fetchBtn = document.getElementById('fetchOrderBtn');
+            const orderInput = document.getElementById('orderIdInput');
+            
+            fetchBtn.disabled = true;
+            fetchBtn.textContent = 'Loading...';
+            
+            // Show loading state in the main content area
+            document.getElementById('ticketContent').innerHTML = `
+                <div class="page-loader">
+                    <div class="loader-spinner"></div>
+                    <p>Fetching your tickets...</p>
+                </div>
+            `;
+            
             try {
                 const docRef = db.collection('checkouts').doc(orderRef);
                 const doc = await docRef.get();
 
                 if (!doc.exists) {
-                    showError('Order Not Found', `We couldn't find an order with reference: ${orderRef}`, 'status.html');
+                    showError('Order Not Found', `We couldn't find an order with ID: ${orderRef}. Please check and try again.`);
                     return;
                 }
 
                 orderData = doc.data();
                 orderData.id = doc.id;
+                currentOrderRef = orderRef;
 
-                // Check if payment is approved
                 const paymentStatus = (orderData.paymentStatus || '').toLowerCase();
                 if (paymentStatus !== 'approved' && paymentStatus !== 'verified') {
-                    showError('Payment Not Approved', 'Your payment has not been approved yet. Please check your status page for updates.', 'status.html');
+                    showError('Payment Not Approved', 'Your payment has not been approved yet. Once your payment is verified, your tickets will appear here. Please check back later.');
                     return;
                 }
 
-                renderTickets();
+                await renderTickets();
 
             } catch (error) {
                 console.error('Error loading order:', error);
-                showError('Error Loading Order', 'There was an error loading your tickets. Please refresh the page.', 'status.html');
+                showError('Error Loading Order', 'There was an error loading your tickets. Please check your internet connection and try again.');
+            } finally {
+                fetchBtn.disabled = false;
+                fetchBtn.textContent = 'View My Tickets';
             }
         }
 
-        function showError(title, message, redirectUrl) {
+        function showError(title, message) {
             document.getElementById('ticketContent').innerHTML = `
                 <div class="error-card">
                     <i class="fas fa-exclamation-triangle"></i>
                     <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem;">${title}</h3>
-                    <p style="color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;">${message}</p>
-                    <a href="${redirectUrl}" class="btn btn--primary">Go Back</a>
+                    <p style="color: rgba(255,255,255,0.7); margin-bottom: 1rem;">${message}</p>
+                    <div class="order-input-section" style="margin-top: 1rem;">
+                        <div class="order-input-group">
+                            <input type="text" id="retryOrderId" placeholder="Enter Order ID" value="${currentOrderRef || ''}">
+                            <button id="retryBtn">Try Again</button>
+                        </div>
+                    </div>
                 </div>
             `;
+            
+            const retryBtn = document.getElementById('retryBtn');
+            const retryInput = document.getElementById('retryOrderId');
+            if (retryBtn && retryInput) {
+                retryBtn.addEventListener('click', () => {
+                    const newRef = retryInput.value.trim();
+                    if (newRef) loadOrderByRef(newRef);
+                });
+                retryInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') retryBtn.click();
+                });
+            }
         }
 
-        function generateQRCode(elementId, qrData) {
+        function generateQRCodeAsImage(qrData) {
             return new Promise((resolve) => {
-                const container = document.getElementById(elementId);
-                if (!container) {
-                    resolve(false);
-                    return;
-                }
-                container.innerHTML = '';
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                tempDiv.style.top = '-9999px';
+                document.body.appendChild(tempDiv);
                 
                 try {
-                    new QRCode(elementId, {
-                        text: qrData,
-                        width: 120,
-                        height: 120,
-                        colorDark: "#000000",
-                        colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.M
-                    });
-                    
+                    new QRCode(tempDiv, { text: qrData, width: 120, height: 120, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
                     setTimeout(() => {
-                        resolve(true);
-                    }, 100);
-                } catch (e) {
-                    console.error('QR generation error:', e);
-                    container.innerHTML = '<div style="width:120px;height:120px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;border-radius:8px;"><i class="fas fa-qrcode" style="font-size:3rem;color:#ccc;"></i></div>';
-                    resolve(false);
+                        const canvas = tempDiv.querySelector('canvas');
+                        if (canvas) {
+                            const imageUrl = canvas.toDataURL('image/png');
+                            document.body.removeChild(tempDiv);
+                            resolve(imageUrl);
+                        } else {
+                            document.body.removeChild(tempDiv);
+                            resolve(null);
+                        }
+                    }, 150);
+                } catch(e) {
+                    document.body.removeChild(tempDiv);
+                    resolve(null);
                 }
             });
-        }
-
-        // Helper function to sanitize filename
-        function sanitizeFilename(name) {
-            return name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
         }
 
         async function renderTickets() {
@@ -592,14 +695,7 @@
             };
 
             if (attendees.length === 0) {
-                document.getElementById('ticketContent').innerHTML = `
-                    <div class="error-card">
-                        <i class="fas fa-ticket-alt"></i>
-                        <h3 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.5rem;">No Attendees Found</h3>
-                        <p style="color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;">No attendee information was found for this order.</p>
-                        <a href="status.html" class="btn btn--primary">Back to Status</a>
-                    </div>
-                `;
+                showError('No Attendees Found', 'No attendee information was found for this order. Please contact support.');
                 return;
             }
 
@@ -611,9 +707,6 @@
                     <button class="btn btn--outline" onclick="window.print()">
                         <i class="fas fa-print"></i> Print Tickets
                     </button>
-                    <a href="status.html" class="btn btn--outline">
-                        <i class="fas fa-arrow-left"></i> Back to Status
-                    </a>
                 </div>
                 <div class="tickets-container" id="ticketsContainer">
             `;
@@ -624,23 +717,23 @@
                 const ticketInfo = ticketMap[ticketTier] || ticketMap.regular;
                 const isPremium = ticketTier === 'premium';
                 
-                const qrData = `U45|${orderRef}|${i + 1}|${ticketTier}`;
-                const qrId = `qr_${i}`;
-                
                 let ticketPrice = '';
                 if (ticketTier === 'regular') ticketPrice = '₦12,500';
                 else if (ticketTier === 'standard') ticketPrice = '₦20,000';
                 else if (ticketTier === 'premium') ticketPrice = '₦150,000';
+                
+                // Generate QR as image for reliable PDF rendering
+                const qrData = `U45|${currentOrderRef}|${i + 1}|${ticketTier}`;
+                const qrImageUrl = await generateQRCodeAsImage(qrData);
+                const qrImageHtml = qrImageUrl ? `<img src="${qrImageUrl}" style="width:120px; height:120px; border-radius:8px;">` : '<div style="width:120px;height:120px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border-radius:8px;"><i class="fas fa-qrcode" style="font-size:3rem;color:#ccc;"></i></div>';
                 
                 ticketsHtml += `
                     <div class="ticket-card ${isPremium ? 'premium' : ''}" id="ticket_${i}">
                         <div class="ticket-badge">${ticketInfo.name}</div>
                         <div class="ticket-inner">
                             <div class="ticket-qr">
-                                <div id="${qrId}" class="qr-placeholder">
-                                    <div style="width:120px;height:120px;display:flex;align-items:center;justify-content:center;">
-                                        <i class="fas fa-spinner fa-spin" style="font-size:1.5rem;color:var(--orange);"></i>
-                                    </div>
+                                <div class="qr-placeholder" id="qr_${i}">
+                                    ${qrImageHtml}
                                 </div>
                                 <div class="qr-label">Scan for check-in</div>
                             </div>
@@ -659,11 +752,11 @@
                                     </div>
                                     <div class="detail-row">
                                         <span class="detail-label">Order ID</span>
-                                        <span class="detail-value">${orderRef}</span>
+                                        <span class="detail-value">${currentOrderRef}</span>
                                     </div>
                                     <div class="detail-row">
                                         <span class="detail-label">Ticket ID</span>
-                                        <span class="detail-value">${orderRef}-${String(i + 1).padStart(3, '0')}</span>
+                                        <span class="detail-value">${currentOrderRef}-${String(i + 1).padStart(3, '0')}</span>
                                     </div>
                                     <div class="detail-row">
                                         <span class="detail-label">Event Date</span>
@@ -686,15 +779,10 @@
             ticketsHtml += `</div>`;
             document.getElementById('ticketContent').innerHTML = ticketsHtml;
 
-            for (let i = 0; i < attendees.length; i++) {
-                const attendee = attendees[i];
-                const ticketTier = (attendee.ticketTier || '').toLowerCase();
-                const qrData = `U45|${orderRef}|${i + 1}|${ticketTier}`;
-                const qrId = `qr_${i}`;
-                await generateQRCode(qrId, qrData);
+            const downloadBtn = document.getElementById('downloadPDFBtn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', downloadPDF);
             }
-
-            document.getElementById('downloadPDFBtn').addEventListener('click', downloadPDF);
         }
 
         function escapeHtml(text) {
@@ -704,55 +792,18 @@
             return div.innerHTML;
         }
 
-        async function downloadSingleTicket(ticketElement, attendeeName, ticketTier, index) {
-            const cloneContainer = document.createElement('div');
-            cloneContainer.appendChild(ticketElement.cloneNode(true));
-            
-            const style = document.createElement('style');
-            style.textContent = `
-                .ticket-card { break-inside: avoid; page-break-inside: avoid; margin: 0; }
-                .ticket-card .ticket-event-name { color: #f07d1a; }
-                .ticket-card .ticket-attendee { color: #333; }
-                .ticket-card .detail-label { color: #999; }
-                .ticket-card .detail-value { color: #333; }
-                .ticket-qr { background: #f5f5f5; }
-                .action-bar, .btn, .ticket-header, .footer, nav { display: none; }
-            `;
-            cloneContainer.appendChild(style);
-            
-            const sanitizedName = sanitizeFilename(attendeeName);
-            const sanitizedTier = sanitizeFilename(ticketTier);
-            const filename = `${sanitizedName}_${sanitizedTier}_${orderRef}_${String(index + 1).padStart(3, '0')}.pdf`;
-            
-            const opt = {
-                margin: [0.5, 0.5, 0.5, 0.5],
-                filename: filename,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-            
-            return html2pdf().set(opt).from(cloneContainer).save();
+        function sanitizeFilename(name) {
+            return name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
         }
 
         async function downloadPDF() {
             const ticketsContainer = document.getElementById('ticketsContainer');
             if (!ticketsContainer) return;
             
-            const ticketCards = document.querySelectorAll('.ticket-card');
-            const attendees = orderData.attendees || [];
-            
-            if (ticketCards.length === 1) {
-                const attendee = attendees[0];
-                const ticketTier = (attendee.ticketTier || '').toLowerCase();
-                const fullName = `${attendee.firstname || ''} ${attendee.lastname || ''}`.trim() || 'Attendee';
-                await downloadSingleTicket(ticketCards[0], fullName, ticketTier, 0);
-                return;
-            }
-            
             const actionBar = document.querySelector('.action-bar');
             if (actionBar) actionBar.style.display = 'none';
             
+            // Create a clone for PDF generation (QR images are already embedded)
             const element = document.getElementById('ticketContent').cloneNode(true);
             const clonedActionBar = element.querySelector('.action-bar');
             if (clonedActionBar) clonedActionBar.style.display = 'none';
@@ -766,12 +817,13 @@
                 .ticket-card .detail-value { color: #333; }
                 .ticket-qr { background: #f5f5f5; }
                 body { background: white; }
+                .action-bar { display: none; }
             `;
             element.appendChild(style);
             
             const opt = {
                 margin: [0.5, 0.5, 0.5, 0.5],
-                filename: `Under45CEOS_Tickets_${orderRef}.pdf`,
+                filename: `Under45CEOS_Tickets_${currentOrderRef}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, letterRendering: true },
                 jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
@@ -786,8 +838,6 @@
             
             if (actionBar) actionBar.style.display = 'flex';
         }
-
-        loadOrder();
     </script>
 </body>
 </html>

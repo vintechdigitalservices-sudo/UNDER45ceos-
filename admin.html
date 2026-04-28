@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Under 45 CEOs Business & Leadership Summit 2026</title>
-    <meta name="description" content="Admin dashboard to manage ticket orders, sponsorship requests, and contact messages.">
-    <meta name="author" content="UDUF Africa">
-    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Admin Dashboard | Under 45 CEOs Summit 2026</title>
+    <meta name="description" content="Admin dashboard to manage ticket orders with email and WhatsApp sending capability">
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -17,30 +15,46 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #053c40;
+            --teal: #0e6b73;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --whatsapp: #25D366;
+            --whatsapp-dark: #128C7E;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: linear-gradient(135deg, #022a2d 0%, #053c40 100%);
-            color: #ffffff;
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            color: var(--white);
             line-height: 1.6;
             overflow-x: hidden;
+            width: 100%;
         }
-
-        /* Admin Container */
+        
         .admin-container {
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
             padding: 1rem;
+            overflow-x: hidden;
         }
-
+        
         /* Login Overlay */
         .login-overlay {
             position: fixed;
@@ -48,81 +62,55 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #022a2d 0%, #053c40 100%);
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
             z-index: 10000;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
         }
-        .login-overlay.hidden {
-            display: none;
-        }
+        .login-overlay.hidden { display: none; }
         .login-card {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
             width: 90%;
             max-width: 400px;
             border: 1px solid rgba(255,255,255,0.1);
             text-align: center;
         }
-        .login-card h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2rem;
-            color: #f07d1a;
-            margin-bottom: 0.5rem;
-        }
-        .login-card p {
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 1.5rem;
-            font-size: 0.85rem;
-        }
+        .login-card h2 { font-family: var(--font-display); font-size: 2rem; color: var(--orange); margin-bottom: 0.5rem; }
+        .login-card p { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; font-size: 0.85rem; }
         .login-card input {
             width: 100%;
             padding: 0.85rem 1rem;
-            border-radius: 12px;
+            border-radius: var(--radius);
             border: 1.5px solid rgba(255,255,255,0.15);
             background: rgba(255,255,255,0.08);
             color: white;
-            font-family: 'DM Sans', sans-serif;
+            font-family: var(--font-body);
             font-size: 0.9rem;
             margin-bottom: 1rem;
         }
-        .login-card input:focus {
-            outline: none;
-            border-color: #f07d1a;
-        }
+        .login-card input:focus { outline: none; border-color: var(--orange); }
         .login-card button {
             width: 100%;
             padding: 0.85rem;
-            border-radius: 12px;
+            border-radius: var(--radius);
             border: none;
-            background: #f07d1a;
+            background: var(--orange);
             color: white;
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s;
         }
-        .login-card button:hover {
-            background: #c96410;
-            transform: translateY(-2px);
-        }
-        .login-card button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .error-msg {
-            color: #ef4444;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
+        .login-card button:hover { background: var(--orange-deep); transform: translateY(-2px); }
+        .login-card button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .error-msg { color: #ef4444; font-size: 0.8rem; margin-top: 0.5rem; display: none; }
 
-        /* Header */
+        /* Header with Logo Images */
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -137,15 +125,17 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            flex-wrap: wrap;
         }
         .logo-area img {
-            height: 45px;
+            height: 50px;
             width: auto;
+            object-fit: contain;
         }
         .logo-area h1 {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: var(--font-display);
             font-size: 1.5rem;
-            color: #f07d1a;
+            color: var(--orange);
         }
         .logout-btn {
             background: rgba(255,255,255,0.1);
@@ -156,10 +146,42 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        .logout-btn:hover {
-            background: rgba(239,68,68,0.3);
-            border-color: #ef4444;
+        .logout-btn:hover { background: rgba(239,68,68,0.3); border-color: #ef4444; }
+
+        /* Delivery Method Selector */
+        .delivery-method {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius);
         }
+        .method-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: white;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .method-btn i { font-size: 1.2rem; }
+        .method-btn.active {
+            border-color: var(--orange);
+            background: rgba(240,125,26,0.2);
+            color: var(--orange);
+        }
+        .method-btn.email.active { border-color: #3b82f6; background: rgba(59,130,246,0.2); color: #3b82f6; }
+        .method-btn.whatsapp.active { border-color: var(--whatsapp); background: rgba(37,211,102,0.2); color: var(--whatsapp); }
+        .method-btn.email:hover { border-color: #3b82f6; }
+        .method-btn.whatsapp:hover { border-color: var(--whatsapp); }
 
         /* Tabs */
         .tabs {
@@ -169,34 +191,27 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 0.5rem;
             flex-wrap: wrap;
+            overflow-x: auto;
         }
         .tab-btn {
             background: none;
             border: none;
             padding: 0.8rem 2rem;
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: var(--font-display);
             font-size: 1.1rem;
             letter-spacing: 0.05em;
             color: rgba(255,255,255,0.6);
             cursor: pointer;
             transition: all 0.3s;
             border-radius: 8px;
+            white-space: nowrap;
         }
-        .tab-btn.active {
-            background: #f07d1a;
-            color: white;
-        }
-        .tab-btn:hover:not(.active) {
-            color: #f07d1a;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
+        .tab-btn.active { background: var(--orange); color: white; }
+        .tab-btn:hover:not(.active) { color: var(--orange); }
+        .tab-content { display: none; width: 100%; }
+        .tab-content.active { display: block; }
 
-        /* Stats Cards - Brand Colors */
+        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -211,29 +226,14 @@
             border: 1px solid rgba(255,255,255,0.08);
             transition: all 0.3s;
         }
-        .stat-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255,255,255,0.15);
-        }
-        .stat-card .stat-icon {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
+        .stat-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.15); }
+        .stat-card .stat-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
         .stat-card.pending .stat-icon { color: #f59e0b; }
         .stat-card.approved .stat-icon { color: #10b981; }
         .stat-card.rejected .stat-icon { color: #ef4444; }
-        .stat-card.total .stat-icon { color: #f07d1a; }
-        .stat-card .stat-number {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-        }
-        .stat-card .stat-label {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.6);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+        .stat-card.total .stat-icon { color: var(--orange); }
+        .stat-card .stat-number { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; }
+        .stat-card .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.05em; }
 
         /* Filters */
         .filters-bar {
@@ -245,7 +245,7 @@
             margin-bottom: 1.5rem;
             padding: 1rem;
             background: rgba(255,255,255,0.03);
-            border-radius: 12px;
+            border-radius: var(--radius);
         }
         .search-box {
             display: flex;
@@ -257,9 +257,6 @@
             flex: 1;
             max-width: 300px;
         }
-        .search-box i {
-            color: rgba(255,255,255,0.5);
-        }
         .search-box input {
             background: none;
             border: none;
@@ -268,11 +265,7 @@
             width: 100%;
             outline: none;
         }
-        .status-filter {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
+        .status-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; }
         .filter-btn {
             background: rgba(255,255,255,0.08);
             border: none;
@@ -280,13 +273,9 @@
             border-radius: 20px;
             color: rgba(255,255,255,0.7);
             cursor: pointer;
-            transition: all 0.3s;
             font-size: 0.8rem;
         }
-        .filter-btn.active {
-            background: #f07d1a;
-            color: white;
-        }
+        .filter-btn.active { background: var(--orange); color: white; }
         .refresh-btn {
             background: rgba(255,255,255,0.08);
             border: none;
@@ -296,20 +285,20 @@
             cursor: pointer;
         }
 
-        /* Tables */
+        /* Table Container */
         .table-container {
             background: rgba(255,255,255,0.03);
             border-radius: 16px;
             overflow-x: auto;
             border: 1px solid rgba(255,255,255,0.08);
+            width: 100%;
         }
         .admin-table {
             width: 100%;
             border-collapse: collapse;
             min-width: 1100px;
         }
-        .admin-table th,
-        .admin-table td {
+        .admin-table th, .admin-table td {
             padding: 1rem;
             text-align: left;
             border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -323,11 +312,9 @@
             color: rgba(255,255,255,0.6);
             background: rgba(255,255,255,0.05);
         }
-        .admin-table tr:hover td {
-            background: rgba(255,255,255,0.05);
-        }
+        .admin-table tr:hover td { background: rgba(255,255,255,0.05); }
 
-        /* Status Badges - Brand Colors */
+        /* Status Badges */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -337,38 +324,20 @@
             font-size: 0.7rem;
             font-weight: 700;
         }
-        .status-badge.pending {
-            background: rgba(245,158,11,0.15);
-            color: #f59e0b;
-            border: 1px solid rgba(245,158,11,0.3);
-        }
-        .status-badge.approved {
-            background: rgba(16,185,129,0.15);
-            color: #10b981;
-            border: 1px solid rgba(16,185,129,0.3);
-        }
-        .status-badge.rejected {
-            background: rgba(239,68,68,0.15);
-            color: #ef4444;
-            border: 1px solid rgba(239,68,68,0.3);
-        }
-        .status-badge.unread {
-            background: rgba(245,158,11,0.15);
-            color: #f59e0b;
-            border: 1px solid rgba(245,158,11,0.3);
-        }
-        .status-badge.read {
-            background: rgba(16,185,129,0.15);
-            color: #10b981;
-            border: 1px solid rgba(16,185,129,0.3);
+        .status-badge.pending { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .status-badge.approved { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .status-badge.rejected { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+        .ticket-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.08);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin: 0.1rem;
         }
 
-        /* Action Buttons with Text Labels */
-        .action-btns {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
+        .action-btns { display: flex; gap: 0.8rem; flex-wrap: wrap; }
         .action-group {
             display: flex;
             flex-direction: column;
@@ -389,36 +358,106 @@
             gap: 0.2rem;
         }
         .action-btn i { font-size: 0.85rem; }
-        .action-label {
-            font-size: 0.6rem;
-            font-weight: 600;
-            margin-top: 0.1rem;
-            color: rgba(255,255,255,0.8);
-        }
-        .action-btn.view-btn { background: rgba(240,125,26,0.15); color: #f07d1a; }
-        .action-btn.view-btn:hover { background: rgba(240,125,26,0.3); }
-        .action-btn.approve-btn { background: rgba(16,185,129,0.15); color: #10b981; }
-        .action-btn.approve-btn:hover { background: rgba(16,185,129,0.3); }
+        .action-label { font-size: 0.6rem; font-weight: 600; color: rgba(255,255,255,0.8); }
+        .action-btn.view-btn { background: rgba(240,125,26,0.15); color: var(--orange); }
+        .action-btn.approve-send-btn { background: rgba(16,185,129,0.15); color: #10b981; }
         .action-btn.reject-btn { background: rgba(239,68,68,0.15); color: #ef4444; }
-        .action-btn.reject-btn:hover { background: rgba(239,68,68,0.3); }
         .action-btn.receipt-btn { background: rgba(59,130,246,0.15); color: #3b82f6; }
-        .action-btn.receipt-btn:hover { background: rgba(59,130,246,0.3); }
-        .action-btn.reply-btn { background: rgba(16,185,129,0.15); color: #10b981; }
-        .action-btn.reply-btn:hover { background: rgba(16,185,129,0.3); }
-        .action-btn.mark-read-btn { background: rgba(240,125,26,0.15); color: #f07d1a; }
-        .action-btn.mark-read-btn:hover { background: rgba(240,125,26,0.3); }
 
-        /* Ticket Type Tags */
-        .ticket-tag {
-            display: inline-block;
-            background: rgba(255,255,255,0.08);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            margin: 0.1rem;
+        /* Email/WhatsApp Modal */
+        .email-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
         }
+        .email-modal.active { opacity: 1; visibility: visible; }
+        .email-modal-content {
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            border-radius: var(--radius-lg);
+            max-width: 700px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            border: 1px solid var(--orange);
+        }
+        .email-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .email-modal-header h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--orange); }
+        .email-modal-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--orange); }
+        
+        /* WhatsApp Number Display */
+        .whatsapp-number-box {
+            background: rgba(37,211,102,0.15);
+            border: 1px solid var(--whatsapp);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .whatsapp-number-box p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--whatsapp);
+            margin-top: 0.5rem;
+        }
+        
+        .order-summary-box {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .order-summary-box h4 { color: #10b981; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .order-summary-box p { font-size: 0.85rem; color: rgba(255,255,255,0.8); margin-bottom: 0.3rem; }
+        .ticket-link-box {
+            background: rgba(240,125,26,0.15);
+            border: 1px solid var(--orange);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .ticket-link-box a { color: var(--orange); word-break: break-all; font-size: 0.85rem; }
+        
+        .email-modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .email-modal-actions button { flex: 1; padding: 0.7rem; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
+        .btn--primary { background: #10b981; color: white; }
+        .btn--whatsapp { background: var(--whatsapp); color: white; }
+        .btn--outline { background: rgba(255,255,255,0.1); color: white; }
 
-        /* Modal */
+        /* Regular Modal */
         .modal {
             position: fixed;
             top: 0;
@@ -434,19 +473,16 @@
             visibility: hidden;
             transition: all 0.3s;
         }
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
+        .modal.active { opacity: 1; visibility: visible; }
         .modal-content {
-            background: linear-gradient(135deg, #022a2d 0%, #053c40 100%);
-            border-radius: 20px;
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            border-radius: var(--radius-lg);
             max-width: 800px;
-            width: 90%;
+            width: 95%;
             max-height: 85vh;
             overflow-y: auto;
-            padding: 2rem;
-            border: 1px solid #f07d1a;
+            padding: 1.5rem;
+            border: 1px solid var(--orange);
         }
         .modal-header {
             display: flex;
@@ -456,112 +492,43 @@
             padding-bottom: 1rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .modal-header h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.5rem;
-            color: #f07d1a;
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        .detail-section {
-            margin-bottom: 1.5rem;
-        }
-        .detail-section h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.1rem;
-            color: #f07d1a;
-            margin-bottom: 0.8rem;
-            padding-bottom: 0.3rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .detail-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.8rem;
-        }
-        .detail-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-        }
-        .detail-label {
-            color: rgba(255,255,255,0.6);
-        }
-        .detail-value {
-            font-weight: 600;
-            text-align: right;
-        }
+        .modal-header h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--orange); }
+        .modal-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+        .detail-item { display: flex; justify-content: space-between; font-size: 0.85rem; }
+        .detail-label { color: rgba(255,255,255,0.6); }
+        .detail-value { font-weight: 600; text-align: right; }
         .attendee-item {
             background: rgba(255,255,255,0.05);
-            border-radius: 12px;
+            border-radius: var(--radius);
             padding: 0.8rem;
             margin-bottom: 0.8rem;
         }
-        .receipt-img {
-            max-width: 100%;
-            border-radius: 12px;
-            margin-top: 0.5rem;
-        }
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        .modal-action-btn {
-            flex: 1;
-            padding: 0.7rem;
-            border-radius: 8px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .modal-action-btn.approve {
+        .receipt-img { max-width: 100%; border-radius: var(--radius); margin-top: 0.5rem; }
+        .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .modal-action-btn { flex: 1; padding: 0.7rem; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
+        .modal-action-btn.approve { background: #10b981; color: white; }
+        .modal-action-btn.reject { background: #ef4444; color: white; }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             background: #10b981;
             color: white;
-        }
-        .modal-action-btn.reject {
-            background: #ef4444;
-            color: white;
-        }
-
-        /* Loading & Pagination */
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
+            padding: 0.8rem 1.2rem;
+            border-radius: var(--radius);
+            z-index: 10003;
+            display: none;
             align-items: center;
-            padding: 3rem;
-        }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top-color: #f07d1a;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .no-data {
-            text-align: center;
-            padding: 3rem;
-            color: rgba(255,255,255,0.5);
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
             gap: 0.5rem;
-            margin-top: 1.5rem;
-            padding: 1rem;
+            font-weight: 600;
+            max-width: 90%;
         }
+        .toast-message.error { background: #ef4444; }
+        .toast-message.show { display: flex; }
+        
+        .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
         .page-btn {
             background: rgba(255,255,255,0.08);
             border: none;
@@ -570,28 +537,18 @@
             color: white;
             cursor: pointer;
         }
-        .page-btn.active {
-            background: #f07d1a;
-        }
+        .page-btn.active { background: var(--orange); }
+        .no-data { text-align: center; padding: 2rem; color: rgba(255,255,255,0.5); }
+        .loading-spinner { text-align: center; padding: 2rem; }
 
         @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .filters-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .search-box {
-                max-width: none;
-            }
-            .tabs {
-                justify-content: center;
-            }
-            .action-btns {
-                flex-direction: row;
-                gap: 0.5rem;
-            }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+            .filters-bar { flex-direction: column; align-items: stretch; }
+            .search-box { max-width: none; }
+            .email-modal-actions { flex-direction: column; }
+            .logo-area h1 { font-size: 1rem; }
+            .logo-area img { height: 35px; }
+            .delivery-method { flex-direction: column; }
         }
     </style>
 </head>
@@ -611,14 +568,14 @@
 <div class="admin-container" id="adminContainer" style="display: none;">
     <div class="admin-header">
         <div class="logo-area">
-            <img src="logo.png" alt="UDUF Africa Logo">
-            <img src="under45.png" alt="Under 45 CEOs Logo">
+            <!-- Logo images - replace with your actual logo.png and under45.png paths -->
+            <img src="logo.png" alt="UDUF Africa Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23f07d1a%27/%3E%3Ctext x=%2750%27 y=%2767%27 font-size=%2740%27 text-anchor=%27middle%27 fill=%27white%27 font-weight=%27bold%27%3EU%3C/text%3E%3C/svg%3E'">
+            <img src="under45.png" alt="Under 45 CEOs Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 fill=%27%23022a2d%27/%3E%3Ctext x=%2750%27 y=%2755%27 font-size=%2718%27 text-anchor=%27middle%27 fill=%27%23f07d1a%27 font-weight=%27bold%27%3EU45%3C/text%3E%3C/svg%3E'">
             <h1>ADMIN DASHBOARD</h1>
         </div>
         <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
 
-    <!-- Tabs -->
     <div class="tabs">
         <button class="tab-btn active" data-tab="tickets"><i class="fas fa-ticket-alt"></i> Ticket Orders</button>
         <button class="tab-btn" data-tab="sponsorships"><i class="fas fa-handshake"></i> Sponsorship Requests</button>
@@ -629,7 +586,7 @@
     <div class="tab-content active" id="ticketsTab">
         <div class="stats-grid" id="ticketStats">
             <div class="stat-card total"><div class="stat-icon"><i class="fas fa-ticket-alt"></i></div><div class="stat-number" id="totalOrders">0</div><div class="stat-label">Total Orders</div></div>
-            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="pendingOrders">0</div><div class="stat-label">Pending Verification</div></div>
+            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="pendingOrders">0</div><div class="stat-label">Pending</div></div>
             <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-number" id="approvedOrders">0</div><div class="stat-label">Approved</div></div>
             <div class="stat-card rejected"><div class="stat-icon"><i class="fas fa-times-circle"></i></div><div class="stat-number" id="rejectedOrders">0</div><div class="stat-label">Rejected</div></div>
         </div>
@@ -643,7 +600,12 @@
             </div>
             <button class="refresh-btn" id="refreshTickets"><i class="fas fa-sync-alt"></i> Refresh</button>
         </div>
-        <div class="table-container"><table class="admin-table"><thead><tr><th>Date & Time</th><th>Order ID</th><th>Customer</th><th>Email</th><th>Total</th><th>Tickets</th><th>Status</th><th>Actions</th></tr></thead><tbody id="ticketsTableBody"></tbody></table></div>
+        <div class="table-container">
+            <table class="admin-table">
+                <thead><tr><th>Date & Time</th><th>Order ID</th><th>Customer</th><th>Email</th><th>Phone</th><th>Total</th><th>Tickets</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="ticketsTableBody"><tr><td colspan="9"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading orders...</div></td></tr></tbody>
+            </table>
+        </div>
         <div class="pagination" id="ticketsPagination"></div>
     </div>
 
@@ -651,41 +613,81 @@
     <div class="tab-content" id="sponsorshipsTab">
         <div class="stats-grid" id="sponsorStats">
             <div class="stat-card total"><div class="stat-icon"><i class="fas fa-handshake"></i></div><div class="stat-number" id="totalSponsorships">0</div><div class="stat-label">Total Requests</div></div>
-            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="pendingSponsorships">0</div><div class="stat-label">Pending Review</div></div>
-            <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-number" id="readSponsorships">0</div><div class="stat-label">Reviewed</div></div>
-            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-number" id="totalTierValue">₦0</div><div class="stat-label">Total Potential Value</div></div>
+            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="pendingSponsorships">0</div><div class="stat-label">Pending</div></div>
+            <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-number" id="reviewedSponsorships">0</div><div class="stat-label">Reviewed</div></div>
         </div>
         <div class="filters-bar">
-            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="sponsorSearch" placeholder="Search by Company, Name, or Email..."></div>
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="sponsorSearch" placeholder="Search..."></div>
             <button class="refresh-btn" id="refreshSponsors"><i class="fas fa-sync-alt"></i> Refresh</button>
         </div>
-        <div class="table-container"><table class="admin-table"><thead><tr><th>Date & Time</th><th>Company</th><th>Contact Person</th><th>Email</th><th>Selected Tier</th><th>Status</th><th>Actions</th></tr></thead><tbody id="sponsorsTableBody"></tbody></table></div>
-        <div class="pagination" id="sponsorsPagination"></div>
+        <div class="table-container"><table class="admin-table"><thead><tr><th>Date</th><th>Company</th><th>Contact</th><th>Email</th><th>Phone</th><th>Tier</th><th>Status</th><th>Actions</th></tr></thead><tbody id="sponsorsTableBody"><tr><td colspan="8"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading sponsorships...</div>NonNullList</tbody></table></div>
     </div>
 
     <!-- Messages Tab -->
     <div class="tab-content" id="messagesTab">
         <div class="stats-grid" id="messageStats">
-            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-envelope"></i></div><div class="stat-number" id="totalMessages">0</div><div class="stat-label">Total Messages</div></div>
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-envelope"></i></div><div class="stat-number" id="totalMessages">0</div><div class="stat-label">Total</div></div>
             <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="unreadMessages">0</div><div class="stat-label">Unread</div></div>
-            <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-number" id="readMessages">0</div><div class="stat-label">Read</div></div>
-            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-reply-all"></i></div><div class="stat-number" id="pendingReplyMessages">0</div><div class="stat-label">Awaiting Reply</div></div>
         </div>
         <div class="filters-bar">
-            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="messageSearch" placeholder="Search by Name, Email, or Subject..."></div>
-            <div class="status-filter">
-                <button class="filter-btn active" data-status="all">All</button>
-                <button class="filter-btn" data-status="unread">Unread</button>
-                <button class="filter-btn" data-status="read">Read</button>
-            </div>
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="messageSearch" placeholder="Search..."></div>
             <button class="refresh-btn" id="refreshMessages"><i class="fas fa-sync-alt"></i> Refresh</button>
         </div>
-        <div class="table-container"><table class="admin-table"><thead><tr><th>Date & Time</th><th>Name</th><th>Email</th><th>Subject</th><th>Status</th><th>Actions</th></tr></thead><tbody id="messagesTableBody"></tbody></td></div>
-        <div class="pagination" id="messagesPagination"></div>
+        <div class="table-container"><table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Subject</th><th>Status</th><th>Actions</th></tr></thead><tbody id="messagesTableBody"><tr><td colspan="7"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading messages...</div>NonNullList</tbody></table></div>
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Email/WhatsApp Modal -->
+<div class="email-modal" id="emailModal">
+    <div class="email-modal-content">
+        <div class="email-modal-header">
+            <h2 id="modalMethodTitle"><i class="fas fa-envelope"></i> Approve & Send Tickets</h2>
+            <button class="email-modal-close" id="closeEmailModalBtn">&times;</button>
+        </div>
+        
+        <!-- Delivery Method Selector -->
+        <div class="delivery-method">
+            <button class="method-btn email active" id="methodEmailBtn">
+                <i class="fas fa-envelope"></i> Email
+            </button>
+            <button class="method-btn whatsapp" id="methodWhatsAppBtn">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+        </div>
+        
+        <div id="emailModalBody">
+            <div class="form-group" id="recipientField">
+                <label id="recipientLabel">To <span style="color:var(--orange);">*</span></label>
+                <input type="text" id="recipientValue" readonly>
+            </div>
+            <div class="form-group" id="subjectField">
+                <label>Subject</label>
+                <input type="text" id="emailSubject" placeholder="Your Under45CEOs Summit Tickets">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea id="emailMessage" rows="6"></textarea>
+            </div>
+            
+            <!-- WhatsApp Number Display (shown when WhatsApp is selected) -->
+            <div class="whatsapp-number-box" id="whatsappNumberBox" style="display: none;">
+                <i class="fab fa-whatsapp" style="font-size: 1.5rem; color: #25D366;"></i>
+                <p id="whatsappNumberDisplay"></p>
+                <small style="color: rgba(255,255,255,0.6);">Customer's WhatsApp number will be extracted automatically</small>
+            </div>
+            
+            <div class="order-summary-box" id="orderSummaryBox"></div>
+            <div class="ticket-link-box" id="ticketLinkBox"></div>
+        </div>
+        <div class="email-modal-actions">
+            <button class="btn--outline" id="cancelEmailBtn">Cancel</button>
+            <button class="btn--primary" id="sendEmailBtn"><i class="fas fa-paper-plane"></i> Send via Email</button>
+            <button class="btn--whatsapp" id="sendWhatsAppBtn" style="display: none;"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
+        </div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
 <div class="modal" id="detailModal">
     <div class="modal-content">
         <div class="modal-header"><h2 id="modalTitle">Details</h2><button class="modal-close" id="closeModalBtn">&times;</button></div>
@@ -693,101 +695,454 @@
     </div>
 </div>
 
+<div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i><span id="toastText">Success!</span></div>
+
 <script>
-    const firebaseConfig = { apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc", authDomain: "under45ceos-submit.firebaseapp.com", projectId: "under45ceos-submit", storageBucket: "under45ceos-submit.firebasestorage.app", messagingSenderId: "801982436580", appId: "1:801982436580:web:3769913cb6ec23fbaa88f1" };
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc",
+        authDomain: "under45ceos-submit.firebaseapp.com",
+        projectId: "under45ceos-submit",
+        storageBucket: "under45ceos-submit.firebasestorage.app",
+        messagingSenderId: "801982436580",
+        appId: "1:801982436580:web:3769913cb6ec23fbaa88f1"
+    };
+    
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const auth = firebase.auth();
-
+    
+    const TICKET_PAGE_URL = "https://under45ceos.udufafrica.org/ticket-view.html";
+    
     // Data stores
     let allTicketOrders = [], filteredTickets = [], currentTicketPage = 1, ticketFilter = "all", ticketSearch = "";
-    let allSponsorships = [], filteredSponsorships = [], currentSponsorPage = 1, sponsorSearch = "";
-    let allMessages = [], filteredMessages = [], currentMessagePage = 1, messageFilter = "all", messageSearch = "";
+    let allSponsorships = [], filteredSponsorships = [], sponsorSearch = "";
+    let allMessages = [], filteredMessages = [], messageSearch = "";
     const itemsPerPage = 15;
+    let currentOrderForApproval = null;
+    let currentDeliveryMethod = "email"; // "email" or "whatsapp"
 
     // Helper functions
-    function normalizeStatus(s) { if (!s) return 'pending'; const v = s.toLowerCase(); if (v === 'approved' || v === 'verified') return 'approved'; if (v === 'rejected') return 'rejected'; return 'pending'; }
-    function formatDateTime(timestamp) { if (!timestamp) return 'N/A'; if (timestamp.toDate) return timestamp.toDate().toLocaleString('en-NG', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); return new Date(timestamp).toLocaleString('en-NG'); }
+    function showToast(message, isError = false) {
+        const toast = document.getElementById('toastMessage');
+        const toastText = document.getElementById('toastText');
+        toastText.textContent = message;
+        if (isError) toast.classList.add('error'); else toast.classList.remove('error');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+    
+    function formatDateTime(timestamp) {
+        if (!timestamp) return 'N/A';
+        if (timestamp.toDate) return timestamp.toDate().toLocaleString('en-NG');
+        return new Date(timestamp).toLocaleString('en-NG');
+    }
+    
+    function normalizeStatus(status) {
+        if (!status) return 'pending';
+        const s = status.toLowerCase();
+        if (s === 'approved' || s === 'verified') return 'approved';
+        if (s === 'rejected') return 'rejected';
+        return 'pending';
+    }
+
+    // Format phone number for WhatsApp (Nigeria format)
+    function formatPhoneForWhatsApp(phone) {
+        if (!phone) return '';
+        // Remove any non-digit characters
+        let cleaned = phone.replace(/\D/g, '');
+        // If starts with 0, replace with 234 (Nigeria code)
+        if (cleaned.startsWith('0')) {
+            cleaned = '234' + cleaned.substring(1);
+        }
+        // If starts with 234, keep as is
+        // If starts with +234, remove the +
+        if (cleaned.startsWith('234') && cleaned.length === 13) {
+            return cleaned;
+        }
+        return cleaned;
+    }
+
+    function generateEmailMessage(order) {
+        const customerName = order.customer?.fullName || 'Valued Customer';
+        let ticketSummary = '';
+        if (order.tickets) {
+            const tickets = [];
+            if (order.tickets.regular) tickets.push(`${order.tickets.regular} Regular`);
+            if (order.tickets.standard) tickets.push(`${order.tickets.standard} Standard`);
+            if (order.tickets.premium) tickets.push(`${order.tickets.premium} Premium`);
+            ticketSummary = tickets.join(', ');
+        }
+        
+        return `Dear ${customerName},
+
+Your payment for the Under45CEOs Business & Leadership Summit 2026 has been approved! 🎉
+
+🎫 **Your tickets are ready!**
+
+Click the link below to view, download and print your tickets:
+🔗 ${TICKET_PAGE_URL}
+
+**Instructions:**
+1. Click the link above or copy and paste it into your browser
+2. Enter your Order ID: ${order.id}
+3. Your tickets will appear with unique QR codes for event check-in
+4. You can download all tickets as PDF or print them
+
+**Order Summary:**
+• Order ID: ${order.id}
+• Tickets: ${ticketSummary}
+• Total: ₦${(order.totalAmount || 0).toLocaleString()}
+
+**Event Details:**
+📅 Date: October 10, 2026
+📍 Venue: Onitsha, Anambra State, Nigeria
+
+We look forward to hosting you at the Under45CEOs Summit!
+
+Best regards,
+Under45CEOs Team`;
+    }
+
+    function generateWhatsAppMessage(order) {
+        const customerName = order.customer?.fullName || 'Valued Customer';
+        let ticketSummary = '';
+        if (order.tickets) {
+            const tickets = [];
+            if (order.tickets.regular) tickets.push(`${order.tickets.regular} Regular`);
+            if (order.tickets.standard) tickets.push(`${order.tickets.standard} Standard`);
+            if (order.tickets.premium) tickets.push(`${order.tickets.premium} Premium`);
+            ticketSummary = tickets.join(', ');
+        }
+        
+        return `🎫 *Your Under45CEOs Summit Tickets are Ready!* 🎫
+
+Dear ${customerName},
+
+Your payment has been approved! 
+
+🔗 *Get your tickets here:* ${TICKET_PAGE_URL}
+
+*Instructions:*
+1. Click the link above
+2. Enter your Order ID: *${order.id}*
+3. Download/print your tickets with QR codes
+
+*Order Summary:*
+• Order ID: ${order.id}
+• Tickets: ${ticketSummary}
+• Total: ₦${(order.totalAmount || 0).toLocaleString()}
+
+*Event Details:*
+📅 Date: October 10, 2026
+📍 Venue: Onitsha, Anambra State
+
+Thank you for registering!
+Under45CEOs Team`;
+    }
 
     // ==================== TICKETS ====================
     async function loadTickets() {
         try {
             const snapshot = await db.collection('checkouts').orderBy('orderDate', 'desc').get();
             allTicketOrders = [];
-            snapshot.forEach(doc => { const data = doc.data(); allTicketOrders.push({ id: doc.id, ...data, paymentStatus: normalizeStatus(data.paymentStatus) }); });
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                allTicketOrders.push({ id: doc.id, ...data, paymentStatus: normalizeStatus(data.paymentStatus) });
+            });
             applyTicketFilters();
             updateTicketStats();
-        } catch(e) { console.error('loadTickets error:', e); document.getElementById('ticketsTableBody').innerHTML = `<tr><td colspan="8"><div class="no-data">Error loading data: ${e.message}</div></td></tr>`; }
+        } catch (error) {
+            console.error("Error loading tickets:", error);
+            showToast("Error loading tickets: " + error.message, true);
+            document.getElementById('ticketsTableBody').innerHTML = `<tr><td colspan="9"><div class="no-data">Error loading data. Make sure you're running on localhost or HTTPS.</div>NonNullList`;
+        }
     }
-
+    
     function applyTicketFilters() {
         let filtered = [...allTicketOrders];
-        if (ticketFilter !== 'all') filtered = filtered.filter(o => o.paymentStatus === ticketFilter);
-        if (ticketSearch.trim()) { const s = ticketSearch.toLowerCase(); filtered = filtered.filter(o => o.id.toLowerCase().includes(s) || (o.customer?.fullName || '').toLowerCase().includes(s) || (o.customer?.email || '').toLowerCase().includes(s)); }
+        if (ticketFilter !== 'all') filtered = filtered.filter(t => t.paymentStatus === ticketFilter);
+        if (ticketSearch.trim()) {
+            const s = ticketSearch.toLowerCase();
+            filtered = filtered.filter(t => t.id.toLowerCase().includes(s) || (t.customer?.fullName || '').toLowerCase().includes(s) || (t.customer?.email || '').toLowerCase().includes(s));
+        }
         filteredTickets = filtered;
         currentTicketPage = 1;
         renderTicketsTable();
     }
-
+    
     function renderTicketsTable() {
         const start = (currentTicketPage - 1) * itemsPerPage;
         const pageOrders = filteredTickets.slice(start, start + itemsPerPage);
         const tbody = document.getElementById('ticketsTableBody');
-        if (pageOrders.length === 0) { tbody.innerHTML = '<tr><td colspan="8"><div class="no-data">No orders found</div></td></tr>'; document.getElementById('ticketsPagination').innerHTML = ''; return; }
+        
+        if (pageOrders.length === 0) {
+            tbody.innerHTML = '</table><td colspan="9"><div class="no-data">No orders found</div>NonNullList';
+            document.getElementById('ticketsPagination').innerHTML = '';
+            return;
+        }
+        
         tbody.innerHTML = pageOrders.map(order => {
             let ticketHtml = '';
-            if (order.tickets) { if (order.tickets.regular) ticketHtml += `<span class="ticket-tag">${order.tickets.regular} Regular</span> `; if (order.tickets.standard) ticketHtml += `<span class="ticket-tag">${order.tickets.standard} Standard</span> `; if (order.tickets.premium) ticketHtml += `<span class="ticket-tag">${order.tickets.premium} Premium</span> `; }
+            if (order.tickets) {
+                if (order.tickets.regular) ticketHtml += `<span class="ticket-tag">${order.tickets.regular} Regular</span> `;
+                if (order.tickets.standard) ticketHtml += `<span class="ticket-tag">${order.tickets.standard} Standard</span> `;
+                if (order.tickets.premium) ticketHtml += `<span class="ticket-tag">${order.tickets.premium} Premium</span> `;
+            }
             const statusClass = order.paymentStatus;
-            const statusText = statusClass === 'pending' ? 'PENDING' : statusClass === 'approved' ? 'APPROVED' : 'REJECTED';
-            return `<tr>
-                <td>${formatDateTime(order.orderDate)}</td>
-                <td><code>${order.id}</code></td>
-                <td>${order.customer?.fullName || 'N/A'}</td>
-                <td>${order.customer?.email || 'N/A'}</td>
-                <td>₦${(order.totalAmount || 0).toLocaleString()}</td>
-                <td>${ticketHtml}</td>
-                <td><span class="status-badge ${statusClass}"><i class="fas ${statusClass === 'pending' ? 'fa-hourglass-half' : statusClass === 'approved' ? 'fa-check-circle' : 'fa-times-circle'}"></i> ${statusText}</span></td>
-                <td class="action-btns">
-                    <div class="action-group"><button class="action-btn view-btn" onclick="viewTicketDetails('${order.id}')"><i class="fas fa-eye"></i> View</button><span class="action-label">View</span></div>
-                    <div class="action-group"><button class="action-btn receipt-btn" onclick="window.open('${order.receiptUrl || '#'}','_blank')" ${!order.receiptUrl ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}><i class="fas fa-receipt"></i> Receipt</button><span class="action-label">Receipt</span></div>
-                    ${order.paymentStatus !== 'approved' ? `<div class="action-group"><button class="action-btn approve-btn" onclick="updateTicketStatus('${order.id}', 'approved')"><i class="fas fa-check"></i> Approve</button><span class="action-label">Approve</span></div>` : ''}
-                    ${order.paymentStatus !== 'rejected' ? `<div class="action-group"><button class="action-btn reject-btn" onclick="updateTicketStatus('${order.id}', 'rejected')"><i class="fas fa-times"></i> Reject</button><span class="action-label">Reject</span></div>` : ''}
-                </td>
-            </tr>`;
+            const statusText = statusClass.toUpperCase();
+            const statusIcon = statusClass === 'pending' ? 'fa-hourglass-half' : statusClass === 'approved' ? 'fa-check-circle' : 'fa-times-circle';
+            
+            return `
+                <tr>
+                    <td>${formatDateTime(order.orderDate)}</td>
+                    <td><code>${order.id.substring(0, 12)}...</code></td>
+                    <td>${order.customer?.fullName || 'N/A'}</td>
+                    <td>${order.customer?.email || 'N/A'}</td>
+                    <td>${order.customer?.phone || 'N/A'}</td>
+                    <td>₦${(order.totalAmount || 0).toLocaleString()}</td>
+                    <td>${ticketHtml}</td>
+                    <td><span class="status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText}</span></td>
+                    <td class="action-btns">
+                        <div class="action-group"><button class="action-btn view-btn" onclick="viewTicketDetails('${order.id}')"><i class="fas fa-eye"></i> View</button><span class="action-label">View</span></div>
+                        <div class="action-group"><button class="action-btn receipt-btn" onclick="window.open('${order.receiptUrl || '#'}','_blank')" ${!order.receiptUrl ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}><i class="fas fa-receipt"></i> Receipt</button><span class="action-label">Receipt</span></div>
+                        ${order.paymentStatus !== 'approved' ? `<div class="action-group"><button class="action-btn approve-send-btn" onclick="openApproveModal('${order.id}')"><i class="fas fa-check"></i> Approve</button><span class="action-label">Approve & Send</span></div>` : ''}
+                        ${order.paymentStatus !== 'rejected' ? `<div class="action-group"><button class="action-btn reject-btn" onclick="rejectOrder('${order.id}')"><i class="fas fa-times"></i> Reject</button><span class="action-label">Reject</span></div>` : ''}
+                    </div>
+                </tr>
+            `;
         }).join('');
+        
         renderPagination('ticketsPagination', filteredTickets.length, currentTicketPage, (page) => { currentTicketPage = page; renderTicketsTable(); });
     }
-
+    
     function updateTicketStats() {
-        const total = allTicketOrders.length;
-        const pending = allTicketOrders.filter(o => o.paymentStatus === 'pending').length;
-        const approved = allTicketOrders.filter(o => o.paymentStatus === 'approved').length;
-        const rejected = allTicketOrders.filter(o => o.paymentStatus === 'rejected').length;
-        document.getElementById('totalOrders').textContent = total;
-        document.getElementById('pendingOrders').textContent = pending;
-        document.getElementById('approvedOrders').textContent = approved;
-        document.getElementById('rejectedOrders').textContent = rejected;
+        document.getElementById('totalOrders').textContent = allTicketOrders.length;
+        document.getElementById('pendingOrders').textContent = allTicketOrders.filter(t => t.paymentStatus === 'pending').length;
+        document.getElementById('approvedOrders').textContent = allTicketOrders.filter(t => t.paymentStatus === 'approved').length;
+        document.getElementById('rejectedOrders').textContent = allTicketOrders.filter(t => t.paymentStatus === 'rejected').length;
     }
-
+    
     window.viewTicketDetails = async function(orderId) {
         const order = allTicketOrders.find(o => o.id === orderId);
         if (!order) return;
+        
         let attendeesHtml = '';
-        if (order.attendees && order.attendees.length) { order.attendees.forEach((a, idx) => { attendeesHtml += `<div class="attendee-item"><strong>Attendee ${idx + 1}</strong><br>Name: ${a.firstname} ${a.middlename || ''} ${a.lastname}<br>Phone: ${a.phone}<br>Company: ${a.company}<br>Location: ${a.location}<br>Age Range: ${a.ageRange}<br>Social Status: ${a.socialStatus}<br>Ticket: ${a.ticketTier}</div>`; }); }
+        if (order.attendees && order.attendees.length) {
+            order.attendees.forEach((a, idx) => {
+                attendeesHtml += `<div class="attendee-item"><strong>Attendee ${idx + 1}</strong><br>Name: ${a.firstname || ''} ${a.lastname || ''}<br>Phone: ${a.phone || 'N/A'}<br>Company: ${a.company || 'N/A'}<br>Ticket: ${a.ticketTier || 'N/A'}</div>`;
+            });
+        }
+        
         document.getElementById('modalTitle').textContent = 'Ticket Order Details';
-        document.getElementById('modalBody').innerHTML = `<div class="detail-section"><h3>Customer Information</h3><div class="detail-grid"><div class="detail-item"><span class="detail-label">Order ID:</span><span class="detail-value">${order.id}</span></div><div class="detail-item"><span class="detail-label">Full Name:</span><span class="detail-value">${order.customer?.fullName || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${order.customer?.email || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${order.customer?.phone || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Order Date:</span><span class="detail-value">${formatDateTime(order.orderDate)}</span></div><div class="detail-item"><span class="detail-label">Total Amount:</span><span class="detail-value">₦${(order.totalAmount || 0).toLocaleString()}</span></div></div></div><div class="detail-section"><h3>Attendees (${order.totalTickets || 0} tickets)</h3>${attendeesHtml || '<p>No attendee details</p>'}</div>${order.receiptUrl ? `<div class="detail-section"><h3>Payment Receipt</h3><img src="${order.receiptUrl}" class="receipt-img"></div>` : ''}<div class="modal-actions">${order.paymentStatus !== 'approved' ? `<button class="modal-action-btn approve" onclick="updateTicketStatusAndClose('${order.id}', 'approved')"><i class="fas fa-check"></i> Approve Payment</button>` : ''}${order.paymentStatus !== 'rejected' ? `<button class="modal-action-btn reject" onclick="updateTicketStatusAndClose('${order.id}', 'rejected')"><i class="fas fa-times"></i> Reject Payment</button>` : ''}</div>`;
+        document.getElementById('modalBody').innerHTML = `
+            <div class="detail-section"><h3>Customer Information</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">Order ID:</span><span class="detail-value">${order.id}</span></div>
+                <div class="detail-item"><span class="detail-label">Name:</span><span class="detail-value">${order.customer?.fullName || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${order.customer?.email || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${order.customer?.phone || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Total:</span><span class="detail-value">₦${(order.totalAmount || 0).toLocaleString()}</span></div>
+            </div></div>
+            <div class="detail-section"><h3>Attendees</h3>${attendeesHtml || '<p>No attendee details</p>'}</div>
+            ${order.receiptUrl ? `<div class="detail-section"><h3>Receipt</h3><img src="${order.receiptUrl}" class="receipt-img"></div>` : ''}
+            <div class="modal-actions">
+                ${order.paymentStatus !== 'approved' ? `<button class="modal-action-btn approve" onclick="openApproveModalAndClose('${order.id}')">✓ Approve & Send Tickets</button>` : ''}
+                ${order.paymentStatus !== 'rejected' ? `<button class="modal-action-btn reject" onclick="rejectOrderAndClose('${order.id}')">✗ Reject Order</button>` : ''}
+            </div>
+        `;
         document.getElementById('detailModal').classList.add('active');
     };
-
-    window.updateTicketStatus = async function(orderId, newStatus) {
-        if (!confirm(`Are you sure you want to ${newStatus} this order?`)) return;
-        await db.collection('checkouts').doc(orderId).update({ paymentStatus: newStatus, status: newStatus, adminActionDate: firebase.firestore.FieldValue.serverTimestamp() });
-        const idx = allTicketOrders.findIndex(o => o.id === orderId);
-        if (idx !== -1) allTicketOrders[idx].paymentStatus = newStatus;
+    
+    window.openApproveModal = async function(orderId) {
+        const order = allTicketOrders.find(o => o.id === orderId);
+        if (!order) return;
+        currentOrderForApproval = order;
+        
+        // Update modal based on selected method
+        updateModalForMethod(currentDeliveryMethod);
+        
+        // Set recipient based on method
+        if (currentDeliveryMethod === "email") {
+            document.getElementById('recipientValue').value = order.customer?.email || '';
+            document.getElementById('recipientLabel').innerHTML = 'To <span style="color:var(--orange);">*</span>';
+        } else {
+            const whatsappNumber = formatPhoneForWhatsApp(order.customer?.phone || '');
+            document.getElementById('recipientValue').value = order.customer?.phone || 'Not available';
+            document.getElementById('whatsappNumberDisplay').innerHTML = whatsappNumber || order.customer?.phone || 'Not available';
+            document.getElementById('recipientLabel').innerHTML = 'Phone Number <span style="color:var(--orange);">*</span>';
+        }
+        
+        document.getElementById('emailSubject').value = `Your Under45CEOs Summit Tickets - ${order.id}`;
+        document.getElementById('emailMessage').value = generateEmailMessage(order);
+        
+        let ticketSummary = '';
+        if (order.tickets) {
+            const tickets = [];
+            if (order.tickets.regular) tickets.push(`${order.tickets.regular} Regular (₦12,500 each)`);
+            if (order.tickets.standard) tickets.push(`${order.tickets.standard} Standard (₦20,000 each)`);
+            if (order.tickets.premium) tickets.push(`${order.tickets.premium} Premium (₦150,000 each)`);
+            ticketSummary = tickets.join(', ');
+        }
+        
+        document.getElementById('orderSummaryBox').innerHTML = `
+            <h4><i class="fas fa-receipt"></i> Order Summary</h4>
+            <p><strong>Order ID:</strong> ${order.id}</p>
+            <p><strong>Tickets:</strong> ${ticketSummary || 'N/A'}</p>
+            <p><strong>Total Amount:</strong> ₦${(order.totalAmount || 0).toLocaleString()}</p>
+            <p><strong>Customer:</strong> ${order.customer?.fullName || 'N/A'}</p>
+        `;
+        
+        document.getElementById('ticketLinkBox').innerHTML = `
+            <i class="fas fa-link" style="color: var(--orange); margin-bottom: 8px; display: inline-block;"></i>
+            <p style="margin-bottom: 8px;"><strong>Ticket Access Link:</strong></p>
+            <a href="${TICKET_PAGE_URL}" target="_blank">${TICKET_PAGE_URL}</a>
+            <p style="margin-top: 8px; font-size: 0.75rem; color: rgba(255,255,255,0.6);">
+                Customer will need Order ID: <strong style="color: var(--orange);">${order.id}</strong>
+            </p>
+        `;
+        
+        document.getElementById('emailModal').classList.add('active');
+    };
+    
+    function updateModalForMethod(method) {
+        if (method === "email") {
+            document.getElementById('modalMethodTitle').innerHTML = '<i class="fas fa-envelope"></i> Approve & Send Tickets via Email';
+            document.getElementById('subjectField').style.display = 'block';
+            document.getElementById('whatsappNumberBox').style.display = 'none';
+            document.getElementById('sendEmailBtn').style.display = 'flex';
+            document.getElementById('sendWhatsAppBtn').style.display = 'none';
+            document.getElementById('methodEmailBtn').classList.add('active');
+            document.getElementById('methodWhatsAppBtn').classList.remove('active');
+        } else {
+            document.getElementById('modalMethodTitle').innerHTML = '<i class="fab fa-whatsapp"></i> Approve & Send Tickets via WhatsApp';
+            document.getElementById('subjectField').style.display = 'none';
+            document.getElementById('whatsappNumberBox').style.display = 'block';
+            document.getElementById('sendEmailBtn').style.display = 'none';
+            document.getElementById('sendWhatsAppBtn').style.display = 'flex';
+            document.getElementById('methodWhatsAppBtn').classList.add('active');
+            document.getElementById('methodEmailBtn').classList.remove('active');
+            // Update message for WhatsApp
+            document.getElementById('emailMessage').value = generateWhatsAppMessage(currentOrderForApproval);
+        }
+    }
+    
+    function updateModalForMethodPreserveMessage(method) {
+        if (method === "email") {
+            document.getElementById('modalMethodTitle').innerHTML = '<i class="fas fa-envelope"></i> Approve & Send Tickets via Email';
+            document.getElementById('subjectField').style.display = 'block';
+            document.getElementById('whatsappNumberBox').style.display = 'none';
+            document.getElementById('sendEmailBtn').style.display = 'flex';
+            document.getElementById('sendWhatsAppBtn').style.display = 'none';
+            document.getElementById('methodEmailBtn').classList.add('active');
+            document.getElementById('methodWhatsAppBtn').classList.remove('active');
+            document.getElementById('emailMessage').value = generateEmailMessage(currentOrderForApproval);
+            const recipientField = document.getElementById('recipientValue');
+            if (recipientField && currentOrderForApproval) {
+                recipientField.value = currentOrderForApproval.customer?.email || '';
+            }
+            document.getElementById('recipientLabel').innerHTML = 'To <span style="color:var(--orange);">*</span>';
+        } else {
+            document.getElementById('modalMethodTitle').innerHTML = '<i class="fab fa-whatsapp"></i> Approve & Send Tickets via WhatsApp';
+            document.getElementById('subjectField').style.display = 'none';
+            document.getElementById('whatsappNumberBox').style.display = 'block';
+            document.getElementById('sendEmailBtn').style.display = 'none';
+            document.getElementById('sendWhatsAppBtn').style.display = 'flex';
+            document.getElementById('methodWhatsAppBtn').classList.add('active');
+            document.getElementById('methodEmailBtn').classList.remove('active');
+            document.getElementById('emailMessage').value = generateWhatsAppMessage(currentOrderForApproval);
+            const recipientField = document.getElementById('recipientValue');
+            if (recipientField && currentOrderForApproval) {
+                recipientField.value = currentOrderForApproval.customer?.phone || 'Not available';
+                document.getElementById('whatsappNumberDisplay').innerHTML = formatPhoneForWhatsApp(currentOrderForApproval.customer?.phone) || currentOrderForApproval.customer?.phone || 'Not available';
+            }
+            document.getElementById('recipientLabel').innerHTML = 'Phone Number <span style="color:var(--orange);">*</span>';
+        }
+    }
+    
+    window.openApproveModalAndClose = async function(orderId) {
+        document.getElementById('detailModal').classList.remove('active');
+        await openApproveModal(orderId);
+    };
+    
+    window.rejectOrder = async function(orderId) {
+        if (!confirm('Are you sure you want to REJECT this order?')) return;
+        try {
+            await db.collection('checkouts').doc(orderId).update({ paymentStatus: 'rejected', status: 'rejected', adminActionDate: firebase.firestore.FieldValue.serverTimestamp() });
+            const idx = allTicketOrders.findIndex(o => o.id === orderId);
+            if (idx !== -1) allTicketOrders[idx].paymentStatus = 'rejected';
+            applyTicketFilters();
+            updateTicketStats();
+            showToast('Order rejected');
+        } catch (error) {
+            showToast('Error rejecting order: ' + error.message, true);
+        }
+    };
+    
+    window.rejectOrderAndClose = async function(orderId) {
+        await rejectOrder(orderId);
+        document.getElementById('detailModal').classList.remove('active');
+    };
+    
+    async function sendApprovalEmail() {
+        if (!currentOrderForApproval) return;
+        
+        const to = document.getElementById('recipientValue').value;
+        const subject = document.getElementById('emailSubject').value;
+        const message = document.getElementById('emailMessage').value;
+        
+        const fullMessage = `${message}\n\n---\nTicket Access: ${TICKET_PAGE_URL}\nOrder ID: ${currentOrderForApproval.id}`;
+        
+        window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullMessage)}`;
+        
+        await db.collection('checkouts').doc(currentOrderForApproval.id).update({
+            paymentStatus: 'approved',
+            status: 'approved',
+            ticketsSentAt: firebase.firestore.FieldValue.serverTimestamp(),
+            ticketsSentTo: to,
+            sentVia: 'email'
+        });
+        
+        const idx = allTicketOrders.findIndex(o => o.id === currentOrderForApproval.id);
+        if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
         applyTicketFilters();
         updateTicketStats();
-    };
-    window.updateTicketStatusAndClose = async function(orderId, newStatus) { await window.updateTicketStatus(orderId, newStatus); document.getElementById('detailModal').classList.remove('active'); };
+        
+        showToast(`Order approved! Email client opened for ${to}`);
+        document.getElementById('emailModal').classList.remove('active');
+        currentOrderForApproval = null;
+    }
+    
+    async function sendWhatsAppMessage() {
+        if (!currentOrderForApproval) return;
+        
+        const phoneNumber = currentOrderForApproval.customer?.phone || '';
+        const formattedPhone = formatPhoneForWhatsApp(phoneNumber);
+        const message = document.getElementById('emailMessage').value;
+        
+        const fullMessage = `${message}\n\n---\nTicket Access: ${TICKET_PAGE_URL}\nOrder ID: ${currentOrderForApproval.id}`;
+        
+        const encodedMessage = encodeURIComponent(fullMessage);
+        const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodedMessage}`;
+        
+        window.open(whatsappUrl, '_blank');
+        
+        await db.collection('checkouts').doc(currentOrderForApproval.id).update({
+            paymentStatus: 'approved',
+            status: 'approved',
+            ticketsSentAt: firebase.firestore.FieldValue.serverTimestamp(),
+            ticketsSentTo: formattedPhone,
+            sentVia: 'whatsapp'
+        });
+        
+        const idx = allTicketOrders.findIndex(o => o.id === currentOrderForApproval.id);
+        if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
+        applyTicketFilters();
+        updateTicketStats();
+        
+        showToast(`Order approved! WhatsApp chat opened for ${formattedPhone}`);
+        document.getElementById('emailModal').classList.remove('active');
+        currentOrderForApproval = null;
+    }
 
     // ==================== SPONSORSHIPS ====================
     async function loadSponsorships() {
@@ -797,63 +1152,52 @@
             snapshot.forEach(doc => { allSponsorships.push({ id: doc.id, ...doc.data(), status: doc.data().status || 'pending' }); });
             applySponsorFilters();
             updateSponsorStats();
-        } catch(e) { console.error(e); }
+        } catch (error) { console.error(error); showToast("Error loading sponsorships: " + error.message, true); }
     }
-
+    
     function applySponsorFilters() {
         let filtered = [...allSponsorships];
-        if (sponsorSearch.trim()) { const s = sponsorSearch.toLowerCase(); filtered = filtered.filter(sp => (sp.companyName || '').toLowerCase().includes(s) || (sp.fullName || '').toLowerCase().includes(s) || (sp.email || '').toLowerCase().includes(s)); }
+        if (sponsorSearch.trim()) {
+            const s = sponsorSearch.toLowerCase();
+            filtered = filtered.filter(sp => (sp.companyName || '').toLowerCase().includes(s) || (sp.email || '').toLowerCase().includes(s));
+        }
         filteredSponsorships = filtered;
-        currentSponsorPage = 1;
         renderSponsorsTable();
     }
-
-    function updateSponsorStats() {
-        const total = allSponsorships.length;
-        const pending = allSponsorships.filter(s => s.status !== 'read').length;
-        const read = allSponsorships.filter(s => s.status === 'read').length;
-        let totalValue = 0;
-        allSponsorships.forEach(s => { if (s.selectedTier) { if (s.selectedTier.includes('Platinum')) totalValue += 35000000; else if (s.selectedTier.includes('Gold')) totalValue += 20000000; else if (s.selectedTier.includes('Silver')) totalValue += 10000000; } });
-        document.getElementById('totalSponsorships').textContent = total;
-        document.getElementById('pendingSponsorships').textContent = pending;
-        document.getElementById('readSponsorships').textContent = read;
-        document.getElementById('totalTierValue').innerHTML = `₦${(totalValue / 1000000).toFixed(0)}M+`;
-    }
-
+    
     function renderSponsorsTable() {
-        const start = (currentSponsorPage - 1) * itemsPerPage;
-        const pageItems = filteredSponsorships.slice(start, start + itemsPerPage);
         const tbody = document.getElementById('sponsorsTableBody');
-        if (pageItems.length === 0) { tbody.innerHTML = '<tr><td colspan="7"><div class="no-data">No sponsorship requests found</div></td></tr>'; document.getElementById('sponsorsPagination').innerHTML = ''; return; }
-        tbody.innerHTML = pageItems.map(sp => `<tr>
-            <td>${formatDateTime(sp.timestamp)}</td>
-            <td>${sp.companyName || 'N/A'}</td>
-            <td>${sp.fullName || 'N/A'}</td>
-            <td>${sp.email || 'N/A'}</td>
-            <td><span class="ticket-tag">${sp.selectedTier || 'N/A'}</span></td>
-            <td><span class="status-badge ${sp.status === 'read' ? 'read' : 'unread'}"><i class="fas ${sp.status === 'read' ? 'fa-check-circle' : 'fa-hourglass-half'}"></i> ${sp.status === 'read' ? 'REVIEWED' : 'PENDING'}</span></td>
-            <td class="action-btns">
-                <div class="action-group"><button class="action-btn view-btn" onclick="viewSponsorshipDetails('${sp.id}')"><i class="fas fa-eye"></i> View</button><span class="action-label">View</span></div>
-                ${sp.status !== 'read' ? `<div class="action-group"><button class="action-btn mark-read-btn" onclick="markSponsorshipRead('${sp.id}')"><i class="fas fa-check-double"></i> Read</button><span class="action-label">Mark Read</span></div>` : ''}
-            </td>
-        </tr>`).join('');
-        renderPagination('sponsorsPagination', filteredSponsorships.length, currentSponsorPage, (page) => { currentSponsorPage = page; renderSponsorsTable(); });
+        if (filteredSponsorships.length === 0) { tbody.innerHTML = '</table><td colspan="8"><div class="no-data">No sponsorship requests</div>NonNullList'; return; }
+        tbody.innerHTML = filteredSponsorships.map(sp => `
+            <tr>
+                <td>${formatDateTime(sp.timestamp)}</td>
+                <td>${sp.companyName || 'N/A'}</td>
+                <td>${sp.fullName || 'N/A'}</td>
+                <td>${sp.email || 'N/A'}</td>
+                <td>${sp.phone || 'N/A'}</td>
+                <td><span class="ticket-tag">${sp.selectedTier || 'N/A'}</span></td>
+                <td><span class="status-badge ${sp.status === 'read' ? 'read' : 'unread'}">${sp.status === 'read' ? 'REVIEWED' : 'PENDING'}</span></td>
+                <td><button class="action-btn view-btn" onclick="viewSponsorship('${sp.id}')"><i class="fas fa-eye"></i> View</button></td>
+            </tr>`).join('');
     }
-
-    window.viewSponsorshipDetails = async function(id) {
+    
+    function updateSponsorStats() {
+        document.getElementById('totalSponsorships').textContent = allSponsorships.length;
+        document.getElementById('pendingSponsorships').textContent = allSponsorships.filter(s => s.status !== 'read').length;
+        document.getElementById('reviewedSponsorships').textContent = allSponsorships.filter(s => s.status === 'read').length;
+    }
+    
+    window.viewSponsorship = async function(id) {
         const sp = allSponsorships.find(s => s.id === id);
         if (!sp) return;
-        document.getElementById('modalTitle').textContent = 'Sponsorship Request Details';
-        document.getElementById('modalBody').innerHTML = `<div class="detail-section"><h3>Company Information</h3><div class="detail-grid"><div class="detail-item"><span class="detail-label">Company Name:</span><span class="detail-value">${sp.companyName || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Selected Tier:</span><span class="detail-value">${sp.selectedTier || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Industry:</span><span class="detail-value">${sp.industry || 'N/A'}</span></div></div></div><div class="detail-section"><h3>Contact Person</h3><div class="detail-grid"><div class="detail-item"><span class="detail-label">Full Name:</span><span class="detail-value">${sp.fullName || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Job Title:</span><span class="detail-value">${sp.jobTitle || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${sp.email || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${sp.phone || 'N/A'}</span></div></div></div><div class="detail-section"><h3>Additional Comments</h3><p>${sp.comments || 'No comments provided'}</p></div>`;
+        document.getElementById('modalBody').innerHTML = `<div class="detail-section"><h3>${sp.companyName}</h3><div class="detail-grid"><div class="detail-item"><span class="detail-label">Tier:</span><span class="detail-value">${sp.selectedTier}</span></div><div class="detail-item"><span class="detail-label">Contact:</span><span class="detail-value">${sp.fullName} (${sp.jobTitle})</span></div><div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${sp.email}</span></div><div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${sp.phone}</span></div></div></div><div class="detail-section"><p>${sp.comments || 'No comments'}</p></div>`;
         document.getElementById('detailModal').classList.add('active');
-    };
-
-    window.markSponsorshipRead = async function(id) {
-        await db.collection('sponsorship').doc(id).update({ status: 'read', readAt: firebase.firestore.FieldValue.serverTimestamp() });
-        const idx = allSponsorships.findIndex(s => s.id === id);
-        if (idx !== -1) allSponsorships[idx].status = 'read';
-        renderSponsorsTable();
-        updateSponsorStats();
+        if (sp.status !== 'read') {
+            await db.collection('sponsorship').doc(id).update({ status: 'read' });
+            sp.status = 'read';
+            renderSponsorsTable();
+            updateSponsorStats();
+        }
     };
 
     // ==================== MESSAGES ====================
@@ -864,66 +1208,61 @@
             snapshot.forEach(doc => { allMessages.push({ id: doc.id, ...doc.data(), status: doc.data().status || 'unread' }); });
             applyMessageFilters();
             updateMessageStats();
-        } catch(e) { console.error(e); }
+        } catch (error) { console.error(error); showToast("Error loading messages: " + error.message, true); }
     }
-
+    
     function applyMessageFilters() {
         let filtered = [...allMessages];
-        if (messageFilter !== 'all') filtered = filtered.filter(m => m.status === messageFilter);
-        if (messageSearch.trim()) { const s = messageSearch.toLowerCase(); filtered = filtered.filter(m => (m.name || '').toLowerCase().includes(s) || (m.email || '').toLowerCase().includes(s) || (m.subject || '').toLowerCase().includes(s)); }
+        if (messageSearch.trim()) {
+            const s = messageSearch.toLowerCase();
+            filtered = filtered.filter(m => (m.name || '').toLowerCase().includes(s) || (m.email || '').toLowerCase().includes(s));
+        }
         filteredMessages = filtered;
-        currentMessagePage = 1;
         renderMessagesTable();
     }
-
-    function updateMessageStats() {
-        const total = allMessages.length;
-        const unread = allMessages.filter(m => m.status !== 'read').length;
-        const read = allMessages.filter(m => m.status === 'read').length;
-        document.getElementById('totalMessages').textContent = total;
-        document.getElementById('unreadMessages').textContent = unread;
-        document.getElementById('readMessages').textContent = read;
-        document.getElementById('pendingReplyMessages').textContent = unread;
-    }
-
+    
     function renderMessagesTable() {
-        const start = (currentMessagePage - 1) * itemsPerPage;
-        const pageItems = filteredMessages.slice(start, start + itemsPerPage);
         const tbody = document.getElementById('messagesTableBody');
-        if (pageItems.length === 0) { tbody.innerHTML = '<tr><td colspan="6"><div class="no-data">No messages found</div></td></tr>'; document.getElementById('messagesPagination').innerHTML = ''; return; }
-        tbody.innerHTML = pageItems.map(msg => `<tr>
-            <td>${formatDateTime(msg.createdAt)}</td>
-            <td>${msg.name || 'N/A'}</td>
-            <td>${msg.email || 'N/A'}</td>
-            <td>${msg.subject || 'N/A'}</td>
-            <td><span class="status-badge ${msg.status === 'read' ? 'read' : 'unread'}"><i class="fas ${msg.status === 'read' ? 'fa-check-circle' : 'fa-hourglass-half'}"></i> ${msg.status === 'read' ? 'READ' : 'UNREAD'}</span></td>
-            <td class="action-btns">
-                <div class="action-group"><button class="action-btn view-btn" onclick="viewMessageDetails('${msg.id}')"><i class="fas fa-eye"></i> View</button><span class="action-label">View</span></div>
-                <div class="action-group"><button class="action-btn reply-btn" onclick="replyToMessage('${msg.email}')"><i class="fas fa-reply"></i> Reply</button><span class="action-label">Reply</span></div>
-                ${msg.status !== 'read' ? `<div class="action-group"><button class="action-btn mark-read-btn" onclick="markMessageRead('${msg.id}')"><i class="fas fa-check-double"></i> Read</button><span class="action-label">Mark Read</span></div>` : ''}
-              </div>
-        </tr>`).join('');
-        renderPagination('messagesPagination', filteredMessages.length, currentMessagePage, (page) => { currentMessagePage = page; renderMessagesTable(); });
+        if (filteredMessages.length === 0) { tbody.innerHTML = '<tr><td colspan="7"><div class="no-data">No messages</div>NonNullList'; return; }
+        tbody.innerHTML = filteredMessages.map(msg => `
+            <tr>
+                <td>${formatDateTime(msg.createdAt)}</td>
+                <td>${msg.name || 'N/A'}</td>
+                <td>${msg.email || 'N/A'}</td>
+                <td>${msg.phone || 'N/A'}</td>
+                <td>${msg.subject || 'N/A'}</td>
+                <td><span class="status-badge ${msg.status === 'read' ? 'read' : 'unread'}">${msg.status === 'read' ? 'READ' : 'UNREAD'}</span></td>
+                <td><button class="action-btn view-btn" onclick="viewMessage('${msg.id}')"><i class="fas fa-eye"></i> View</button> <button class="action-btn reply-btn" onclick="window.location.href='mailto:${msg.email}'"><i class="fas fa-reply"></i> Reply</button> <button class="action-btn whatsapp-btn" onclick="window.open('https://wa.me/${formatPhoneForWhatsApp(msg.phone)}','_blank')"><i class="fab fa-whatsapp"></i> WhatsApp</button></td>
+            </tr>`).join('');
     }
-
-    window.viewMessageDetails = async function(id) {
+    
+    function updateMessageStats() {
+        document.getElementById('totalMessages').textContent = allMessages.length;
+        document.getElementById('unreadMessages').textContent = allMessages.filter(m => m.status !== 'read').length;
+    }
+    
+    window.viewMessage = async function(id) {
         const msg = allMessages.find(m => m.id === id);
         if (!msg) return;
-        if (msg.status !== 'read') await markMessageRead(id);
-        document.getElementById('modalTitle').textContent = 'Message Details';
-        document.getElementById('modalBody').innerHTML = `<div class="detail-section"><h3>Sender Information</h3><div class="detail-grid"><div class="detail-item"><span class="detail-label">Name:</span><span class="detail-value">${msg.name || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${msg.email || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${msg.phone || 'N/A'}</span></div><div class="detail-item"><span class="detail-label">Date:</span><span class="detail-value">${formatDateTime(msg.createdAt)}</span></div></div></div><div class="detail-section"><h3>Message</h3><p><strong>Subject:</strong> ${msg.subject}</p><p style="margin-top:0.5rem;"><strong>Message:</strong></p><p>${msg.message || 'No message content'}</p></div>`;
+        document.getElementById('modalBody').innerHTML = `<div class="detail-section"><h3>From: ${msg.name}</h3><div class="detail-grid"><div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${msg.email}</span></div><div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${msg.phone || 'N/A'}</span></div></div></div><div class="detail-section"><strong>Subject:</strong> ${msg.subject}<br><br><strong>Message:</strong><p>${msg.message || ''}</p></div>`;
         document.getElementById('detailModal').classList.add('active');
+        if (msg.status !== 'read') {
+            await db.collection('contact_messages').doc(id).update({ status: 'read' });
+            msg.status = 'read';
+            renderMessagesTable();
+            updateMessageStats();
+        }
     };
 
-    window.markMessageRead = async function(id) {
-        await db.collection('contact_messages').doc(id).update({ status: 'read', readAt: firebase.firestore.FieldValue.serverTimestamp() });
-        const idx = allMessages.findIndex(m => m.id === id);
-        if (idx !== -1) allMessages[idx].status = 'read';
-        renderMessagesTable();
-        updateMessageStats();
-    };
-
-    window.replyToMessage = function(email) { window.location.href = `mailto:${email}`; };
+    // Format phone for WhatsApp helper
+    function formatPhoneForWhatsApp(phone) {
+        if (!phone) return '';
+        let cleaned = phone.replace(/\D/g, '');
+        if (cleaned.startsWith('0')) {
+            cleaned = '234' + cleaned.substring(1);
+        }
+        return cleaned;
+    }
 
     // ==================== PAGINATION ====================
     function renderPagination(containerId, total, currentPage, onPageChange) {
@@ -935,97 +1274,112 @@
         container.innerHTML = html;
         container.querySelectorAll('.page-btn').forEach(btn => btn.addEventListener('click', () => { onPageChange(parseInt(btn.dataset.page)); }));
     }
-
-    // ==================== EVENT LISTENERS & INIT ====================
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(`${btn.dataset.tab}Tab`).classList.add('active');
-    }));
-
+    
+    // ==================== EVENT LISTENERS ====================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`${btn.dataset.tab}Tab`).classList.add('active');
+        });
+    });
+    
     document.getElementById('ticketSearch').addEventListener('input', (e) => { ticketSearch = e.target.value; applyTicketFilters(); });
-    document.querySelectorAll('#ticketsTab .filter-btn').forEach(btn => btn.addEventListener('click', () => { document.querySelectorAll('#ticketsTab .filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); ticketFilter = btn.dataset.status; applyTicketFilters(); }));
+    document.querySelectorAll('#ticketsTab .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#ticketsTab .filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            ticketFilter = btn.dataset.status;
+            applyTicketFilters();
+        });
+    });
     document.getElementById('refreshTickets').addEventListener('click', loadTickets);
     document.getElementById('sponsorSearch').addEventListener('input', (e) => { sponsorSearch = e.target.value; applySponsorFilters(); });
     document.getElementById('refreshSponsors').addEventListener('click', loadSponsorships);
     document.getElementById('messageSearch').addEventListener('input', (e) => { messageSearch = e.target.value; applyMessageFilters(); });
-    document.querySelectorAll('#messagesTab .filter-btn').forEach(btn => btn.addEventListener('click', () => { document.querySelectorAll('#messagesTab .filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); messageFilter = btn.dataset.status; applyMessageFilters(); }));
     document.getElementById('refreshMessages').addEventListener('click', loadMessages);
     document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('detailModal').classList.remove('active'));
     document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target === document.getElementById('detailModal')) document.getElementById('detailModal').classList.remove('active'); });
-
-    // ==================== LOGIN (Firebase Auth) ====================
+    document.getElementById('closeEmailModalBtn').addEventListener('click', () => document.getElementById('emailModal').classList.remove('active'));
+    document.getElementById('cancelEmailBtn').addEventListener('click', () => document.getElementById('emailModal').classList.remove('active'));
+    document.getElementById('sendEmailBtn').addEventListener('click', sendApprovalEmail);
+    document.getElementById('sendWhatsAppBtn').addEventListener('click', sendWhatsAppMessage);
+    
+    // Delivery method toggle
+    document.getElementById('methodEmailBtn').addEventListener('click', () => {
+        currentDeliveryMethod = "email";
+        if (currentOrderForApproval) {
+            updateModalForMethodPreserveMessage("email");
+        } else {
+            updateModalForMethod("email");
+        }
+    });
+    document.getElementById('methodWhatsAppBtn').addEventListener('click', () => {
+        currentDeliveryMethod = "whatsapp";
+        if (currentOrderForApproval) {
+            updateModalForMethodPreserveMessage("whatsapp");
+        } else {
+            updateModalForMethod("whatsapp");
+        }
+    });
+    
+    // ==================== LOGIN ====================
     const loginOverlay = document.getElementById('loginOverlay');
     const adminContainer = document.getElementById('adminContainer');
-    let dashboardLoaded = false;
-
+    let dataLoaded = false;
+    
     function showDashboard() {
         loginOverlay.classList.add('hidden');
         adminContainer.style.display = 'block';
-        if (!dashboardLoaded) {
-            dashboardLoaded = true;
+        if (!dataLoaded) {
+            dataLoaded = true;
             loadTickets();
             loadSponsorships();
             loadMessages();
         }
     }
-
+    
     function showLogin() {
-        dashboardLoaded = false;
+        dataLoaded = false;
         adminContainer.style.display = 'none';
         loginOverlay.classList.remove('hidden');
         document.getElementById('adminEmail').value = '';
         document.getElementById('adminPassword').value = '';
     }
-
-    // onAuthStateChanged handles page-refresh session restore only
-    auth.onAuthStateChanged(user => {
-        if (user && !dashboardLoaded) {
-            showDashboard();
-        }
-    });
-
+    
+    auth.onAuthStateChanged(user => { if (user) showDashboard(); else showLogin(); });
+    
     document.getElementById('loginBtn').addEventListener('click', async () => {
-        const emailVal = document.getElementById('adminEmail').value.trim();
-        const passwordVal = document.getElementById('adminPassword').value;
-        const loginBtn = document.getElementById('loginBtn');
-        const loginError = document.getElementById('loginError');
-
-        if (!emailVal || !passwordVal) {
-            loginError.style.display = 'block';
-            loginError.textContent = 'Please enter both email and password.';
-            setTimeout(() => loginError.style.display = 'none', 3000);
+        const email = document.getElementById('adminEmail').value.trim();
+        const password = document.getElementById('adminPassword').value;
+        const btn = document.getElementById('loginBtn');
+        const err = document.getElementById('loginError');
+        
+        if (!email || !password) {
+            err.textContent = 'Please enter both email and password.';
+            err.style.display = 'block';
+            setTimeout(() => err.style.display = 'none', 3000);
             return;
         }
-
-        loginBtn.disabled = true;
-        loginBtn.textContent = 'Logging in...';
-
+        
+        btn.disabled = true;
+        btn.textContent = 'Logging in...';
         try {
-            await auth.signInWithEmailAndPassword(emailVal, passwordVal);
+            await auth.signInWithEmailAndPassword(email, password);
             showDashboard();
-        } catch (err) {
-            loginError.textContent = 'Incorrect email or password. Please try again.';
-            loginError.style.display = 'block';
-            setTimeout(() => loginError.style.display = 'none', 3000);
-            loginBtn.disabled = false;
-            loginBtn.textContent = 'Login';
+        } catch (e) {
+            err.textContent = 'Incorrect email or password. Please try again.';
+            err.style.display = 'block';
+            setTimeout(() => err.style.display = 'none', 3000);
+            btn.disabled = false;
+            btn.textContent = 'Login';
         }
     });
-
-    document.getElementById('adminPassword').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') document.getElementById('loginBtn').click();
-    });
-
-    document.getElementById('adminEmail').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') document.getElementById('loginBtn').click();
-    });
-
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-        await auth.signOut();
-        showLogin();
-    });
+    
+    document.getElementById('adminPassword').addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
+    document.getElementById('adminEmail').addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
+    document.getElementById('logoutBtn').addEventListener('click', async () => { await auth.signOut(); showLogin(); });
 </script>
 </body>
 </html>
