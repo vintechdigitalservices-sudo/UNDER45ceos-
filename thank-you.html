@@ -4,68 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thank You | Under 45 CEOs Summit 2026</title>
-    <meta name="description" content="Thank you for registering for the Under 45 CEOs Business & Leadership Summit 2026. Your ticket confirmation has been sent. We look forward to seeing you on October 10, 2026 in Onitsha.">
+    <meta name="description" content="Thank you for registering for the Under 45 CEOs Business & Leadership Summit 2026.">
     <meta name="robots" content="noindex, follow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --teal-darker: #022a2d;
-            --teal-dark: #053c40;
             --teal: #0e6b73;
-            --teal-light: #1a8a94;
             --orange: #f07d1a;
             --orange-deep: #c96410;
-            --orange-bright: #ff9a44;
             --gold: #d4a017;
-            --gold-light: #f0c040;
             --white: #ffffff;
             --off-white: #f5f3ef;
-            --gray-100: #f0efec;
-            --gray-400: #c0c0c0;
-            --gray-700: #3a3a3a;
-            --black: #0a0a0a;
-            --font-display: 'Bebas Neue', sans-serif;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark: #128C7E;
             --font-serif: 'Playfair Display', serif;
             --font-body: 'DM Sans', sans-serif;
-            --radius: 12px;
-            --radius-lg: 20px;
-            --shadow-card: 0 8px 40px rgba(0,0,0,0.2);
-            --shadow-deep: 0 24px 80px rgba(0,0,0,0.35);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-body);
-            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            background: linear-gradient(160deg, var(--teal-darker) 0%, #031e20 100%);
             color: var(--white);
-            line-height: 1.6;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1rem;
             position: relative;
-            overflow-x: hidden;
         }
 
-        /* Animated background grain effect */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 40%, rgba(240,125,26,0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 70%, rgba(26,138,148,0.08) 0%, transparent 50%);
+            inset: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(240,125,26,0.06) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -81,261 +59,207 @@
             z-index: 100;
         }
 
-        .container {
-            max-width: 680px;
+        .card {
+            max-width: 520px;
             width: 100%;
-            margin: 0 auto;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 2.5rem 1.75rem;
+            text-align: center;
             position: relative;
             z-index: 2;
+            backdrop-filter: blur(8px);
         }
 
-        /* Thank You Card */
-        .thankyou-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1.5px solid rgba(255, 255, 255, 0.12);
-            border-radius: var(--radius-lg);
-            padding: 3rem 2.5rem;
-            text-align: center;
-            box-shadow: var(--shadow-deep);
-            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Success Icon */
-        .success-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--orange), var(--orange-deep));
+        .success-ring {
+            width: 72px;
+            height: 72px;
+            border: 3px solid var(--orange);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 0 0 8px rgba(240,125,26,0.2), 0 15px 35px rgba(0,0,0,0.3);
-            animation: pulseCheck 0.6s ease-in-out;
+            margin: 0 auto 1.25rem;
+            animation: scaleIn 0.5s ease;
         }
 
-        @keyframes pulseCheck {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.1);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+        .success-ring i {
+            color: var(--orange);
+            font-size: 1.75rem;
         }
 
-        .success-icon i {
-            font-size: 3.5rem;
-            color: var(--white);
+        @keyframes scaleIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        /* Typography */
         h1 {
-            font-family: var(--font-display);
-            font-size: clamp(2.2rem, 6vw, 3.5rem);
-            letter-spacing: 2px;
-            margin-bottom: 0.75rem;
-            color: var(--white);
-            font-weight: 700;
+            font-family: var(--font-serif);
+            font-size: clamp(1.6rem, 5vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
         }
 
-        .event-badge {
-            display: inline-block;
-            background: rgba(240,125,26,0.15);
-            border: 1px solid rgba(240,125,26,0.4);
-            padding: 0.3rem 1.2rem;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--orange-bright);
+        .thankyou-message-text {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 0.75rem;
+            margin: 0.75rem 0 1rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.5;
+            border-left: 3px solid var(--orange);
+            text-align: left;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-meta {
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .event-meta p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .event-meta p:last-child { margin-bottom: 0; }
+        .event-meta i { color: var(--orange); width: 18px; font-size: 0.85rem; }
+        .event-meta strong { color: var(--white); font-weight: 600; }
+
+        .whatsapp-box {
+            background: linear-gradient(135deg, rgba(37,211,102,0.12), rgba(18,140,126,0.08));
+            border: 1.5px solid rgba(37,211,102,0.35);
+            border-radius: 14px;
+            padding: 1.5rem;
             margin-bottom: 1rem;
         }
 
-        .thankyou-message {
+        .whatsapp-box h3 {
             font-size: 1rem;
-            color: rgba(255,255,255,0.85);
-            margin-bottom: 1.5rem;
-            line-height: 1.7;
-        }
-
-        .highlight {
-            color: var(--orange);
-            font-weight: 800;
-        }
-
-        .event-details {
-            background: rgba(255,255,255,0.05);
-            border-radius: var(--radius);
-            padding: 1.25rem;
-            margin: 1.5rem 0;
-            text-align: left;
-            border-left: 4px solid var(--orange);
-        }
-
-        .event-details p {
-            font-size: 0.85rem;
-            margin-bottom: 0.5rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            color: rgba(255,255,255,0.9);
-            font-weight: 600;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
-        .event-details p i {
-            width: 24px;
-            color: var(--orange);
-            font-size: 1rem;
+        .whatsapp-box h3 i { color: var(--whatsapp-green); font-size: 1.1rem; }
+
+        .whatsapp-box p {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 1rem;
+            line-height: 1.5;
         }
 
-        .event-details p:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.6rem;
-            padding: 0.9rem 2rem;
-            border-radius: 6px;
-            font-family: var(--font-body);
-            font-weight: 800;
-            font-size: 0.9rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 0.5rem;
+            padding: 0.85rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
             text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            width: 100%;
         }
 
-        .btn--primary {
-            background: var(--orange);
+        .btn-whatsapp {
+            background: var(--whatsapp-green);
             color: var(--white);
-            border-color: var(--orange);
+            margin-bottom: 0.6rem;
         }
 
-        .btn--primary:hover {
-            background: var(--orange-deep);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(240,125,26,0.4);
+        .btn-whatsapp:hover {
+            background: var(--whatsapp-dark);
+            transform: translateY(-2px);
         }
 
-        .btn--outline-light {
+        .btn-outline {
             background: transparent;
             color: var(--white);
-            border-color: rgba(255,255,255,0.5);
+            border: 1.5px solid rgba(255,255,255,0.2);
         }
 
-        .btn--outline-light:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: var(--white);
-            transform: translateY(-3px);
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.4);
         }
 
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 2rem 0 1.5rem;
+        .share-section {
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
         }
 
-        /* Social Icons */
-        .social-section {
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .social-label {
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 0.2em;
+        .share-section p {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 0.75rem;
             text-transform: uppercase;
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 1rem;
-            display: block;
+            letter-spacing: 0.08em;
+            font-weight: 600;
         }
 
-        .social-icons {
+        .share-btns {
             display: flex;
-            gap: 1rem;
+            gap: 0.6rem;
             justify-content: center;
             flex-wrap: wrap;
         }
 
-        .social-icon {
-            width: 48px;
-            height: 48px;
+        .share-btn {
+            width: 42px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: var(--radius);
-            color: rgba(255,255,255,0.8);
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
             text-decoration: none;
+            transition: all 0.2s ease;
         }
 
-        .social-icon:hover {
+        .share-btn:hover {
             background: var(--orange);
             border-color: var(--orange);
             color: var(--white);
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
 
-        /* Footer note */
-        .footer-note {
-            margin-top: 2rem;
+        .footer {
+            margin-top: 1.5rem;
             font-size: 0.7rem;
-            color: rgba(255,255,255,0.4);
-            text-align: center;
+            color: rgba(255,255,255,0.3);
         }
 
-        /* Responsive */
-        @media (max-width: 640px) {
-            body {
-                padding: 1.5rem;
-            }
-            .thankyou-card {
-                padding: 2rem 1.5rem;
-            }
-            .success-icon {
-                width: 75px;
-                height: 75px;
-            }
-            .success-icon i {
-                font-size: 2.5rem;
-            }
-            .button-group {
-                flex-direction: column;
-            }
-            .btn {
-                width: 100%;
-            }
+        @media (max-width: 480px) {
+            .card { padding: 1.75rem 1.25rem; }
+            .success-ring { width: 60px; height: 60px; }
+            .success-ring i { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -343,84 +267,72 @@
     <!-- Fireworks Canvas -->
     <canvas id="fireworksCanvas"></canvas>
 
-    <div class="container">
-        <div class="thankyou-card">
-            <!-- Success Checkmark -->
-            <div class="success-icon">
-                <i class="fas fa-check"></i>
-            </div>
+    <div class="card">
+        <div class="success-ring">
+            <i class="fas fa-check"></i>
+        </div>
 
-            <!-- Event Badge -->
-            <div class="event-badge">
-                <i class="fas fa-ticket-alt" style="margin-right: 6px;"></i> CONFIRMATION #U45CEOS2026
-            </div>
+        <!-- Changed from "You're Registered" to "THANK YOU" -->
+        <h1>THANK YOU</h1>
+        <p class="subtitle">Under 45 CEOs Summit 2026</p>
 
-            <!-- Thank You Heading -->
-            <h1>THANK YOU!</h1>
+        <!-- Added Thank You Message -->
+        <div class="thankyou-message-text">
+            <i class="fas fa-heart" style="color: var(--orange); margin-right: 6px;"></i> 
+            We truly appreciate your trust and enthusiasm. You're now part of Africa's premier business movement — get ready for an unforgettable experience!
+        </div>
 
-            <!-- Message -->
-            <p class="thankyou-message">
-                You're officially registered for the <span class="highlight">Under 45 CEOs Business & Leadership Summit 2026</span>.<br>
-                A confirmation email with your ticket details has been sent to your inbox.
-            </p>
+        <div class="event-meta">
+            <p><i class="fas fa-calendar"></i> <strong>Oct 10, 2026</strong> &mdash; 9:00 AM WAT</p>
+            <p><i class="fas fa-location-dot"></i> Onitsha, Anambra State, Nigeria</p>
+            <p><i class="fas fa-envelope"></i> Check your inbox for your e-ticket</p>
+        </div>
 
-            <!-- Event Details -->
-            <div class="event-details">
-                <p><i class="fas fa-calendar-alt"></i> <strong>Date:</strong> October 10, 2026</p>
-                <p><i class="fas fa-map-marker-alt"></i> <strong>Venue:</strong> Onitsha, Anambra State, Nigeria</p>
-                <p><i class="fas fa-clock"></i> <strong>Time:</strong> 9:00 AM WAT (Gate opens 8:00 AM)</p>
-                <p><i class="fas fa-envelope"></i> <strong>Check your email</strong> for e-ticket and event updates</p>
-            </div>
+        <div class="whatsapp-box">
+            <h3><i class="fab fa-whatsapp"></i> Join the Community</h3>
+            <p>Connect with speakers, attendees, and entrepreneurs. Get real-time updates and networking opportunities.</p>
+            <a href="https://chat.whatsapp.com/HkDkTtvuAlUH4CqlDuvRJc" target="_blank" class="btn btn-whatsapp" rel="noopener">
+                <i class="fab fa-whatsapp"></i> Join WhatsApp Group
+            </a>
+            <a href="index.html" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i> Back to Homepage
+            </a>
+        </div>
 
-            <!-- Button Group -->
-            <div class="button-group">
-                <a href="index.html" class="btn btn--primary">
-                    <i class="fas fa-home"></i> Return to Homepage →
+        <div class="share-section">
+            <p>Share this event</p>
+            <div class="share-btns">
+                <a href="#" class="share-btn" onclick="shareWithImage(event)" aria-label="Share with image" title="Share with image">
+                    <i class="fas fa-image"></i>
                 </a>
-                <a href="ticket.html" class="btn btn--outline-light">
-                    <i class="fas fa-ticket-alt"></i> View Other Tickets
+                <a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="share-btn" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://x.com/under45ceos" target="_blank" class="share-btn" aria-label="X/Twitter">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com/under45ceos" target="_blank" class="share-btn" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.linkedin.com/company/under45ceos" target="_blank" class="share-btn" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
                 </a>
             </div>
+        </div>
 
-            <!-- Social Media Section -->
-            <div class="social-section">
-                <span class="social-label"><i class="fas fa-share-alt" style="margin-right: 6px;"></i> FOLLOW & CONNECT</span>
-                <div class="social-icons">
-                    <!-- Facebook - link from previous pages -->
-                    <a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon" aria-label="Facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <!-- Twitter/X - link from previous pages -->
-                    <a href="https://x.com/under45ceos" target="_blank" class="social-icon" aria-label="Twitter/X">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <!-- Instagram - link from previous pages -->
-                    <a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <!-- LinkedIn (additional for professional network) -->
-                    <a href="https://www.linkedin.com/company/under45ceos" target="_blank" class="social-icon" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                </div>
-            </div>
-
-            <div class="footer-note">
-                <p><i class="fas fa-envelope-open-text"></i> Save the date — We can't wait to see you in Onitsha!</p>
-                <p style="margin-top: 0.5rem;">&copy; 2026 Under 45 CEOs · UDUF Africa</p>
-            </div>
+        <div class="footer">
+            <p>&copy; 2026 Under 45 CEOs &middot; UDUF Africa</p>
         </div>
     </div>
 
     <script>
-        // Fireworks Animation - runs once on page load
+        // Fireworks Animation - exactly 3 fireworks with speed increased by 4%
         (function() {
             const canvas = document.getElementById('fireworksCanvas');
             const ctx = canvas.getContext('2d');
             let fireworks = [];
             let particles = [];
             let animationRunning = true;
-            let fireworkInterval;
             
             // Set canvas size
             function resizeCanvas() {
@@ -429,46 +341,6 @@
             }
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
-            
-            // Firework particle class
-            class FireworkParticle {
-                constructor(x, y, targetX, targetY, color) {
-                    this.x = x;
-                    this.y = y;
-                    this.targetX = targetX;
-                    this.targetY = targetY;
-                    this.color = color;
-                    this.size = Math.random() * 3 + 2;
-                    this.speed = Math.random() * 5 + 3;
-                    this.angle = Math.atan2(targetY - y, targetX - x);
-                    this.vx = Math.cos(this.angle) * this.speed;
-                    this.vy = Math.sin(this.angle) * this.speed;
-                    this.gravity = 0.15;
-                    this.friction = 0.98;
-                    this.opacity = 1;
-                    this.decay = Math.random() * 0.02 + 0.015;
-                }
-                
-                update() {
-                    this.vx *= this.friction;
-                    this.vy *= this.friction;
-                    this.vy += this.gravity;
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    this.opacity -= this.decay;
-                    return this.opacity > 0;
-                }
-                
-                draw() {
-                    ctx.save();
-                    ctx.globalAlpha = this.opacity;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                    ctx.restore();
-                }
-            }
             
             // Explosion particle class
             class ExplosionParticle {
@@ -508,7 +380,7 @@
                 }
             }
             
-            // Firework rocket
+            // Firework rocket - speed increased by 4%
             class Firework {
                 constructor(x, y, targetY, color) {
                     this.x = x;
@@ -516,7 +388,8 @@
                     this.targetY = targetY;
                     this.color = color;
                     this.size = 3;
-                    this.speed = 8;
+                    // Speed increased by 4% (from 8 to 8.32)
+                    this.speed = 8.32;
                     this.exploded = false;
                     this.trail = [];
                 }
@@ -541,7 +414,7 @@
                 }
                 
                 createExplosion() {
-                    const explosionCount = 40 + Math.floor(Math.random() * 30);
+                    const explosionCount = 45 + Math.floor(Math.random() * 35);
                     for (let i = 0; i < explosionCount; i++) {
                         particles.push(new ExplosionParticle(this.x, this.y, this.color));
                     }
@@ -581,12 +454,11 @@
             }
             
             function getRandomTargetY() {
-                return Math.random() * (canvas.height * 0.3) + (canvas.height * 0.2);
+                return Math.random() * (canvas.height * 0.35) + (canvas.height * 0.15);
             }
             
             function launchFirework() {
                 if (!animationRunning) return;
-                
                 const x = getRandomX();
                 const targetY = getRandomTargetY();
                 const color = getRandomColor();
@@ -620,13 +492,13 @@
                 requestAnimationFrame(animate);
             }
             
-            // Start fireworks display (runs once on load)
+            // Start fireworks - exactly 3 fireworks
             function startFireworks() {
-                // Launch 6 fireworks sequentially
+                // Launch 3 fireworks sequentially
                 let launchCount = 0;
-                const totalLaunches = 8;
+                const totalLaunches = 3;
                 
-                fireworkInterval = setInterval(() => {
+                const fireworkInterval = setInterval(() => {
                     if (launchCount < totalLaunches) {
                         launchFirework();
                         launchCount++;
@@ -638,11 +510,10 @@
                             ctx.clearRect(0, 0, canvas.width, canvas.height);
                         }, 5000);
                     }
-                }, 400);
+                }, 500);
                 
-                // Launch a couple of extra bursts
-                setTimeout(() => launchFirework(), 200);
-                setTimeout(() => launchFirework(), 600);
+                // Additional burst for first firework effect
+                setTimeout(() => launchFirework(), 150);
             }
             
             // Start the animation and fireworks
@@ -651,10 +522,36 @@
             
             // Clean up on page unload
             window.addEventListener('beforeunload', () => {
-                if (fireworkInterval) clearInterval(fireworkInterval);
                 animationRunning = false;
             });
         })();
+
+        // Share function
+        async function shareWithImage(e) {
+            e.preventDefault();
+            try {
+                const response = await fetch('UNDER45.png');
+                const blob = await response.blob();
+                const file = new File([blob], 'UNDER45.png', { type: blob.type });
+                
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Under 45 CEOs Summit 2026',
+                        text: 'I just registered for the Under 45 CEOs Business & Leadership Summit 2026! Join me in Onitsha on October 10th. #Under45CEOs'
+                    });
+                } else {
+                    // Fallback: copy text + alert
+                    const text = 'I just registered for the Under 45 CEOs Business & Leadership Summit 2026! Join me in Onitsha on October 10th. #Under45CEOs';
+                    navigator.clipboard.writeText(text).then(() => {
+                        alert('Event details copied! Image (UNDER45.png) is available in your files.');
+                    });
+                }
+            } catch (err) {
+                console.error('Share failed:', err);
+                alert('Unable to share. Please download UNDER45.png and share manually.');
+            }
+        }
     </script>
 </body>
 </html>
