@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive & Premium | Under 45 CEOs Summit 2026</title>
+    <meta name="description" content="Thank you for upgrading to Executive or Premium. Join our exclusive Pitch & Investment WhatsApp group to access your pitching rights and learn about the process.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal-darker: #022a2d;
+            --teal: #0e6b73;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --off-white: #f5f3ef;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark: #128C7E;
+            --purple-accent: #9b59b6;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(160deg, var(--teal-darker) 0%, #031e20 100%);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(240,125,26,0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(155,89,182,0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Fireworks Canvas */
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .card {
+            max-width: 560px;
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 2.5rem 1.75rem;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(8px);
+        }
+
+        .success-ring {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--orange), var(--gold));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            animation: scaleIn 0.5s ease;
+            box-shadow: 0 0 0 4px rgba(240,125,26,0.2);
+        }
+
+        .success-ring i {
+            color: var(--white);
+            font-size: 2rem;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--white), var(--gold-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .badge-tier {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(240,125,26,0.2), rgba(212,160,23,0.2));
+            border: 1px solid rgba(240,125,26,0.4);
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .thankyou-message-text {
+            background: linear-gradient(135deg, rgba(240,125,26,0.08), rgba(155,89,182,0.05));
+            border-radius: 12px;
+            padding: 0.9rem;
+            margin: 0.75rem 0 1rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.5;
+            border-left: 3px solid var(--gold);
+            text-align: left;
+        }
+
+        .event-meta {
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .event-meta p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .event-meta p:last-child { margin-bottom: 0; }
+        .event-meta i { color: var(--orange); width: 18px; font-size: 0.85rem; }
+        .event-meta strong { color: var(--white); font-weight: 600; }
+
+        /* Pitch Opportunity Section */
+        .pitch-section {
+            background: linear-gradient(135deg, rgba(212,160,23,0.1), rgba(240,125,26,0.05));
+            border: 1.5px solid rgba(212,160,23,0.3);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .pitch-section h3 {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .pitch-section h3 i {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .pitch-section p {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .pitch-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .pitch-feature {
+            background: rgba(212,160,23,0.12);
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--gold-light);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .pitch-feature i {
+            font-size: 0.65rem;
+            color: var(--gold);
+        }
+
+        /* WhatsApp Group Box */
+        .whatsapp-box {
+            background: linear-gradient(135deg, rgba(37,211,102,0.12), rgba(18,140,126,0.08));
+            border: 1.5px solid rgba(37,211,102,0.35);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .whatsapp-box h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .whatsapp-box h3 i { color: var(--whatsapp-green); font-size: 1.1rem; }
+
+        .whatsapp-box p {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            width: 100%;
+        }
+
+        .btn-whatsapp {
+            background: var(--whatsapp-green);
+            color: var(--white);
+            margin-bottom: 0.6rem;
+        }
+
+        .btn-whatsapp:hover {
+            background: var(--whatsapp-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 1.5px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .share-section {
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .share-section p {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .share-btns {
+            display: flex;
+            gap: 0.6rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .share-btn:hover {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .footer {
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 1.75rem 1.25rem; }
+            .success-ring { width: 65px; height: 65px; }
+            .success-ring i { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fireworks Canvas -->
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="card">
+        <div class="success-ring">
+            <i class="fas fa-crown"></i>
+        </div>
+
+        <!-- Executive & Premium Badge -->
+        <div class="badge-tier">
+            <i class="fas fa-star" style="margin-right: 4px;"></i> EXECUTIVE & PREMIUM
+        </div>
+
+        <h1>WELCOME TO THE PITCH CIRCLE</h1>
+        <p class="subtitle">Under 45 CEOs Summit 2026 — Executive & Premium Ticket Holders</p>
+
+        <!-- Thank You Message -->
+        <div class="thankyou-message-text">
+            <i class="fas fa-gem" style="color: var(--gold); margin-right: 6px;"></i> 
+            Thank you for upgrading to Executive or Premium. You've unlocked exclusive pitching opportunities and direct access to investors. We're thrilled to have you in this elite circle!
+        </div>
+
+        <div class="event-meta">
+            <p><i class="fas fa-calendar"></i> <strong>Oct 10, 2026</strong> &mdash; 9:00 AM WAT</p>
+            <p><i class="fas fa-location-dot"></i> Onitsha, Anambra State, Nigeria</p>
+            <p><i class="fas fa-envelope"></i> Check your inbox for your e-ticket & VIP details</p>
+        </div>
+
+        <!-- PITCH OPPORTUNITY SECTION -->
+        <div class="pitch-section">
+            <h3><i class="fas fa-microphone-alt"></i> Your Pitching Rights</h3>
+            <p>As an Executive or Premium ticket holder, you have been granted exclusive access to our Investors' Pitch Session. Learn the process, secure your slot, and get ready to present your business to real investors.</p>
+        </div>
+
+        <!-- EXCLUSIVE WHATSAPP GROUP - PITCH & INVESTMENT -->
+        <div class="whatsapp-box">
+            <h3><i class="fab fa-whatsapp"></i> Pitch & Investment Group</h3>
+            <p>Join our exclusive WhatsApp community for Executive & Premium ticket holders. Get detailed information about the pitching process, deadline submissions, pitch deck guidelines, and connect directly with the investment team.</p>
+            <a href="https://chat.whatsapp.com/DcNXe3x3AuK3Q9C6ZOCna4" target="_blank" class="btn btn-whatsapp" rel="noopener">
+                <i class="fab fa-whatsapp"></i> Join Pitch & Investment Group →
+            </a>
+            <a href="index.html" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i> Back to Homepage
+            </a>
+        </div>
+
+        <div class="share-section">
+            <p>Share this achievement</p>
+            <div class="share-btns">
+                <a href="#" class="share-btn" onclick="shareWithImage(event)" aria-label="Share with image" title="Share with image">
+                    <i class="fas fa-image"></i>
+                </a>
+                <a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="share-btn" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://x.com/under45ceos" target="_blank" class="share-btn" aria-label="X/Twitter">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com/under45ceos" target="_blank" class="share-btn" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.linkedin.com/company/under45ceos" target="_blank" class="share-btn" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2026 Under 45 CEOs &middot; UDUF Africa &middot; Executive &amp; Premium Experience</p>
+        </div>
+    </div>
+
+    <script>
+        // Fireworks Animation - exactly 3 fireworks with speed increased by 4%
+        (function() {
+            const canvas = document.getElementById('fireworksCanvas');
+            const ctx = canvas.getContext('2d');
+            let fireworks = [];
+            let particles = [];
+            let animationRunning = true;
+            
+            // Set canvas size
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            
+            // Explosion particle class
+            class ExplosionParticle {
+                constructor(x, y, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.color = color;
+                    this.size = Math.random() * 4 + 2;
+                    this.angle = Math.random() * Math.PI * 2;
+                    this.speed = Math.random() * 6 + 2;
+                    this.vx = Math.cos(this.angle) * this.speed;
+                    this.vy = Math.sin(this.angle) * this.speed;
+                    this.gravity = 0.2;
+                    this.friction = 0.97;
+                    this.opacity = 1;
+                    this.decay = Math.random() * 0.02 + 0.01;
+                }
+                
+                update() {
+                    this.vx *= this.friction;
+                    this.vy *= this.friction;
+                    this.vy += this.gravity;
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.opacity -= this.decay;
+                    return this.opacity > 0;
+                }
+                
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+            
+            // Firework rocket - speed increased by 4%
+            class Firework {
+                constructor(x, y, targetY, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.targetY = targetY;
+                    this.color = color;
+                    this.size = 3;
+                    // Speed increased by 4% (from 8 to 8.32)
+                    this.speed = 8.32;
+                    this.exploded = false;
+                    this.trail = [];
+                }
+                
+                update() {
+                    if (this.exploded) return false;
+                    
+                    // Add trail
+                    this.trail.push({ x: this.x, y: this.y });
+                    if (this.trail.length > 8) this.trail.shift();
+                    
+                    // Move upward
+                    this.y -= this.speed;
+                    
+                    // Check if reached target
+                    if (this.y <= this.targetY) {
+                        this.exploded = true;
+                        this.createExplosion();
+                        return false;
+                    }
+                    return true;
+                }
+                
+                createExplosion() {
+                    const explosionCount = 45 + Math.floor(Math.random() * 35);
+                    for (let i = 0; i < explosionCount; i++) {
+                        particles.push(new ExplosionParticle(this.x, this.y, this.color));
+                    }
+                }
+                
+                draw() {
+                    // Draw trail
+                    for (let i = 0; i < this.trail.length; i++) {
+                        const t = this.trail[i];
+                        const alpha = (i + 1) / this.trail.length * 0.6;
+                        ctx.save();
+                        ctx.globalAlpha = alpha;
+                        ctx.beginPath();
+                        ctx.arc(t.x, t.y, this.size * 0.8, 0, Math.PI * 2);
+                        ctx.fillStyle = this.color;
+                        ctx.fill();
+                        ctx.restore();
+                    }
+                    
+                    // Draw rocket
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+            
+            // Color palette based on brand colors + gold for premium feel
+            const colors = ['#f07d1a', '#d4a017', '#1a8a94', '#ff9a44', '#f0c040', '#e67e22'];
+            
+            function getRandomColor() {
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            function getRandomX() {
+                return Math.random() * canvas.width;
+            }
+            
+            function getRandomTargetY() {
+                return Math.random() * (canvas.height * 0.35) + (canvas.height * 0.15);
+            }
+            
+            function launchFirework() {
+                if (!animationRunning) return;
+                const x = getRandomX();
+                const targetY = getRandomTargetY();
+                const color = getRandomColor();
+                const firework = new Firework(x, canvas.height, targetY, color);
+                fireworks.push(firework);
+            }
+            
+            function animate() {
+                if (!animationRunning) return;
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Update and draw fireworks
+                for (let i = fireworks.length - 1; i >= 0; i--) {
+                    const alive = fireworks[i].update();
+                    fireworks[i].draw();
+                    if (!alive) {
+                        fireworks.splice(i, 1);
+                    }
+                }
+                
+                // Update and draw particles
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const alive = particles[i].update();
+                    particles[i].draw();
+                    if (!alive) {
+                        particles.splice(i, 1);
+                    }
+                }
+                
+                requestAnimationFrame(animate);
+            }
+            
+            // Start fireworks - exactly 3 fireworks
+            function startFireworks() {
+                // Launch 3 fireworks sequentially
+                let launchCount = 0;
+                const totalLaunches = 3;
+                
+                const fireworkInterval = setInterval(() => {
+                    if (launchCount < totalLaunches) {
+                        launchFirework();
+                        launchCount++;
+                    } else {
+                        clearInterval(fireworkInterval);
+                        // Stop animation after all particles fade (5 seconds)
+                        setTimeout(() => {
+                            animationRunning = false;
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        }, 5000);
+                    }
+                }, 500);
+                
+                // Additional burst for first firework effect
+                setTimeout(() => launchFirework(), 150);
+            }
+            
+            // Start the animation and fireworks
+            animate();
+            startFireworks();
+            
+            // Clean up on page unload
+            window.addEventListener('beforeunload', () => {
+                animationRunning = false;
+            });
+        })();
+
+        // Share function
+        async function shareWithImage(e) {
+            e.preventDefault();
+            try {
+                const response = await fetch('UNDER45.png');
+                const blob = await response.blob();
+                const file = new File([blob], 'UNDER45.png', { type: blob.type });
+                
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Under 45 CEOs Summit 2026 - Executive Ticket',
+                        text: 'I just upgraded to Executive/Premium at Under 45 CEOs Summit 2026! Unlocked pitching rights to present my business to investors. #Under45CEOs #PitchOpportunity'
+                    });
+                } else {
+                    // Fallback: copy text + alert
+                    const text = 'I just upgraded to Executive/Premium at Under 45 CEOs Summit 2026! Unlocked pitching rights to present my business to investors. #Under45CEOs #PitchOpportunity';
+                    navigator.clipboard.writeText(text).then(() => {
+                        alert('Event details copied! Image (UNDER45.png) is available in your files.');
+                    });
+                }
+            } catch (err) {
+                console.error('Share failed:', err);
+                alert('Unable to share. Please download UNDER45.png and share manually.');
+            }
+        }
+    </script>
+</body>
+</html>
