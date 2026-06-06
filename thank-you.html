@@ -9,7 +9,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&family=Alex+Brush&display=swap" rel="stylesheet">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+      <!-- Favicon - Use under45.png as the icon in search results -->
+  <link rel="icon" type="image/png" href="under45.png" />
+  <link rel="apple-touch-icon" href="under45.png" />
+  <link rel="shortcut icon" href="under45.png" />
+  
     <style>
         :root {
             --teal-darker: #022a2d;
@@ -37,6 +45,7 @@
             justify-content: center;
             padding: 1rem;
             position: relative;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -46,17 +55,6 @@
             background: radial-gradient(circle at 30% 20%, rgba(240,125,26,0.06) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
-        }
-
-        /* Fireworks Canvas */
-        #fireworksCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 100;
         }
 
         .card {
@@ -70,6 +68,12 @@
             position: relative;
             z-index: 2;
             backdrop-filter: blur(8px);
+            animation: slideUpPage 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUpPage {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .success-ring {
@@ -120,6 +124,271 @@
             margin-bottom: 1.5rem;
         }
 
+        .form-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .form-section h2 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--orange);
+            text-align: center;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--orange);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--orange);
+            background: rgba(240, 125, 26, 0.02);
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper i {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload-wrapper p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .other-source-wrapper {
+            display: none;
+            margin-top: 0.75rem;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        /* Crop & Preview Section */
+        .crop-section {
+            display: none;
+            margin: 1.5rem 0;
+            animation: fadeIn 0.4s ease forwards;
+            text-align: center;
+        }
+
+        .crop-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 1rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .crop-container img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Crop overlay with grid lines */
+        .crop-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: move;
+        }
+
+        .crop-box {
+            position: absolute;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+            cursor: move;
+            touch-action: none;
+        }
+
+        .crop-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.03);
+            pointer-events: none;
+        }
+
+        /* Grid lines inside crop box */
+        .grid-line {
+            position: absolute;
+            background: rgba(255,255,255,0.3);
+            pointer-events: none;
+        }
+        .grid-line.h { width: 100%; height: 1px; }
+        .grid-line.v { width: 1px; height: 100%; }
+        .grid-line.h:nth-child(1) { top: 33.33%; }
+        .grid-line.h:nth-child(2) { top: 66.66%; }
+        .grid-line.v:nth-child(3) { left: 33.33%; }
+        .grid-line.v:nth-child(4) { left: 66.66%; }
+
+        /* Resize handles */
+        .handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
+            border: 2px solid #333;
+            border-radius: 2px;
+        }
+        .handle.nw { top: -6px; left: -6px; cursor: nw-resize; }
+        .handle.ne { top: -6px; right: -6px; cursor: ne-resize; }
+        .handle.sw { bottom: -6px; left: -6px; cursor: sw-resize; }
+        .handle.se { bottom: -6px; right: -6px; cursor: se-resize; }
+
+        .crop-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .crop-actions .btn {
+            flex: 1;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            backdrop-filter: blur(4px);
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .loading-subtext {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .preview-section {
+            display: none;
+            margin: 1.5rem 0;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .flyer-preview-container {
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto 1.2rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .flyer-preview-container img {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .event-meta {
             background: rgba(255,255,255,0.04);
             border-radius: 12px;
@@ -142,11 +411,13 @@
         .event-meta strong { color: var(--white); font-weight: 600; }
 
         .whatsapp-box {
+            display: none;
             background: linear-gradient(135deg, rgba(37,211,102,0.12), rgba(18,140,126,0.08));
             border: 1.5px solid rgba(37,211,102,0.35);
             border-radius: 14px;
             padding: 1.5rem;
             margin-bottom: 1rem;
+            animation: fadeIn 0.4s ease forwards;
         }
 
         .whatsapp-box h3 {
@@ -160,13 +431,7 @@
         }
 
         .whatsapp-box h3 i { color: var(--whatsapp-green); font-size: 1.1rem; }
-
-        .whatsapp-box p {
-            font-size: 0.82rem;
-            color: rgba(255,255,255,0.65);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
+        .whatsapp-box p { font-size: 0.82rem; color: rgba(255,255,255,0.65); margin-bottom: 1rem; line-height: 1.5; }
 
         .btn {
             display: inline-flex;
@@ -184,99 +449,59 @@
             width: 100%;
         }
 
-        .btn-whatsapp {
-            background: var(--whatsapp-green);
+        .btn-orange {
+            background: var(--orange);
             color: var(--white);
-            margin-bottom: 0.6rem;
         }
 
-        .btn-whatsapp:hover {
-            background: var(--whatsapp-dark);
+        .btn-orange:hover {
+            background: var(--orange-deep);
             transform: translateY(-2px);
         }
 
-        .btn-outline {
-            background: transparent;
-            color: var(--white);
-            border: 1.5px solid rgba(255,255,255,0.2);
-        }
+        .btn-whatsapp { background: var(--whatsapp-green); color: var(--white); margin-bottom: 0.6rem; }
+        .btn-whatsapp:hover { background: var(--whatsapp-dark); transform: translateY(-2px); }
+        .btn-outline { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.2); }
+        .btn-outline:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.4); }
+        .btn-secondary { background: rgba(255,255,255,0.1); color: var(--white); border: 1px solid rgba(255,255,255,0.15); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.18); }
 
-        .btn-outline:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(255,255,255,0.4);
-        }
+        .share-section { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
+        .share-section p { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+        .share-btns { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+        .share-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: rgba(255,255,255,0.7); font-size: 1rem; text-decoration: none; transition: all 0.2s ease; }
+        .share-btn:hover { background: var(--orange); border-color: var(--orange); color: var(--white); transform: translateY(-3px); }
+        
+        .footer { margin-top: 1.5rem; font-size: 0.7rem; color: rgba(255,255,255,0.3); }
 
-        .share-section {
-            margin-top: 1.25rem;
-            padding-top: 1.25rem;
-            border-top: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .share-section p {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 600;
-        }
-
-        .share-btns {
-            display: flex;
-            gap: 0.6rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .share-btn {
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: rgba(255,255,255,0.7);
-            font-size: 1rem;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .share-btn:hover {
-            background: var(--orange);
-            border-color: var(--orange);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .footer {
-            margin-top: 1.5rem;
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.3);
-        }
+        #hiddenFlyerCanvas { display: none; }
 
         @media (max-width: 480px) {
             .card { padding: 1.75rem 1.25rem; }
             .success-ring { width: 60px; height: 60px; }
             .success-ring i { font-size: 1.4rem; }
+            .form-row { flex-direction: column; gap: 0; }
         }
     </style>
 </head>
 <body>
-    <!-- Fireworks Canvas -->
-    <canvas id="fireworksCanvas"></canvas>
+    <canvas id="hiddenFlyerCanvas" width="1000" height="1250"></canvas>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Processing... Please Wait</div>
+        <div class="loading-subtext">Uploading your photo and saving your registration</div>
+    </div>
 
     <div class="card">
         <div class="success-ring">
             <i class="fas fa-check"></i>
         </div>
 
-        <!-- Changed from "You're Registered" to "THANK YOU" -->
         <h1>THANK YOU</h1>
         <p class="subtitle">Under 45 CEOs Summit 2026</p>
 
-        <!-- Added Thank You Message -->
         <div class="thankyou-message-text">
             <i class="fas fa-heart" style="color: var(--orange); margin-right: 6px;"></i> 
             We truly appreciate your trust and enthusiasm. You're now part of Africa's premier business movement — get ready for an unforgettable experience!
@@ -288,7 +513,124 @@
             <p><i class="fas fa-envelope"></i> Check your inbox for your e-ticket</p>
         </div>
 
-        <div class="whatsapp-box">
+        <!-- STEP 1: Form -->
+        <form id="delegateForm" class="form-section" onsubmit="handleFormSubmit(event)">
+            <h2>Follow These Steps to Complete Your Registration</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" class="form-control" placeholder="e.g. Charles" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" class="form-control" placeholder="e.g. Chukwu" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="age">Age Group</label>
+                <select id="age" class="form-control" required>
+                    <option value="" disabled selected>Select your age range</option>
+                    <option value="20-30">20 - 30</option>
+                    <option value="31-40">31 - 40</option>
+                    <option value="41-50">41 - 50</option>
+                    <option value="51-60">51 - 60</option>
+                    <option value="61-70">61 - 70</option>
+                    <option value="71-80">71 - 80</option>
+                    <option value="81-90">81 - 90</option>
+                    <option value="91-100">91 - 100</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="source">How did you hear about the Summit?</label>
+                <select id="source" class="form-control" required onchange="toggleOtherSourceInput(this)">
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="Social Media">Social Media (Facebook, Instagram, X/Twitter, LinkedIn)</option>
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Friend or Family Member">Friend or Family Member</option>
+                    <option value="Colleague or Coworker">Colleague or Coworker</option>
+                    <option value="Email Invitation">Email Invitation</option>
+                    <option value="Google Search">Google Search</option>
+                    <option value="Website/Blog">Website/Blog</option>
+                    <option value="Online Advertisement">Online Advertisement</option>
+                    <option value="School/University">School/University</option>
+                    <option value="Church/Mosque/Religious Organization">Church/Mosque/Religious Organization</option>
+                    <option value="Community Group or Association">Community Group or Association</option>
+                    <option value="Event Partner/Sponsor">Event Partner/Sponsor</option>
+                    <option value="Previous Attendee">Previous Attendee</option>
+                    <option value="Flyer or Poster">Flyer or Poster</option>
+                    <option value="Referral from an Organization">Referral from an Organization</option>
+                    <option value="Other">Other (Please Specify)</option>
+                </select>
+                
+                <div id="otherSourceWrapper" class="other-source-wrapper">
+                    <input type="text" id="otherSourceInput" class="form-control" placeholder="Please specify how you heard about us">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Upload Your Portrait Photo</label>
+                <div class="file-upload-wrapper">
+                    <i class="fas fa-cloud-upload-alt" id="uploadIcon"></i>
+                    <p id="uploadText">Click or drag a clear portrait image here</p>
+                    <input type="file" id="photoInput" accept="image/*" required onchange="handleFileSelect(event)">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-orange">
+                Continue <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i>
+            </button>
+        </form>
+
+        <!-- STEP 2: Crop & Preview -->
+        <div id="cropSection" class="crop-section">
+            <h2 style="color: var(--orange); font-size: 1.1rem; margin-bottom: 0.5rem;">Crop & Preview</h2>
+            <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 1rem;">Drag the box to crop your photo. Click "Next" when ready.</p>
+            
+            <div class="crop-container" id="cropContainer">
+                <img id="cropImage" src="" alt="Crop preview">
+                <div class="crop-overlay" id="cropOverlay">
+                    <div class="crop-box" id="cropBox">
+                        <div class="grid-line h"></div>
+                        <div class="grid-line h"></div>
+                        <div class="grid-line v"></div>
+                        <div class="grid-line v"></div>
+                        <div class="handle nw"></div>
+                        <div class="handle ne"></div>
+                        <div class="handle sw"></div>
+                        <div class="handle se"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="crop-actions">
+                <button onclick="resetCrop()" class="btn btn-secondary">Reset</button>
+                <button onclick="cropAndNext()" class="btn btn-orange">Next <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i></button>
+            </div>
+        </div>
+
+        <!-- STEP 3: Final Preview -->
+        <div id="previewSection" class="preview-section">
+            <h2 style="color: var(--orange); font-size: 1.1rem; margin-bottom: 0.5rem;">Your Flyer</h2>
+            <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 1rem;">Your personalized delegate flyer is ready.</p>
+            
+            <div class="flyer-preview-container">
+                <img id="flyerDisplay" alt="Your Personalized Delegate Flyer">
+            </div>
+            
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button onclick="downloadFlyerAsset()" class="btn btn-orange" style="flex: 1; min-width: 140px;">
+                    <i class="fas fa-download"></i> Download Flyer
+                </button>
+                <button onclick="showWhatsApp()" class="btn btn-whatsapp" style="flex: 1; min-width: 140px;">
+                    <i class="fab fa-whatsapp"></i> Join Group
+                </button>
+            </div>
+        </div>
+
+        <div class="whatsapp-box" id="whatsappCommunityBox">
             <h3><i class="fab fa-whatsapp"></i> Join the Community</h3>
             <p>Connect with speakers, attendees, and entrepreneurs. Get real-time updates and networking opportunities.</p>
             <a href="https://chat.whatsapp.com/HkDkTtvuAlUH4CqlDuvRJc" target="_blank" class="btn btn-whatsapp" rel="noopener">
@@ -326,230 +668,543 @@
     </div>
 
     <script>
-        // Fireworks Animation - exactly 3 fireworks with speed increased by 4%
-        (function() {
-            const canvas = document.getElementById('fireworksCanvas');
-            const ctx = canvas.getContext('2d');
-            let fireworks = [];
-            let particles = [];
-            let animationRunning = true;
-            
-            // Set canvas size
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-            
-            // Explosion particle class
-            class ExplosionParticle {
-                constructor(x, y, color) {
-                    this.x = x;
-                    this.y = y;
-                    this.color = color;
-                    this.size = Math.random() * 4 + 2;
-                    this.angle = Math.random() * Math.PI * 2;
-                    this.speed = Math.random() * 6 + 2;
-                    this.vx = Math.cos(this.angle) * this.speed;
-                    this.vy = Math.sin(this.angle) * this.speed;
-                    this.gravity = 0.2;
-                    this.friction = 0.97;
-                    this.opacity = 1;
-                    this.decay = Math.random() * 0.02 + 0.01;
-                }
-                
-                update() {
-                    this.vx *= this.friction;
-                    this.vy *= this.friction;
-                    this.vy += this.gravity;
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    this.opacity -= this.decay;
-                    return this.opacity > 0;
-                }
-                
-                draw() {
-                    ctx.save();
-                    ctx.globalAlpha = this.opacity;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                    ctx.restore();
-                }
-            }
-            
-            // Firework rocket - speed increased by 4%
-            class Firework {
-                constructor(x, y, targetY, color) {
-                    this.x = x;
-                    this.y = y;
-                    this.targetY = targetY;
-                    this.color = color;
-                    this.size = 3;
-                    // Speed increased by 4% (from 8 to 8.32)
-                    this.speed = 8.32;
-                    this.exploded = false;
-                    this.trail = [];
-                }
-                
-                update() {
-                    if (this.exploded) return false;
-                    
-                    // Add trail
-                    this.trail.push({ x: this.x, y: this.y });
-                    if (this.trail.length > 8) this.trail.shift();
-                    
-                    // Move upward
-                    this.y -= this.speed;
-                    
-                    // Check if reached target
-                    if (this.y <= this.targetY) {
-                        this.exploded = true;
-                        this.createExplosion();
-                        return false;
-                    }
-                    return true;
-                }
-                
-                createExplosion() {
-                    const explosionCount = 45 + Math.floor(Math.random() * 35);
-                    for (let i = 0; i < explosionCount; i++) {
-                        particles.push(new ExplosionParticle(this.x, this.y, this.color));
-                    }
-                }
-                
-                draw() {
-                    // Draw trail
-                    for (let i = 0; i < this.trail.length; i++) {
-                        const t = this.trail[i];
-                        const alpha = (i + 1) / this.trail.length * 0.6;
-                        ctx.save();
-                        ctx.globalAlpha = alpha;
-                        ctx.beginPath();
-                        ctx.arc(t.x, t.y, this.size * 0.8, 0, Math.PI * 2);
-                        ctx.fillStyle = this.color;
-                        ctx.fill();
-                        ctx.restore();
-                    }
-                    
-                    // Draw rocket
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-            }
-            
-            // Color palette based on brand colors
-            const colors = ['#f07d1a', '#d4a017', '#1a8a94', '#ff9a44', '#f0c040'];
-            
-            function getRandomColor() {
-                return colors[Math.floor(Math.random() * colors.length)];
-            }
-            
-            function getRandomX() {
-                return Math.random() * canvas.width;
-            }
-            
-            function getRandomTargetY() {
-                return Math.random() * (canvas.height * 0.35) + (canvas.height * 0.15);
-            }
-            
-            function launchFirework() {
-                if (!animationRunning) return;
-                const x = getRandomX();
-                const targetY = getRandomTargetY();
-                const color = getRandomColor();
-                const firework = new Firework(x, canvas.height, targetY, color);
-                fireworks.push(firework);
-            }
-            
-            function animate() {
-                if (!animationRunning) return;
-                
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Update and draw fireworks
-                for (let i = fireworks.length - 1; i >= 0; i--) {
-                    const alive = fireworks[i].update();
-                    fireworks[i].draw();
-                    if (!alive) {
-                        fireworks.splice(i, 1);
-                    }
-                }
-                
-                // Update and draw particles
-                for (let i = particles.length - 1; i >= 0; i--) {
-                    const alive = particles[i].update();
-                    particles[i].draw();
-                    if (!alive) {
-                        particles.splice(i, 1);
-                    }
-                }
-                
-                requestAnimationFrame(animate);
-            }
-            
-            // Start fireworks - exactly 3 fireworks
-            function startFireworks() {
-                // Launch 3 fireworks sequentially
-                let launchCount = 0;
-                const totalLaunches = 3;
-                
-                const fireworkInterval = setInterval(() => {
-                    if (launchCount < totalLaunches) {
-                        launchFirework();
-                        launchCount++;
-                    } else {
-                        clearInterval(fireworkInterval);
-                        // Stop animation after all particles fade (5 seconds)
-                        setTimeout(() => {
-                            animationRunning = false;
-                            ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        }, 5000);
-                    }
-                }, 500);
-                
-                // Additional burst for first firework effect
-                setTimeout(() => launchFirework(), 150);
-            }
-            
-            // Start the animation and fireworks
-            animate();
-            startFireworks();
-            
-            // Clean up on page unload
-            window.addEventListener('beforeunload', () => {
-                animationRunning = false;
-            });
-        })();
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc",
+            authDomain: "under45ceos-submit.firebaseapp.com",
+            projectId: "under45ceos-submit",
+            storageBucket: "under45ceos-submit.firebasestorage.app",
+            messagingSenderId: "801982436580",
+            appId: "1:801982436580:web:3769913cb6ec23fbaa88f1"
+        };
 
-        // Share function
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Cloudinary Configuration
+        const CLOUDINARY_CLOUD_NAME = 'dt5s5zbjy';
+        const CLOUDINARY_UPLOAD_PRESET = 'UNDER45CEOs_registration_portal';
+
+        let selectedImageSrc = null;
+        let croppedImageData = null;
+        let cropBoxData = { x: 0, y: 0, w: 0, h: 0 };
+        let isDragging = false;
+        let isResizing = false;
+        let dragStart = { x: 0, y: 0 };
+        let resizeHandle = null;
+        let imgNaturalWidth = 0;
+        let imgNaturalHeight = 0;
+        let containerRect = null;
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedImageSrc = e.target.result;
+                    document.getElementById('uploadIcon').className = "fas fa-check-circle";
+                    document.getElementById('uploadIcon').style.color = "var(--whatsapp-green)";
+                    document.getElementById('uploadText').innerText = file.name + " ready!";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function toggleOtherSourceInput(selectElement) {
+            const otherWrapper = document.getElementById('otherSourceWrapper');
+            const otherInput = document.getElementById('otherSourceInput');
+            if (selectElement.value === 'Other') {
+                otherWrapper.style.display = 'block';
+                otherInput.required = true;
+                otherInput.focus();
+            } else {
+                otherWrapper.style.display = 'none';
+                otherInput.required = false;
+                otherInput.value = '';
+            }
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            if (!selectedImageSrc) {
+                alert("Please upload an image portrait first.");
+                return;
+            }
+
+            // Hide form, show crop section
+            document.getElementById('delegateForm').style.display = 'none';
+            document.getElementById('cropSection').style.display = 'block';
+            
+            // Initialize crop
+            setTimeout(() => initCrop(), 100);
+        }
+
+        function initCrop() {
+            const cropImg = document.getElementById('cropImage');
+            cropImg.src = selectedImageSrc;
+            
+            cropImg.onload = function() {
+                const container = document.getElementById('cropContainer');
+                containerRect = container.getBoundingClientRect();
+                
+                // Get natural dimensions
+                imgNaturalWidth = cropImg.naturalWidth;
+                imgNaturalHeight = cropImg.naturalHeight;
+                
+                // Set crop box to center, 70% of container width
+                const containerWidth = container.offsetWidth;
+                const containerHeight = container.offsetHeight;
+                
+                const boxSize = Math.min(containerWidth, containerHeight) * 0.7;
+                cropBoxData.w = boxSize;
+                cropBoxData.h = boxSize;
+                cropBoxData.x = (containerWidth - boxSize) / 2;
+                cropBoxData.y = (containerHeight - boxSize) / 2;
+                
+                updateCropBox();
+                setupCropEvents();
+            };
+        }
+
+        function updateCropBox() {
+            const box = document.getElementById('cropBox');
+            box.style.left = cropBoxData.x + 'px';
+            box.style.top = cropBoxData.y + 'px';
+            box.style.width = cropBoxData.w + 'px';
+            box.style.height = cropBoxData.h + 'px';
+        }
+
+        function setupCropEvents() {
+            const overlay = document.getElementById('cropOverlay');
+            const box = document.getElementById('cropBox');
+            
+            // Remove old event listeners by cloning
+            const newOverlay = overlay.cloneNode(true);
+            overlay.parentNode.replaceChild(newOverlay, overlay);
+            
+            const newBox = document.getElementById('cropBox');
+            
+            // Drag on box
+            newBox.addEventListener('mousedown', startDrag);
+            newBox.addEventListener('touchstart', startDragTouch, { passive: false });
+            
+            // Resize handles
+            document.querySelectorAll('.handle').forEach(handle => {
+                handle.addEventListener('mousedown', startResize);
+                handle.addEventListener('touchstart', startResizeTouch, { passive: false });
+            });
+            
+            // Click outside to focus
+            document.addEventListener('mousedown', function(e) {
+                if (e.target.closest('.crop-box')) return;
+                // Deselect
+            });
+        }
+
+        function startDrag(e) {
+            if (e.target.closest('.handle')) return;
+            isDragging = true;
+            dragStart.x = e.clientX - cropBoxData.x;
+            dragStart.y = e.clientY - cropBoxData.y;
+            e.preventDefault();
+        }
+
+        function startDragTouch(e) {
+            if (e.target.closest('.handle')) return;
+            const touch = e.touches[0];
+            isDragging = true;
+            dragStart.x = touch.clientX - cropBoxData.x;
+            dragStart.y = touch.clientY - cropBoxData.y;
+            e.preventDefault();
+        }
+
+        function startResize(e) {
+            isResizing = true;
+            resizeHandle = e.target.className.includes('nw') ? 'nw' : 
+                          e.target.className.includes('ne') ? 'ne' :
+                          e.target.className.includes('sw') ? 'sw' : 'se';
+            dragStart.x = e.clientX;
+            dragStart.y = e.clientY;
+            e.preventDefault();
+        }
+
+        function startResizeTouch(e) {
+            const touch = e.touches[0];
+            isResizing = true;
+            resizeHandle = e.target.className.includes('nw') ? 'nw' : 
+                          e.target.className.includes('ne') ? 'ne' :
+                          e.target.className.includes('sw') ? 'sw' : 'se';
+            dragStart.x = touch.clientX;
+            dragStart.y = touch.clientY;
+            e.preventDefault();
+        }
+
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                const container = document.getElementById('cropContainer');
+                const rect = container.getBoundingClientRect();
+                
+                let newX = e.clientX - dragStart.x;
+                let newY = e.clientY - dragStart.y;
+                
+                // Constrain
+                newX = Math.max(0, Math.min(newX, rect.width - cropBoxData.w));
+                newY = Math.max(0, Math.min(newY, rect.height - cropBoxData.h));
+                
+                cropBoxData.x = newX;
+                cropBoxData.y = newY;
+                updateCropBox();
+            }
+            
+            if (isResizing) {
+                const container = document.getElementById('cropContainer');
+                const rect = container.getBoundingClientRect();
+                
+                let dx = e.clientX - dragStart.x;
+                let dy = e.clientY - dragStart.y;
+                
+                let newW = cropBoxData.w;
+                let newH = cropBoxData.h;
+                let newX = cropBoxData.x;
+                let newY = cropBoxData.y;
+                
+                if (resizeHandle === 'se') {
+                    newW = Math.max(60, cropBoxData.w + dx);
+                    newH = newW; // Keep square
+                } else if (resizeHandle === 'nw') {
+                    newW = Math.max(60, cropBoxData.w - dx);
+                    newH = newW;
+                    newX = cropBoxData.x + cropBoxData.w - newW;
+                    newY = cropBoxData.y + cropBoxData.h - newH;
+                } else if (resizeHandle === 'ne') {
+                    newW = Math.max(60, cropBoxData.w + dx);
+                    newH = newW;
+                    newY = cropBoxData.y + cropBoxData.h - newH;
+                } else if (resizeHandle === 'sw') {
+                    newW = Math.max(60, cropBoxData.w - dx);
+                    newH = newW;
+                    newX = cropBoxData.x + cropBoxData.w - newW;
+                }
+                
+                // Constrain
+                if (newX < 0) { newW += newX; newX = 0; }
+                if (newY < 0) { newH += newY; newY = 0; }
+                if (newX + newW > rect.width) { newW = rect.width - newX; }
+                if (newY + newH > rect.height) { newH = rect.height - newY; }
+                
+                cropBoxData.w = Math.max(60, newW);
+                cropBoxData.h = Math.max(60, newH);
+                cropBoxData.x = newX;
+                cropBoxData.y = newY;
+                updateCropBox();
+                
+                dragStart.x = e.clientX;
+                dragStart.y = e.clientY;
+            }
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            const touch = e.touches[0];
+            if (isDragging) {
+                const container = document.getElementById('cropContainer');
+                const rect = container.getBoundingClientRect();
+                
+                let newX = touch.clientX - dragStart.x;
+                let newY = touch.clientY - dragStart.y;
+                
+                newX = Math.max(0, Math.min(newX, rect.width - cropBoxData.w));
+                newY = Math.max(0, Math.min(newY, rect.height - cropBoxData.h));
+                
+                cropBoxData.x = newX;
+                cropBoxData.y = newY;
+                updateCropBox();
+                e.preventDefault();
+            }
+            
+            if (isResizing) {
+                const container = document.getElementById('cropContainer');
+                const rect = container.getBoundingClientRect();
+                
+                let dx = touch.clientX - dragStart.x;
+                let dy = touch.clientY - dragStart.y;
+                
+                let newW = cropBoxData.w;
+                let newH = cropBoxData.h;
+                let newX = cropBoxData.x;
+                let newY = cropBoxData.y;
+                
+                if (resizeHandle === 'se') {
+                    newW = Math.max(60, cropBoxData.w + dx);
+                    newH = newW;
+                } else if (resizeHandle === 'nw') {
+                    newW = Math.max(60, cropBoxData.w - dx);
+                    newH = newW;
+                    newX = cropBoxData.x + cropBoxData.w - newW;
+                    newY = cropBoxData.y + cropBoxData.h - newH;
+                } else if (resizeHandle === 'ne') {
+                    newW = Math.max(60, cropBoxData.w + dx);
+                    newH = newW;
+                    newY = cropBoxData.y + cropBoxData.h - newH;
+                } else if (resizeHandle === 'sw') {
+                    newW = Math.max(60, cropBoxData.w - dx);
+                    newH = newW;
+                    newX = cropBoxData.x + cropBoxData.w - newW;
+                }
+                
+                if (newX < 0) { newW += newX; newX = 0; }
+                if (newY < 0) { newH += newY; newY = 0; }
+                if (newX + newW > rect.width) { newW = rect.width - newX; }
+                if (newY + newH > rect.height) { newH = rect.height - newY; }
+                
+                cropBoxData.w = Math.max(60, newW);
+                cropBoxData.h = Math.max(60, newH);
+                cropBoxData.x = newX;
+                cropBoxData.y = newY;
+                updateCropBox();
+                
+                dragStart.x = touch.clientX;
+                dragStart.y = touch.clientY;
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+            isResizing = false;
+        });
+
+        document.addEventListener('touchend', function() {
+            isDragging = false;
+            isResizing = false;
+        });
+
+        function resetCrop() {
+            const container = document.getElementById('cropContainer');
+            const containerWidth = container.offsetWidth;
+            const containerHeight = container.offsetHeight;
+            
+            const boxSize = Math.min(containerWidth, containerHeight) * 0.7;
+            cropBoxData.w = boxSize;
+            cropBoxData.h = boxSize;
+            cropBoxData.x = (containerWidth - boxSize) / 2;
+            cropBoxData.y = (containerHeight - boxSize) / 2;
+            updateCropBox();
+        }
+
+        // Upload image to Cloudinary
+        async function uploadToCloudinary(imageData) {
+            const formData = new FormData();
+            formData.append('file', imageData);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!response.ok) {
+                throw new Error('Cloudinary upload failed');
+            }
+            
+            const data = await response.json();
+            return data.secure_url;
+        }
+
+        async function cropAndNext() {
+            const cropImg = document.getElementById('cropImage');
+            const container = document.getElementById('cropContainer');
+            const rect = container.getBoundingClientRect();
+            const imgRect = cropImg.getBoundingClientRect();
+            
+            // Calculate crop coordinates in image space
+            const scaleX = cropImg.naturalWidth / cropImg.offsetWidth;
+            const scaleY = cropImg.naturalHeight / cropImg.offsetHeight;
+            
+            const sx = cropBoxData.x * scaleX;
+            const sy = cropBoxData.y * scaleY;
+            const sw = cropBoxData.w * scaleX;
+            const sh = cropBoxData.h * scaleY;
+            
+            // Create a canvas to crop
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = 400;
+            tempCanvas.height = 400;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            tempCtx.drawImage(cropImg, sx, sy, sw, sh, 0, 0, 400, 400);
+            croppedImageData = tempCanvas.toDataURL('image/png');
+            
+            // Show loading overlay
+            document.getElementById('loadingOverlay').classList.add('active');
+            
+            try {
+                // Step 1: Upload cropped image to Cloudinary
+                const imageUrl = await uploadToCloudinary(croppedImageData);
+                
+                // Step 2: Get form data
+                const firstName = document.getElementById('firstName').value.trim();
+                const lastName = document.getElementById('lastName').value.trim();
+                const age = document.getElementById('age').value;
+                const source = document.getElementById('source').value;
+                const otherSource = document.getElementById('otherSourceInput').value;
+                
+                // Step 3: Submit to Firestore
+                await db.collection('i_will_attend').add({
+                    firstName: firstName,
+                    lastName: lastName,
+                    age: age,
+                    source: source === 'Other' ? otherSource : source,
+                    photoUrl: imageUrl,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Step 4: Hide loading, generate flyer
+                document.getElementById('loadingOverlay').classList.remove('active');
+                generateFlyer();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loadingOverlay').classList.remove('active');
+                alert('There was an error processing your registration. Please try again.');
+            }
+        }
+
+        function generateFlyer() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+
+            const canvas = document.getElementById('hiddenFlyerCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const bgImg = new Image();
+            bgImg.crossOrigin = "anonymous";
+            bgImg.src = 'background.webp';
+
+            bgImg.onload = function() {
+                ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+
+                // Image frame - circle position brought down and increased by 2%
+                const circleX = 490;
+                const circleY = 480; 
+                const radius = 214; 
+
+                const userImg = new Image();
+                userImg.src = croppedImageData || selectedImageSrc;
+                userImg.onload = function() {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(circleX, circleY, radius, 0, Math.PI * 2);
+                    ctx.clip();
+
+                    const aspect = userImg.width / userImg.height;
+                    let drawWidth, drawHeight, drawX, drawY;
+
+                    if (aspect > 1) {
+                        drawHeight = radius * 2;
+                        drawWidth = drawHeight * aspect;
+                        drawX = circleX - (drawWidth / 2);
+                        drawY = circleY - radius;
+                    } else {
+                        drawWidth = radius * 2;
+                        drawHeight = drawWidth / aspect;
+                        drawX = circleX - radius;
+                        drawY = circleY - (drawHeight / 2);
+                    }
+
+                    ctx.drawImage(userImg, drawX, drawY, drawWidth, drawHeight);
+                    ctx.restore();
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(circleX, circleY, radius + 5, 0, Math.PI * 2); 
+                    ctx.strokeStyle = "#ffffff";
+                    ctx.lineWidth = 14; 
+                    ctx.stroke();
+                    ctx.restore();
+
+                    // Typography - MOVED DOWN to center of the right corner
+                    ctx.fillStyle = "#ffffff";
+                    ctx.textAlign = "right"; 
+                    
+                    let maxFirstWidth = 240; 
+                    let firstNameFontSize = 34;
+                    ctx.font = `italic ${firstNameFontSize}px 'Alex Brush', cursive, sans-serif`;
+                    while(ctx.measureText(firstName).width > maxFirstWidth && firstNameFontSize > 16) {
+                        firstNameFontSize -= 1;
+                        ctx.font = `italic ${firstNameFontSize}px 'Alex Brush', cursive, sans-serif`;
+                    }
+                    ctx.fillText(firstName, 950, 521);
+
+                    let maxLastWidth = 240; 
+                    let lastNameFontSize = 25; 
+                    ctx.font = `800 ${lastNameFontSize}px 'DM Sans', sans-serif`;
+                    while(ctx.measureText(lastName.toUpperCase()).width > maxLastWidth && lastNameFontSize > 14) {
+                        lastNameFontSize -= 1;
+                        ctx.font = `800 ${lastNameFontSize}px 'DM Sans', sans-serif`;
+                    }
+                    ctx.fillText(lastName.toUpperCase(), 950, 561);
+
+                    const dataUrl = canvas.toDataURL('image/png');
+                    document.getElementById('flyerDisplay').src = dataUrl;
+
+                    // Show preview, hide crop
+                    document.getElementById('cropSection').style.display = 'none';
+                    document.getElementById('previewSection').style.display = 'block';
+                    document.getElementById('whatsappCommunityBox').style.display = 'block';
+                    
+                    // Auto-download the flyer
+                    downloadFlyerAsset();
+                };
+            };
+        }
+
+        function downloadFlyerAsset() {
+            const dataUrl = document.getElementById('flyerDisplay').src;
+            const downloadLink = document.createElement('a');
+            downloadLink.href = dataUrl;
+            downloadLink.download = `Under45_CEOs_Summit_Flyer.png`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        function showWhatsApp() {
+            document.getElementById('whatsappCommunityBox').scrollIntoView({ behavior: 'smooth' });
+        }
+
         async function shareWithImage(e) {
             e.preventDefault();
             try {
-                const response = await fetch('UNDER45.png');
-                const blob = await response.blob();
-                const file = new File([blob], 'UNDER45.png', { type: blob.type });
+                const flyerImgElement = document.getElementById('flyerDisplay');
+                let fileToShare;
+
+                if (flyerImgElement && flyerImgElement.src.startsWith('data:')) {
+                    const response = await fetch(flyerImgElement.src);
+                    const blob = await response.blob();
+                    fileToShare = new File([blob], 'Under45_Delegate_Flyer.png', { type: blob.type });
+                } else {
+                    const response = await fetch('UNDER45.png');
+                    const blob = await response.blob();
+                    fileToShare = new File([blob], 'UNDER45.png', { type: blob.type });
+                }
                 
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                if (navigator.canShare && navigator.canShare({ files: [fileToShare] })) {
                     await navigator.share({
-                        files: [file],
+                        files: [fileToShare],
                         title: 'Under 45 CEOs Summit 2026',
                         text: 'I just registered for the Under 45 CEOs Business & Leadership Summit 2026! Join me in Onitsha on October 10th. #Under45CEOs'
                     });
                 } else {
-                    // Fallback: copy text + alert
                     const text = 'I just registered for the Under 45 CEOs Business & Leadership Summit 2026! Join me in Onitsha on October 10th. #Under45CEOs';
                     navigator.clipboard.writeText(text).then(() => {
-                        alert('Event details copied! Image (UNDER45.png) is available in your files.');
+                        alert('Event details copied! Your custom flyer is ready to share from your downloads.');
                     });
                 }
             } catch (err) {
-                console.error('Share failed:', err);
-                alert('Unable to share. Please download UNDER45.png and share manually.');
+                console.error('Share configuration context error:', err);
+                alert('Unable to process native sharing. Please download your flyer image manually.');
             }
         }
     </script>
