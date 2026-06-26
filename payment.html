@@ -10,6 +10,10 @@
     <meta property="og:title" content="Payment | Under 45 CEOs Summit 2026">
     <meta property="og:description" content="Complete your payment to secure your seat.">
     <meta property="og:type" content="website">
+     <!-- Favicon - Use under45.png as the icon in search results -->
+  <link class="icon" type="image/png" href="under45.png" />
+  <link rel="apple-touch-icon" href="under45.png" />
+  <link rel="shortcut icon" href="under45.png" />
     <link rel="canonical" href="https://under45ceos.udufafrica.org/payment.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -160,6 +164,11 @@
         .modal-buttons { display: flex; justify-content: center; margin-top: 1rem; }
         .modal-buttons .btn { min-width: 200px; justify-content: center; }
 
+        .whatsapp-notice { background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: var(--radius); padding: 1rem; margin: 1rem 0; text-align: center; }
+        .whatsapp-notice i { color: #25D366; font-size: 1.2rem; margin-right: 0.5rem; }
+        .whatsapp-notice a { color: #25D366; font-weight: 700; text-decoration: underline; }
+        .whatsapp-notice a:hover { color: var(--white); }
+
         .footer { background: var(--black); padding: 4rem 0 2rem; }
         .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
         .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
@@ -175,6 +184,25 @@
         .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
         .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.3); font-weight: 500; }
 
+        /* Help Widget */
+        .help-widget { position: fixed; bottom: 2rem; right: 2rem; z-index: 1500; display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem; }
+        .help-popup { background: var(--teal-dark); border: 1px solid var(--orange); border-radius: var(--radius-lg); padding: 1.2rem 1.5rem; max-width: 280px; box-shadow: 0 8px 30px rgba(0,0,0,0.5); animation: vibrate 2s ease-in-out infinite; transform-origin: center; position: relative; }
+        .help-popup.hidden { display: none; }
+        @keyframes vibrate { 0%, 100% { transform: translateX(0); } 10% { transform: translateX(-4px) rotate(-1deg); } 20% { transform: translateX(4px) rotate(1deg); } 30% { transform: translateX(-3px); } 40% { transform: translateX(3px); } 50% { transform: translateX(-2px); } 60% { transform: translateX(2px); } 70% { transform: translateX(-1px); } 80% { transform: translateX(1px); } 90% { transform: translateX(0); } }
+        .help-popup p { font-size: 0.9rem; color: var(--white); margin-bottom: 0.3rem; }
+        .help-popup .help-close { position: absolute; top: 0.3rem; right: 0.6rem; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 1.2rem; cursor: pointer; padding: 0.2rem; line-height: 1; }
+        .help-popup .help-close:hover { color: var(--white); }
+        .help-btn { width: 56px; height: 56px; border-radius: 50%; background: var(--orange); color: var(--white); border: none; font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 15px rgba(240,125,26,0.4); transition: transform .3s, box-shadow .3s; display: flex; align-items: center; justify-content: center; }
+        .help-btn:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(240,125,26,0.6); }
+        .help-contacts { display: none; flex-direction: column; gap: 0.6rem; background: var(--teal-dark); border: 1px solid rgba(255,255,255,0.15); border-radius: var(--radius-lg); padding: 1rem 1.2rem; min-width: 200px; box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+        .help-contacts.open { display: flex; }
+        .help-contact-item { display: flex; align-items: center; gap: 0.6rem; color: var(--white); padding: 0.5rem 0.8rem; border-radius: var(--radius); transition: background .2s; cursor: pointer; }
+        .help-contact-item:hover { background: rgba(255,255,255,0.08); }
+        .help-contact-item i { color: var(--orange); width: 20px; text-align: center; }
+        .help-contact-item .contact-label { font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+        .help-contact-item .contact-number { font-weight: 600; font-size: 0.85rem; }
+        @media (max-width: 480px) { .help-popup { max-width: 220px; padding: 0.8rem 1rem; } .help-popup p { font-size: 0.8rem; } .help-btn { width: 48px; height: 48px; font-size: 1.3rem; } }
+
         @media (max-width: 1024px) { .payment-grid { grid-template-columns: 1fr; } .compact-card { position: relative; top: 0; } .footer__inner { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 768px) { .nav__links, .nav > .btn--nav { display: none; } .nav__hamburger { display: flex; } .footer__inner { grid-template-columns: 1fr; } .buttons-container { flex-direction: column; } .bank-row { flex-direction: column; align-items: flex-start; gap: 0.3rem; } .bank-value { justify-content: flex-start; } .modal-buttons .btn { width: 100%; } .progress-steps { flex-direction: column; gap: 0.5rem; } .step-line { display: none; } }
     </style>
@@ -188,7 +216,6 @@
                 <div class="nav__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto; display: block;"></div>
             </div>
             <ul class="nav__links">
-    
                 <li><a href="impact.html">Impact</a></li>
                 <li><a href="sponsor.html">Sponsors</a></li>
                 <li><a href="ticket.html">Tickets</a></li>
@@ -205,7 +232,6 @@
             <a href="ticket.html" class="btn btn--nav">REGISTER</a>
         </div>
     </nav>
-
 
     <section class="payment-header">
         <h1>Complete Your Payment</h1>
@@ -224,9 +250,10 @@
     <div class="payment-main">
         <div class="container">
             <div id="paymentContent">
-                <div class="page-loader">
-                    <div class="loader-spinner"></div>
-                    <p class="loader-text">Loading your order...</p>
+                <div class="page-loader" id="pageLoader">
+                    <div class="loader-spinner" id="loaderSpinner"></div>
+                    <p class="loader-text" id="loaderMessage">Loading your order...</p>
+                    <button id="retryBtn" style="display:none; margin-top: 1rem;" class="btn btn--primary">Retry</button>
                 </div>
             </div>
         </div>
@@ -253,7 +280,6 @@
                     <h4>Resources</h4>
                     <ul>
                         <li><a href="faqs.html">FAQs</a></li>
-                    
                         <li><a href="sponsor.html">Sponsor Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
@@ -263,6 +289,33 @@
             <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p></div>
         </div>
     </footer>
+
+    <!-- Help Widget -->
+    <div class="help-widget" id="helpWidget">
+        <div class="help-popup" id="helpPopup">
+            <button class="help-close" id="helpPopupClose" aria-label="Close help message">&times;</button>
+            <p><i class="fas fa-question-circle" style="color:var(--orange);"></i> Need help? Talk to our team</p>
+        </div>
+        <button class="help-btn" id="helpToggleBtn" aria-label="Contact help">
+            <i class="fas fa-headset"></i>
+        </button>
+        <div class="help-contacts" id="helpContacts">
+            <a href="tel:+2348104044527" class="help-contact-item">
+                <i class="fas fa-user-tie"></i>
+                <div>
+                    <div class="contact-label">Director</div>
+                    <div class="contact-number">0810 404 4527</div>
+                </div>
+            </a>
+            <a href="tel:+2349021773508" class="help-contact-item">
+                <i class="fas fa-laptop-code"></i>
+                <div>
+                    <div class="contact-label">Technical Lead</div>
+                    <div class="contact-number">+234 902 177 3508</div>
+                </div>
+            </a>
+        </div>
+    </div>
 
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner">
@@ -281,6 +334,15 @@
                 <button class="copy-btn" id="modalCopyBtn"><i class="fas fa-copy"></i></button>
             </div>
             <div class="modal-summary" id="modalSummary"></div>
+            
+            <!-- WhatsApp Notice -->
+            <div class="whatsapp-notice">
+                <i class="fab fa-whatsapp"></i>
+                Please forward your payment receipt to 
+                <a href="https://wa.me/2348104044527?text=Hello%2C%20I%20just%20submitted%20my%20payment%20receipt%20for%20order%20" target="_blank" id="whatsappLink">0810 404 4527</a> 
+                on WhatsApp for faster verification.
+            </div>
+            
             <p style="font-size: 0.8rem;">⏳ Status: <strong>Awaiting Verification</strong></p>
             <p style="font-size: 0.75rem; margin-top: 0.5rem;">Track your order status and download your tickets once approved.</p>
             <div class="modal-buttons">
@@ -310,17 +372,15 @@
         const MAX_FILE_SIZE_MB = 20;
         const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
-        // Get order reference - FIRST try localStorage
-        let orderRef = localStorage.getItem('current_order_id');
+        // Get order reference - FIRST try URL parameter, then sessionStorage, then localStorage
+        const urlParams = new URLSearchParams(window.location.search);
+        let orderRef = urlParams.get('ref');
         
         if (!orderRef) {
             orderRef = sessionStorage.getItem('current_order_id');
         }
-        
-        // Fallback to URL parameter if needed
         if (!orderRef) {
-            const urlParams = new URLSearchParams(window.location.search);
-            orderRef = urlParams.get('ref');
+            orderRef = localStorage.getItem('current_order_id');
         }
 
         let orderData = null;
@@ -366,7 +426,7 @@
         }
         window.viewOrderStatus = viewOrderStatus;
 
-        // Show error
+        // Show error with retry option
         function showError(title, message, redirectUrl) {
             document.getElementById('paymentContent').innerHTML = `
                 <div style="max-width:600px; margin:0 auto;">
@@ -379,25 +439,44 @@
                 </div>`;
         }
 
-        // Load order from Firestore
+        // Load order from Firestore with timeout and retry
         async function loadOrder() {
             if (!orderRef) {
                 showError('No Order Found', 'No order reference found. Please return to checkout.', 'checkout.html');
                 return;
             }
 
+            // Show loader
+            const loader = document.getElementById('pageLoader');
+            const spinner = document.getElementById('loaderSpinner');
+            const msg = document.getElementById('loaderMessage');
+            const retryBtn = document.getElementById('retryBtn');
+            loader.style.display = 'flex';
+            spinner.style.display = 'block';
+            msg.textContent = 'Loading your order...';
+            retryBtn.style.display = 'none';
+
             try {
                 const docRef = db.collection('checkouts').doc(orderRef);
-                const doc = await docRef.get();
+                // Race against timeout (8 seconds)
+                const doc = await Promise.race([
+                    docRef.get(),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000))
+                ]);
 
                 if (!doc.exists) {
-                    showError('Order Not Found', `We couldn't find an order with reference: ${orderRef}`, 'checkout.html');
-                    return;
+                    throw new Error('Order not found');
                 }
 
                 orderData = doc.data();
                 orderData.id = doc.id;
 
+                // Validate that tickets exist
+                if (!orderData.tickets || Object.keys(orderData.tickets).length === 0) {
+                    throw new Error('This order contains no tickets.');
+                }
+
+                // Check if payment already submitted
                 if (orderData.paymentStatus === 'verified' || orderData.paymentStatus === 'awaiting_verification') {
                     document.getElementById('paymentContent').innerHTML = `
                         <div style="max-width:600px; margin:0 auto;">
@@ -411,27 +490,36 @@
                     return;
                 }
 
+                // Hide loader and render page
+                loader.style.display = 'none';
                 renderPaymentPage();
 
             } catch (error) {
-                console.error('Error loading order:', error);
-                showError('Error Loading Order', 'There was an error loading your order. Please refresh the page.', 'checkout.html');
+                console.error('Load error:', error);
+                // Show error with retry
+                spinner.style.display = 'none';
+                if (error.message === 'timeout') {
+                    msg.textContent = '⏱️ Loading took too long. Please check your internet connection.';
+                } else {
+                    msg.textContent = '⚠️ ' + error.message;
+                }
+                retryBtn.style.display = 'inline-block';
+                retryBtn.onclick = function() { loadOrder(); }; // retry
             }
         }
 
         function renderPaymentPage() {
+            // Get total amount directly from Firestore - NO HARDCODED PRICES!
+            const totalAmount = orderData.totalAmount || 0;
+            
+            // Build ticket summary from the tickets object for display
             const ticketSummary = [];
-            let totalAmount = 0;
-            for (const [tier, qty] of Object.entries(orderData.tickets)) {
-                if (qty > 0) {
-                    let price = 0;
-                    let tierName = '';
-                    if (tier === 'regular') { price = 12500; tierName = 'Regular'; }
-                    else if (tier === 'standard') { price = 20000; tierName = 'Standard'; }
-                    else if (tier === 'premium') { price = 150000; tierName = 'Premium'; }
-                    const lineTotal = price * qty;
-                    totalAmount += lineTotal;
-                    ticketSummary.push({ tierName, qty, lineTotal });
+            if (orderData.tickets) {
+                for (const [tier, qty] of Object.entries(orderData.tickets)) {
+                    if (qty > 0) {
+                        // Display the tier name and quantity only - no price calculation needed
+                        ticketSummary.push({ tierName: tier, qty: qty });
+                    }
                 }
             }
 
@@ -442,7 +530,7 @@
                     <div>
                         <div class="card">
                             <h3><i class="fas fa-receipt"></i> Order Summary</h3>
-                            ${ticketSummary.map(item => `<div class="order-item"><span>${item.tierName} Ticket × ${item.qty}</span><span>₦${item.lineTotal.toLocaleString()}</span></div>`).join('')}
+                            ${ticketSummary.map(item => `<div class="order-item"><span>${item.tierName} Ticket × ${item.qty}</span><span>₦${(totalAmount / Object.values(orderData.tickets).reduce((a, b) => a + b, 0) * item.qty).toLocaleString() || '0'}</span></div>`).join('')}
                             <div class="order-divider"></div>
                             <div class="order-total"><span>Total Amount</span><span>₦${totalAmount.toLocaleString()}</span></div>
                         </div>
@@ -514,6 +602,12 @@
             const viewStatusBtn = document.getElementById('viewStatusBtn');
             if (viewStatusBtn) {
                 viewStatusBtn.addEventListener('click', viewOrderStatus);
+            }
+            
+            // Update WhatsApp link with order reference
+            const whatsappLink = document.getElementById('whatsappLink');
+            if (whatsappLink) {
+                whatsappLink.href = `https://wa.me/2348104044527?text=Hello%2C%20I%20just%20submitted%20my%20payment%20receipt%20for%20order%20${orderRef}`;
             }
         }
 
@@ -604,6 +698,13 @@
                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span>Total Amount:</span><strong>₦${totalAmount.toLocaleString()}</strong></div>
                     <div style="display: flex; justify-content: space-between;"><span>Status:</span><span style="color: var(--warning);">Awaiting Verification</span></div>
                 `;
+                
+                // Update WhatsApp link with order reference
+                const whatsappLink = document.getElementById('whatsappLink');
+                if (whatsappLink) {
+                    whatsappLink.href = `https://wa.me/2348104044527?text=Hello%2C%20I%20just%20submitted%20my%20payment%20receipt%20for%20order%20${orderRef}`;
+                }
+                
                 document.getElementById('successModal').classList.add('active');
 
             } catch (error) {
@@ -632,6 +733,38 @@
         } else {
             showError('No Order Found', 'Unable to find your order information.', 'checkout.html');
         }
+
+        // ----- Help Widget Logic -----
+        (function() {
+            const popup = document.getElementById('helpPopup');
+            const closeBtn = document.getElementById('helpPopupClose');
+            const toggleBtn = document.getElementById('helpToggleBtn');
+            const contacts = document.getElementById('helpContacts');
+
+            // Close popup (hide it)
+            closeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                popup.classList.add('hidden');
+            });
+
+            // Toggle contacts when help button is clicked
+            toggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                contacts.classList.toggle('open');
+                // If contacts open, hide popup
+                if (contacts.classList.contains('open')) {
+                    popup.classList.add('hidden');
+                }
+            });
+
+            // Click outside to close contacts
+            document.addEventListener('click', function(e) {
+                const widget = document.getElementById('helpWidget');
+                if (widget && !widget.contains(e.target)) {
+                    contacts.classList.remove('open');
+                }
+            });
+        })();
     </script>
 </body>
 </html>

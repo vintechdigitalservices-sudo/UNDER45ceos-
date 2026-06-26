@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout | Under 45 CEOs Business & Leadership Summit 2026</title>
+    <title>Checkout · Under 45 CEOs Summit 2026</title>
     <meta name="description" content="Complete your ticket purchase. Review your order and proceed to payment.">
     <meta name="author" content="UDUF Africa">
     <meta name="robots" content="noindex, follow">
-    
-    <!-- Open Graph -->
     <meta property="og:title" content="Checkout | Under 45 CEOs Summit 2026">
     <meta property="og:description" content="Complete your ticket purchase for Nigeria's premier business summit.">
-    <meta property="og:type" content="website">
     <link rel="canonical" href="https://under45ceos.com/checkout.html">
+
+     <!-- Favicon - Use under45.png as the icon in search results -->
+  <link class="icon" type="image/png" href="under45.png" />
+  <link rel="apple-touch-icon" href="under45.png" />
+  <link rel="shortcut icon" href="under45.png" />
     
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -24,7 +26,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
     
-    <style>
+   <style>
         :root {
             --teal-darker: #022a2d;
             --teal-dark: #053c40;
@@ -54,62 +56,62 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: var(--font-body); background: var(--teal-darker); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+        body { font-family: var(--font-body); background: var(--teal-darker); color: var(--white); line-height: 1.5; overflow-x: hidden; font-size: 14px; }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
 
         /* Buttons */
         .btn {
             display: inline-flex;
             align-items: center;
             gap: .5rem;
-            padding: .85rem 2rem;
+            padding: .7rem 1.6rem;
             border-radius: 8px;
             font-family: var(--font-body);
             font-weight: 700;
-            font-size: .9rem;
+            font-size: .8rem;
             letter-spacing: .06em;
             text-transform: uppercase;
             cursor: pointer;
             border: 2px solid transparent;
             transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .btn:hover { transform: translateY(-3px); }
+        .btn:hover { transform: translateY(-2px); }
         .btn--primary { background: var(--orange); color: var(--white); border-color: var(--orange); }
         .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
         .btn--outline { background: transparent; color: var(--orange); border-color: var(--orange); }
         .btn--outline:hover { background: var(--orange); color: var(--white); }
-        .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 6px; }
-        .btn--lg { padding: 1rem 2.5rem; font-size: 1rem; }
+        .btn--nav { background: var(--orange); color: var(--white); padding: .45rem 1.2rem; font-size: .7rem; border-radius: 6px; }
+        .btn--lg { padding: .8rem 2rem; font-size: .9rem; }
         .btn--full { width: 100%; justify-content: center; }
         .pulse-btn { animation: pulseCTA 2.5s ease-in-out infinite; }
         @keyframes pulseCTA { 0%,100% { box-shadow: 0 0 0 0 rgba(240,125,26,.6); } 50% { box-shadow: 0 0 0 10px rgba(240,125,26,0); } }
 
         /* Navigation */
-        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; transition: all .35s; padding: 1.2rem 0; background: transparent; }
-        .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.3); padding: .7rem 0; }
-        .nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
-        .nav__logos { display: flex; align-items: center; gap: .8rem; margin-right: auto; }
-        .nav__logo-uduf { display: flex; align-items: center; gap: .4rem; }
-        .nav__logo-divider { color: rgba(255,255,255,.3); font-size: .9rem; }
-        .nav__logo { display: flex; align-items: center; gap: .3rem; }
-        .nav__links { display: flex; gap: 1.8rem; align-items: center; }
-        .nav__links a { color: rgba(255,255,255,.9); font-size: .875rem; font-weight: 600; transition: color .2s; }
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; transition: all .35s; padding: 1rem 0; background: transparent; }
+        .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.3); padding: .5rem 0; }
+        .nav__inner { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; gap: 1.5rem; }
+        .nav__logos { display: flex; align-items: center; gap: .6rem; margin-right: auto; }
+        .nav__logo-uduf { display: flex; align-items: center; gap: .3rem; }
+        .nav__logo-divider { color: rgba(255,255,255,.3); font-size: .8rem; }
+        .nav__logo { display: flex; align-items: center; gap: .2rem; }
+        .nav__links { display: flex; gap: 1.4rem; align-items: center; }
+        .nav__links a { color: rgba(255,255,255,.9); font-size: .8rem; font-weight: 600; transition: color .2s; }
         .nav__links a:hover { color: var(--orange); }
-        .nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
-        .nav__hamburger span { width: 24px; height: 2px; background: var(--white); transition: all .3s; }
-        .nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav__hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; }
+        .nav__hamburger span { width: 22px; height: 2px; background: var(--white); transition: all .3s; }
+        .nav__hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
         .nav__hamburger.open span:nth-child(2) { opacity: 0; }
-        .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-        .nav__mobile { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--teal-darker); position: fixed; top: 70px; left: 0; right: 0; z-index: 998; }
+        .nav__hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        .nav__mobile { display: none; flex-direction: column; align-items: center; gap: .8rem; padding: 1.2rem; background: var(--teal-darker); position: fixed; top: 60px; left: 0; right: 0; z-index: 998; }
         .nav__mobile.open { display: flex; }
-        .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 600; font-size: 1rem; padding: 0.5rem; }
+        .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 600; font-size: .9rem; padding: 0.4rem; }
 
         /* Page Header */
         .checkout-header {
             text-align: center;
-            padding: 120px 20px 40px;
+            padding: 100px 20px 30px;
             background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
             position: relative;
             overflow: hidden;
@@ -128,35 +130,35 @@
         }
         .checkout-header h1 {
             font-family: var(--font-display);
-            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-size: clamp(2rem, 6vw, 3.2rem);
             letter-spacing: 1px;
             color: var(--white);
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
         .checkout-header p {
             color: rgba(255,255,255,0.75);
-            font-weight: 500;
-            font-size: 1rem;
+            font-weight: 600;
+            font-size: .9rem;
         }
 
         /* Progress Indicator */
         .progress-steps {
-            max-width: 600px;
-            margin: 0 auto 2rem;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 1rem;
+            gap: .8rem;
             flex-wrap: wrap;
         }
         .step {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             color: rgba(255,255,255,0.5);
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: .7rem;
+            font-weight: 700;
         }
         .step.active {
             color: var(--orange);
@@ -165,14 +167,14 @@
             color: var(--success);
         }
         .step .step-num {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: rgba(255,255,255,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75rem;
+            font-size: .65rem;
             font-weight: 700;
         }
         .step.active .step-num {
@@ -184,19 +186,19 @@
             color: var(--white);
         }
         .step-line {
-            width: 40px;
+            width: 30px;
             height: 1px;
             background: rgba(255,255,255,0.2);
         }
 
         /* Checkout Main */
         .checkout-main {
-            padding: 2rem 0 5rem;
+            padding: 1.5rem 0 3rem;
         }
         .checkout-grid {
             display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 2rem;
+            grid-template-columns: 1fr 340px;
+            gap: 1.5rem;
         }
 
         /* Forms */
@@ -204,44 +206,44 @@
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             border-radius: var(--radius-lg);
-            padding: 2rem;
-            margin-bottom: 2rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             border: 1px solid rgba(255,255,255,0.08);
         }
         .form-section h2 {
             font-family: var(--font-display);
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: var(--orange);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
         .form-section h3 {
             font-family: var(--font-serif);
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--white);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.4rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .form-section .subtitle {
             color: rgba(255,255,255,0.6);
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
+            font-size: .8rem;
+            margin-bottom: 1rem;
         }
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            gap: 1rem;
         }
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.3rem;
         }
         .form-group.full-width {
             grid-column: span 2;
         }
         .form-group label {
-            font-size: 0.75rem;
+            font-size: .7rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -251,13 +253,14 @@
             color: var(--orange);
         }
         .form-group input, .form-group select {
-            padding: 0.85rem 1rem;
+            padding: .7rem .9rem;
             border-radius: var(--radius);
             border: 1.5px solid rgba(255,255,255,0.15);
             background: rgba(255,255,255,0.08);
             color: var(--white);
             font-family: var(--font-body);
-            font-size: 0.9rem;
+            font-size: .85rem;
+            font-weight: 600;
             transition: all 0.3s;
         }
         .form-group input:focus, .form-group select:focus {
@@ -269,47 +272,54 @@
             border-color: var(--error);
             animation: shake 0.3s ease-in-out;
         }
+
+        /* FIX: Dropdown option text - black, visible, bold, no glow */
+        .form-group select option {
+            color: #000000 !important;
+            background: #ffffff !important;
+            font-weight: 700 !important;
+            text-shadow: none !important;
+            box-shadow: none !important;
+        }
+
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             75% { transform: translateX(5px); }
         }
         .error-message {
-            font-size: 0.7rem;
+            font-size: .65rem;
             color: var(--error);
             display: none;
         }
         .error-message.show {
             display: block;
         }
-        .input-success {
-            position: relative;
-        }
 
         /* Attendee Card */
         .attendee-card {
             background: rgba(255,255,255,0.03);
             border-radius: var(--radius);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
             border: 1px solid rgba(255,255,255,0.08);
             position: relative;
         }
         .attendee-card__header {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
+            gap: 0.4rem;
+            margin-bottom: .8rem;
+            padding-bottom: .4rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .attendee-card__header i {
             color: var(--orange);
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
         .attendee-card__header h4 {
             font-family: var(--font-serif);
-            font-size: 1rem;
+            font-size: .9rem;
             font-weight: 600;
         }
 
@@ -318,10 +328,10 @@
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
             border-radius: var(--radius-lg);
-            padding: 1.5rem;
+            padding: 1.2rem;
             border: 1px solid rgba(255,255,255,0.08);
             position: sticky;
-            top: 100px;
+            top: 90px;
             height: fit-content;
         }
         .order-summary__header {
@@ -329,12 +339,12 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            padding-bottom: 1rem;
+            padding-bottom: .8rem;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .order-summary__header h3 {
             font-family: var(--font-display);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--orange);
         }
         .order-summary__header i {
@@ -350,50 +360,50 @@
             max-height: 500px;
         }
         .order-items {
-            margin: 1rem 0;
+            margin: .8rem 0;
         }
         .order-item {
             display: flex;
             justify-content: space-between;
-            padding: 0.5rem 0;
-            font-size: 0.85rem;
+            padding: .4rem 0;
+            font-size: .8rem;
             color: rgba(255,255,255,0.8);
         }
         .order-divider {
             height: 1px;
             background: rgba(255,255,255,0.1);
-            margin: 0.8rem 0;
+            margin: .6rem 0;
         }
         .order-total {
             display: flex;
             justify-content: space-between;
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--white);
-            margin-top: 0.8rem;
-            padding-top: 0.8rem;
+            margin-top: .6rem;
+            padding-top: .6rem;
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         /* Checkout Footer */
         .checkout-footer {
-            margin-top: 2rem;
-            padding-top: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
             border-top: 1px solid rgba(255,255,255,0.1);
         }
         .total-amount {
             text-align: right;
-            margin-bottom: 1rem;
+            margin-bottom: .8rem;
         }
         .total-amount span {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: rgba(255,255,255,0.7);
         }
         .total-amount .amount {
             font-family: var(--font-display);
-            font-size: 2rem;
+            font-size: 1.7rem;
             color: var(--orange);
-            margin-left: 1rem;
+            margin-left: .8rem;
         }
 
         /* SSL Badge */
@@ -401,17 +411,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            padding: 0.8rem;
+            gap: 0.4rem;
+            margin-top: .8rem;
+            padding: .6rem;
             background: rgba(16,185,129,0.1);
             border-radius: var(--radius);
             text-align: center;
-            font-size: 0.75rem;
+            font-size: .7rem;
             color: var(--success);
         }
         .ssl-badge i {
-            font-size: 1rem;
+            font-size: .9rem;
         }
 
         /* Loading Overlay */
@@ -438,7 +448,7 @@
             text-align: center;
         }
         .loading-spinner i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--orange);
             animation: spin 1s linear infinite;
         }
@@ -446,47 +456,47 @@
             to { transform: rotate(360deg); }
         }
         .loading-spinner p {
-            margin-top: 1rem;
-            font-size: 0.9rem;
+            margin-top: .8rem;
+            font-size: .85rem;
             color: rgba(255,255,255,0.8);
         }
 
         /* Empty Cart Redirect */
         .empty-cart-message {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 3rem 1.5rem;
         }
         .empty-cart-message i {
-            font-size: 4rem;
+            font-size: 3rem;
             color: var(--gray-400);
-            margin-bottom: 1rem;
+            margin-bottom: .8rem;
         }
         .empty-cart-message h2 {
             font-family: var(--font-display);
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            margin-bottom: .8rem;
         }
         .empty-cart-message p {
             color: rgba(255,255,255,0.7);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         /* Footer */
-        .footer { background: var(--black); padding: 4rem 0 2rem; margin-top: 0; }
-        .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
-        .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
-        .footer__logo-uduf { display: flex; align-items: center; gap: .3rem; }
+        .footer { background: var(--black); padding: 3rem 0 1.5rem; margin-top: 0; }
+        .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .6rem; margin-bottom: .8rem; flex-wrap: wrap; }
+        .footer__logo-uduf { display: flex; align-items: center; gap: .2rem; }
         .uduf-main, .uduf-sub { display: block; }
-        .footer__brand p { font-size: .8rem; color: rgba(255,255,255,.5); max-width: 260px; font-weight: 500; }
-        .footer__links h4 { font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
-        .footer__links ul { display: flex; flex-direction: column; gap: .5rem; }
-        .footer__links a { color: rgba(255,255,255,.5); font-size: .8rem; transition: color .2s; font-weight: 500; }
+        .footer__brand p { font-size: .75rem; color: rgba(255,255,255,.5); max-width: 240px; font-weight: 500; }
+        .footer__links h4 { font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: .8rem; }
+        .footer__links ul { display: flex; flex-direction: column; gap: .4rem; }
+        .footer__links a { color: rgba(255,255,255,.5); font-size: .75rem; transition: color .2s; font-weight: 500; }
         .footer__links a:hover { color: var(--white); }
-        .social-icons { display: flex; gap: .8rem; }
-        .social-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); color: rgba(255,255,255,.6); transition: all .25s; }
-        .social-icon:hover { background: var(--orange); border-color: var(--orange); color: var(--white); transform: translateY(-3px); }
-        .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-        .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.3); font-weight: 500; }
+        .social-icons { display: flex; gap: .6rem; }
+        .social-icon { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); color: rgba(255,255,255,.6); transition: all .25s; }
+        .social-icon:hover { background: var(--orange); border-color: var(--orange); color: var(--white); transform: translateY(-2px); }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .8rem; }
+        .footer__bottom p { font-size: .7rem; color: rgba(255,255,255,.3); font-weight: 500; }
 
         /* Responsive */
         @media (max-width: 1024px) {
@@ -500,7 +510,7 @@
             .form-grid { grid-template-columns: 1fr; }
             .form-group.full-width { grid-column: span 1; }
             .footer__inner { grid-template-columns: 1fr; }
-            .progress-steps { flex-direction: column; gap: 0.5rem; }
+            .progress-steps { flex-direction: column; gap: 0.4rem; }
             .step-line { display: none; }
         }
     </style>
@@ -519,7 +529,6 @@
                 </div>
             </div>
             <ul class="nav__links">
-    
                 <li><a href="impact.html">Impact</a></li>
                 <li><a href="sponsor.html">Sponsors</a></li>
                 <li><a href="ticket.html">Tickets</a></li>
@@ -583,7 +592,7 @@
                     </div>
                     <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
                 </div>
-                              <div class="footer__links">
+                <div class="footer__links">
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="impact.html">Impact</a></li>
@@ -594,14 +603,23 @@
                     <h4>Resources</h4>
                     <ul>
                         <li><a href="faqs.html">FAQs</a></li>
-                    
                         <li><a href="sponsor.html">Sponsor Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
-                <div class="footer__links footer__social"><h4>Follow Us</h4><div class="social-icons"><a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="https://x.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a></div></div>
+                <div class="footer__links footer__social">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
             </div>
-            <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p></div>
+            <div class="footer__bottom">
+                <p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p>
+                <p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p>
+            </div>
         </div>
     </footer>
 
@@ -624,40 +642,89 @@
             appId: "1:801982436580:web:3769913cb6ec23fbaa88f1"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Ticket prices mapping
-        const TICKET_PRICES = {
-            regular: 12500,
-            standard: 20000,
-            premium: 150000
-        };
+        // ---- Helpers: get ticket data from URL (new flow) ----
+        function getTicketFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const ticket = params.get('ticket');
+            const tier = params.get('tier');
+            const type = params.get('type');
+            const price = parseInt(params.get('price')) || 0;
+            const qty = parseInt(params.get('qty')) || 1;
+            const total = parseInt(params.get('total')) || 0;
 
-        const TICKET_NAMES = {
-            regular: 'Regular',
-            standard: 'Standard',
-            premium: 'Premium'
-        };
-
-        // Load cart from localStorage
-        let cart = JSON.parse(localStorage.getItem('under45_cart')) || {};
-        
-        // Calculate total tickets and price
-        let totalTickets = 0;
-        let totalPrice = 0;
-        const ticketItems = [];
-
-        for (const [tier, qty] of Object.entries(cart)) {
-            if (qty > 0) {
-                totalTickets += qty;
-                totalPrice += TICKET_PRICES[tier] * qty;
-                ticketItems.push({ tier, name: TICKET_NAMES[tier], price: TICKET_PRICES[tier], quantity: qty });
+            if (ticket && price > 0) {
+                return {
+                    ticketName: ticket,
+                    tier: tier || ticket,
+                    type: type || '',
+                    price: price,
+                    quantity: qty,
+                    total: total
+                };
             }
+            return null;
         }
 
-        // Check if cart is empty
+        // Build cart from URL (primary) or localStorage (fallback) – but we clear localStorage later
+        function buildCartFromSource() {
+            const urlTicket = getTicketFromURL();
+            let cart = {};
+            let ticketItems = [];
+            let totalTickets = 0;
+            let totalPrice = 0;
+
+            if (urlTicket) {
+                const tierKey = urlTicket.tier.toLowerCase().replace(/\s+/g, '_');
+                cart[tierKey] = urlTicket.quantity;
+                totalTickets = urlTicket.quantity;
+                totalPrice = urlTicket.total;
+                ticketItems.push({
+                    tier: tierKey,
+                    name: urlTicket.ticketName,
+                    price: urlTicket.price,
+                    quantity: urlTicket.quantity,
+                    total: urlTicket.total
+                });
+            } else {
+                // fallback from localStorage (old cart)
+                const savedCart = JSON.parse(localStorage.getItem('under45_cart')) || {};
+                const TICKET_PRICES = {
+                    regular: 12500,
+                    standard: 20000,
+                    premium: 150000
+                };
+                const TICKET_NAMES = {
+                    regular: 'Regular',
+                    standard: 'Standard',
+                    premium: 'Premium'
+                };
+                for (const [tier, qty] of Object.entries(savedCart)) {
+                    if (qty > 0) {
+                        totalTickets += qty;
+                        const price = TICKET_PRICES[tier] || 0;
+                        totalPrice += price * qty;
+                        ticketItems.push({
+                            tier: tier,
+                            name: TICKET_NAMES[tier] || tier,
+                            price: price,
+                            quantity: qty,
+                            total: price * qty
+                        });
+                        cart[tier] = qty;
+                    }
+                }
+            }
+            return { cart, ticketItems, totalTickets, totalPrice };
+        }
+
+        // ---- INIT ----
+        const checkoutData = buildCartFromSource();
+        let { cart, ticketItems, totalTickets, totalPrice } = checkoutData;
+
+        // If no tickets, show empty state
         if (totalTickets === 0) {
             document.getElementById('checkoutContent').innerHTML = `
                 <div class="empty-cart-message">
@@ -676,7 +743,7 @@
                 <div class="checkout-grid">
                     <!-- Left Column - Forms -->
                     <div class="forms-container">
-                        <!-- Customer Information Section -->
+                        <!-- Customer Information -->
                         <div class="form-section">
                             <h2>Customer Information</h2>
                             <div class="form-grid">
@@ -688,17 +755,17 @@
                                 <div class="form-group">
                                     <label>Email Address <span class="required">*</span></label>
                                     <input type="email" id="customerEmail" placeholder="john@company.com">
-                                    <div class="error-message" id="errorEmail">Please enter a valid email address</div>
+                                    <div class="error-message" id="errorEmail">Please enter a valid email</div>
                                 </div>
                                 <div class="form-group">
                                     <label>Phone Number <span class="required">*</span></label>
                                     <input type="tel" id="customerPhone" placeholder="+234 800 000 0000">
-                                    <div class="error-message" id="errorPhone">Please enter your phone number</div>
+                                    <div class="error-message" id="errorPhone">Please enter your phone</div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Under 45 CEOs Tickets Section -->
+                        <!-- Attendees -->
                         <div class="form-section">
                             <h2>Under 45 CEOs Tickets</h2>
                             <p class="subtitle">Please provide details for each attendee</p>
@@ -706,7 +773,7 @@
                         </div>
                     </div>
 
-                    <!-- Right Column - Order Summary Sidebar -->
+                    <!-- Right Column - Order Summary -->
                     <div class="order-summary">
                         <div class="order-summary__header" onclick="toggleOrderSummary()">
                             <h3><i class="fas fa-receipt"></i> Order Summary</h3>
@@ -717,7 +784,7 @@
                                 ${ticketItems.map(item => `
                                     <div class="order-item">
                                         <span>${item.name} Ticket × ${item.quantity}</span>
-                                        <span>₦${(item.price * item.quantity).toLocaleString()}</span>
+                                        <span>₦${item.total.toLocaleString()}</span>
                                     </div>
                                 `).join('')}
                                 <div class="order-divider"></div>
@@ -756,14 +823,11 @@
             
             document.getElementById('checkoutContent').innerHTML = checkoutHtml;
             
-            // Render attendee forms based on total tickets
             renderAttendeeForms();
             
-            // Add event listener to submit button
             document.getElementById('submitCheckoutBtn').addEventListener('click', submitCheckout);
             
-            // Auto-save to localStorage on input
-            attachAutoSaveListeners();
+            // No auto-save to localStorage; we only save to Firestore on submit.
         }
 
         function renderAttendeeForms() {
@@ -771,13 +835,14 @@
             let attendeeIndex = 1;
             let html = '';
             
-            for (const [tier, qty] of Object.entries(cart)) {
+            for (const item of ticketItems) {
+                const tierDisplay = item.name;
+                const tierPrice = item.price;
+                const qty = item.quantity;
+                
                 for (let i = 0; i < qty; i++) {
-                    const tierDisplay = TICKET_NAMES[tier];
-                    const tierPrice = TICKET_PRICES[tier];
-                    
                     html += `
-                        <div class="attendee-card" data-attendee-index="${attendeeIndex}" data-ticket-tier="${tier}">
+                        <div class="attendee-card" data-attendee-index="${attendeeIndex}" data-ticket-tier="${item.tier}">
                             <div class="attendee-card__header">
                                 <i class="fas fa-user-circle"></i>
                                 <h4>Attendee ${attendeeIndex} - ${tierDisplay} Ticket</h4>
@@ -786,7 +851,7 @@
                                 <div class="form-group">
                                     <label>First Name <span class="required">*</span></label>
                                     <input type="text" class="attendee-firstname" data-attendee="${attendeeIndex}" placeholder="John">
-                                    <div class="error-message" id="errorFirstname_${attendeeIndex}">First name is required</div>
+                                    <div class="error-message" id="errorFirstname_${attendeeIndex}">First name required</div>
                                 </div>
                                 <div class="form-group">
                                     <label>Middle Name</label>
@@ -795,27 +860,27 @@
                                 <div class="form-group">
                                     <label>Last Name <span class="required">*</span></label>
                                     <input type="text" class="attendee-lastname" data-attendee="${attendeeIndex}" placeholder="Okafor">
-                                    <div class="error-message" id="errorLastname_${attendeeIndex}">Last name is required</div>
+                                    <div class="error-message" id="errorLastname_${attendeeIndex}">Last name required</div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Phone Number <span class="required">*</span></label>
+                                    <label>Phone <span class="required">*</span></label>
                                     <input type="tel" class="attendee-phone" data-attendee="${attendeeIndex}" placeholder="+234 800 000 0000">
-                                    <div class="error-message" id="errorPhone_${attendeeIndex}">Phone number is required</div>
+                                    <div class="error-message" id="errorPhone_${attendeeIndex}">Phone required</div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Company/Business <span class="required">*</span></label>
+                                    <label>Company <span class="required">*</span></label>
                                     <input type="text" class="attendee-company" data-attendee="${attendeeIndex}" placeholder="Coscharis Group">
-                                    <div class="error-message" id="errorCompany_${attendeeIndex}">Company name is required</div>
+                                    <div class="error-message" id="errorCompany_${attendeeIndex}">Company required</div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Location/Address <span class="required">*</span></label>
+                                    <label>Location <span class="required">*</span></label>
                                     <input type="text" class="attendee-location" data-attendee="${attendeeIndex}" placeholder="Lagos, Nigeria">
-                                    <div class="error-message" id="errorLocation_${attendeeIndex}">Location is required</div>
+                                    <div class="error-message" id="errorLocation_${attendeeIndex}">Location required</div>
                                 </div>
                                 <div class="form-group">
                                     <label>Age Range <span class="required">*</span></label>
                                     <select class="attendee-age" data-attendee="${attendeeIndex}">
-                                        <option value="">Select age range</option>
+                                        <option value="">Select age</option>
                                         <option value="10-20">10-20 years</option>
                                         <option value="21-30">21-30 years</option>
                                         <option value="31-40">31-40 years</option>
@@ -827,14 +892,14 @@
                                 <div class="form-group">
                                     <label>Social Status <span class="required">*</span></label>
                                     <select class="attendee-status" data-attendee="${attendeeIndex}">
-                                        <option value="">Select social status</option>
+                                        <option value="">Select status</option>
                                         <option value="Student">Student</option>
                                         <option value="Entrepreneur">Entrepreneur</option>
                                         <option value="SME">SME Owner</option>
                                         <option value="Investor">Investor</option>
                                         <option value="None">None</option>
                                     </select>
-                                    <div class="error-message" id="errorStatus_${attendeeIndex}">Please select social status</div>
+                                    <div class="error-message" id="errorStatus_${attendeeIndex}">Please select status</div>
                                 </div>
                                 <div class="form-group">
                                     <label>Ticket Tier</label>
@@ -849,83 +914,22 @@
             
             container.innerHTML = html;
             
-            // Load saved attendee data from localStorage
-            loadSavedAttendeeData();
+            // Clear any old checkout progress from localStorage to prevent auto-fill
+            localStorage.removeItem('checkout_progress');
         }
 
-        function attachAutoSaveListeners() {
-            const inputs = document.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                input.addEventListener('input', () => {
-                    saveCheckoutProgress();
-                });
-            });
-        }
-
-        function saveCheckoutProgress() {
-            const checkoutData = {
-                customerFullName: document.getElementById('customerFullName')?.value || '',
-                customerEmail: document.getElementById('customerEmail')?.value || '',
-                customerPhone: document.getElementById('customerPhone')?.value || '',
-                attendees: []
-            };
-            
-            const attendeeCards = document.querySelectorAll('.attendee-card');
-            attendeeCards.forEach((card, idx) => {
-                const attendeeIndex = idx + 1;
-                checkoutData.attendees.push({
-                    firstname: card.querySelector('.attendee-firstname')?.value || '',
-                    middlename: card.querySelector('.attendee-middlename')?.value || '',
-                    lastname: card.querySelector('.attendee-lastname')?.value || '',
-                    phone: card.querySelector('.attendee-phone')?.value || '',
-                    company: card.querySelector('.attendee-company')?.value || '',
-                    location: card.querySelector('.attendee-location')?.value || '',
-                    age: card.querySelector('.attendee-age')?.value || '',
-                    status: card.querySelector('.attendee-status')?.value || '',
-                    ticketTier: card.getAttribute('data-ticket-tier') || ''
-                });
-            });
-            
-            localStorage.setItem('checkout_progress', JSON.stringify(checkoutData));
-        }
-
-        function loadSavedAttendeeData() {
-            const savedData = localStorage.getItem('checkout_progress');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                if (data.customerFullName) document.getElementById('customerFullName').value = data.customerFullName;
-                if (data.customerEmail) document.getElementById('customerEmail').value = data.customerEmail;
-                if (data.customerPhone) document.getElementById('customerPhone').value = data.customerPhone;
-                
-                const attendeeCards = document.querySelectorAll('.attendee-card');
-                data.attendees.forEach((attendee, idx) => {
-                    if (attendeeCards[idx]) {
-                        attendeeCards[idx].querySelector('.attendee-firstname').value = attendee.firstname || '';
-                        attendeeCards[idx].querySelector('.attendee-middlename').value = attendee.middlename || '';
-                        attendeeCards[idx].querySelector('.attendee-lastname').value = attendee.lastname || '';
-                        attendeeCards[idx].querySelector('.attendee-phone').value = attendee.phone || '';
-                        attendeeCards[idx].querySelector('.attendee-company').value = attendee.company || '';
-                        attendeeCards[idx].querySelector('.attendee-location').value = attendee.location || '';
-                        attendeeCards[idx].querySelector('.attendee-age').value = attendee.age || '';
-                        attendeeCards[idx].querySelector('.attendee-status').value = attendee.status || '';
-                    }
-                });
-            }
-        }
-
+        // ----- VALIDATION -----
         function validateAndScrollToInvalid() {
             let isValid = true;
             let firstInvalidElement = null;
             
-            // Remove existing error classes and shake animations
             document.querySelectorAll('.form-group input.error, .form-group select.error').forEach(el => {
                 el.classList.remove('error');
             });
             
-            // Validate customer fields
+            // Customer fields
             const fullName = document.getElementById('customerFullName');
-            const fullNameValue = fullName.value.trim();
-            if (!fullNameValue) {
+            if (!fullName.value.trim()) {
                 document.getElementById('errorFullName').classList.add('show');
                 fullName.classList.add('error');
                 if (!firstInvalidElement) firstInvalidElement = fullName;
@@ -935,9 +939,8 @@
             }
             
             const email = document.getElementById('customerEmail');
-            const emailValue = email.value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailValue || !emailRegex.test(emailValue)) {
+            if (!email.value.trim() || !emailRegex.test(email.value.trim())) {
                 document.getElementById('errorEmail').classList.add('show');
                 email.classList.add('error');
                 if (!firstInvalidElement) firstInvalidElement = email;
@@ -947,8 +950,7 @@
             }
             
             const phone = document.getElementById('customerPhone');
-            const phoneValue = phone.value.trim();
-            if (!phoneValue) {
+            if (!phone.value.trim()) {
                 document.getElementById('errorPhone').classList.add('show');
                 phone.classList.add('error');
                 if (!firstInvalidElement) firstInvalidElement = phone;
@@ -957,14 +959,13 @@
                 document.getElementById('errorPhone').classList.remove('show');
             }
             
-            // Validate each attendee
+            // Attendees
             const attendeeCards = document.querySelectorAll('.attendee-card');
             attendeeCards.forEach((card, idx) => {
                 const attendeeIndex = idx + 1;
                 
                 const firstname = card.querySelector('.attendee-firstname');
-                const firstnameValue = firstname.value.trim();
-                if (!firstnameValue) {
+                if (!firstname.value.trim()) {
                     document.getElementById(`errorFirstname_${attendeeIndex}`).classList.add('show');
                     firstname.classList.add('error');
                     if (!firstInvalidElement) firstInvalidElement = firstname;
@@ -974,8 +975,7 @@
                 }
                 
                 const lastname = card.querySelector('.attendee-lastname');
-                const lastnameValue = lastname.value.trim();
-                if (!lastnameValue) {
+                if (!lastname.value.trim()) {
                     document.getElementById(`errorLastname_${attendeeIndex}`).classList.add('show');
                     lastname.classList.add('error');
                     if (!firstInvalidElement) firstInvalidElement = lastname;
@@ -985,8 +985,7 @@
                 }
                 
                 const phoneEl = card.querySelector('.attendee-phone');
-                const phoneValueEl = phoneEl.value.trim();
-                if (!phoneValueEl) {
+                if (!phoneEl.value.trim()) {
                     document.getElementById(`errorPhone_${attendeeIndex}`).classList.add('show');
                     phoneEl.classList.add('error');
                     if (!firstInvalidElement) firstInvalidElement = phoneEl;
@@ -996,8 +995,7 @@
                 }
                 
                 const company = card.querySelector('.attendee-company');
-                const companyValue = company.value.trim();
-                if (!companyValue) {
+                if (!company.value.trim()) {
                     document.getElementById(`errorCompany_${attendeeIndex}`).classList.add('show');
                     company.classList.add('error');
                     if (!firstInvalidElement) firstInvalidElement = company;
@@ -1007,8 +1005,7 @@
                 }
                 
                 const location = card.querySelector('.attendee-location');
-                const locationValue = location.value.trim();
-                if (!locationValue) {
+                if (!location.value.trim()) {
                     document.getElementById(`errorLocation_${attendeeIndex}`).classList.add('show');
                     location.classList.add('error');
                     if (!firstInvalidElement) firstInvalidElement = location;
@@ -1018,8 +1015,7 @@
                 }
                 
                 const age = card.querySelector('.attendee-age');
-                const ageValue = age.value;
-                if (!ageValue) {
+                if (!age.value) {
                     document.getElementById(`errorAge_${attendeeIndex}`).classList.add('show');
                     age.classList.add('error');
                     if (!firstInvalidElement) firstInvalidElement = age;
@@ -1029,8 +1025,7 @@
                 }
                 
                 const status = card.querySelector('.attendee-status');
-                const statusValue = status.value;
-                if (!statusValue) {
+                if (!status.value) {
                     document.getElementById(`errorStatus_${attendeeIndex}`).classList.add('show');
                     status.classList.add('error');
                     if (!firstInvalidElement) firstInvalidElement = status;
@@ -1040,14 +1035,10 @@
                 }
             });
             
-            // Scroll to first invalid element with smooth behavior
             if (firstInvalidElement) {
                 firstInvalidElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // Add shake animation class
                 firstInvalidElement.classList.add('error');
-                setTimeout(() => {
-                    firstInvalidElement.classList.remove('error');
-                }, 500);
+                setTimeout(() => firstInvalidElement.classList.remove('error'), 500);
             }
             
             return isValid;
@@ -1059,8 +1050,8 @@
             return `U45-${year}-${randomPart}`;
         }
 
+        // ----- SUBMIT: Save to Firestore, then redirect with orderId in URL -----
         async function submitCheckout() {
-            // Validate form and scroll to invalid fields
             if (!validateAndScrollToInvalid()) {
                 return;
             }
@@ -1105,25 +1096,23 @@
                 totalTickets: totalTickets,
                 orderDate: firebase.firestore.FieldValue.serverTimestamp(),
                 paymentStatus: 'pending',
-                status: 'awaiting_payment'
+                status: 'awaiting_payment',
+                source: 'manual_transfer'
             };
             
             try {
-                // Save to Firestore with custom document ID (using transactionId)
                 await db.collection('checkouts').doc(transactionId).set(orderData);
                 
-                // Save to localStorage for payment page (NO URL PARAMETERS)
-                localStorage.setItem('current_order_id', transactionId);
-                localStorage.setItem('current_order', JSON.stringify(orderData));
-                localStorage.removeItem('checkout_progress');
-                
-                // Clear cart from localStorage
+                // Clear localStorage cart and progress (no local storage for checkout)
                 localStorage.removeItem('under45_cart');
+                localStorage.removeItem('checkout_progress');
+                // Optionally store order ref for payment page but we use URL param
+                localStorage.setItem('current_order_id', transactionId);
                 
-                // Redirect to payment page with clean URL (no parameters!)
-                window.location.href = 'payment.html';
+                // Redirect to payment page with order ref in URL
+                window.location.href = 'payment.html?ref=' + transactionId;
             } catch (error) {
-                console.error('Error saving order:', error);
+                console.error('Firestore save error:', error);
                 loadingOverlay.classList.remove('active');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right"></i>';

@@ -13,6 +13,11 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://under45ceos.com/ticket.html">
     <meta name="twitter:card" content="summary_large_image">
+
+     <!-- Favicon - Use under45.png as the icon in search results -->
+  <link class="icon" type="image/png" href="under45.png" />
+  <link rel="apple-touch-icon" href="under45.png" />
+  <link rel="shortcut icon" href="under45.png" />
     <link rel="canonical" href="https://under45ceos.udufafrica.org/ticket.html">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -100,87 +105,82 @@
         .nav__mobile.open { display: flex; }
         .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 700; font-size: 1rem; padding: 0.5rem; }
 
-/* Page Header */
-.page-header {
-    text-align: center;
-    padding: 130px 20px 55px;
-    background:
-        radial-gradient(circle at top right, rgba(240,125,26,.18), transparent 35%),
-        radial-gradient(circle at bottom left, rgba(26,138,148,.15), transparent 35%),
-        linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 130px 20px 55px;
+            background:
+                radial-gradient(circle at top right, rgba(240,125,26,.18), transparent 0%),
+                radial-gradient(circle at bottom left, rgba(26,138,148,.15), transparent 35%),
+                linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .page-header.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .page-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, transparent, rgba(255,255,255,.03), transparent);
+            pointer-events: none;
+        }
+        .page-header span {
+            color: var(--orange);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            display: inline-block;
+            padding: .45rem 1rem;
+            border: 1px solid rgba(240,125,26,.35);
+            border-radius: 40px;
+            background: rgba(240,125,26,.08);
+            margin-bottom: 1rem;
+        }
+        .page-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 8vw, 4.5rem);
+            letter-spacing: 1px;
+            margin: 0;
+            color: var(--white);
+            line-height: 1;
+            font-weight: 700;
+        }
+        .page-header p {
+            margin: 1.3rem auto 0;
+            max-width: 760px;
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 3vw, 1.7rem);
+            letter-spacing: .12em;
+            line-height: 1.45;
+            text-transform: uppercase;
+            color: var(--white);
+            font-weight: 700;
+            padding: 1rem 1.3rem;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 14px;
+            background: rgba(255,255,255,.04);
+            box-shadow: 0 12px 35px rgba(0,0,0,.18);
+        }
 
-.page-header.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
+        @media (max-width:768px){
+            .page-header{
+                padding:110px 18px 45px;
+            }
+            .page-header p{
+                letter-spacing: .08em;
+                padding: .9rem 1rem;
+            }
+        }
 
-.page-header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(90deg, transparent, rgba(255,255,255,.03), transparent);
-    pointer-events: none;
-}
-
-.page-header span {
-    color: var(--orange);
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-weight: 800;
-    font-size: 0.8rem;
-    display: inline-block;
-    padding: .45rem 1rem;
-    border: 1px solid rgba(240,125,26,.35);
-    border-radius: 40px;
-    background: rgba(240,125,26,.08);
-    margin-bottom: 1rem;
-}
-
-.page-header h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2.8rem, 8vw, 4.5rem);
-    letter-spacing: 1px;
-    margin: 0;
-    color: var(--white);
-    line-height: 1;
-    font-weight: 700;
-}
-
-.page-header p {
-    margin: 1.3rem auto 0;
-    max-width: 760px;
-    font-family: var(--font-display);
-    font-size: clamp(1.1rem, 3vw, 1.7rem);
-    letter-spacing: .12em;
-    line-height: 1.45;
-    text-transform: uppercase;
-    color: var(--white);
-    font-weight: 700;
-    padding: 1rem 1.3rem;
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 14px;
-    background: rgba(255,255,255,.04);
-    box-shadow: 0 12px 35px rgba(0,0,0,.18);
-}
-
-@media (max-width:768px){
-    .page-header{
-        padding:110px 18px 45px;
-    }
-
-    .page-header p{
-        letter-spacing: .08em;
-        padding: .9rem 1rem;
-    }
-}
         /* Pricing Grid */
         .pricing-section { padding: 4rem 0; }
         .pricing-grid {
@@ -209,14 +209,12 @@
         }
         .ticket-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,.25); box-shadow: var(--shadow-deep); }
 
-        /* Featured card for Executive */
         .ticket-card--featured {
             background: rgba(240, 125, 26, 0.75);
             border-color: var(--orange);
         }
         .ticket-card--featured:hover { transform: translateY(-10px); }
 
-        /* Founders Circle Premium */
         .ticket-card--premium {
             background: linear-gradient(160deg, #1a1000 0%, #2a1f00 50%, #0f0b00 100%);
             border-color: var(--gold);
@@ -224,7 +222,6 @@
         }
         .ticket-card--premium:hover { border-color: var(--gold-light); }
 
-        /* Savings ribbon */
         .savings-ribbon {
             position: absolute;
             top: 0;
@@ -409,7 +406,6 @@
             cursor: pointer;
             font-weight: 800;
         }
-        /* White stroke for featured ticket CTA */
         .ticket-card--featured .ticket-btn {
             background: var(--white);
             color: var(--orange);
@@ -530,7 +526,350 @@
         .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
         .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.4); font-weight: 600; }
 
-        /* Responsive */
+        /* ================================================================
+               NEW: MODAL OVERLAY + SIDE DRAWER
+               ================================================================ */
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            padding: 1.5rem;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-box {
+            background: var(--teal-darker);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: var(--radius-lg);
+            max-width: 520px;
+            width: 100%;
+            padding: 2.5rem 2rem 2rem;
+            text-align: center;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+            opacity: 0;
+            box-shadow: var(--shadow-deep);
+            position: relative;
+        }
+        .modal-overlay.open .modal-box {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .modal-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+        .modal-close:hover { color: var(--white); }
+        .modal-box .modal-icon {
+            font-size: 2.6rem;
+            color: var(--orange);
+            margin-bottom: 0.5rem;
+        }
+        .modal-box h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            letter-spacing: 0.5px;
+            color: var(--white);
+            margin-bottom: 0.25rem;
+        }
+        .modal-box .modal-sub {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.75rem;
+        }
+        .modal-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .modal-options .btn {
+            justify-content: center;
+            padding: 0.9rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            width: 100%;
+        }
+        .modal-options .btn--manual {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.2);
+            color: var(--white);
+        }
+        .modal-options .btn--manual:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.35);
+            transform: translateY(-3px);
+        }
+        .modal-options .btn--online {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: var(--white);
+        }
+        .modal-options .btn--online:hover {
+            background: var(--orange-deep);
+            border-color: var(--orange-deep);
+            box-shadow: 0 8px 30px rgba(240,125,26,0.4);
+        }
+        .modal-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: rgba(255,255,255,0.2);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin: 0.2rem 0;
+        }
+        .modal-divider::before,
+        .modal-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.08);
+        }
+        .modal-ticket-preview {
+            background: rgba(255,255,255,0.04);
+            border-radius: var(--radius);
+            padding: 0.6rem 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .modal-ticket-preview .ticket-name-sm {
+            font-weight: 700;
+            color: var(--white);
+        }
+        .modal-ticket-preview .ticket-price-sm {
+            color: var(--orange);
+            font-weight: 800;
+        }
+
+        /* Side Drawer */
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2100;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+        .drawer-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            max-width: 440px;
+            z-index: 2200;
+            background: var(--teal-darker);
+            border-left: 1px solid rgba(255,255,255,0.08);
+            box-shadow: -8px 0 40px rgba(0,0,0,0.5);
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+        .drawer.open {
+            transform: translateX(0);
+        }
+        .drawer-header {
+            padding: 1.5rem 1.5rem 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            flex-shrink: 0;
+        }
+        .drawer-header h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+            color: var(--white);
+            margin: 0;
+        }
+        .drawer-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+            padding: 0.2rem 0.5rem;
+        }
+        .drawer-close:hover { color: var(--white); }
+        .drawer-body {
+            padding: 1.5rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .drawer-body .drawer-ticket-info {
+            background: rgba(255,255,255,0.04);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 1.5rem;
+        }
+        .drawer-body .drawer-ticket-info .dt-tier {
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+        }
+        .drawer-body .drawer-ticket-info .dt-name {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--white);
+            font-weight: 800;
+            margin: 0.2rem 0 0.1rem;
+        }
+        .drawer-body .drawer-ticket-info .dt-price {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--orange);
+            font-weight: 700;
+            margin-top: 0.3rem;
+        }
+        .drawer-body .drawer-ticket-info .dt-price strike {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.35);
+            margin-left: 0.6rem;
+            font-weight: 400;
+        }
+        .drawer-body .drawer-ticket-info .dt-desc {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+        .drawer-body .drawer-ticket-info .dt-features {
+            margin-top: 0.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 0.8rem;
+        }
+        .drawer-body .drawer-ticket-info .dt-features span {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 600;
+            background: rgba(255,255,255,0.06);
+            padding: 0.15rem 0.7rem;
+            border-radius: 1rem;
+        }
+        .drawer-body .drawer-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .drawer-body .drawer-quantity {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .drawer-body .drawer-quantity .qty-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: var(--white);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .drawer-body .drawer-quantity .qty-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--orange);
+        }
+        .drawer-body .drawer-quantity .qty-num {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            min-width: 30px;
+            text-align: center;
+        }
+        .drawer-body .drawer-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0 1.2rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        .drawer-body .drawer-total .total-label {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+        .drawer-body .drawer-total .total-amount {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--orange);
+        }
+        .drawer-body .btn--proceed {
+            width: 100%;
+            justify-content: center;
+            padding: 1rem;
+            font-size: 1rem;
+            background: var(--orange);
+            border-color: var(--orange);
+            color: var(--white);
+            border-radius: 6px;
+        }
+        .drawer-body .btn--proceed:hover {
+            background: var(--orange-deep);
+            border-color: var(--orange-deep);
+            box-shadow: 0 8px 30px rgba(240,125,26,0.4);
+        }
+        .drawer-body .drawer-note {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.3);
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        /* Responsive for modal + drawer */
         @media (max-width: 1024px) {
             .pricing-grid { grid-template-columns: repeat(2, 1fr); max-width: 800px; margin-left: auto; margin-right: auto; }
             .ticket-card--featured { transform: none; }
@@ -543,6 +882,8 @@
             .footer__inner { grid-template-columns: 1fr; }
             .page-header { padding: 100px 20px 40px; }
             .pricing-grid { grid-template-columns: 1fr; max-width: 500px; }
+            .modal-box { padding: 2rem 1.25rem 1.5rem; margin: 1rem; }
+            .drawer { max-width: 100%; }
         }
     </style>
 </head>
@@ -594,25 +935,25 @@
             <div class="pricing-grid" id="pricingGrid">
 
                 <!-- TIER 01 — ESSENTIAL (₦5,000) -->
-                <div class="ticket-card" data-delay="0">
+                <div class="ticket-card" data-delay="0" data-tier="Essential" data-price="5000" data-type="Tier 01 / Entry" data-selar="https://selar.com/m/udufu45ceos2026">
                     <div class="ticket-tier">TIER 01 / ENTRY</div>
                     <div class="ticket-name">Essential</div>
                     <p class="ticket-desc">Affordable access to the main stage. Perfect for students, early-stage founders, and budget-conscious go-getters.</p>
                     <div class="ticket-price-section">
                         <div class="ticket-price">₦5,000</div>
-                        <div class="ticket-price-note">Fixed price · </div>
+                        <div class="ticket-price-note">Fixed price · Day 1 access</div>
                     </div>
                     <div class="ticket-features-title">INCLUDES</div>
                     <ul class="ticket-features">
-                        <li>Full access to main conference hall <span class="day-tag"></span></li>
+                        <li>Full access to main conference hall <span class="day-tag">DAY 1</span></li>
                         <li>Light Refreshment</li>
                         <li>General seating setting</li>
                     </ul>
-                    <a href="https://selar.com/m/udufu45ceos2026" target="_blank" class="btn btn--outline-light ticket-btn">GET TICKET →</a>
+                    <a href="#" class="btn btn--outline-light ticket-btn js-get-ticket" data-tier="Essential" data-price="5000" data-type="Tier 01 / Entry" data-selar="https://selar.com/m/udufu45ceos2026">GET TICKET →</a>
                 </div>
 
                 <!-- TIER 02 — GROWTH (Early Bird ₦15,000 / Regular ₦20,000) -->
-                <div class="ticket-card" data-delay="1">
+                <div class="ticket-card" data-delay="1" data-tier="Growth" data-price="15000" data-type="Tier 02 / Core" data-selar="https://selar.com/m/udufu45ceos2026">
                     <div class="savings-ribbon">-25% OFF</div>
                     <div class="ticket-tier">TIER 02 / CORE</div>
                     <div class="ticket-name">Growth</div>
@@ -640,11 +981,11 @@
                         <li>Refreshments</li>
                         <li>General seating setting</li>
                     </ul>
-                    <a href="https://selar.com/m/udufu45ceos2026" target="_blank" class="btn ticket-btn">GET TICKET →</a>
+                    <a href="#" class="btn ticket-btn js-get-ticket" data-tier="Growth" data-price="15000" data-type="Tier 02 / Core" data-selar="https://selar.com/m/udufu45ceos2026">GET TICKET →</a>
                 </div>
 
                 <!-- TIER 03 — EXECUTIVE (Early Bird ₦25,000 / Regular ₦35,000) -->
-                <div class="ticket-card ticket-card--featured" data-delay="2">
+                <div class="ticket-card ticket-card--featured" data-delay="2" data-tier="Executive" data-price="25000" data-type="Tier 03 / Executive" data-selar="https://selar.com/m/udufu45ceos2026">
                     <div class="savings-ribbon">-29% OFF</div>
                     <div class="ticket-badge">MOST POPULAR</div>
                     <div class="ticket-tier" style="color:rgba(255,255,255,.7)">TIER 03 / EXECUTIVE</div>
@@ -676,11 +1017,11 @@
                         <li>Official Under45CEOs participation e-certificate</li>
                         <li><strong>All Growth Benefits</strong></li>
                     </ul>
-                    <a href="https://selar.com/m/udufu45ceos2026" target="_blank" class="btn ticket-btn">GET TICKET →</a>
+                    <a href="#" class="btn ticket-btn js-get-ticket" data-tier="Executive" data-price="25000" data-type="Tier 03 / Executive" data-selar="https://selar.com/m/udufu45ceos2026">GET TICKET →</a>
                 </div>
 
                 <!-- TIER 04 — FOUNDERS INNER CIRCLE (Early Bird ₦130,000 / Regular ₦200,000) -->
-                <div class="ticket-card ticket-card--premium" data-delay="3">
+                <div class="ticket-card ticket-card--premium" data-delay="3" data-tier="Founders Inner Circle" data-price="130000" data-type="Tier 04 / Pinnacle" data-selar="https://selar.com/m/udufu45ceos2026">
                     <div class="savings-ribbon">-35% OFF</div>
                     <div class="ticket-badge ticket-badge--gold">★ FOUNDER'S EXCLUSIVE</div>
                     <div class="ticket-tier" style="color:rgba(240,192,64,.6)">TIER 04 / PINNACLE</div>
@@ -711,7 +1052,7 @@
                         <li>Hard copy certification of participation</li>
                         <li><strong>All benefits in Executive</strong></li>
                     </ul>
-                    <a href="https://selar.com/m/udufu45ceos2026" target="_blank" class="btn btn--gold ticket-btn">GET TICKET →</a>
+                    <a href="#" class="btn btn--gold ticket-btn js-get-ticket" data-tier="Founders Inner Circle" data-price="130000" data-type="Tier 04 / Pinnacle" data-selar="https://selar.com/m/udufu45ceos2026">GET TICKET →</a>
                 </div>
 
             </div>
@@ -783,8 +1124,76 @@
         </div>
     </footer>
 
+    <!-- ================================================================
+    NEW: MODAL OVERLAY
+    ================================================================ -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-box">
+            <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+            <div class="modal-icon"><i class="fas fa-ticket-alt"></i></div>
+            <h3>Choose Payment Method</h3>
+            <p class="modal-sub">How would you like to pay for your ticket?</p>
+
+            <!-- preview of selected ticket -->
+            <div class="modal-ticket-preview" id="modalTicketPreview">
+                <span class="ticket-name-sm" id="modalTicketName">—</span>
+                <span class="ticket-price-sm" id="modalTicketPrice">—</span>
+            </div>
+
+            <div class="modal-options">
+                <button class="btn btn--online" id="modalPayOnline">
+                    <i class="fas fa-credit-card"></i> Pay Online (Selar)
+                </button>
+                <div class="modal-divider">or</div>
+                <button class="btn btn--manual" id="modalPayManual">
+                    <i class="fas fa-university"></i> Bank Transfer (Manual)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    NEW: SIDE DRAWER
+    ================================================================ -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="drawer" id="ticketDrawer">
+        <div class="drawer-header">
+            <h3>Your Ticket</h3>
+            <button class="drawer-close" id="drawerClose" aria-label="Close drawer">&times;</button>
+        </div>
+        <div class="drawer-body">
+            <div class="drawer-ticket-info" id="drawerTicketInfo">
+                <div class="dt-tier" id="drawerTier">Tier</div>
+                <div class="dt-name" id="drawerName">Ticket Name</div>
+                <div class="dt-price" id="drawerPrice">₦0</div>
+                <div class="dt-desc" id="drawerDesc">Ticket description</div>
+                <div class="dt-features" id="drawerFeatures"></div>
+            </div>
+
+            <div class="drawer-label">Quantity</div>
+            <div class="drawer-quantity">
+                <button class="qty-btn" id="qtyMinus">−</button>
+                <span class="qty-num" id="qtyNum">1</span>
+                <button class="qty-btn" id="qtyPlus">+</button>
+            </div>
+
+            <div class="drawer-total">
+                <span class="total-label">Total</span>
+                <span class="total-amount" id="drawerTotal">₦0</span>
+            </div>
+
+            <button class="btn btn--proceed" id="drawerProceed">
+                <i class="fas fa-arrow-right"></i> Proceed to Checkout
+            </button>
+            <p class="drawer-note">You will complete your payment on the next page.</p>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    EXISTING SCRIPTS + NEW FUNCTIONALITY
+    ================================================================ -->
     <script>
-        // ===== NAVBAR SCROLL =====
+        // ===== EXISTING: NAVBAR SCROLL =====
         let ticking = false;
         const navbar = document.getElementById('navbar');
         function updateNavbar() {
@@ -796,7 +1205,7 @@
         }, { passive: true });
         updateNavbar();
 
-        // ===== MOBILE MENU =====
+        // ===== EXISTING: MOBILE MENU =====
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobileMenu');
         if (hamburger && mobileMenu) {
@@ -810,7 +1219,7 @@
             }));
         }
 
-        // ===== INTERSECTION OBSERVER FOR ANIMATIONS =====
+        // ===== EXISTING: INTERSECTION OBSERVER =====
         const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
         const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -820,15 +1229,235 @@
                 }
             });
         }, observerOptions);
-        
+
         const pageHeader = document.getElementById('pageHeader');
         if (pageHeader) sectionObserver.observe(pageHeader);
-        
+
         const ticketCards = document.querySelectorAll('.ticket-card');
         ticketCards.forEach(card => sectionObserver.observe(card));
-        
+
         const sponsorTeaser = document.getElementById('sponsorTeaser');
         if (sponsorTeaser) sectionObserver.observe(sponsorTeaser);
+
+        // ================================================================
+        // NEW: MODAL + DRAWER LOGIC
+        // ================================================================
+
+        // DOM refs
+        const modalOverlay = document.getElementById('paymentModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalTicketName = document.getElementById('modalTicketName');
+        const modalTicketPrice = document.getElementById('modalTicketPrice');
+        const modalPayOnline = document.getElementById('modalPayOnline');
+        const modalPayManual = document.getElementById('modalPayManual');
+
+        const drawerOverlay = document.getElementById('drawerOverlay');
+        const ticketDrawer = document.getElementById('ticketDrawer');
+        const drawerClose = document.getElementById('drawerClose');
+        const drawerTier = document.getElementById('drawerTier');
+        const drawerName = document.getElementById('drawerName');
+        const drawerPrice = document.getElementById('drawerPrice');
+        const drawerDesc = document.getElementById('drawerDesc');
+        const drawerFeatures = document.getElementById('drawerFeatures');
+        const qtyNum = document.getElementById('qtyNum');
+        const qtyMinus = document.getElementById('qtyMinus');
+        const qtyPlus = document.getElementById('qtyPlus');
+        const drawerTotal = document.getElementById('drawerTotal');
+        const drawerProceed = document.getElementById('drawerProceed');
+
+        // State
+        let selectedTicket = null; // { tier, name, price, type, selar, desc, features }
+        let quantity = 1;
+
+        // Helper: format currency
+        function formatCurrency(amount) {
+            return '₦' + Number(amount).toLocaleString();
+        }
+
+        // Helper: get ticket data from card
+        function getTicketDataFromCard(card) {
+            const tier = card.dataset.tier || 'Ticket';
+            const price = parseInt(card.dataset.price) || 0;
+            const type = card.dataset.type || '';
+            const selar = card.dataset.selar || 'https://selar.com/m/udufu45ceos2026';
+
+            // Try to get description and features from the card
+            const descEl = card.querySelector('.ticket-desc');
+            const desc = descEl ? descEl.textContent.trim() : '';
+
+            const features = [];
+            const featureItems = card.querySelectorAll('.ticket-features li');
+            featureItems.forEach(li => {
+                const text = li.textContent.trim();
+                if (text) features.push(text);
+            });
+
+            // Get the ticket name
+            const nameEl = card.querySelector('.ticket-name');
+            const name = nameEl ? nameEl.textContent.trim() : tier;
+
+            return { tier, name, price, type, selar, desc, features };
+        }
+
+        // Open modal with ticket data
+        function openModal(ticketData) {
+            selectedTicket = ticketData;
+            modalTicketName.textContent = ticketData.name;
+            modalTicketPrice.textContent = formatCurrency(ticketData.price);
+            modalOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            modalOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Open drawer with ticket data
+        function openDrawer(ticketData) {
+            // Populate drawer
+            drawerTier.textContent = ticketData.type || ticketData.tier;
+            drawerName.textContent = ticketData.name;
+            drawerPrice.textContent = formatCurrency(ticketData.price);
+            drawerDesc.textContent = ticketData.desc || '';
+
+            // Features
+            drawerFeatures.innerHTML = '';
+            if (ticketData.features && ticketData.features.length) {
+                ticketData.features.forEach(f => {
+                    const span = document.createElement('span');
+                    span.textContent = f;
+                    drawerFeatures.appendChild(span);
+                });
+            } else {
+                const span = document.createElement('span');
+                span.textContent = 'Full event access';
+                drawerFeatures.appendChild(span);
+            }
+
+            // Reset quantity
+            quantity = 1;
+            qtyNum.textContent = quantity;
+            updateDrawerTotal();
+
+            // Open drawer
+            ticketDrawer.classList.add('open');
+            drawerOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close drawer
+        function closeDrawer() {
+            ticketDrawer.classList.remove('open');
+            drawerOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Update total in drawer
+        function updateDrawerTotal() {
+            const total = selectedTicket ? selectedTicket.price * quantity : 0;
+            drawerTotal.textContent = formatCurrency(total);
+        }
+
+        // ===== Event: "GET TICKET" buttons =====
+        document.querySelectorAll('.js-get-ticket').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Find parent ticket card
+                const card = this.closest('.ticket-card');
+                if (!card) return;
+
+                const ticketData = getTicketDataFromCard(card);
+                // Store the card reference for later use (for features etc.)
+                ticketData._card = card;
+
+                openModal(ticketData);
+            });
+        });
+
+        // ===== Modal: close =====
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('open')) closeModal();
+        });
+
+        // ===== Modal: Pay Online =====
+        modalPayOnline.addEventListener('click', function() {
+            if (selectedTicket && selectedTicket.selar) {
+                window.open(selectedTicket.selar, '_blank');
+                closeModal();
+            } else {
+                // fallback
+                window.open('https://selar.com/m/udufu45ceos2026', '_blank');
+                closeModal();
+            }
+        });
+
+        // ===== Modal: Bank Transfer (Manual) =====
+        modalPayManual.addEventListener('click', function() {
+            if (selectedTicket) {
+                closeModal();
+                // Small delay so modal close animation plays
+                setTimeout(() => {
+                    openDrawer(selectedTicket);
+                }, 300);
+            }
+        });
+
+        // ===== Drawer: close =====
+        drawerClose.addEventListener('click', closeDrawer);
+        drawerOverlay.addEventListener('click', function(e) {
+            if (e.target === this) closeDrawer();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && ticketDrawer.classList.contains('open')) closeDrawer();
+        });
+
+        // ===== Drawer: quantity =====
+        qtyMinus.addEventListener('click', function() {
+            if (quantity > 1) {
+                quantity--;
+                qtyNum.textContent = quantity;
+                updateDrawerTotal();
+            }
+        });
+
+        qtyPlus.addEventListener('click', function() {
+            if (quantity < 10) {
+                quantity++;
+                qtyNum.textContent = quantity;
+                updateDrawerTotal();
+            }
+        });
+
+        // ===== Drawer: Proceed to Checkout =====
+        drawerProceed.addEventListener('click', function() {
+            if (!selectedTicket) return;
+
+            // Build URL params
+            const params = new URLSearchParams();
+            params.set('ticket', selectedTicket.name);
+            params.set('tier', selectedTicket.tier);
+            params.set('type', selectedTicket.type || '');
+            params.set('price', selectedTicket.price);
+            params.set('qty', quantity);
+            params.set('total', selectedTicket.price * quantity);
+
+            // Close drawer
+            closeDrawer();
+
+            // Redirect to checkout.html
+            window.location.href = 'checkout.html?' + params.toString();
+        });
+
+        // ===== Also handle clicking on the ticket card itself (optional) =====
+        // Not needed since we're using the button, but good to prevent accidental double-triggering
     </script>
+
 </body>
 </html>
