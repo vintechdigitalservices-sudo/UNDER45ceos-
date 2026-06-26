@@ -340,32 +340,77 @@
             margin: 0.1rem;
         }
 
-        .action-btns { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-        .action-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.2rem;
-            min-width: 55px;
+        /* NEW: Dropdown Actions */
+        .action-dropdown {
+            position: relative;
+            display: inline-block;
         }
-        .action-btn {
+        .action-dropdown-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .action-dropdown-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--orange);
+        }
+        .action-dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.3rem;
+            background: var(--teal-dark);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius);
+            min-width: 140px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            z-index: 100;
+            overflow: hidden;
+        }
+        .action-dropdown-menu.show {
+            display: block;
+        }
+        .action-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            color: rgba(255,255,255,0.85);
             background: none;
             border: none;
+            width: 100%;
+            text-align: left;
             cursor: pointer;
-            font-size: 0.7rem;
-            padding: 0.3rem 0.4rem;
-            border-radius: 6px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: background 0.2s;
+            font-family: var(--font-body);
         }
-        .action-btn i { font-size: 0.85rem; }
-        .action-label { font-size: 0.6rem; font-weight: 600; color: rgba(255,255,255,0.8); }
-        .action-btn.view-btn { background: rgba(240,125,26,0.15); color: var(--orange); }
-        .action-btn.approve-send-btn { background: rgba(16,185,129,0.15); color: #10b981; }
-        .action-btn.reject-btn { background: rgba(239,68,68,0.15); color: #ef4444; }
-        .action-btn.receipt-btn { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .action-dropdown-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .action-dropdown-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .action-dropdown-item.view i { color: var(--orange); }
+        .action-dropdown-item.receipt i { color: #3b82f6; }
+        .action-dropdown-item.approve i { color: #10b981; }
+        .action-dropdown-item.approve-send i { color: #10b981; }
+        .action-dropdown-item.reject i { color: #ef4444; }
+        .action-dropdown-item .item-label {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            margin-left: auto;
+        }
 
         /* Email/WhatsApp Modal */
         .email-modal {
@@ -552,6 +597,7 @@
             .logo-area h1 { font-size: 1rem; }
             .logo-area img { height: 35px; }
             .delivery-method { flex-direction: column; }
+            .action-dropdown-menu { right: auto; left: 0; }
         }
     </style>
 </head>
@@ -880,7 +926,7 @@ Under45CEOs Team`;
         const tbody = document.getElementById('ticketsTableBody');
         
         if (pageOrders.length === 0) {
-            tbody.innerHTML = '</table><td colspan="9"><div class="no-data">No orders found</div>NonNullList';
+            tbody.innerHTML = '<tr><td colspan="9"><div class="no-data">No orders found</div></td></tr>';
             document.getElementById('ticketsPagination').innerHTML = '';
             return;
         }
@@ -896,6 +942,30 @@ Under45CEOs Team`;
             const statusText = statusClass.toUpperCase();
             const statusIcon = statusClass === 'pending' ? 'fa-hourglass-half' : statusClass === 'approved' ? 'fa-check-circle' : 'fa-times-circle';
             
+            // Build dropdown menu items based on order status
+            let dropdownItems = '';
+            
+            // View - always available
+            dropdownItems += `<button class="action-dropdown-item view" onclick="viewTicketDetails('${order.id}')"><i class="fas fa-eye"></i> View <span class="item-label">View</span></button>`;
+            
+            // Receipt - if available
+            if (order.receiptUrl) {
+                dropdownItems += `<button class="action-dropdown-item receipt" onclick="window.open('${order.receiptUrl}','_blank')"><i class="fas fa-receipt"></i> Receipt <span class="item-label">View</span></button>`;
+            } else {
+                dropdownItems += `<button class="action-dropdown-item receipt" disabled style="opacity:0.5;cursor:not-allowed;"><i class="fas fa-receipt"></i> Receipt <span class="item-label">N/A</span></button>`;
+            }
+            
+            // Approve (only if not already approved)
+            if (order.paymentStatus !== 'approved') {
+                dropdownItems += `<button class="action-dropdown-item approve" onclick="approveOrderOnly('${order.id}')"><i class="fas fa-check-circle"></i> Approve <span class="item-label">Quick</span></button>`;
+                dropdownItems += `<button class="action-dropdown-item approve-send" onclick="openApproveModal('${order.id}')"><i class="fas fa-check"></i> Approve & Send <span class="item-label">With Message</span></button>`;
+            }
+            
+            // Reject (only if not already rejected)
+            if (order.paymentStatus !== 'rejected') {
+                dropdownItems += `<button class="action-dropdown-item reject" onclick="rejectOrder('${order.id}')"><i class="fas fa-times"></i> Reject <span class="item-label">Reject</span></button>`;
+            }
+            
             return `
                 <tr>
                     <td>${formatDateTime(order.orderDate)}</td>
@@ -906,18 +976,62 @@ Under45CEOs Team`;
                     <td>₦${(order.totalAmount || 0).toLocaleString()}</td>
                     <td>${ticketHtml}</td>
                     <td><span class="status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText}</span></td>
-                    <td class="action-btns">
-                        <div class="action-group"><button class="action-btn view-btn" onclick="viewTicketDetails('${order.id}')"><i class="fas fa-eye"></i> View</button><span class="action-label">View</span></div>
-                        <div class="action-group"><button class="action-btn receipt-btn" onclick="window.open('${order.receiptUrl || '#'}','_blank')" ${!order.receiptUrl ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}><i class="fas fa-receipt"></i> Receipt</button><span class="action-label">Receipt</span></div>
-                        ${order.paymentStatus !== 'approved' ? `<div class="action-group"><button class="action-btn approve-send-btn" onclick="openApproveModal('${order.id}')"><i class="fas fa-check"></i> Approve</button><span class="action-label">Approve & Send</span></div>` : ''}
-                        ${order.paymentStatus !== 'rejected' ? `<div class="action-group"><button class="action-btn reject-btn" onclick="rejectOrder('${order.id}')"><i class="fas fa-times"></i> Reject</button><span class="action-label">Reject</span></div>` : ''}
-                    </div>
+                    <td>
+                        <div class="action-dropdown">
+                            <button class="action-dropdown-btn" onclick="toggleDropdown(event, '${order.id}')">
+                                <i class="fas fa-ellipsis-v"></i> Actions
+                            </button>
+                            <div class="action-dropdown-menu" id="dropdown-${order.id}">
+                                ${dropdownItems}
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             `;
         }).join('');
         
         renderPagination('ticketsPagination', filteredTickets.length, currentTicketPage, (page) => { currentTicketPage = page; renderTicketsTable(); });
     }
+    
+    // Toggle dropdown
+    function toggleDropdown(event, orderId) {
+        event.stopPropagation();
+        // Close all other dropdowns
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-${orderId}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-${orderId}`);
+        menu.classList.toggle('show');
+    }
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    });
+    
+    // NEW: Approve order only (no message)
+    window.approveOrderOnly = async function(orderId) {
+        if (!confirm('Approve this order without sending a message?')) return;
+        try {
+            await db.collection('checkouts').doc(orderId).update({ 
+                paymentStatus: 'approved', 
+                status: 'approved',
+                adminActionDate: firebase.firestore.FieldValue.serverTimestamp(),
+                approvedWithoutMessage: true
+            });
+            const idx = allTicketOrders.findIndex(o => o.id === orderId);
+            if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
+            applyTicketFilters();
+            updateTicketStats();
+            showToast('Order approved successfully!');
+        } catch (error) {
+            showToast('Error approving order: ' + error.message, true);
+        }
+    };
     
     function updateTicketStats() {
         document.getElementById('totalOrders').textContent = allTicketOrders.length;
@@ -949,11 +1063,17 @@ Under45CEOs Team`;
             <div class="detail-section"><h3>Attendees</h3>${attendeesHtml || '<p>No attendee details</p>'}</div>
             ${order.receiptUrl ? `<div class="detail-section"><h3>Receipt</h3><img src="${order.receiptUrl}" class="receipt-img"></div>` : ''}
             <div class="modal-actions">
-                ${order.paymentStatus !== 'approved' ? `<button class="modal-action-btn approve" onclick="openApproveModalAndClose('${order.id}')">✓ Approve & Send Tickets</button>` : ''}
+                ${order.paymentStatus !== 'approved' ? `<button class="modal-action-btn approve" onclick="approveOrderOnlyAndClose('${order.id}')">✓ Approve (No Message)</button>` : ''}
+                ${order.paymentStatus !== 'approved' ? `<button class="modal-action-btn approve" onclick="openApproveModalAndClose('${order.id}')">✓ Approve & Send</button>` : ''}
                 ${order.paymentStatus !== 'rejected' ? `<button class="modal-action-btn reject" onclick="rejectOrderAndClose('${order.id}')">✗ Reject Order</button>` : ''}
             </div>
         `;
         document.getElementById('detailModal').classList.add('active');
+    };
+    
+    window.approveOrderOnlyAndClose = async function(orderId) {
+        await approveOrderOnly(orderId);
+        document.getElementById('detailModal').classList.remove('active');
     };
     
     window.openApproveModal = async function(orderId) {
@@ -1170,7 +1290,7 @@ Under45CEOs Team`;
     
     function renderSponsorsTable() {
         const tbody = document.getElementById('sponsorsTableBody');
-        if (filteredSponsorships.length === 0) { tbody.innerHTML = '</table><td colspan="8"><div class="no-data">No sponsorship requests</div>NonNullList'; return; }
+        if (filteredSponsorships.length === 0) { tbody.innerHTML = '<tr><td colspan="8"><div class="no-data">No sponsorship requests</div></td></tr>'; return; }
         tbody.innerHTML = filteredSponsorships.map(sp => `
             <tr>
                 <td>${formatDateTime(sp.timestamp)}</td>
@@ -1226,7 +1346,7 @@ Under45CEOs Team`;
     
     function renderMessagesTable() {
         const tbody = document.getElementById('messagesTableBody');
-        if (filteredMessages.length === 0) { tbody.innerHTML = '<tr><td colspan="7"><div class="no-data">No messages</div>NonNullList'; return; }
+        if (filteredMessages.length === 0) { tbody.innerHTML = '<tr><td colspan="7"><div class="no-data">No messages</div></td></tr>'; return; }
         tbody.innerHTML = filteredMessages.map(msg => `
             <tr>
                 <td>${formatDateTime(msg.createdAt)}</td>
