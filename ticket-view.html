@@ -8,8 +8,8 @@
     <meta name="author" content="UDUF Africa">
     <meta name="robots" content="noindex, nofollow">
     <link class="icon" type="image/png" href="under45.png" />
-    <link rel="apple-touch-icon" href="under45.png" />
-    <link rel="shortcut icon" href="under45.png" />
+    <link class="apple-touch-icon" href="under45.png" />
+    <link class="shortcut icon" href="under45.png" />
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -785,8 +785,10 @@
                 const isPremium = isPremiumTicket(ticketTier);
                 
                 let ticketPriceFormatted = price > 0 ? `₦${price.toLocaleString()}` : '₦0';
+                let qrPriceFormatted = price > 0 ? `NGN ${price.toLocaleString()}` : 'NGN 0';
                 
-                const qrData = `U45|${currentOrderRef}|${i + 1}|${ticketTier}`;
+                const attendeeFullName = `${attendee.firstname || ''} ${attendee.middlename || ''} ${attendee.lastname || ''}`.replace(/\s+/g, ' ').trim();
+                const qrData = `Event Name: UNDER 45 CEOs BUSINESS & LEADERSHIP SUMMIT 2026\nAttendee Name: ${attendeeFullName}\nTicket Tier: ${displayName}\nPrice: ${qrPriceFormatted}`;
                 const qrImageUrl = await generateQRCodeAsImage(qrData);
                 const qrImageHtml = qrImageUrl ? `<img src="${qrImageUrl}" style="width:120px; height:120px; border-radius:8px;">` : '<div style="width:120px;height:120px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;border-radius:8px;"><i class="fas fa-qrcode" style="font-size:3rem;color:#ccc;"></i></div>';
                 
