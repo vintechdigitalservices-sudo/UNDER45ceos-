@@ -147,6 +147,8 @@
         .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
         .btn--outline { background: transparent; color: var(--orange); border-color: var(--orange); }
         .btn--outline:hover { background: var(--orange); color: var(--white); }
+        .btn--success { background: #10b981; color: var(--white); border-color: #10b981; }
+        .btn--success:hover { background: #059669; box-shadow: 0 8px 30px rgba(16,185,129,.4); }
         .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 6px; }
 
         /* Navigation */
@@ -639,7 +641,49 @@
 
         function isPremiumTicket(ticketTier) {
             const key = (ticketTier || '').toLowerCase().trim();
-            return key === 'founders inner circle';
+            // Executive and Founders Inner Circle are premium tiers
+            return key === 'executive' || key === 'founders inner circle';
+        }
+
+        function completeRegistration() {
+            // Show loading state on button
+            const completeBtn = document.getElementById('completeRegistrationBtn');
+            if (completeBtn) {
+                completeBtn.disabled = true;
+                completeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            }
+
+            // Determine which thank you page to redirect to
+            let hasPremium = false;
+            const attendees = orderData.attendees || [];
+            
+            // Check if any attendee has a premium ticket (Executive or Founders Inner Circle)
+            for (let attendee of attendees) {
+                const ticketTier = attendee.ticketTier || 'essential';
+                if (isPremiumTicket(ticketTier)) {
+                    hasPremium = true;
+                    break;
+                }
+            }
+
+            // Also check tickets object if attendees is empty
+            if (!hasPremium && orderData.tickets) {
+                for (const [tier, qty] of Object.entries(orderData.tickets)) {
+                    if (qty > 0 && isPremiumTicket(tier)) {
+                        hasPremium = true;
+                        break;
+                    }
+                }
+            }
+
+            // Small delay to show processing state
+            setTimeout(() => {
+                if (hasPremium) {
+                    window.location.href = 'thanks.html';
+                } else {
+                    window.location.href = 'thank-you.html';
+                }
+            }, 800);
         }
 
         async function loadOrderByRef(orderRef) {
@@ -767,8 +811,8 @@
                     <button class="btn btn--primary" id="downloadPDFBtn">
                         <i class="fas fa-download"></i> Download All Tickets (PDF)
                     </button>
-                    <button class="btn btn--outline" onclick="window.print()">
-                        <i class="fas fa-print"></i> Print Tickets
+                    <button class="btn btn--success" id="completeRegistrationBtn">
+                        <i class="fas fa-check-circle"></i> Complete Registration
                     </button>
                 </div>
                 <div class="tickets-container" id="ticketsContainer">
@@ -847,6 +891,11 @@
             const downloadBtn = document.getElementById('downloadPDFBtn');
             if (downloadBtn) {
                 downloadBtn.addEventListener('click', downloadPDF);
+            }
+
+            const completeBtn = document.getElementById('completeRegistrationBtn');
+            if (completeBtn) {
+                completeBtn.addEventListener('click', completeRegistration);
             }
         }
 
