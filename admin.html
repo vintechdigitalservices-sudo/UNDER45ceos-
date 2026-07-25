@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Admin Dashboard | Under 45 CEOs Summit 2026</title>
-    <meta name="description" content="Admin dashboard to manage ticket orders with email and WhatsApp sending capability">
+    <meta name="description" content="Admin dashboard to manage ticket orders, sponsorships, messages, award nominations, and attendee registrations">
      <!-- Favicon - Use under45.png as the icon in search results -->
   <link class="icon" type="image/png" href="under45.png" />
   <link rel="apple-touch-icon" href="under45.png" />
@@ -199,9 +199,9 @@
         .tab-btn {
             background: none;
             border: none;
-            padding: 0.8rem 2rem;
+            padding: 0.8rem 1.2rem;
             font-family: var(--font-display);
-            font-size: 1.1rem;
+            font-size: 1rem;
             letter-spacing: 0.05em;
             color: rgba(255,255,255,0.6);
             cursor: pointer;
@@ -235,6 +235,8 @@
         .stat-card.approved .stat-icon { color: #10b981; }
         .stat-card.rejected .stat-icon { color: #ef4444; }
         .stat-card.total .stat-icon { color: var(--orange); }
+        .stat-card.executive .stat-icon { color: var(--gold); }
+        .stat-card.essential .stat-icon { color: var(--teal); }
         .stat-card .stat-number { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; }
         .stat-card .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.05em; }
 
@@ -302,13 +304,13 @@
             min-width: 1100px;
         }
         .admin-table th, .admin-table td {
-            padding: 1rem;
+            padding: 0.8rem;
             text-align: left;
             border-bottom: 1px solid rgba(255,255,255,0.08);
             vertical-align: middle;
         }
         .admin-table th {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -330,6 +332,9 @@
         .status-badge.pending { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
         .status-badge.approved { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
         .status-badge.rejected { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .status-badge.read { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .status-badge.unread { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .status-badge.reviewed { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
 
         .ticket-tag {
             display: inline-block;
@@ -339,6 +344,8 @@
             font-size: 0.7rem;
             margin: 0.1rem;
         }
+        .ticket-tag.executive { background: rgba(212,160,23,0.2); color: var(--gold); border: 1px solid rgba(212,160,23,0.3); }
+        .ticket-tag.essential { background: rgba(14,107,115,0.2); color: var(--teal); border: 1px solid rgba(14,107,115,0.3); }
 
         /* NEW: Dropdown Actions */
         .action-dropdown {
@@ -369,7 +376,7 @@
             background: var(--teal-dark);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: var(--radius);
-            min-width: 140px;
+            min-width: 160px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             z-index: 100;
             overflow: hidden;
@@ -546,13 +553,32 @@
         .detail-item { display: flex; justify-content: space-between; font-size: 0.85rem; }
         .detail-label { color: rgba(255,255,255,0.6); }
         .detail-value { font-weight: 600; text-align: right; }
+        .detail-value a { color: var(--orange); word-break: break-all; }
         .attendee-item {
             background: rgba(255,255,255,0.05);
             border-radius: var(--radius);
             padding: 0.8rem;
             margin-bottom: 0.8rem;
         }
+        .detail-section { margin-bottom: 1.5rem; }
+        .detail-section h3 { font-size: 0.9rem; color: var(--orange); margin-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.3rem; }
         .receipt-img { max-width: 100%; border-radius: var(--radius); margin-top: 0.5rem; }
+        .photo-thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        .photo-thumb-lg {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--orange);
+            margin: 0 auto 1rem;
+            display: block;
+        }
         .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
         .modal-action-btn { flex: 1; padding: 0.7rem; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
         .modal-action-btn.approve { background: #10b981; color: white; }
@@ -598,6 +624,8 @@
             .logo-area img { height: 35px; }
             .delivery-method { flex-direction: column; }
             .action-dropdown-menu { right: auto; left: 0; }
+            .tab-btn { padding: 0.6rem 0.8rem; font-size: 0.8rem; }
+            .admin-table { min-width: 800px; }
         }
     </style>
 </head>
@@ -617,7 +645,7 @@
 <div class="admin-container" id="adminContainer" style="display: none;">
     <div class="admin-header">
         <div class="logo-area">
-            <!-- Logo images - replace with your actual logo.png and under45.png paths -->
+            <!-- Logo images -->
             <img src="logo.png" alt="UDUF Africa Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23f07d1a%27/%3E%3Ctext x=%2750%27 y=%2767%27 font-size=%2740%27 text-anchor=%27middle%27 fill=%27white%27 font-weight=%27bold%27%3EU%3C/text%3E%3C/svg%3E'">
             <img src="under45.png" alt="Under 45 CEOs Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 fill=%27%23022a2d%27/%3E%3Ctext x=%2750%27 y=%2755%27 font-size=%2718%27 text-anchor=%27middle%27 fill=%27%23f07d1a%27 font-weight=%27bold%27%3EU45%3C/text%3E%3C/svg%3E'">
             <h1>ADMIN DASHBOARD</h1>
@@ -629,6 +657,8 @@
         <button class="tab-btn active" data-tab="tickets"><i class="fas fa-ticket-alt"></i> Ticket Orders</button>
         <button class="tab-btn" data-tab="sponsorships"><i class="fas fa-handshake"></i> Sponsorship Requests</button>
         <button class="tab-btn" data-tab="messages"><i class="fas fa-envelope"></i> Contact Messages</button>
+        <button class="tab-btn" data-tab="nominations"><i class="fas fa-trophy"></i> Award Nominations</button>
+        <button class="tab-btn" data-tab="attendees"><i class="fas fa-users"></i> I Am Attending</button>
     </div>
 
     <!-- Tickets Tab -->
@@ -669,7 +699,7 @@
             <div class="search-box"><i class="fas fa-search"></i><input type="text" id="sponsorSearch" placeholder="Search..."></div>
             <button class="refresh-btn" id="refreshSponsors"><i class="fas fa-sync-alt"></i> Refresh</button>
         </div>
-        <div class="table-container"><table class="admin-table"><thead><tr><th>Date</th><th>Company</th><th>Contact</th><th>Email</th><th>Phone</th><th>Tier</th><th>Status</th><th>Actions</th></tr></thead><tbody id="sponsorsTableBody"><tr><td colspan="8"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading sponsorships...</div>NonNullList</tbody></table></div>
+        <div class="table-container"><table class="admin-table"><thead><tr><th>Date</th><th>Company</th><th>Contact</th><th>Email</th><th>Phone</th><th>Tier</th><th>Status</th><th>Actions</th></tr></thead><tbody id="sponsorsTableBody"><tr><td colspan="8"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading sponsorships...</div></td></tr></tbody></table></div>
     </div>
 
     <!-- Messages Tab -->
@@ -682,7 +712,59 @@
             <div class="search-box"><i class="fas fa-search"></i><input type="text" id="messageSearch" placeholder="Search..."></div>
             <button class="refresh-btn" id="refreshMessages"><i class="fas fa-sync-alt"></i> Refresh</button>
         </div>
-        <div class="table-container"><table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Subject</th><th>Status</th><th>Actions</th></tr></thead><tbody id="messagesTableBody"><tr><td colspan="7"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading messages...</div>NonNullList</tbody></table></div>
+        <div class="table-container"><table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Subject</th><th>Status</th><th>Actions</th></tr></thead><tbody id="messagesTableBody"><tr><td colspan="7"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading messages...</div></td></tr></tbody></table></div>
+    </div>
+
+    <!-- Award Nominations Tab -->
+    <div class="tab-content" id="nominationsTab">
+        <div class="stats-grid" id="nominationStats">
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-number" id="totalNominations">0</div><div class="stat-label">Total Nominations</div></div>
+            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="pendingNominations">0</div><div class="stat-label">Pending</div></div>
+            <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-number" id="reviewedNominations">0</div><div class="stat-label">Reviewed</div></div>
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-tag"></i></div><div class="stat-number" id="categoryCount">0</div><div class="stat-label">Categories</div></div>
+        </div>
+        <div class="filters-bar">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="nominationSearch" placeholder="Search by Name, Company, Category..."></div>
+            <div class="status-filter">
+                <button class="filter-btn active" data-status="all">All</button>
+                <button class="filter-btn" data-status="pending">Pending</button>
+                <button class="filter-btn" data-status="reviewed">Reviewed</button>
+            </div>
+            <button class="refresh-btn" id="refreshNominations"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-container">
+            <table class="admin-table">
+                <thead><tr><th>Date</th><th>Nominee</th><th>Company</th><th>Category</th><th>Email</th><th>Phone</th><th>Country</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="nominationsTableBody"><tr><td colspan="9"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading nominations...</div></td></tr></tbody>
+            </table>
+        </div>
+        <div class="pagination" id="nominationsPagination"></div>
+    </div>
+
+    <!-- I Am Attending Tab -->
+    <div class="tab-content" id="attendeesTab">
+        <div class="stats-grid" id="attendeeStats">
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-number" id="totalAttendees">0</div><div class="stat-label">Total Attendees</div></div>
+            <div class="stat-card executive"><div class="stat-icon"><i class="fas fa-crown"></i></div><div class="stat-number" id="executiveAttendees">0</div><div class="stat-label">Executive & Premium</div></div>
+            <div class="stat-card essential"><div class="stat-icon"><i class="fas fa-user"></i></div><div class="stat-number" id="essentialAttendees">0</div><div class="stat-label">Essential & Growth</div></div>
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-calendar-day"></i></div><div class="stat-number" id="todayAttendees">0</div><div class="stat-label">Today's Registrations</div></div>
+        </div>
+        <div class="filters-bar">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="attendeeSearch" placeholder="Search by Name..."></div>
+            <div class="status-filter">
+                <button class="filter-btn active" data-type="all">All</button>
+                <button class="filter-btn" data-type="executive">Executive & Premium</button>
+                <button class="filter-btn" data-type="essential">Essential & Growth</button>
+            </div>
+            <button class="refresh-btn" id="refreshAttendees"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-container">
+            <table class="admin-table">
+                <thead><tr><th>Date</th><th>Photo</th><th>First Name</th><th>Last Name</th><th>Age</th><th>Ticket Type</th><th>Source</th><th>Actions</th></tr></thead>
+                <tbody id="attendeesTableBody"><tr><td colspan="8"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading attendees...</div></td></tr></tbody>
+            </table>
+        </div>
+        <div class="pagination" id="attendeesPagination"></div>
     </div>
 </div>
 
@@ -718,7 +800,7 @@
                 <textarea id="emailMessage" rows="6"></textarea>
             </div>
             
-            <!-- WhatsApp Number Display (shown when WhatsApp is selected) -->
+            <!-- WhatsApp Number Display -->
             <div class="whatsapp-number-box" id="whatsappNumberBox" style="display: none;">
                 <i class="fab fa-whatsapp" style="font-size: 1.5rem; color: #25D366;"></i>
                 <p id="whatsappNumberDisplay"></p>
@@ -767,9 +849,11 @@
     let allTicketOrders = [], filteredTickets = [], currentTicketPage = 1, ticketFilter = "all", ticketSearch = "";
     let allSponsorships = [], filteredSponsorships = [], sponsorSearch = "";
     let allMessages = [], filteredMessages = [], messageSearch = "";
+    let allNominations = [], filteredNominations = [], currentNominationPage = 1, nominationFilter = "all", nominationSearch = "";
+    let allAttendees = [], filteredAttendees = [], currentAttendeePage = 1, attendeeFilter = "all", attendeeSearch = "";
     const itemsPerPage = 15;
     let currentOrderForApproval = null;
-    let currentDeliveryMethod = "email"; // "email" or "whatsapp"
+    let currentDeliveryMethod = "email";
 
     // Helper functions
     function showToast(message, isError = false) {
@@ -787,27 +871,26 @@
         return new Date(timestamp).toLocaleString('en-NG');
     }
     
+    function formatDate(timestamp) {
+        if (!timestamp) return 'N/A';
+        if (timestamp.toDate) return timestamp.toDate().toLocaleDateString('en-NG');
+        return new Date(timestamp).toLocaleDateString('en-NG');
+    }
+    
     function normalizeStatus(status) {
         if (!status) return 'pending';
         const s = status.toLowerCase();
         if (s === 'approved' || s === 'verified') return 'approved';
         if (s === 'rejected') return 'rejected';
+        if (s === 'read' || s === 'reviewed') return 'reviewed';
         return 'pending';
     }
 
-    // Format phone number for WhatsApp (Nigeria format)
     function formatPhoneForWhatsApp(phone) {
         if (!phone) return '';
-        // Remove any non-digit characters
         let cleaned = phone.replace(/\D/g, '');
-        // If starts with 0, replace with 234 (Nigeria code)
         if (cleaned.startsWith('0')) {
             cleaned = '234' + cleaned.substring(1);
-        }
-        // If starts with 234, keep as is
-        // If starts with +234, remove the +
-        if (cleaned.startsWith('234') && cleaned.length === 13) {
-            return cleaned;
         }
         return cleaned;
     }
@@ -904,7 +987,7 @@ Under45CEOs Team`;
         } catch (error) {
             console.error("Error loading tickets:", error);
             showToast("Error loading tickets: " + error.message, true);
-            document.getElementById('ticketsTableBody').innerHTML = `<tr><td colspan="9"><div class="no-data">Error loading data. Make sure you're running on localhost or HTTPS.</div>NonNullList`;
+            document.getElementById('ticketsTableBody').innerHTML = `<tr><td colspan="9"><div class="no-data">Error loading data.</div></td></tr>`;
         }
     }
     
@@ -942,26 +1025,20 @@ Under45CEOs Team`;
             const statusText = statusClass.toUpperCase();
             const statusIcon = statusClass === 'pending' ? 'fa-hourglass-half' : statusClass === 'approved' ? 'fa-check-circle' : 'fa-times-circle';
             
-            // Build dropdown menu items based on order status
             let dropdownItems = '';
-            
-            // View - always available
             dropdownItems += `<button class="action-dropdown-item view" onclick="viewTicketDetails('${order.id}')"><i class="fas fa-eye"></i> View <span class="item-label">View</span></button>`;
             
-            // Receipt - if available
             if (order.receiptUrl) {
                 dropdownItems += `<button class="action-dropdown-item receipt" onclick="window.open('${order.receiptUrl}','_blank')"><i class="fas fa-receipt"></i> Receipt <span class="item-label">View</span></button>`;
             } else {
                 dropdownItems += `<button class="action-dropdown-item receipt" disabled style="opacity:0.5;cursor:not-allowed;"><i class="fas fa-receipt"></i> Receipt <span class="item-label">N/A</span></button>`;
             }
             
-            // Approve (only if not already approved)
             if (order.paymentStatus !== 'approved') {
                 dropdownItems += `<button class="action-dropdown-item approve" onclick="approveOrderOnly('${order.id}')"><i class="fas fa-check-circle"></i> Approve <span class="item-label">Quick</span></button>`;
                 dropdownItems += `<button class="action-dropdown-item approve-send" onclick="openApproveModal('${order.id}')"><i class="fas fa-check"></i> Approve & Send <span class="item-label">With Message</span></button>`;
             }
             
-            // Reject (only if not already rejected)
             if (order.paymentStatus !== 'rejected') {
                 dropdownItems += `<button class="action-dropdown-item reject" onclick="rejectOrder('${order.id}')"><i class="fas fa-times"></i> Reject <span class="item-label">Reject</span></button>`;
             }
@@ -993,10 +1070,8 @@ Under45CEOs Team`;
         renderPagination('ticketsPagination', filteredTickets.length, currentTicketPage, (page) => { currentTicketPage = page; renderTicketsTable(); });
     }
     
-    // Toggle dropdown
     function toggleDropdown(event, orderId) {
         event.stopPropagation();
-        // Close all other dropdowns
         document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
             if (menu.id !== `dropdown-${orderId}`) {
                 menu.classList.remove('show');
@@ -1006,14 +1081,12 @@ Under45CEOs Team`;
         menu.classList.toggle('show');
     }
     
-    // Close dropdowns when clicking outside
     document.addEventListener('click', function() {
         document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
             menu.classList.remove('show');
         });
     });
     
-    // NEW: Approve order only (no message)
     window.approveOrderOnly = async function(orderId) {
         if (!confirm('Approve this order without sending a message?')) return;
         try {
@@ -1081,10 +1154,8 @@ Under45CEOs Team`;
         if (!order) return;
         currentOrderForApproval = order;
         
-        // Update modal based on selected method
         updateModalForMethod(currentDeliveryMethod);
         
-        // Set recipient based on method
         if (currentDeliveryMethod === "email") {
             document.getElementById('recipientValue').value = order.customer?.email || '';
             document.getElementById('recipientLabel').innerHTML = 'To <span style="color:var(--orange);">*</span>';
@@ -1144,7 +1215,6 @@ Under45CEOs Team`;
             document.getElementById('sendWhatsAppBtn').style.display = 'flex';
             document.getElementById('methodWhatsAppBtn').classList.add('active');
             document.getElementById('methodEmailBtn').classList.remove('active');
-            // Update message for WhatsApp
             document.getElementById('emailMessage').value = generateWhatsAppMessage(currentOrderForApproval);
         }
     }
@@ -1300,8 +1370,28 @@ Under45CEOs Team`;
                 <td>${sp.phone || 'N/A'}</td>
                 <td><span class="ticket-tag">${sp.selectedTier || 'N/A'}</span></td>
                 <td><span class="status-badge ${sp.status === 'read' ? 'read' : 'unread'}">${sp.status === 'read' ? 'REVIEWED' : 'PENDING'}</span></td>
-                <td><button class="action-btn view-btn" onclick="viewSponsorship('${sp.id}')"><i class="fas fa-eye"></i> View</button></td>
+                <td>
+                    <div class="action-dropdown">
+                        <button class="action-dropdown-btn" onclick="toggleSponsorDropdown(event, '${sp.id}')">
+                            <i class="fas fa-ellipsis-v"></i> Actions
+                        </button>
+                        <div class="action-dropdown-menu" id="dropdown-sponsor-${sp.id}">
+                            <button class="action-dropdown-item view" onclick="viewSponsorship('${sp.id}')"><i class="fas fa-eye"></i> View <span class="item-label">Details</span></button>
+                        </div>
+                    </div>
+                </td>
             </tr>`).join('');
+    }
+    
+    function toggleSponsorDropdown(event, id) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-sponsor-${id}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-sponsor-${id}`);
+        menu.classList.toggle('show');
     }
     
     function updateSponsorStats() {
@@ -1355,8 +1445,30 @@ Under45CEOs Team`;
                 <td>${msg.phone || 'N/A'}</td>
                 <td>${msg.subject || 'N/A'}</td>
                 <td><span class="status-badge ${msg.status === 'read' ? 'read' : 'unread'}">${msg.status === 'read' ? 'READ' : 'UNREAD'}</span></td>
-                <td><button class="action-btn view-btn" onclick="viewMessage('${msg.id}')"><i class="fas fa-eye"></i> View</button> <button class="action-btn reply-btn" onclick="window.location.href='mailto:${msg.email}'"><i class="fas fa-reply"></i> Reply</button> <button class="action-btn whatsapp-btn" onclick="window.open('https://wa.me/${formatPhoneForWhatsApp(msg.phone)}','_blank')"><i class="fab fa-whatsapp"></i> WhatsApp</button></td>
+                <td>
+                    <div class="action-dropdown">
+                        <button class="action-dropdown-btn" onclick="toggleMessageDropdown(event, '${msg.id}')">
+                            <i class="fas fa-ellipsis-v"></i> Actions
+                        </button>
+                        <div class="action-dropdown-menu" id="dropdown-message-${msg.id}">
+                            <button class="action-dropdown-item view" onclick="viewMessage('${msg.id}')"><i class="fas fa-eye"></i> View <span class="item-label">Details</span></button>
+                            <button class="action-dropdown-item" onclick="window.location.href='mailto:${msg.email}'"><i class="fas fa-reply"></i> Reply <span class="item-label">Email</span></button>
+                            <button class="action-dropdown-item" onclick="window.open('https://wa.me/${formatPhoneForWhatsApp(msg.phone)}','_blank')"><i class="fab fa-whatsapp" style="color:#25D366;"></i> WhatsApp <span class="item-label">Chat</span></button>
+                        </div>
+                    </div>
+                </td>
             </tr>`).join('');
+    }
+    
+    function toggleMessageDropdown(event, id) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-message-${id}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-message-${id}`);
+        menu.classList.toggle('show');
     }
     
     function updateMessageStats() {
@@ -1377,15 +1489,317 @@ Under45CEOs Team`;
         }
     };
 
-    // Format phone for WhatsApp helper
-    function formatPhoneForWhatsApp(phone) {
-        if (!phone) return '';
-        let cleaned = phone.replace(/\D/g, '');
-        if (cleaned.startsWith('0')) {
-            cleaned = '234' + cleaned.substring(1);
+    // ==================== AWARD NOMINATIONS ====================
+    async function loadNominations() {
+        try {
+            const snapshot = await db.collection('award-nominations').orderBy('timestamp', 'desc').get();
+            allNominations = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                allNominations.push({ id: doc.id, ...data, status: data.status || 'pending' });
+            });
+            applyNominationFilters();
+            updateNominationStats();
+        } catch (error) {
+            console.error("Error loading nominations:", error);
+            showToast("Error loading nominations: " + error.message, true);
+            document.getElementById('nominationsTableBody').innerHTML = `<tr><td colspan="9"><div class="no-data">Error loading data.</div></td></tr>`;
         }
-        return cleaned;
     }
+    
+    function applyNominationFilters() {
+        let filtered = [...allNominations];
+        if (nominationFilter !== 'all') filtered = filtered.filter(n => n.status === nominationFilter);
+        if (nominationSearch.trim()) {
+            const s = nominationSearch.toLowerCase();
+            filtered = filtered.filter(n => 
+                (n.fullName || '').toLowerCase().includes(s) || 
+                (n.company || '').toLowerCase().includes(s) ||
+                (n.awardCategory || '').toLowerCase().includes(s) ||
+                (n.email || '').toLowerCase().includes(s)
+            );
+        }
+        filteredNominations = filtered;
+        currentNominationPage = 1;
+        renderNominationsTable();
+    }
+    
+    function renderNominationsTable() {
+        const start = (currentNominationPage - 1) * itemsPerPage;
+        const pageItems = filteredNominations.slice(start, start + itemsPerPage);
+        const tbody = document.getElementById('nominationsTableBody');
+        
+        if (pageItems.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9"><div class="no-data">No nominations found</div></td></tr>';
+            document.getElementById('nominationsPagination').innerHTML = '';
+            return;
+        }
+        
+        tbody.innerHTML = pageItems.map(nom => {
+            const statusClass = nom.status === 'reviewed' ? 'reviewed' : 'pending';
+            const statusText = nom.status === 'reviewed' ? 'REVIEWED' : 'PENDING';
+            const statusIcon = nom.status === 'reviewed' ? 'fa-check-circle' : 'fa-hourglass-half';
+            
+            return `
+                <tr>
+                    <td>${formatDateTime(nom.timestamp)}</td>
+                    <td>${nom.fullName || 'N/A'}</td>
+                    <td>${nom.company || 'N/A'}</td>
+                    <td><span class="ticket-tag">${nom.awardCategory || 'N/A'}</span></td>
+                    <td>${nom.email || 'N/A'}</td>
+                    <td>${nom.phone || 'N/A'}</td>
+                    <td>${nom.country || 'N/A'}</td>
+                    <td><span class="status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText}</span></td>
+                    <td>
+                        <div class="action-dropdown">
+                            <button class="action-dropdown-btn" onclick="toggleNominationDropdown(event, '${nom.id}')">
+                                <i class="fas fa-ellipsis-v"></i> Actions
+                            </button>
+                            <div class="action-dropdown-menu" id="dropdown-nom-${nom.id}">
+                                <button class="action-dropdown-item view" onclick="viewNomination('${nom.id}')"><i class="fas fa-eye"></i> View <span class="item-label">Details</span></button>
+                                ${nom.status !== 'reviewed' ? `<button class="action-dropdown-item approve" onclick="reviewNomination('${nom.id}')"><i class="fas fa-check-circle"></i> Mark Reviewed <span class="item-label">Done</span></button>` : ''}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        
+        renderPagination('nominationsPagination', filteredNominations.length, currentNominationPage, (page) => { currentNominationPage = page; renderNominationsTable(); });
+    }
+    
+    function toggleNominationDropdown(event, id) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-nom-${id}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-nom-${id}`);
+        menu.classList.toggle('show');
+    }
+    
+    function updateNominationStats() {
+        document.getElementById('totalNominations').textContent = allNominations.length;
+        document.getElementById('pendingNominations').textContent = allNominations.filter(n => n.status !== 'reviewed').length;
+        document.getElementById('reviewedNominations').textContent = allNominations.filter(n => n.status === 'reviewed').length;
+        
+        const categories = new Set();
+        allNominations.forEach(n => { if (n.awardCategory) categories.add(n.awardCategory); });
+        document.getElementById('categoryCount').textContent = categories.size;
+    }
+    
+    window.reviewNomination = async function(id) {
+        try {
+            await db.collection('award-nominations').doc(id).update({ 
+                status: 'reviewed',
+                reviewedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            const idx = allNominations.findIndex(n => n.id === id);
+            if (idx !== -1) allNominations[idx].status = 'reviewed';
+            applyNominationFilters();
+            updateNominationStats();
+            showToast('Nomination marked as reviewed!');
+        } catch (error) {
+            showToast('Error updating nomination: ' + error.message, true);
+        }
+    };
+    
+    window.viewNomination = async function(id) {
+        const nom = allNominations.find(n => n.id === id);
+        if (!nom) return;
+        
+        document.getElementById('modalTitle').textContent = 'Award Nomination Details';
+        document.getElementById('modalBody').innerHTML = `
+            <div class="detail-section"><h3>Personal Information</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">Full Name:</span><span class="detail-value">${nom.fullName || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Gender:</span><span class="detail-value">${nom.gender || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Age Range:</span><span class="detail-value">${nom.ageRange || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Country:</span><span class="detail-value">${nom.country || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">State/Province:</span><span class="detail-value">${nom.state || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">City:</span><span class="detail-value">${nom.city || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${nom.email || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${nom.phone || 'N/A'}</span></div>
+            </div></div>
+            <div class="detail-section"><h3>Professional Information</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">Company:</span><span class="detail-value">${nom.company || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Job Title:</span><span class="detail-value">${nom.jobTitle || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Website:</span><span class="detail-value">${nom.website ? `<a href="${nom.website}" target="_blank">${nom.website}</a>` : 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Social Handle:</span><span class="detail-value">${nom.socialHandle || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Employees:</span><span class="detail-value">${nom.numEmployees || 'N/A'}</span></div>
+            </div></div>
+            <div class="detail-section"><h3>Award Details</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">Category:</span><span class="detail-value"><strong>${nom.awardCategory || 'N/A'}</strong></span></div>
+                <div class="detail-item"><span class="detail-label">Status:</span><span class="detail-value">${nom.status === 'reviewed' ? '✅ Reviewed' : '⏳ Pending'}</span></div>
+            </div></div>
+            <div class="detail-section"><h3>About the Nominee</h3>
+                <p><strong>About:</strong> ${nom.aboutNominee || 'N/A'}</p>
+                <p><strong>Inspiration:</strong> ${nom.inspiration || 'N/A'}</p>
+                <p><strong>Problem Solving:</strong> ${nom.problemSolving || 'N/A'}</p>
+                <p><strong>Unique Innovation:</strong> ${nom.uniqueInnovative || 'N/A'}</p>
+            </div>
+            <div class="detail-section"><h3>Impact</h3>
+                <p><strong>Measurable Impact:</strong> ${nom.measurableImpact || 'N/A'}</p>
+                <p><strong>Biggest Achievement:</strong> ${nom.biggestAchievement || 'N/A'}</p>
+                <p><strong>Social/Economic Contribution:</strong> ${nom.socialEconomic || 'N/A'}</p>
+            </div>
+            <div class="detail-section"><h3>Leadership</h3>
+                <p><strong>Leadership Style:</strong> ${nom.leadershipStyle || 'N/A'}</p>
+                <p><strong>Inspire/Mentor:</strong> ${nom.inspireMentor || 'N/A'}</p>
+                <p><strong>Challenge Overcome:</strong> ${nom.challengeOvercome || 'N/A'}</p>
+            </div>
+            <div class="detail-section"><h3>Declaration</h3>
+                <p>✅ Info accurate: ${nom.declaration1 ? 'Yes' : 'No'}</p>
+                <p>✅ Verify info: ${nom.declaration2 ? 'Yes' : 'No'}</p>
+                <p>✅ Publicity consent: ${nom.declaration3 ? 'Yes' : 'No'}</p>
+                <p><strong>Signature:</strong> ${nom.signature || 'N/A'}</p>
+                <p><strong>Date:</strong> ${nom.declDate || 'N/A'}</p>
+            </div>
+            ${nom.photoUrl ? `<div class="detail-section"><h3>Photo</h3><img src="${nom.photoUrl}" style="max-width:200px;border-radius:12px;"></div>` : ''}
+            ${nom.logoUrl ? `<div class="detail-section"><h3>Company Logo</h3><img src="${nom.logoUrl}" style="max-width:150px;border-radius:8px;"></div>` : ''}
+            ${nom.status !== 'reviewed' ? `<div class="modal-actions"><button class="modal-action-btn approve" onclick="reviewNominationAndClose('${nom.id}')">✓ Mark as Reviewed</button></div>` : ''}
+        `;
+        document.getElementById('detailModal').classList.add('active');
+    };
+    
+    window.reviewNominationAndClose = async function(id) {
+        await reviewNomination(id);
+        document.getElementById('detailModal').classList.remove('active');
+    };
+
+    // ==================== I AM ATTENDING ====================
+    async function loadAttendees() {
+        try {
+            const snapshot = await db.collection('i_will_attend').orderBy('createdAt', 'desc').get();
+            allAttendees = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                allAttendees.push({ id: doc.id, ...data });
+            });
+            applyAttendeeFilters();
+            updateAttendeeStats();
+        } catch (error) {
+            console.error("Error loading attendees:", error);
+            showToast("Error loading attendees: " + error.message, true);
+            document.getElementById('attendeesTableBody').innerHTML = `<tr><td colspan="8"><div class="no-data">Error loading data.</div></td></tr>`;
+        }
+    }
+    
+    function applyAttendeeFilters() {
+        let filtered = [...allAttendees];
+        if (attendeeFilter !== 'all') {
+            if (attendeeFilter === 'executive') {
+                filtered = filtered.filter(a => a.ticketType === 'Executive & Premium');
+            } else if (attendeeFilter === 'essential') {
+                filtered = filtered.filter(a => a.ticketType === 'Essential & Growth' || !a.ticketType);
+            }
+        }
+        if (attendeeSearch.trim()) {
+            const s = attendeeSearch.toLowerCase();
+            filtered = filtered.filter(a => 
+                (a.firstName || '').toLowerCase().includes(s) || 
+                (a.lastName || '').toLowerCase().includes(s) ||
+                ((a.firstName || '') + ' ' + (a.lastName || '')).toLowerCase().includes(s)
+            );
+        }
+        filteredAttendees = filtered;
+        currentAttendeePage = 1;
+        renderAttendeesTable();
+    }
+    
+    function renderAttendeesTable() {
+        const start = (currentAttendeePage - 1) * itemsPerPage;
+        const pageItems = filteredAttendees.slice(start, start + itemsPerPage);
+        const tbody = document.getElementById('attendeesTableBody');
+        
+        if (pageItems.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8"><div class="no-data">No attendees found</div></td></tr>';
+            document.getElementById('attendeesPagination').innerHTML = '';
+            return;
+        }
+        
+        tbody.innerHTML = pageItems.map(attendee => {
+            const ticketType = attendee.ticketType || 'Essential & Growth';
+            const isExecutive = ticketType === 'Executive & Premium';
+            const typeClass = isExecutive ? 'executive' : 'essential';
+            
+            return `
+                <tr>
+                    <td>${formatDateTime(attendee.createdAt)}</td>
+                    <td>${attendee.photoUrl ? `<img src="${attendee.photoUrl}" class="photo-thumb" alt="Photo">` : '<span style="color:rgba(255,255,255,0.3);">No photo</span>'}</td>
+                    <td>${attendee.firstName || 'N/A'}</td>
+                    <td>${attendee.lastName || 'N/A'}</td>
+                    <td>${attendee.age || 'N/A'}</td>
+                    <td><span class="ticket-tag ${typeClass}">${ticketType}</span></td>
+                    <td>${attendee.source || 'N/A'}</td>
+                    <td>
+                        <div class="action-dropdown">
+                            <button class="action-dropdown-btn" onclick="toggleAttendeeDropdown(event, '${attendee.id}')">
+                                <i class="fas fa-ellipsis-v"></i> Actions
+                            </button>
+                            <div class="action-dropdown-menu" id="dropdown-attendee-${attendee.id}">
+                                <button class="action-dropdown-item view" onclick="viewAttendee('${attendee.id}')"><i class="fas fa-eye"></i> View <span class="item-label">Details</span></button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        
+        renderPagination('attendeesPagination', filteredAttendees.length, currentAttendeePage, (page) => { currentAttendeePage = page; renderAttendeesTable(); });
+    }
+    
+    function toggleAttendeeDropdown(event, id) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-attendee-${id}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-attendee-${id}`);
+        menu.classList.toggle('show');
+    }
+    
+    function updateAttendeeStats() {
+        document.getElementById('totalAttendees').textContent = allAttendees.length;
+        const executiveCount = allAttendees.filter(a => a.ticketType === 'Executive & Premium').length;
+        const essentialCount = allAttendees.filter(a => a.ticketType !== 'Executive & Premium').length;
+        document.getElementById('executiveAttendees').textContent = executiveCount;
+        document.getElementById('essentialAttendees').textContent = essentialCount || allAttendees.length - executiveCount;
+        
+        // Today's registrations
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayCount = allAttendees.filter(a => {
+            if (!a.createdAt) return false;
+            const date = a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+            date.setHours(0, 0, 0, 0);
+            return date.getTime() === today.getTime();
+        }).length;
+        document.getElementById('todayAttendees').textContent = todayCount;
+    }
+    
+    window.viewAttendee = async function(id) {
+        const attendee = allAttendees.find(a => a.id === id);
+        if (!attendee) return;
+        
+        const ticketType = attendee.ticketType || 'Essential & Growth';
+        const isExecutive = ticketType === 'Executive & Premium';
+        
+        document.getElementById('modalTitle').textContent = 'Attendee Details';
+        document.getElementById('modalBody').innerHTML = `
+            ${attendee.photoUrl ? `<img src="${attendee.photoUrl}" class="photo-thumb-lg" alt="Photo">` : ''}
+            <div class="detail-section"><h3>Personal Information</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">First Name:</span><span class="detail-value">${attendee.firstName || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Last Name:</span><span class="detail-value">${attendee.lastName || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Age Group:</span><span class="detail-value">${attendee.age || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Ticket Type:</span><span class="detail-value"><span class="ticket-tag ${isExecutive ? 'executive' : 'essential'}">${ticketType}</span></span></div>
+                <div class="detail-item"><span class="detail-label">How Heard:</span><span class="detail-value">${attendee.source || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Registered:</span><span class="detail-value">${formatDateTime(attendee.createdAt)}</span></div>
+            </div></div>
+        `;
+        document.getElementById('detailModal').classList.add('active');
+    };
 
     // ==================== PAGINATION ====================
     function renderPagination(containerId, total, currentPage, onPageChange) {
@@ -1408,6 +1822,7 @@ Under45CEOs Team`;
         });
     });
     
+    // Ticket listeners
     document.getElementById('ticketSearch').addEventListener('input', (e) => { ticketSearch = e.target.value; applyTicketFilters(); });
     document.querySelectorAll('#ticketsTab .filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1418,10 +1833,40 @@ Under45CEOs Team`;
         });
     });
     document.getElementById('refreshTickets').addEventListener('click', loadTickets);
+    
+    // Sponsor listeners
     document.getElementById('sponsorSearch').addEventListener('input', (e) => { sponsorSearch = e.target.value; applySponsorFilters(); });
     document.getElementById('refreshSponsors').addEventListener('click', loadSponsorships);
+    
+    // Message listeners
     document.getElementById('messageSearch').addEventListener('input', (e) => { messageSearch = e.target.value; applyMessageFilters(); });
     document.getElementById('refreshMessages').addEventListener('click', loadMessages);
+    
+    // Nomination listeners
+    document.getElementById('nominationSearch').addEventListener('input', (e) => { nominationSearch = e.target.value; applyNominationFilters(); });
+    document.querySelectorAll('#nominationsTab .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#nominationsTab .filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            nominationFilter = btn.dataset.status;
+            applyNominationFilters();
+        });
+    });
+    document.getElementById('refreshNominations').addEventListener('click', loadNominations);
+    
+    // Attendee listeners
+    document.getElementById('attendeeSearch').addEventListener('input', (e) => { attendeeSearch = e.target.value; applyAttendeeFilters(); });
+    document.querySelectorAll('#attendeesTab .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#attendeesTab .filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            attendeeFilter = btn.dataset.type;
+            applyAttendeeFilters();
+        });
+    });
+    document.getElementById('refreshAttendees').addEventListener('click', loadAttendees);
+    
+    // Modal controls
     document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('detailModal').classList.remove('active'));
     document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target === document.getElementById('detailModal')) document.getElementById('detailModal').classList.remove('active'); });
     document.getElementById('closeEmailModalBtn').addEventListener('click', () => document.getElementById('emailModal').classList.remove('active'));
@@ -1460,6 +1905,8 @@ Under45CEOs Team`;
             loadTickets();
             loadSponsorships();
             loadMessages();
+            loadNominations();
+            loadAttendees();
         }
     }
     
