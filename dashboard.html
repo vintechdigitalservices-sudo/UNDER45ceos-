@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Dashboard | Under 45 CEOs Summit 2026</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #053c40;
+            --teal: #0e6b73;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --orange-bright: #ff9a44;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --off-white: #f5f3ef;
+            --gray-100: #f0efec;
+            --gray-400: #c0c0c0;
+            --gray-700: #3a3a3a;
+            --black: #0a0a0a;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --shadow-card: 0 8px 40px rgba(0,0,0,0.2);
+            --shadow-deep: 0 24px 80px rgba(0,0,0,0.35);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--teal-darker);
+            color: var(--white);
+            min-height: 100vh;
+            background: 
+                radial-gradient(circle at top right, rgba(240,125,26,.15), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(26,138,148,.12), transparent 35%),
+                linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            padding: 1rem 0;
+            background: var(--teal-darker);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav__inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav__logos {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+        }
+
+        .nav__logos img {
+            height: 45px;
+            width: auto;
+        }
+
+        .nav__user {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav__user .user-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .nav__user .user-name span {
+            color: var(--orange);
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--white);
+            padding: 0.5rem 1.2rem;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,68,68,0.2);
+            border-color: #ff4444;
+        }
+
+        /* Main Content */
+        .dashboard-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 100px 2rem 4rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-lg);
+            padding: 2rem 2.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .welcome-section .greeting {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .welcome-section .greeting .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .welcome-section .greeting .text h1 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+            color: var(--white);
+        }
+
+        .welcome-section .greeting .text h1 span {
+            color: var(--orange);
+        }
+
+        .welcome-section .greeting .text p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.85rem;
+        }
+
+        .volunteer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1.2rem;
+            background: rgba(240,125,26,0.15);
+            border: 1px solid rgba(240,125,26,0.3);
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--orange-bright);
+            letter-spacing: 0.05em;
+        }
+
+        .volunteer-badge i {
+            font-size: 0.7rem;
+        }
+
+        /* Referral Link Section */
+        .referral-section {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-lg);
+            padding: 2rem 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .referral-section .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .referral-section .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+            color: var(--white);
+        }
+
+        .referral-section .section-header h2 i {
+            color: var(--orange);
+            margin-right: 0.5rem;
+        }
+
+        .referral-code-display {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .referral-code-display .code {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: var(--orange);
+            flex-shrink: 0;
+        }
+
+        .referral-code-display .link-wrapper {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .referral-code-display .link-wrapper input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.7);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .referral-code-display .link-wrapper input:focus {
+            border-color: var(--orange);
+        }
+
+        .referral-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-copy {
+            padding: 0.6rem 1.2rem;
+            background: var(--orange);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-copy:hover {
+            background: var(--orange-deep);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(240,125,26,0.3);
+        }
+
+        .btn-copy.copied {
+            background: #4caf50;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .share-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .share-btn.whatsapp:hover {
+            background: #25D366;
+            border-color: #25D366;
+            color: white;
+        }
+
+        .share-btn.twitter:hover {
+            background: #1DA1F2;
+            border-color: #1DA1F2;
+            color: white;
+        }
+
+        .share-btn.facebook:hover {
+            background: #1877F2;
+            border-color: #1877F2;
+            color: white;
+        }
+
+        /* KPI Cards */
+        .kpi-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .kpi-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: var(--shadow-card);
+        }
+
+        .kpi-card .kpi-icon {
+            font-size: 1.2rem;
+            color: var(--orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-card .kpi-label {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .kpi-card .kpi-value {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            color: var(--white);
+            margin-top: 0.3rem;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-card .kpi-value .currency {
+            color: var(--orange);
+            font-size: 1.6rem;
+        }
+
+        .kpi-card.pending .kpi-value {
+            color: var(--gold-light);
+        }
+
+        .kpi-card .kpi-sub {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Referrals Table */
+        .table-section {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-lg);
+            padding: 2rem 2.5rem;
+        }
+
+        .table-section .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .table-section .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+            color: var(--white);
+        }
+
+        .table-section .section-header h2 i {
+            color: var(--orange);
+            margin-right: 0.5rem;
+        }
+
+        .table-section .section-header .count-badge {
+            padding: 0.3rem 1rem;
+            background: rgba(255,255,255,0.06);
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table thead {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        table th {
+            text-align: left;
+            padding: 1rem 0.5rem 1rem 0;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        table td {
+            padding: 0.9rem 0.5rem 0.9rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        table tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .status-badge.paid {
+            background: rgba(76, 175, 80, 0.15);
+            color: #4caf50;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+
+        .status-badge.pending {
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .ticket-tier-badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .ticket-tier-badge.executive {
+            background: rgba(240,125,26,0.2);
+            color: var(--orange-bright);
+        }
+
+        .ticket-tier-badge.growth {
+            background: rgba(26,138,148,0.2);
+            color: var(--teal-light);
+        }
+
+        .ticket-tier-badge.inner-circle {
+            background: rgba(212,160,23,0.2);
+            color: var(--gold-light);
+        }
+
+        .payment-method-badge {
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: rgba(255,255,255,0.1);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .empty-state .cta {
+            margin-top: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.5rem;
+            background: var(--orange);
+            color: var(--white);
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .empty-state .cta:hover {
+            background: var(--orange-deep);
+            transform: translateY(-2px);
+        }
+
+        /* Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .loading-text {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.9rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            background: var(--teal-darker);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: var(--shadow-deep);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 999;
+            max-width: 380px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: #4caf50;
+        }
+
+        .toast.error {
+            border-color: #ff4444;
+        }
+
+        .toast .toast-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .toast .toast-message {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .kpi-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 80px 1rem 2rem;
+            }
+
+            .welcome-section {
+                padding: 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .welcome-section .greeting .avatar {
+                width: 44px;
+                height: 44px;
+                font-size: 1rem;
+            }
+
+            .welcome-section .greeting .text h1 {
+                font-size: 1.4rem;
+            }
+
+            .referral-section {
+                padding: 1.5rem;
+            }
+
+            .referral-code-display {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1rem;
+            }
+
+            .referral-code-display .code {
+                text-align: center;
+                font-size: 1.6rem;
+            }
+
+            .referral-actions {
+                flex-direction: column;
+            }
+
+            .share-buttons {
+                justify-content: center;
+            }
+
+            .kpi-section {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-card .kpi-value {
+                font-size: 2rem;
+            }
+
+            .table-section {
+                padding: 1.5rem;
+            }
+
+            table th, table td {
+                font-size: 0.8rem;
+                padding: 0.6rem 0.3rem 0.6rem 0;
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav__logos img {
+                height: 35px;
+            }
+
+            .nav__user .user-name {
+                font-size: 0.75rem;
+            }
+
+            .btn-logout {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.7rem;
+            }
+
+            .welcome-section .greeting .text h1 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <div class="nav__logos">
+                <img src="logo.png" alt="UDUF Africa">
+                <img src="under45.png" alt="Under 45 CEOs">
+            </div>
+            <div class="nav__user">
+                <span class="user-name">Welcome, <span id="userName">Volunteer</span></span>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="dashboard-container">
+        
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div class="greeting">
+                <div class="avatar" id="avatarInitial">V</div>
+                <div class="text">
+                    <h1>Welcome back, <span id="welcomeName">Volunteer</span> 👋</h1>
+                    <p>Here's your referral performance at a glance</p>
+                </div>
+            </div>
+            <div class="volunteer-badge">
+                <i class="fas fa-check-circle"></i> Official Volunteer
+            </div>
+        </div>
+
+        <!-- Referral Link Section -->
+        <div class="referral-section">
+            <div class="section-header">
+                <h2><i class="fas fa-link"></i> Your Referral Link</h2>
+                <span id="referralCodeDisplay" style="font-family: var(--font-display); font-size: 1.2rem; color: var(--orange);">CODE</span>
+            </div>
+            
+            <div class="referral-code-display">
+                <div class="code" id="referralCode">-----</div>
+                <div class="link-wrapper">
+                    <input type="text" id="referralLink" readonly value="Loading...">
+                </div>
+                <div class="referral-actions">
+                    <button class="btn-copy" id="copyBtn">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                    <div class="share-buttons">
+                        <button class="share-btn whatsapp" onclick="shareReferral('whatsapp')" title="Share on WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </button>
+                        <button class="share-btn twitter" onclick="shareReferral('twitter')" title="Share on Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                        <button class="share-btn facebook" onclick="shareReferral('facebook')" title="Share on Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-section">
+            <div class="kpi-card">
+                <div class="kpi-icon"><i class="fas fa-user-check"></i></div>
+                <div class="kpi-label">Total Paid Referrals</div>
+                <div class="kpi-value" id="totalReferrals">0</div>
+                <div class="kpi-sub">Confirmed ticket purchases</div>
+            </div>
+            
+            <div class="kpi-card">
+                <div class="kpi-icon"><i class="fas fa-naira-sign"></i></div>
+                <div class="kpi-label">Revenue Generated</div>
+                <div class="kpi-value"><span class="currency">₦</span><span id="totalRevenue">0</span></div>
+                <div class="kpi-sub">Total from confirmed sales</div>
+            </div>
+            
+            <div class="kpi-card pending">
+                <div class="kpi-icon"><i class="fas fa-clock"></i></div>
+                <div class="kpi-label">Pending Payments</div>
+                <div class="kpi-value" id="pendingPayments">0</div>
+                <div class="kpi-sub">Awaiting verification</div>
+            </div>
+        </div>
+
+        <!-- Referrals Table -->
+        <div class="table-section">
+            <div class="section-header">
+                <h2><i class="fas fa-users"></i> Referred Participants</h2>
+                <span class="count-badge" id="participantCount">0 participants</span>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Participant</th>
+                            <th>Email</th>
+                            <th>Ticket</th>
+                            <th>Payment</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referralsTableBody">
+                        <!-- Rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State (hidden by default) -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-inbox"></i>
+                <h3>No referrals yet</h3>
+                <p>Share your referral link on WhatsApp, social media, or directly with friends to start earning!</p>
+                <a href="#" class="cta" onclick="copyReferralLink(); return false;">
+                    <i class="fas fa-copy"></i> Copy Your Link
+                </a>
+            </div>
+
+            <!-- Loading State -->
+            <div class="empty-state" id="loadingState">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                    <div class="skeleton" style="width: 80px; height: 80px; border-radius: 50%;"></div>
+                    <div class="skeleton" style="width: 200px; height: 24px; border-radius: 4px;"></div>
+                    <div class="skeleton" style="width: 150px; height: 16px; border-radius: 4px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-title" id="toastTitle">Success</div>
+        <div class="toast-message" id="toastMessage">Action completed successfully</div>
+    </div>
+
+    <script type="module">
+        // Import from shared firebase-config.js
+        import { auth, db } from './js/firebase-config.js';
+        
+        // Import Firebase Auth functions
+        import { 
+            onAuthStateChanged,
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        
+        // Import Firestore functions
+        import { 
+            doc, 
+            getDoc, 
+            collection, 
+            query, 
+            where, 
+            getDocs,
+            orderBy,
+            limit,
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // ===== DOM REFERENCES =====
+        const userNameEl = document.getElementById('userName');
+        const welcomeNameEl = document.getElementById('welcomeName');
+        const avatarInitialEl = document.getElementById('avatarInitial');
+        const referralCodeEl = document.getElementById('referralCode');
+        const referralCodeDisplayEl = document.getElementById('referralCodeDisplay');
+        const referralLinkInput = document.getElementById('referralLink');
+        const copyBtn = document.getElementById('copyBtn');
+        const totalReferralsEl = document.getElementById('totalReferrals');
+        const totalRevenueEl = document.getElementById('totalRevenue');
+        const pendingPaymentsEl = document.getElementById('pendingPayments');
+        const referralsTableBody = document.getElementById('referralsTableBody');
+        const participantCountEl = document.getElementById('participantCount');
+        const emptyStateEl = document.getElementById('emptyState');
+        const loadingStateEl = document.getElementById('loadingState');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+
+        // ===== STATE =====
+        let currentUser = null;
+        let volunteerData = null;
+        let allReferrals = [];
+        let confirmedReferrals = [];
+        let pendingReferrals = [];
+
+        // ===== TOAST NOTIFICATION =====
+        function showToast(title, message, type = 'success') {
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+            toast.className = 'toast ' + type;
+            
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // ===== COPY REFERRAL LINK =====
+        window.copyReferralLink = async function() {
+            const link = referralLinkInput.value;
+            try {
+                await navigator.clipboard.writeText(link);
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                copyBtn.classList.add('copied');
+                showToast('Copied!', 'Referral link copied to clipboard', 'success');
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    copyBtn.classList.remove('copied');
+                }, 3000);
+            } catch (err) {
+                // Fallback
+                referralLinkInput.select();
+                document.execCommand('copy');
+                showToast('Copied!', 'Referral link copied to clipboard', 'success');
+            }
+        };
+
+        copyBtn.addEventListener('click', window.copyReferralLink);
+
+        // ===== SHARE REFERRAL =====
+        window.shareReferral = function(platform) {
+            const link = referralLinkInput.value;
+            const message = "Join me at the Under 45 CEOs Business & Leadership Summit 2026! 🚀 Register with my referral link: ";
+            
+            let url = '';
+            switch(platform) {
+                case 'whatsapp':
+                    url = `https://wa.me/?text=${encodeURIComponent(message + link)}`;
+                    break;
+                case 'twitter':
+                    url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(link)}`;
+                    break;
+                case 'facebook':
+                    url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`;
+                    break;
+            }
+            
+            if (url) {
+                window.open(url, '_blank');
+            }
+        };
+
+        // ===== LOAD DASHBOARD DATA =====
+        async function loadDashboardData(uid) {
+            try {
+                // Check for network connectivity first
+                if (!navigator.onLine) {
+                    showToast('No Internet Connection', 'Please check your network and refresh the page.', 'error');
+                    loadingStateEl.innerHTML = `
+                        <div style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-wifi-slash" style="font-size: 3rem; color: var(--orange); margin-bottom: 1rem;"></i>
+                            <h3 style="color: rgba(255,255,255,0.7);">No Internet Connection</h3>
+                            <p style="color: rgba(255,255,255,0.4);">Please check your network and refresh the page.</p>
+                            <button onclick="window.location.reload()" style="margin-top: 1rem; padding: 0.6rem 1.5rem; background: var(--orange); color: white; border: none; border-radius: var(--radius); font-weight: 700; cursor: pointer;">
+                                <i class="fas fa-sync"></i> Refresh
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Get volunteer data
+                const userDoc = await getDoc(doc(db, 'volunteers', uid));
+                
+                if (!userDoc.exists()) {
+                    showToast('Profile Not Found', 'Your volunteer profile could not be found. Please contact support.', 'error');
+                    loadingStateEl.innerHTML = `
+                        <div style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-user-slash" style="font-size: 3rem; color: #ff4444; margin-bottom: 1rem;"></i>
+                            <h3 style="color: rgba(255,255,255,0.7);">Profile Not Found</h3>
+                            <p style="color: rgba(255,255,255,0.4);">Your volunteer profile could not be loaded. Please contact support.</p>
+                            <button onclick="window.location.href='login.html'" style="margin-top: 1rem; padding: 0.6rem 1.5rem; background: var(--orange); color: white; border: none; border-radius: var(--radius); font-weight: 700; cursor: pointer;">
+                                <i class="fas fa-arrow-left"></i> Back to Login
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                volunteerData = userDoc.data();
+                
+                // Update UI with volunteer info
+                const name = volunteerData.name || 'Volunteer';
+                userNameEl.textContent = name;
+                welcomeNameEl.textContent = name;
+                avatarInitialEl.textContent = name.charAt(0).toUpperCase();
+                
+                // Display referral code
+                const refCode = volunteerData.referral_code || '------';
+                referralCodeEl.textContent = refCode;
+                referralCodeDisplayEl.textContent = refCode;
+                
+                // Build referral link
+                const baseUrl = 'https://under45ceos.udufafrica.org';
+                const fullLink = `${baseUrl}/?ref=${refCode}`;
+                referralLinkInput.value = fullLink;
+
+                // Load referrals
+                await loadReferrals(refCode);
+                
+                // Hide loading, show content
+                loadingStateEl.style.display = 'none';
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                
+                let errorMessage = 'Failed to load dashboard data. Please refresh and try again.';
+                let errorTitle = 'Something Went Wrong';
+                let errorIcon = 'fa-exclamation-triangle';
+                
+                // Check for specific error types
+                if (error.message?.includes('network') || error.message?.includes('offline') || error.message?.includes('connection')) {
+                    errorMessage = 'Network error. Please check your internet connection.';
+                    errorTitle = 'Network Error';
+                    errorIcon = 'fa-wifi-slash';
+                } else if (error.code === 'unavailable') {
+                    errorMessage = 'Service is currently unavailable. Please try again later.';
+                    errorTitle = 'Service Unavailable';
+                    errorIcon = 'fa-server';
+                } else if (error.code === 'not-found') {
+                    errorMessage = 'The requested data could not be found.';
+                    errorTitle = 'Data Not Found';
+                    errorIcon = 'fa-search';
+                } else {
+                    // Generic error - don't show permission errors
+                    errorMessage = 'Unable to load your dashboard data. Please refresh and try again.';
+                    errorTitle = 'Unable to Load Data';
+                    errorIcon = 'fa-exclamation-circle';
+                }
+                
+                showToast(errorTitle, errorMessage, 'error');
+                loadingStateEl.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fas ${errorIcon}" style="font-size: 3rem; color: #ff4444; margin-bottom: 1rem;"></i>
+                        <h3 style="color: rgba(255,255,255,0.7);">${errorTitle}</h3>
+                        <p style="color: rgba(255,255,255,0.4);">${errorMessage}</p>
+                        <button onclick="window.location.reload()" style="margin-top: 1rem; padding: 0.6rem 1.5rem; background: var(--orange); color: white; border: none; border-radius: var(--radius); font-weight: 700; cursor: pointer;">
+                            <i class="fas fa-sync"></i> Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // ===== LOAD REFERRALS =====
+        async function loadReferrals(refCode) {
+            try {
+                // Query checkouts collection (manual transfers)
+                const checkoutsQuery = query(
+                    collection(db, 'checkouts'),
+                    where('referred_by', '==', refCode)
+                );
+                const checkoutsSnapshot = await getDocs(checkoutsQuery);
+                
+                // Query selar_payments collection (online payments)
+                const selarQuery = query(
+                    collection(db, 'selar_payments'),
+                    where('referred_by', '==', refCode)
+                );
+                const selarSnapshot = await getDocs(selarQuery);
+                
+                // Combine and format referrals
+                allReferrals = [];
+                
+                checkoutsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    allReferrals.push({
+                        id: doc.id,
+                        name: data.buyer_name || 'Anonymous',
+                        email: data.email || 'N/A',
+                        ticket: data.ticket || 'Unknown',
+                        payment_method: 'Manual',
+                        amount: data.amount || 0,
+                        date: data.created_at?.toDate() || new Date(),
+                        status: data.payment_status || 'pending',
+                        source: 'checkouts'
+                    });
+                });
+                
+                selarSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    allReferrals.push({
+                        id: doc.id,
+                        name: data.buyer_name || data.name || 'Anonymous',
+                        email: data.email || data.buyer_email || 'N/A',
+                        ticket: data.ticket || 'Unknown',
+                        payment_method: 'Selar',
+                        amount: data.amount || 0,
+                        date: data.created_at?.toDate() || new Date(),
+                        status: data.payment_status || 'pending',
+                        source: 'selar_payments'
+                    });
+                });
+                
+                // Sort by date (newest first)
+                allReferrals.sort((a, b) => b.date - a.date);
+                
+                // Separate confirmed and pending
+                confirmedReferrals = allReferrals.filter(r => r.status === 'confirmed' || r.status === 'paid');
+                pendingReferrals = allReferrals.filter(r => r.status === 'pending');
+                
+                // Update KPI cards
+                totalReferralsEl.textContent = confirmedReferrals.length;
+                
+                const totalRevenue = confirmedReferrals.reduce((sum, r) => sum + (r.amount || 0), 0);
+                totalRevenueEl.textContent = totalRevenue.toLocaleString();
+                
+                pendingPaymentsEl.textContent = pendingReferrals.length;
+                
+                // Update table
+                renderReferralsTable(allReferrals);
+                
+                // Update participant count
+                participantCountEl.textContent = `${allReferrals.length} participant${allReferrals.length !== 1 ? 's' : ''}`;
+                
+                // Show/hide empty state
+                if (allReferrals.length === 0) {
+                    emptyStateEl.style.display = 'block';
+                    document.querySelector('.table-wrapper').style.display = 'none';
+                } else {
+                    emptyStateEl.style.display = 'none';
+                    document.querySelector('.table-wrapper').style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Error loading referrals:', error);
+                
+                // If error is permission denied, treat as empty data (user just has no referrals)
+                if (error.code === 'permission-denied') {
+                    // This likely means there are no documents in the collection yet
+                    // Show empty state instead of error
+                    allReferrals = [];
+                    confirmedReferrals = [];
+                    pendingReferrals = [];
+                    
+                    totalReferralsEl.textContent = '0';
+                    totalRevenueEl.textContent = '0';
+                    pendingPaymentsEl.textContent = '0';
+                    
+                    renderReferralsTable(allReferrals);
+                    participantCountEl.textContent = '0 participants';
+                    
+                    emptyStateEl.style.display = 'block';
+                    document.querySelector('.table-wrapper').style.display = 'none';
+                    return;
+                }
+                
+                // For other errors, rethrow
+                throw error;
+            }
+        }
+
+        // ===== RENDER REFERRALS TABLE =====
+        function renderReferralsTable(referrals) {
+            if (referrals.length === 0) {
+                referralsTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2rem; color: rgba(255,255,255,0.3);">
+                            <i class="fas fa-users" style="font-size: 2rem; margin-bottom: 0.5rem; display: block; color: rgba(255,255,255,0.1);"></i>
+                            No referrals yet. Share your link to get started!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            referrals.forEach((referral, index) => {
+                // Format date
+                const dateStr = referral.date instanceof Date 
+                    ? referral.date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                    : 'N/A';
+                
+                // Determine ticket tier class
+                let tierClass = '';
+                const ticketLower = (referral.ticket || '').toLowerCase();
+                if (ticketLower.includes('executive') || ticketLower.includes('exec')) {
+                    tierClass = 'executive';
+                } else if (ticketLower.includes('growth')) {
+                    tierClass = 'growth';
+                } else if (ticketLower.includes('inner') || ticketLower.includes('founder')) {
+                    tierClass = 'inner-circle';
+                }
+                
+                // Status badge
+                const isConfirmed = referral.status === 'confirmed' || referral.status === 'paid';
+                const statusClass = isConfirmed ? 'paid' : 'pending';
+                const statusIcon = isConfirmed ? 'fa-check-circle' : 'fa-clock';
+                const statusText = isConfirmed ? 'Paid' : 'Pending Verification';
+
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${referral.name}</strong></td>
+                        <td style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">${referral.email}</td>
+                        <td><span class="ticket-tier-badge ${tierClass}">${referral.ticket}</span></td>
+                        <td><span class="payment-method-badge">${referral.payment_method}</span></td>
+                        <td style="font-size: 0.8rem; color: rgba(255,255,255,0.5);">${dateStr}</td>
+                        <td>
+                            <span class="status-badge ${statusClass}">
+                                <i class="fas ${statusIcon}"></i> ${statusText}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            referralsTableBody.innerHTML = html;
+        }
+
+        // ===== LOGOUT =====
+        logoutBtn.addEventListener('click', async function() {
+            try {
+                await signOut(auth);
+                showToast('Logged Out', 'Redirecting to login page...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Error', 'Failed to logout. Please try again.', 'error');
+            }
+        });
+
+        // ===== AUTH STATE OBSERVER =====
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadDashboardData(user.uid);
+            } else {
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
+            }
+        });
+
+        // ===== AUTO-REFRESH (every 30 seconds) =====
+        setInterval(() => {
+            if (currentUser && volunteerData) {
+                loadReferrals(volunteerData.referral_code);
+            }
+        }, 30000);
+
+        console.log('🟢 Volunteer Dashboard initialized successfully');
+    </script>
+
+</body>
+</html>

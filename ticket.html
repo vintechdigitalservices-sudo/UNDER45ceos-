@@ -13,11 +13,6 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://under45ceos.com/ticket.html">
     <meta name="twitter:card" content="summary_large_image">
-
-     <!-- Favicon - Use under45.png as the icon in search results -->
-  <link class="icon" type="image/png" href="under45.png" />
-  <link rel="apple-touch-icon" href="under45.png" />
-  <link rel="shortcut icon" href="under45.png" />
     <link rel="canonical" href="https://under45ceos.udufafrica.org/ticket.html">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1193,6 +1188,22 @@
     EXISTING SCRIPTS + NEW FUNCTIONALITY
     ================================================================ -->
     <script>
+        // ===== REFERRAL TRACKING SCRIPT =====
+        (function captureReferral() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            
+            if (refCode) {
+                localStorage.setItem('u45_referred_by', refCode.trim().toUpperCase());
+                console.log('🔗 Referral tracked:', refCode);
+            }
+        })();
+
+        // Helper function to get stored referral
+        function getStoredReferral() {
+            return localStorage.getItem('u45_referred_by') || 'DIRECT';
+        }
+
         // ===== EXISTING: NAVBAR SCROLL =====
         let ticking = false;
         const navbar = document.getElementById('navbar');
@@ -1386,14 +1397,26 @@
             if (e.key === 'Escape' && modalOverlay.classList.contains('open')) closeModal();
         });
 
-        // ===== Modal: Pay Online =====
+        // ===== Modal: Pay Online (UPDATED WITH REFERRAL) =====
         modalPayOnline.addEventListener('click', function() {
             if (selectedTicket && selectedTicket.selar) {
-                window.open(selectedTicket.selar, '_blank');
+                const refCode = getStoredReferral();
+                let selarUrl = selectedTicket.selar;
+                
+                // Append referral code to Selar URL
+                const separator = selarUrl.includes('?') ? '&' : '?';
+                selarUrl += `${separator}ref=${encodeURIComponent(refCode)}`;
+                
+                window.open(selarUrl, '_blank');
                 closeModal();
             } else {
                 // fallback
-                window.open('https://selar.com/m/udufu45ceos2026', '_blank');
+                const refCode = getStoredReferral();
+                let selarUrl = 'https://selar.com/m/udufu45ceos2026';
+                const separator = selarUrl.includes('?') ? '&' : '?';
+                selarUrl += `${separator}ref=${encodeURIComponent(refCode)}`;
+                
+                window.open(selarUrl, '_blank');
                 closeModal();
             }
         });
@@ -1435,9 +1458,11 @@
             }
         });
 
-        // ===== Drawer: Proceed to Checkout =====
+        // ===== Drawer: Proceed to Checkout (UPDATED WITH REFERRAL) =====
         drawerProceed.addEventListener('click', function() {
             if (!selectedTicket) return;
+
+            const refCode = getStoredReferral();
 
             // Build URL params
             const params = new URLSearchParams();
@@ -1447,11 +1472,12 @@
             params.set('price', selectedTicket.price);
             params.set('qty', quantity);
             params.set('total', selectedTicket.price * quantity);
+            params.set('ref', refCode);
 
             // Close drawer
             closeDrawer();
 
-            // Redirect to checkout.html
+            // Redirect to checkout.html with referral
             window.location.href = 'checkout.html?' + params.toString();
         });
 

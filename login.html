@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Portal | Under 45 CEOs Summit 2026</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK - CDN -->
+    <script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #053c40;
+            --teal: #0e6b73;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --white: #ffffff;
+            --off-white: #f5f3ef;
+            --gray-400: #c0c0c0;
+            --gray-700: #3a3a3a;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --shadow-card: 0 8px 40px rgba(0,0,0,0.2);
+            --shadow-deep: 0 24px 80px rgba(0,0,0,0.35);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--teal-darker);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: 
+                radial-gradient(circle at top right, rgba(240,125,26,.15), transparent 40%),
+                radial-gradient(circle at bottom left, rgba(26,138,148,.12), transparent 35%),
+                linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            padding: 2rem;
+        }
+
+        .auth-container {
+            max-width: 480px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow-deep);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header .logo-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .auth-header .logo-wrap img {
+            height: 50px;
+            width: auto;
+        }
+
+        .auth-header h1 {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            color: var(--white);
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+
+        .auth-header h1 span {
+            color: var(--orange);
+        }
+
+        .auth-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius);
+            padding: 4px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 0.7rem;
+            text-align: center;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background: var(--orange);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(240,125,26,0.3);
+        }
+
+        .auth-tab:hover:not(.active) {
+            color: var(--white);
+        }
+
+        .auth-form {
+            display: none;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .auth-form.active {
+            display: flex;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--orange);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(240,125,26,0.1);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-group input.error {
+            border-color: #ff4444;
+            box-shadow: 0 0 0 3px rgba(255,68,68,0.1);
+        }
+
+        .form-group .error-text {
+            color: #ff4444;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .form-group .error-text.show {
+            display: block;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--orange);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-family: var(--font-body);
+            font-weight: 800;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            min-height: 54px;
+        }
+
+        .btn-submit:hover {
+            background: var(--orange-deep);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(240,125,26,0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading Animation */
+        .btn-submit .spinner {
+            display: none;
+            width: 22px;
+            height: 22px;
+            border: 3px solid rgba(255,255,255,0.2);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            position: absolute;
+        }
+
+        .btn-submit.loading .spinner {
+            display: block;
+        }
+
+        .btn-submit.loading .btn-text {
+            opacity: 0;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .social-login {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 0.7rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .social-btn.google {
+            color: #ea4335;
+        }
+
+        .social-btn.google:hover {
+            background: rgba(234, 67, 53, 0.15);
+            border-color: #ea4335;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .auth-footer a {
+            color: var(--orange);
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .auth-footer a:hover {
+            color: var(--orange-deep);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius);
+            background: var(--teal-darker);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: var(--shadow-deep);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 999;
+            max-width: 380px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: #4caf50;
+        }
+
+        .toast.error {
+            border-color: #ff4444;
+        }
+
+        .toast .toast-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .toast .toast-message {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 1.8rem 1.2rem;
+            }
+            
+            .auth-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+            
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                max-width: 100%;
+            }
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle input {
+            padding-right: 3rem;
+        }
+
+        .password-toggle .toggle-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            cursor: pointer;
+            padding: 0.3rem;
+            transition: color 0.2s;
+        }
+
+        .password-toggle .toggle-btn:hover {
+            color: var(--white);
+        }
+
+        .auth-form .terms {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+        }
+
+        .auth-form .terms a {
+            color: var(--orange);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container" id="authContainer">
+        <!-- Header -->
+        <div class="auth-header">
+            <div class="logo-wrap">
+                <img src="logo.png" alt="UDUF Africa" style="height: 45px;">
+                <img src="under45.png" alt="Under 45 CEOs" style="height: 40px;">
+            </div>
+            <h1>Volunteer <span>Portal</span></h1>
+            <p>Sign in to track your referrals and earnings</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Sign In</button>
+            <button class="auth-tab" data-tab="signup">Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <form class="auth-form active" id="loginForm">
+            <div class="form-group">
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail" placeholder="you@email.com" required>
+                <div class="error-text" id="loginEmailError">Please enter a valid email</div>
+            </div>
+
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <div class="password-toggle">
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    <button type="button" class="toggle-btn" onclick="togglePassword('loginPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="error-text" id="loginPasswordError">Password is required</div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="loginBtn">
+                <span class="spinner"></span>
+                <span class="btn-text">Sign In</span>
+            </button>
+
+            <div class="auth-divider">or</div>
+
+            <div class="social-login">
+                <button type="button" class="social-btn google" onclick="signInWithGoogle()">
+                    <i class="fab fa-google"></i> Google
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                Don't have an account? <a onclick="switchTab('signup')">Sign Up</a>
+            </div>
+        </form>
+
+        <!-- Signup Form -->
+        <form class="auth-form" id="signupForm">
+            <div class="form-group">
+                <label for="signupName">Full Name</label>
+                <input type="text" id="signupName" placeholder="John Doe" required>
+                <div class="error-text" id="signupNameError">Please enter your full name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="signupEmail">Email Address</label>
+                <input type="email" id="signupEmail" placeholder="you@email.com" required>
+                <div class="error-text" id="signupEmailError">Please enter a valid email</div>
+            </div>
+
+            <div class="form-group">
+                <label for="signupPhone">Phone Number</label>
+                <input type="tel" id="signupPhone" placeholder="+234 800 000 0000" required>
+                <div class="error-text" id="signupPhoneError">Please enter a valid phone number</div>
+            </div>
+
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <div class="password-toggle">
+                    <input type="password" id="signupPassword" placeholder="Create a password (min. 6 characters)" required minlength="6">
+                    <button type="button" class="toggle-btn" onclick="togglePassword('signupPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="error-text" id="signupPasswordError">Password must be at least 6 characters</div>
+            </div>
+
+            <div class="form-group">
+                <label for="signupConfirm">Confirm Password</label>
+                <div class="password-toggle">
+                    <input type="password" id="signupConfirm" placeholder="Confirm your password" required>
+                    <button type="button" class="toggle-btn" onclick="togglePassword('signupConfirm', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="error-text" id="signupConfirmError">Passwords do not match</div>
+            </div>
+
+            <div class="terms">
+                By signing up, you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>
+            </div>
+
+            <button type="submit" class="btn-submit" id="signupBtn">
+                <span class="spinner"></span>
+                <span class="btn-text">Create Account</span>
+            </button>
+
+            <div class="auth-divider">or</div>
+
+            <div class="social-login">
+                <button type="button" class="social-btn google" onclick="signUpWithGoogle()">
+                    <i class="fab fa-google"></i> Sign Up with Google
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                Already have an account? <a onclick="switchTab('login')">Sign In</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-title" id="toastTitle">Success</div>
+        <div class="toast-message" id="toastMessage">Action completed successfully</div>
+    </div>
+
+    <script type="module">
+        // ===== FIREBASE CONFIGURATION (Embedded) =====
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword,
+            signInWithPopup,
+            GoogleAuthProvider
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            getDoc, 
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc",
+            authDomain: "under45ceos-submit.firebaseapp.com",
+            projectId: "under45ceos-submit",
+            storageBucket: "under45ceos-submit.firebasestorage.app",
+            messagingSenderId: "801982436580",
+            appId: "1:801982436580:web:3769913cb6ec23fbaa88f1"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ===== DOM REFERENCES =====
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+
+        // ===== TAB SWITCHING =====
+        window.switchTab = function(tab) {
+            // Update tabs
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.auth-tab[data-tab="${tab}"]`).classList.add('active');
+            
+            // Update forms
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(tab === 'login' ? 'loginForm' : 'signupForm').classList.add('active');
+            
+            // Clear errors
+            clearErrors();
+        };
+
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                switchTab(this.dataset.tab);
+            });
+        });
+
+        // ===== PASSWORD TOGGLE =====
+        window.togglePassword = function(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        };
+
+        // ===== ERROR HANDLING =====
+        function clearErrors() {
+            document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('.form-group input').forEach(el => el.classList.remove('error'));
+        }
+
+        function showError(inputId, errorId, message) {
+            const input = document.getElementById(inputId);
+            const error = document.getElementById(errorId);
+            if (input) input.classList.add('error');
+            if (error) {
+                error.textContent = message;
+                error.classList.add('show');
+            }
+        }
+
+        function setLoading(btn, isLoading) {
+            if (isLoading) {
+                btn.classList.add('loading');
+                btn.disabled = true;
+            } else {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        }
+
+        // ===== TOAST NOTIFICATION =====
+        function showToast(title, message, type = 'success') {
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+            toast.className = 'toast ' + type;
+            
+            // Force reflow
+            void toast.offsetWidth;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // ===== GENERATE REFERRAL CODE - UPDATED =====
+        function generateReferralCode(name) {
+            // New format: U26- + first 3 letters of name + 3 random characters
+            const prefix = 'U26-';
+            const namePart = name.substring(0, 3).toUpperCase();
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let randomPart = '';
+            for (let i = 0; i < 3; i++) {
+                randomPart += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return prefix + namePart + randomPart;
+        }
+
+        // ===== SIGN UP =====
+        signupForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            clearErrors();
+            
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupConfirm').value;
+
+            // Validate
+            let isValid = true;
+            
+            if (!name || name.length < 2) {
+                showError('signupName', 'signupNameError', 'Please enter your full name');
+                isValid = false;
+            }
+            
+            if (!email || !email.includes('@')) {
+                showError('signupEmail', 'signupEmailError', 'Please enter a valid email');
+                isValid = false;
+            }
+            
+            if (!phone || phone.length < 10) {
+                showError('signupPhone', 'signupPhoneError', 'Please enter a valid phone number');
+                isValid = false;
+            }
+            
+            if (password.length < 6) {
+                showError('signupPassword', 'signupPasswordError', 'Password must be at least 6 characters');
+                isValid = false;
+            }
+            
+            if (password !== confirm) {
+                showError('signupConfirm', 'signupConfirmError', 'Passwords do not match');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+
+            setLoading(signupBtn, true);
+
+            try {
+                console.log("🟡 Starting signup process for:", email);
+                
+                // 1. Create user in Firebase Auth
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                console.log("🟢 Auth user created successfully:", user.uid);
+
+                // 2. Generate referral code with new format
+                const referralCode = generateReferralCode(name);
+
+                // 3. Save volunteer data to Firestore collection "volunteers"
+                console.log("🟡 Writing to Firestore: volunteers/", user.uid);
+                
+                await setDoc(doc(db, 'volunteers', user.uid), {
+                    uid: user.uid,
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    referral_code: referralCode,
+                    created_at: serverTimestamp(),
+                    stats: {
+                        total_referrals: 0,
+                        confirmed_referrals: 0,
+                        total_revenue: 0,
+                        pending_payments: 0
+                    }
+                });
+                
+                console.log("🟢 Volunteer document created successfully in Firestore!");
+
+                showToast('Account Created!', `Welcome ${name}! Your referral code is ${referralCode}`, 'success');
+
+                // Redirect to dashboard after short delay
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+            } catch (error) {
+                console.error('❌ Signup error:', error);
+                
+                let message = 'An error occurred during signup. Please try again.';
+                if (error.code === 'auth/email-already-in-use') {
+                    message = 'This email is already registered. Please sign in instead.';
+                } else if (error.code === 'auth/weak-password') {
+                    message = 'Password is too weak. Please use a stronger password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    message = 'Invalid email address.';
+                } else if (error.code === 'permission-denied' || error.message?.includes('permission')) {
+                    message = 'Permission denied. Please check Firestore rules.';
+                }
+                
+                showToast('Signup Failed', message, 'error');
+                setLoading(signupBtn, false);
+            }
+        });
+
+        // ===== SIGN IN - UPDATED WITH NETWORK ERROR HANDLING =====
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            clearErrors();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            let isValid = true;
+            
+            if (!email || !email.includes('@')) {
+                showError('loginEmail', 'loginEmailError', 'Please enter a valid email');
+                isValid = false;
+            }
+            
+            if (!password) {
+                showError('loginPassword', 'loginPasswordError', 'Password is required');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+
+            setLoading(loginBtn, true);
+
+            try {
+                console.log("🟡 Starting login process for:", email);
+                
+                // 1. Authenticate user with Firebase Auth
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log("🟢 Auth login successful");
+                
+                // 2. After successful auth, load their data from volunteers collection
+                const user = auth.currentUser;
+                if (user) {
+                    console.log("🟡 Checking volunteers document for:", user.uid);
+                    const userDoc = await getDoc(doc(db, 'volunteers', user.uid));
+                    
+                    if (!userDoc.exists()) {
+                        console.warn("⚠️ User exists in Auth but not in volunteers collection");
+                        // IMPORTANT: Do NOT auto-create profile here
+                        // This ensures signup data is never overwritten
+                        showToast('Account Setup', 'Please complete your profile setup', 'warning');
+                        setLoading(loginBtn, false);
+                        return;
+                    } else {
+                        console.log("🟢 Volunteer document found for:", user.uid);
+                    }
+                }
+                
+                showToast('Welcome Back!', 'Redirecting to your dashboard...', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                
+                let message = 'Invalid email or password. Please try again.';
+                
+                // Check for network/connection errors
+                if (error.code === 'auth/network-request-failed' || 
+                    error.message?.includes('network') || 
+                    error.message?.includes('connection') ||
+                    !navigator.onLine) {
+                    message = 'No internet connection. Please check your network and try again.';
+                } else if (error.code === 'auth/user-not-found') {
+                    message = 'No account found with this email. Please sign up.';
+                } else if (error.code === 'auth/wrong-password') {
+                    message = 'Incorrect password. Please try again.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    message = 'Too many failed attempts. Please wait and try again.';
+                } else if (error.message?.includes('offline') || error.message?.includes('unavailable')) {
+                    message = 'Network connection unavailable. Please check your internet.';
+                }
+                
+                showToast('Login Failed', message, 'error');
+                setLoading(loginBtn, false);
+            }
+        });
+
+        // ===== GOOGLE SIGN IN - UPDATED WITH NETWORK ERROR HANDLING =====
+        window.signInWithGoogle = async function() {
+            const provider = new GoogleAuthProvider();
+            
+            try {
+                console.log("🟡 Starting Google sign-in");
+                
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                console.log("🟢 Google auth successful:", user.uid);
+                
+                // Check if user exists in volunteers collection
+                const userDoc = await getDoc(doc(db, 'volunteers', user.uid));
+                
+                if (!userDoc.exists()) {
+                    console.log("🟡 First time Google user - creating profile");
+                    
+                    // First time user - create profile in volunteers collection
+                    const name = user.displayName || 'Volunteer';
+                    const email = user.email || '';
+                    const referralCode = generateReferralCode(name);
+                    
+                    await setDoc(doc(db, 'volunteers', user.uid), {
+                        uid: user.uid,
+                        name: name,
+                        email: email,
+                        phone: '',
+                        referral_code: referralCode,
+                        created_at: serverTimestamp(),
+                        stats: {
+                            total_referrals: 0,
+                            confirmed_referrals: 0,
+                            total_revenue: 0,
+                            pending_payments: 0
+                        }
+                    });
+                    console.log("🟢 Google volunteer profile created");
+                    
+                    showToast('Welcome!', `Your referral code is ${referralCode}`, 'success');
+                } else {
+                    console.log("🟢 Existing Google user found");
+                    showToast('Welcome Back!', 'Redirecting to your dashboard...', 'success');
+                }
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('❌ Google sign-in error:', error);
+                
+                let message = 'Unable to sign in with Google. Please try again.';
+                
+                // Check for network/connection errors
+                if (error.code === 'auth/network-request-failed' || 
+                    error.message?.includes('network') || 
+                    error.message?.includes('connection') ||
+                    !navigator.onLine) {
+                    message = 'No internet connection. Please check your network and try again.';
+                } else if (error.message?.includes('offline') || error.message?.includes('unavailable')) {
+                    message = 'Network connection unavailable. Please check your internet.';
+                } else if (error.code === 'auth/popup-closed-by-user') {
+                    message = 'Sign-in popup was closed. Please try again.';
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    message = 'Sign-in was cancelled. Please try again.';
+                }
+                
+                showToast('Authentication Failed', message, 'error');
+            }
+        };
+
+        window.signUpWithGoogle = window.signInWithGoogle;
+
+        // ===== AUTH STATE OBSERVER - REMOVED THE REDIRECT =====
+        // We intentionally DO NOT redirect on auth state change here.
+        // The signup/login handlers control the redirect after successful operations.
+        // This prevents the race condition where auth state change redirects before Firestore write completes.
+
+        // ===== PREVENT FORM SUBMISSION ON ENTER =====
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const form = this.closest('form');
+                    if (form) {
+                        e.preventDefault();
+                        form.dispatchEvent(new Event('submit'));
+                    }
+                }
+            });
+        });
+
+        console.log('🟢 Volunteer Portal initialized successfully');
+        console.log('🔍 Note: Auth state observer does NOT auto-redirect to prevent race conditions');
+    </script>
+
+</body>
+</html>
