@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+
   <!-- SEO Meta Tags -->
   <title>Under 45 CEOs — Business & Leadership Summit 2026 | Onitsha, Nigeria</title>
   <meta name="description" content="Join Africa's premier Business & Leadership Summit for young entrepreneurs. Theme: Rethinking Entrepreneurship. Network with 500+ business leaders, learn from industry experts, and access funding opportunities. Oct 10, 2026 - Oct 11, 2026,Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha Anambra State." />
@@ -11,13 +11,12 @@
   <meta name="author" content="UDUF Africa" />
   <meta name="robots" content="index, follow" />
   <meta name="googlebot" content="index, follow" />
-  
+
   <!-- Favicon - Use under45.png as the icon in search results -->
   <link class="icon" type="image/png" href="under45.png" />
   <link rel="apple-touch-icon" href="under45.png" />
   <link rel="shortcut icon" href="under45.png" />
-  
-  <!-- Canonical URL -->
+
   <!-- Open Graph / Social Media Meta Tags -->
   <meta property="og:title" content="Under 45 CEOs — Business & Leadership Summit 2026" />
   <meta property="og:description" content="🚀 Join Africa's premier Business & Leadership Summit for young entrepreneurs.
@@ -31,19 +30,19 @@ Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha A
   <meta property="og:image:height" content="630" />
   <meta property="og:site_name" content="Under 45 CEOs Summit" />
   <meta property="og:locale" content="en_NG" />
-  
+
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Under 45 CEOs — Business & Leadership Summit 2026" />
   <meta name="twitter:description" content="Join Nigeria's premier Business & Leadership Summit for young entrepreneurs. Theme: Rethinking Entrepreneurship. October 10, 2026, Onitsha." />
   <meta name="twitter:image" content="https://under45ceos.udufafrica.org/under45.png" />
-  
+
   <!-- Additional SEO Meta Tags -->
   <meta name="geo.region" content="NG-AN" />
   <meta name="geo.placename" content="Onitsha" />
   <meta name="geo.position" content="6.1667;6.7833" />
   <meta name="ICBM" content="6.1667, 6.7833" />
-  
+
   <!-- Schema.org / Structured Data -->
   <script type="application/ld+json">
   {
@@ -80,40 +79,89 @@ Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha A
     }
   }
   </script>
-  
+
   <!-- Preconnect for Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-  
+
   <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- ===== THEME BOOTSTRAP (prevents flash of wrong theme) ===== -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('u45_theme');
+        var theme = saved === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+
+  <!-- ===== REFERRAL PRESERVATION SCRIPT ===== -->
+  <script>
+    (function preserveReferralParam() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const refCode = urlParams.get('ref');
+
+      if (refCode) {
+        // Store in localStorage as backup
+        localStorage.setItem('u45_referred_by', refCode.trim().toUpperCase());
+
+        // Update all internal links on the page
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('a[href^="/"], a[href^="."], a[href^="index.html"], a[href^="ticket.html"], a[href^="impact.html"], a[href^="sponsor.html"]').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && !href.includes('?ref=')) {
+              const separator = href.includes('?') ? '&' : '?';
+              link.setAttribute('href', href + separator + 'ref=' + encodeURIComponent(refCode));
+            }
+          });
+        });
+      }
+    })();
+  </script>
 </head>
 <body>
 
-  <div class="sticky-banner" id="stickyBanner">
-    <div class="sticky-banner__inner">
-      <div class="sticky-banner__content">
+<div class="sticky-banner" id="stickyBanner">
+  <div class="sticky-banner__inner">
+    <div class="sticky-banner__content">
+
+      <div class="sticky-banner__top-row">
+
         <div class="sticky-banner__icon">
           <i class="fas fa-ticket-alt"></i>
         </div>
+
         <div class="sticky-banner__text">
           <span class="sticky-banner__title">Early Bird Ends in August!</span>
           <span class="sticky-banner__subtitle">Discounts end soon. Get your ticket now.</span>
         </div>
+
         <div class="sticky-banner__timer" id="countdownTimer">
           <div class="timer-block"><span id="timerDays">00</span><span class="timer-label">Days</span></div>
           <div class="timer-block"><span id="timerHours">00</span><span class="timer-label">Hrs</span></div>
           <div class="timer-block"><span id="timerMinutes">00</span><span class="timer-label">Mins</span></div>
           <div class="timer-block"><span id="timerSeconds">00</span><span class="timer-label">Secs</span></div>
         </div>
-        <a href="ticket.html" class="btn btn--primary btn--lg" style="font-weight: 800; text-transform: uppercase;">GET TICKETS →</a>
-        <button class="sticky-banner__close" id="closeBanner">×</button>
+
       </div>
+
+      <div class="sticky-banner__cta-row">
+        <a href="ticket.html" class="btn btn--primary btn--lg" style="font-weight: 800; text-transform: uppercase;">GET TICKETS →</a>
+      </div>
+
+      <button class="sticky-banner__close" id="closeBanner" aria-label="Dismiss banner">×</button>
+
     </div>
   </div>
+</div>
 
   <nav class="nav" id="navbar">
     <div class="nav__inner">
@@ -132,10 +180,15 @@ Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha A
         <li><a href="impact.html">Impact</a></li>
         <li><a href="sponsor.html">Sponsors</a></li>
       </ul>
-      <a href="ticket.html" class="btn btn--nav pulse-btn">Get Tickets</a>
-      <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
+      <div class="nav__actions">
+        <button class="theme-toggle" role="switch" aria-checked="false" aria-label="Toggle light and dark mode">
+          <span class="theme-toggle__knob"><i class="fas fa-moon"></i></span>
+        </button>
+        <a href="ticket.html" class="btn btn--nav pulse-btn">Get Tickets</a>
+        <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
     <div class="nav__mobile" id="mobileMenu">
       <a href="#speakers">Speakers</a>
@@ -169,12 +222,10 @@ Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha A
         Build smarter businesses. Lead with clarity. Shape Africa's future.
       </p>
 
-      <!-- Integrated Hero Pitch Section Layout -->
       <div class="hero__pitch-teaser reveal-up delay-1">
         <h3 class="hero__pitch-headline"><i class="fas fa-microphone"></i> PITCH FOR <span style="color: #f07d1a;">₦1 MILLION</span> GRANT FUNDING</h3>
         <a href="#pitch" class="hero__pitch-link" style="color: #f07d1a;">Learn more <i class="fas fa-arrow-right"></i></a>
       </div>
-
 
       <div class="hero__meta reveal-up delay-2">
         <div class="hero__meta-item">
@@ -209,18 +260,22 @@ Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha A
       <h2 class="section-title reveal-up delay-1">TRANSFORMING <span class="highlight">LIVES & BUSINESSES</span></h2>
       <div class="impact__grid">
         <div class="impact-card reveal-up delay-2">
+          <span class="ledger-num">01</span>
           <div class="impact-card__num" data-original="5,000+">5,000+</div>
           <div class="impact-card__label">Entrepreneurs Trained</div>
         </div>
         <div class="impact-card reveal-up delay-3">
+          <span class="ledger-num">02</span>
           <div class="impact-card__num" data-original="₦5 Million+">₦5 Million+</div>
           <div class="impact-card__label">Prizes Won on Pitch Contest</div>
         </div>
         <div class="impact-card reveal-up delay-4">
+          <span class="ledger-num">03</span>
           <div class="impact-card__num" data-original="50+">50+</div>
           <div class="impact-card__label">Business Mentors</div>
         </div>
         <div class="impact-card reveal-up delay-5">
+          <span class="ledger-num">04</span>
           <div class="impact-card__num" data-original="300+">300+</div>
           <div class="impact-card__label">SMEs Launched</div>
         </div>
@@ -303,7 +358,6 @@ Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha A
 </section>
   <!-- ═══════════════════ SPEAKERS ═══════════════════ -->
   <section class="speakers" id="speakers">
-    <div class="speakers__bg-text">SPEAKERS</div>
     <div class="container">
       <div class="section-label reveal-up">OUR PAST SPEAKERS</div>
       <h2 class="section-title reveal-up delay-1">VOICES THAT <span class="highlight">INSPIRE</span></h2>
@@ -476,7 +530,7 @@ Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha A
       <a href="gallery.html" class="btn btn--outline reveal-up delay-2">View Gallery →</a>
 
       <div class="gallery reveal-up delay-3">
-        <div class="gallery__item gallery__item--wide">
+        <div class="gallery__item gallery__item--wide gallery__item--tall">
           <img src="gallery1.jpg" alt="Opening Keynote with all speakers and panelists" class="gallery__img" loading="lazy">
           <div class="gallery__overlay"><span>All Speakers and Panelists</span></div>
         </div>
@@ -488,7 +542,7 @@ Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha A
           <img src="gallery3.jpg" alt="Registration session at the summit" class="gallery__img" loading="lazy">
           <div class="gallery__overlay"><span>Registration session</span></div>
         </div>
-        <div class="gallery__item gallery__item--tall">
+        <div class="gallery__item">
           <img src="gallery4.jpg" alt="Medical checkup station at the event" class="gallery__img" loading="lazy">
           <div class="gallery__overlay"><span>Medical Checkup</span></div>
         </div>
@@ -505,45 +559,47 @@ Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha A
     <div class="container">
       <div class="section-label reveal-up">OUR PARTNERS</div>
       <h2 class="section-title reveal-up delay-1">2025 <span class="highlight">SPONSORS</span></h2>
-      <div class="sponsors-slider">
-        <div class="sponsors-track">
-          <div class="sponsor-logo"><img src="sponsor1.png" alt="Sponsor 1" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor2.jpeg" alt="Sponsor 2" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor3.png" alt="Sponsor 3" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor4.png" alt="Sponsor 4" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor5.png" alt="Sponsor 5" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor6.png" alt="Sponsor 6" loading="lazy"></div>
-          <!-- Duplicate for seamless loop -->
-          <div class="sponsor-logo"><img src="sponsor1.png" alt="Sponsor 1" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor2.png" alt="Sponsor 2" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor3.png" alt="Sponsor 3" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor4.png" alt="Sponsor 4" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor5.png" alt="Sponsor 5" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor6.png" alt="Sponsor 6" loading="lazy"></div>
-          <div class="sponsor-logo"><img src="sponsor6.jpeg" alt="Sponsor 7" loading="lazy"></div>
-        </div>
+    </div>
+    <div class="sponsors-slider reveal-up delay-2">
+      <div class="sponsors-track">
+        <div class="sponsor-logo"><img src="sponsor1.png" alt="Sponsor 1" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor2.jpeg" alt="Sponsor 2" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor3.png" alt="Sponsor 3" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor4.png" alt="Sponsor 4" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor5.png" alt="Sponsor 5" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor6.png" alt="Sponsor 6" loading="lazy"></div>
+        <!-- Duplicate for seamless loop -->
+        <div class="sponsor-logo"><img src="sponsor1.png" alt="Sponsor 1" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor2.png" alt="Sponsor 2" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor3.png" alt="Sponsor 3" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor4.png" alt="Sponsor 4" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor5.png" alt="Sponsor 5" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor6.png" alt="Sponsor 6" loading="lazy"></div>
+        <div class="sponsor-logo"><img src="sponsor6.jpeg" alt="Sponsor 7" loading="lazy"></div>
       </div>
     </div>
   </section>
 
   <!-- ═══════════════════ TESTIMONIALS ═══════════════════ -->
   <section class="testimonials" id="testimonials">
-    <div class="testimonials__ticker-wrap">
-      <div class="testimonials__ticker" id="ticker">
-        <span>PURPOSE</span><span class="dot">✦</span>
-        <span>PROFITABILITY</span><span class="dot">✦</span>
-        <span>SUSTAINABILITY</span><span class="dot">✦</span>
-        <span>MENTORSHIP</span><span class="dot">✦</span>
-        <span>INNOVATION</span><span class="dot">✦</span>
-        <span>SCALE</span><span class="dot">✦</span>
-        <span>IMPACT</span><span class="dot">✦</span>
-        <span>PURPOSE</span><span class="dot">✦</span>
-        <span>PROFITABILITY</span><span class="dot">✦</span>
-        <span>SUSTAINABILITY</span><span class="dot">✦</span>
-        <span>MENTORSHIP</span><span class="dot">✦</span>
-        <span>INNOVATION</span><span class="dot">✦</span>
-        <span>SCALE</span><span class="dot">✦</span>
-        <span>IMPACT</span><span class="dot">✦</span>
+    <div class="container">
+      <div class="testimonials__ticker-wrap">
+        <div class="testimonials__ticker" id="ticker">
+          <span>PURPOSE</span><span class="dot">✦</span>
+          <span>PROFITABILITY</span><span class="dot">✦</span>
+          <span>SUSTAINABILITY</span><span class="dot">✦</span>
+          <span>MENTORSHIP</span><span class="dot">✦</span>
+          <span>INNOVATION</span><span class="dot">✦</span>
+          <span>SCALE</span><span class="dot">✦</span>
+          <span>IMPACT</span><span class="dot">✦</span>
+          <span>PURPOSE</span><span class="dot">✦</span>
+          <span>PROFITABILITY</span><span class="dot">✦</span>
+          <span>SUSTAINABILITY</span><span class="dot">✦</span>
+          <span>MENTORSHIP</span><span class="dot">✦</span>
+          <span>INNOVATION</span><span class="dot">✦</span>
+          <span>SCALE</span><span class="dot">✦</span>
+          <span>IMPACT</span><span class="dot">✦</span>
+        </div>
       </div>
     </div>
   </section>

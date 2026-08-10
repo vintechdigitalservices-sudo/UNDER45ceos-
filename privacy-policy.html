@@ -7,10 +7,7 @@
     <meta name="description" content="Privacy Policy for Under 45 CEOs Summit. Learn how we collect, use, and protect your personal information when you register for our events.">
     <meta name="author" content="UDUF Africa">
     <meta name="robots" content="index, follow">
-     <!-- Favicon - Use under45.png as the icon in search results -->
-  <link class="icon" type="image/png" href="under45.png" />
-  <link rel="apple-touch-icon" href="under45.png" />
-  <link rel="shortcut icon" href="under45.png" />
+    
     <!-- Open Graph -->
     <meta property="og:title" content="Privacy Policy | Under 45 CEOs Summit 2026">
     <meta property="og:description" content="Learn how we protect your personal information at Under 45 CEOs Summit.">
@@ -25,6 +22,28 @@
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- ===== REFERRAL PRESERVATION SCRIPT ===== -->
+    <script>
+        (function preserveReferralParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            
+            if (refCode) {
+                localStorage.setItem('u45_referred_by', refCode.trim().toUpperCase());
+                
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('a[href^="/"], a[href^="."], a[href^="index.html"], a[href^="ticket.html"], a[href^="impact.html"], a[href^="sponsor.html"], a[href^="contact.html"], a[href^="faqs.html"], a[href^="gallery.html"], a[href^="terms.html"], a[href^="media.html"], a[href^="payment.html"], a[href^="privacy-policy.html"]').forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && !href.includes('?ref=')) {
+                            const separator = href.includes('?') ? '&' : '?';
+                            link.setAttribute('href', href + separator + 'ref=' + encodeURIComponent(refCode));
+                        }
+                    });
+                });
+            }
+        })();
+    </script>
     
     <style>
         :root {
@@ -42,8 +61,8 @@
             --font-body: 'DM Sans', sans-serif;
             --radius: 12px;
             --radius-lg: 20px;
-            --shadow-card: 0 8px 30px rgba(0,0,0,0.15);
-            --shadow-deep: 0 20px 50px rgba(0,0,0,0.25);
+            --shadow-card: 0 4px 20px rgba(0,0,0,0.10);
+            --shadow-deep: 0 12px 40px rgba(0,0,0,0.18);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -70,7 +89,7 @@
         }
         .btn:hover { transform: translateY(-3px); }
         .btn--primary { background: var(--orange); color: var(--white); border-color: var(--orange); }
-        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
+        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 20px rgba(240,125,26,.3); }
         .btn--outline { background: transparent; color: var(--orange); border-color: var(--orange); }
         .btn--outline:hover { background: var(--orange); color: var(--white); }
         .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 6px; }
@@ -141,7 +160,7 @@
         }
         .privacy-card {
             background: rgba(255,255,255,0.04);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
             border-radius: var(--radius-lg);
             padding: 2.5rem;
             border: 1px solid rgba(255,255,255,0.08);

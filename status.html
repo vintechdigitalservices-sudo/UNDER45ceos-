@@ -10,10 +10,6 @@
     <meta property="og:title" content="Order Status | Under 45 CEOs Summit 2026">
     <meta property="og:description" content="Track your order status for Nigeria's premier business summit.">
     <meta property="og:type" content="website">
-     <!-- Favicon - Use under45.png as the icon in search results -->
-  <link class="icon" type="image/png" href="under45.png" />
-  <link rel="apple-touch-icon" href="under45.png" />
-  <link rel="shortcut icon" href="under45.png" />
     <link rel="canonical" href="https://under45ceos.com/status.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +18,29 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- ===== REFERRAL PRESERVATION SCRIPT ===== -->
+    <script>
+        (function preserveReferralParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            
+            if (refCode) {
+                localStorage.setItem('u45_referred_by', refCode.trim().toUpperCase());
+                
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('a[href^="/"], a[href^="."], a[href^="index.html"], a[href^="ticket.html"], a[href^="impact.html"], a[href^="sponsor.html"], a[href^="contact.html"], a[href^="faqs.html"], a[href^="gallery.html"], a[href^="terms.html"], a[href^="media.html"], a[href^="payment.html"], a[href^="privacy-policy.html"], a[href^="status.html"]').forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && !href.includes('?ref=')) {
+                            const separator = href.includes('?') ? '&' : '?';
+                            link.setAttribute('href', href + separator + 'ref=' + encodeURIComponent(refCode));
+                        }
+                    });
+                });
+            }
+        })();
+    </script>
+
     <style>
         :root {
             --teal-darker: #022a2d;
@@ -47,7 +66,7 @@
             --font-body: 'DM Sans', sans-serif;
             --radius: 12px;
             --radius-lg: 20px;
-            --shadow-card: 0 8px 30px rgba(0,0,0,0.2);
+            --shadow-card: 0 4px 20px rgba(0,0,0,0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -59,11 +78,11 @@
         .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .85rem 2rem; border-radius: 8px; font-family: var(--font-body); font-weight: 700; font-size: .9rem; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; border: 2px solid transparent; transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); }
         .btn:hover { transform: translateY(-3px); }
         .btn--primary { background: var(--orange); color: var(--white); border-color: var(--orange); }
-        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
+        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 20px rgba(240,125,26,.3); }
         .btn--outline { background: transparent; color: var(--orange); border-color: var(--orange); }
         .btn--outline:hover { background: var(--orange); color: var(--white); }
         .btn--success { background: var(--approved); color: var(--white); border-color: var(--approved); }
-        .btn--success:hover { background: #0b8a5c; box-shadow: 0 8px 30px rgba(16,185,129,.4); }
+        .btn--success:hover { background: #0b8a5c; box-shadow: 0 8px 20px rgba(16,185,129,.3); }
         .btn--pending { background: var(--pending); color: var(--white); border-color: var(--pending); }
         .btn--pending:hover { background: #d97706; }
         .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 6px; }
@@ -116,7 +135,7 @@
         .status-main { padding: 2rem 0 5rem; }
         .status-grid { max-width: 700px; margin: 0 auto; }
 
-        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 1.8rem; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; opacity: 0; transform: translateY(20px); animation: cardReveal 0.5s ease-out forwards; }
+        .card { background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); border-radius: var(--radius-lg); padding: 1.8rem; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 1.5rem; opacity: 0; transform: translateY(20px); animation: cardReveal 0.5s ease-out forwards; }
         @keyframes cardReveal { to { opacity: 1; transform: translateY(0); } }
         .card:nth-child(1) { animation-delay: 0.05s; }
         .card:nth-child(2) { animation-delay: 0.1s; }

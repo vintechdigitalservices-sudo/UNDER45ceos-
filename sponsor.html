@@ -22,10 +22,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://under45ceos.udufafrica.org/partner.jpg">
     <link rel="canonical" href="https://under45ceos.udufafrica.org/sponsor.html">
-     <!-- Favicon - Use under45.png as the icon in search results -->
-  <link class="icon" type="image/png" href="under45.png" />
-  <link rel="apple-touch-icon" href="under45.png" />
-  <link rel="shortcut icon" href="under45.png" />
+    
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -35,6 +32,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- ===== REFERRAL PRESERVATION SCRIPT ===== -->
+    <script>
+        (function preserveReferralParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            
+            if (refCode) {
+                localStorage.setItem('u45_referred_by', refCode.trim().toUpperCase());
+                
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('a[href^="/"], a[href^="."], a[href^="index.html"], a[href^="ticket.html"], a[href^="impact.html"], a[href^="sponsor.html"], a[href^="contact.html"], a[href^="faqs.html"], a[href^="gallery.html"], a[href^="terms.html"], a[href^="media.html"], a[href^="payment.html"], a[href^="privacy-policy.html"]').forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && !href.includes('?ref=')) {
+                            const separator = href.includes('?') ? '&' : '?';
+                            link.setAttribute('href', href + separator + 'ref=' + encodeURIComponent(refCode));
+                        }
+                    });
+                });
+            }
+        })();
+    </script>
     
     <style>
         :root {
@@ -44,7 +63,7 @@
             --teal-light: #1a8a94;
             --orange: #f07d1a;
             --orange-deep: #c96410;
-            --orange-glow: rgba(240,125,26,0.4);
+            --orange-glow: rgba(240,125,26,0.3);
             --gold: #d4a017;
             --gold-light: #f0c040;
             --white: #ffffff;
@@ -57,8 +76,8 @@
             --radius: 12px;
             --radius-lg: 24px;
             --radius-md: 16px;
-            --shadow-card: 0 8px 40px rgba(0,0,0,0.3);
-            --shadow-deep: 0 24px 80px rgba(0,0,0,0.4);
+            --shadow-card: 0 4px 20px rgba(0,0,0,0.20);
+            --shadow-deep: 0 12px 40px rgba(0,0,0,0.25);
             --banner-height: 0px;
         }
 
@@ -104,8 +123,8 @@
             background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
             transform: translateY(-100%);
             transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(240,125,26,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(240,125,26,0.2);
         }
         .sticky-banner.visible { 
             transform: translateY(0); 
@@ -137,7 +156,7 @@
         body.sticky-banner-visible .nav {
             top: 0px;
         }
-        .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.3); padding: .7rem 0; }
+        .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.2); padding: .7rem 0; }
         .nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
         .nav__logos { display: flex; align-items: center; gap: .8rem; margin-right: auto; }
         .nav__logo-uduf img, .nav__logo img { filter: none; opacity: 1; max-height: 65px; width: auto; }
@@ -162,9 +181,9 @@
             left: 0; 
             right: 0; 
             z-index: 9998; 
-            backdrop-filter: blur(12px); 
-            border-bottom: 1px solid rgba(240,125,26,0.3); 
-            box-shadow: 0 20px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px); 
+            border-bottom: 1px solid rgba(240,125,26,0.2); 
+            box-shadow: 0 20px 30px rgba(0,0,0,0.4);
         }
         body.sticky-banner-visible .nav__mobile {
             top: calc(80px + 74px);
@@ -210,13 +229,13 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 50%, var(--teal) 100%);
-            opacity: 0.88;
+            opacity: 0.85;
             pointer-events: none;
             z-index: 1;
         }
         .hero-content { position: relative; z-index: 2; max-width: 900px; margin: 0 auto; }
         .hero__badge { display: inline-block; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; color: var(--orange); text-transform: uppercase; margin-bottom: 1rem; text-shadow: 0 0 5px var(--orange-glow); }
-        .hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 10vw, 5.5rem); color: var(--white); line-height: 1.1; margin-bottom: 1rem; text-shadow: 0 0 15px rgba(0,0,0,0.3); }
+        .hero h1 { font-family: var(--font-display); font-size: clamp(3rem, 10vw, 5.5rem); color: var(--white); line-height: 1.1; margin-bottom: 1rem; text-shadow: 0 0 15px rgba(0,0,0,0.2); }
         .hero h1 span { color: var(--orange); text-shadow: 0 0 10px var(--orange-glow); }
         .hero p { font-size: 1.1rem; max-width: 700px; margin: 0 auto 2rem; color: rgba(255,255,255,0.9); font-weight: 500; }
 
@@ -248,14 +267,14 @@
         .about-content h2 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); color: var(--white); margin-bottom: 1rem; }
         .about-content p { color: rgba(255,255,255,0.8); font-weight: 500; line-height: 1.7; margin-bottom: 1.5rem; }
         .stats-row { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
-        .stat-item { text-align: center; flex: 1; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: var(--radius); backdrop-filter: blur(10px); }
+        .stat-item { text-align: center; flex: 1; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: var(--radius); backdrop-filter: blur(8px); }
         .stat-number { font-family: var(--font-display); font-size: 2.5rem; color: var(--orange); text-shadow: 0 0 10px var(--orange-glow); }
         .stat-label { font-size: 0.7rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
         .about-image img { width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-deep); }
 
         /* Why Partner Grid */
         .why-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; margin: 3rem 0; }
-        .why-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 1.8rem; text-align: center; transition: all .4s; border: 1px solid rgba(255,255,255,0.08); }
+        .why-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); border-radius: var(--radius-lg); padding: 1.8rem; text-align: center; transition: all .4s; border: 1px solid rgba(255,255,255,0.08); }
         .why-card:hover { transform: translateY(-8px); border-color: var(--orange); box-shadow: 0 0 30px rgba(240,125,26,0.15); }
         .why-card i { font-size: 2.2rem; color: var(--orange); margin-bottom: 1rem; text-shadow: 0 0 8px var(--orange-glow); }
         .why-card h3 { font-family: var(--font-serif); font-size: 1rem; color: var(--white); margin-bottom: 0.5rem; font-weight: 700; }
@@ -263,7 +282,7 @@
 
         /* ROI Grid */
         .roi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 3rem 0; }
-        .roi-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 1.8rem; text-align: center; transition: all .3s; border: 1px solid rgba(255,255,255,0.08); }
+        .roi-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); border-radius: var(--radius-lg); padding: 1.8rem; text-align: center; transition: all .3s; border: 1px solid rgba(255,255,255,0.08); }
         .roi-card:hover { transform: translateY(-5px); border-color: var(--orange); }
         .roi-card i { font-size: 2rem; color: var(--orange); margin-bottom: 1rem; text-shadow: 0 0 8px var(--orange-glow); }
         .roi-card h3 { font-family: var(--font-serif); font-size: 1.1rem; color: var(--white); margin-bottom: 0.5rem; font-weight: 700; }
@@ -272,7 +291,7 @@
         /* Sponsorship Tiers - UPDATED: BOLDER, LARGER FEATURE TEXT */
         .tiers-section { background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%); }
         .tiers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; }
-        .tier-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 2rem; transition: all .4s; position: relative; overflow: hidden; }
+        .tier-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 2rem; transition: all .4s; position: relative; overflow: hidden; }
         .tier-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--orange); transform: scaleX(0); transition: transform 0.4s; }
         .tier-card:hover { transform: translateY(-10px); border-color: var(--orange); box-shadow: 0 0 40px rgba(240,125,26,0.2); }
         .tier-card:hover::before { transform: scaleX(1); }
@@ -306,7 +325,7 @@
         .tier-value { font-size: 0.75rem; color: var(--gold-light); margin: 1rem 0; font-weight: 700; letter-spacing: 0.02em; }
         .tier-btn { width: 100%; justify-content: center; margin-top: 0.5rem; }
 
-        .reach-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 2rem; border: 1px solid rgba(255,255,255,0.1); }
+        .reach-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); border-radius: var(--radius-lg); padding: 2rem; border: 1px solid rgba(255,255,255,0.1); }
         .reach-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center; }
         .reach-stat .stat-number { font-size: 2.8rem; margin-bottom: 0.5rem; }
         .activations-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 2rem 0; }
@@ -315,18 +334,18 @@
         .activation-tag i { margin-right: 0.5rem; color: var(--orange); }
 
         .universal-form-section { background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal-darker) 100%); border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .form-container { max-width: 700px; margin: 0 auto; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: var(--radius-lg); padding: 2.5rem; border: 1px solid rgba(255,255,255,0.1); }
+        .form-container { max-width: 700px; margin: 0 auto; background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); border-radius: var(--radius-lg); padding: 2.5rem; border: 1px solid rgba(255,255,255,0.1); }
         .sponsor-form .form-group { margin-bottom: 1.2rem; }
         .sponsor-form input, .sponsor-form select, .sponsor-form textarea { width: 100%; padding: 0.9rem; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: var(--white); font-family: var(--font-body); font-size: 0.9rem; }
         .sponsor-form input:focus, .sponsor-form select:focus, .sponsor-form textarea:focus { outline: none; border-color: var(--orange); }
         .sponsor-form label { display: block; margin-bottom: 0.4rem; font-weight: 700; font-size: 0.8rem; color: var(--orange); }
 
-        .thankyou-message { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; z-index: 20001; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid var(--orange); box-shadow: 0 0 60px rgba(240,125,26,0.4); max-width: 450px; width: 90%; }
+        .thankyou-message { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; z-index: 20001; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid var(--orange); box-shadow: 0 0 60px rgba(240,125,26,0.3); max-width: 450px; width: 90%; }
         .thankyou-message.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
         .error-message { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: linear-gradient(135deg, #2d0a0a 0%, #1a0505 100%); border-radius: var(--radius-lg); padding: 2rem; text-align: center; z-index: 20002; opacity: 0; visibility: hidden; transition: all 0.3s; border: 1px solid #e53; max-width: 400px; width: 90%; }
         .error-message.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
 
-        .footer { background: var(--teal-darker); padding: 4rem 0 2rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer { background: var(--teal-darker); padding: 4rem 0 2rem; border-top: 1px solid rgba(255,255,255,0.04); }
         .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
         .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
         .footer__brand p { font-size: .8rem; color: rgba(255,255,255,.5); max-width: 260px; font-weight: 500; }

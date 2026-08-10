@@ -13,10 +13,7 @@
     <meta property="og:description" content="Transforming lives and businesses across Africa through entrepreneurship education and mentorship.">
     <meta property="og:type" content="website">
     <link rel="canonical" href="https://under45ceos.udufafrica.org/impact.html">
-     <!-- Favicon - Use under45.png as the icon in search results -->
-  <link class="icon" type="image/png" href="under45.png" />
-  <link rel="apple-touch-icon" href="under45.png" />
-  <link rel="shortcut icon" href="under45.png" />
+    
     <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +22,28 @@
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- ===== REFERRAL PRESERVATION SCRIPT ===== -->
+    <script>
+        (function preserveReferralParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            
+            if (refCode) {
+                localStorage.setItem('u45_referred_by', refCode.trim().toUpperCase());
+                
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('a[href^="/"], a[href^="."], a[href^="index.html"], a[href^="ticket.html"], a[href^="impact.html"], a[href^="sponsor.html"], a[href^="contact.html"], a[href^="faqs.html"], a[href^="gallery.html"], a[href^="terms.html"]').forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && !href.includes('?ref=')) {
+                            const separator = href.includes('?') ? '&' : '?';
+                            link.setAttribute('href', href + separator + 'ref=' + encodeURIComponent(refCode));
+                        }
+                    });
+                });
+            }
+        })();
+    </script>
     
     <style>
         :root {
@@ -47,8 +66,8 @@
             --radius: 12px;
             --radius-lg: 20px;
             --radius-md: 16px;
-            --shadow-card: 0 8px 40px rgba(0,0,0,0.2);
-            --shadow-deep: 0 24px 80px rgba(0,0,0,0.35);
+            --shadow-card: 0 4px 20px rgba(0,0,0,0.10);
+            --shadow-deep: 0 12px 40px rgba(0,0,0,0.18);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -131,30 +150,30 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
+            gap: 1.5rem;
             text-align: center;
         }
         .stat-card {
             background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
             border-radius: var(--radius-lg);
-            padding: 2rem;
+            padding: 1.8rem;
             border: 1px solid rgba(255,255,255,0.08);
             transition: transform 0.3s ease;
         }
         .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(240,125,26,0.3);
+            transform: translateY(-4px);
+            border-color: rgba(240,125,26,0.2);
         }
         .stat-number {
             font-family: var(--font-display);
-            font-size: 3rem;
+            font-size: 2.6rem;
             color: var(--orange);
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: rgba(255,255,255,0.7);
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -171,26 +190,27 @@
             gap: 2rem;
         }
         .mv-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(8px);
             border-radius: var(--radius-lg);
             padding: 2rem;
             border: 1px solid rgba(255,255,255,0.08);
             text-align: center;
         }
         .mv-card i {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             color: var(--orange);
             margin-bottom: 1rem;
         }
         .mv-card h3 {
             font-family: var(--font-display);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
         }
         .mv-card p {
             color: rgba(255,255,255,0.75);
             line-height: 1.7;
+            font-size: 0.9rem;
         }
 
         /* Impact Areas */
@@ -210,28 +230,28 @@
         .impact-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
+            gap: 1.5rem;
         }
         .impact-card {
             text-align: center;
-            padding: 2rem;
+            padding: 1.8rem;
             background: rgba(255,255,255,0.03);
             border-radius: var(--radius-lg);
             transition: all 0.3s ease;
         }
         .impact-card:hover {
             background: rgba(255,255,255,0.06);
-            transform: translateY(-5px);
+            transform: translateY(-4px);
         }
         .impact-icon {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--orange);
             margin-bottom: 1rem;
         }
         .impact-card h3 {
             font-family: var(--font-serif);
-            font-size: 1.1rem;
-            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+            margin-bottom: 0.6rem;
         }
         .impact-card p {
             font-size: 0.85rem;
@@ -239,52 +259,13 @@
             line-height: 1.7;
         }
 
-        /* Testimonials */
-        .testimonials-section {
-            padding: 3rem 0;
-        }
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-        .testimonial-card {
-            background: rgba(255,255,255,0.05);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            border: 1px solid rgba(255,255,255,0.08);
-            position: relative;
-        }
-        .testimonial-card i.quote-icon {
-            font-size: 2rem;
-            color: var(--orange);
-            opacity: 0.3;
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-        }
-        .testimonial-text {
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.8);
-            line-height: 1.7;
-            margin-bottom: 1rem;
-        }
-        .testimonial-author {
-            font-weight: 700;
-            color: var(--orange);
-        }
-        .testimonial-title {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.5);
-        }
-
         /* CTA Section */
         .cta-section {
             padding: 4rem 0;
             text-align: center;
-            background: linear-gradient(135deg, rgba(240,125,26,0.1) 0%, rgba(2,42,45,0.1) 100%);
-            border-top: 1px solid rgba(255,255,255,0.08);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: transparent;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
         }
         .cta-section h2 {
             font-family: var(--font-display);
@@ -315,7 +296,6 @@
         @media (max-width: 1024px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .impact-grid { grid-template-columns: repeat(2, 1fr); }
-            .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
             .footer__inner { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 768px) {
@@ -324,7 +304,6 @@
             .stats-grid { grid-template-columns: 1fr; }
             .mv-grid { grid-template-columns: 1fr; }
             .impact-grid { grid-template-columns: 1fr; }
-            .testimonials-grid { grid-template-columns: 1fr; }
             .footer__inner { grid-template-columns: 1fr; }
         }
     </style>

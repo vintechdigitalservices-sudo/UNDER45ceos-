@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tickets | Under 45 CEOs Summit 2026</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal: #0e6b73;
+            --teal-dark: #094d54;
+            --teal-light: #1a8a94;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --off-white: #f5f3ef;
+            --gray-100: #f0efec;
+            --gray-400: #9a9a9a;
+            --gray-700: #3a3a3a;
+            --black: #0a0a0a;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --shadow-card: 0 8px 40px rgba(0,0,0,0.12);
+            --shadow-deep: 0 24px 80px rgba(0,0,0,0.22);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background-color: var(--teal-dark); color: var(--white); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        .container { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .85rem 2rem;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: .9rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn:hover { transform: translateY(-3px); }
+        .btn--primary { background: var(--orange); color: var(--white); border-color: var(--orange); }
+        .btn--primary:hover { background: var(--orange-deep); box-shadow: 0 8px 30px rgba(240,125,26,.4); }
+        .btn--nav { background: var(--orange); color: var(--white); padding: .55rem 1.4rem; font-size: .8rem; border-radius: 3px; }
+        .btn--sm { padding: 0.5rem 1.2rem; font-size: 0.75rem; }
+        .btn--outline-light { background: transparent; color: var(--white); border-color: rgba(255,255,255,.5); }
+        .btn--outline-light:hover { background: rgba(255,255,255,.15); }
+        .btn--gold { background: var(--gold); color: #1a0f00; border-color: var(--gold); font-weight: 800; }
+        .btn--gold:hover { background: var(--gold-light); box-shadow: 0 8px 30px rgba(212,160,23,.5); }
+        .pulse-btn { animation: pulseCTA 2.5s ease-in-out infinite; }
+        @keyframes pulseCTA { 0%,100% { box-shadow: 0 0 0 0 rgba(240,125,26,.6); } 50% { box-shadow: 0 0 0 10px rgba(240,125,26,0); } }
+
+        /* Sticky Banner */
+        .sticky-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
+            transform: translateY(-100%);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            will-change: transform;
+        }
+        .sticky-banner.visible { transform: translateY(0); }
+        .sticky-banner__inner { max-width: 1280px; margin: 0 auto; padding: 0.75rem 2rem; }
+        .sticky-banner__content { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+        .sticky-banner__icon { background: var(--orange); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.2rem; flex-shrink: 0; }
+        .sticky-banner__text { flex: 1; }
+        .sticky-banner__title { font-weight: 700; color: var(--white); font-size: 0.9rem; display: block; }
+        .sticky-banner__subtitle { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+        .sticky-banner__timer { display: flex; gap: 0.8rem; flex-shrink: 0; }
+        .timer-block { text-align: center; background: rgba(255,255,255,0.15); padding: 0.3rem 0.6rem; border-radius: 8px; min-width: 55px; }
+        .timer-block span:first-child { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--orange); display: block; line-height: 1.2; }
+        .timer-label { font-size: 0.55rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em; }
+        .sticky-banner__close { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 1.5rem; cursor: pointer; padding: 0 0.5rem; transition: color 0.2s; flex-shrink: 0; }
+        .sticky-banner__close:hover { color: var(--orange); }
+
+        /* Navigation */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 999; transition: all .35s; padding: 1.2rem 0; background: transparent; will-change: padding, background; }
+        .nav.scrolled { background: var(--teal-dark); box-shadow: 0 4px 30px rgba(0,0,0,.25); padding: .7rem 0; }
+        .nav__inner { max-width: 1180px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
+        .nav__logos { display: flex; align-items: center; gap: .8rem; margin-right: auto; }
+        .nav__logo-uduf { display: flex; align-items: center; gap: .4rem; }
+        .nav__logo-divider { color: rgba(255,255,255,.3); font-size: .9rem; }
+        .nav__logo { display: flex; align-items: center; gap: .3rem; }
+        .nav__links { display: flex; gap: 1.8rem; align-items: center; }
+        .nav__links a { color: rgba(255,255,255,.85); font-size: .875rem; font-weight: 500; transition: color .2s; }
+        .nav__links a:hover { color: var(--orange); }
+        .nav__hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+        .nav__hamburger span { width: 24px; height: 2px; background: var(--white); transition: all .3s; }
+        .nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav__hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav__mobile { display: none; flex-direction: column; align-items: center; gap: 1rem; padding: 1.5rem; background: var(--teal-dark); position: fixed; top: 70px; left: 0; right: 0; z-index: 998; }
+        .nav__mobile.open { display: flex; }
+        .nav__mobile a { color: rgba(255,255,255,.9); font-weight: 500; font-size: 1rem; padding: 0.5rem; }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 120px 20px 40px;
+            background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)" opacity="0.05"/%3E%3C/svg%3E');
+            background-size: 200px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .page-header span { color: var(--orange); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; font-size: 0.8rem; display: block; margin-bottom: 0.5rem; opacity: 0; transform: translateY(30px); animation: slideUpFade 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .page-header h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 8vw, 4rem); letter-spacing: 1px; margin: 10px 0; color: var(--white); opacity: 0; transform: translateY(30px); animation: slideUpFade 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards; }
+        .page-header p { opacity: 0.7; opacity: 0; transform: translateY(30px); animation: slideUpFade 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards; }
+        @keyframes slideUpFade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Pricing Grid */
+        .pricing-section { padding: 4rem 0; }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .ticket-card {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: cardReveal 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes cardReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .ticket-card:nth-child(1) { animation-delay: 0.1s; }
+        .ticket-card:nth-child(2) { animation-delay: 0.2s; }
+        .ticket-card:nth-child(3) { animation-delay: 0.3s; }
+        .ticket-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,.3); box-shadow: var(--shadow-deep); }
+
+        .ticket-card--featured {
+            background: var(--orange);
+            border-color: var(--orange);
+            transform: scale(1.02);
+        }
+        .ticket-card--featured:hover { transform: scale(1.02) translateY(-10px); }
+
+        .ticket-card--premium {
+            background: linear-gradient(160deg, #1a1200 0%, #2a1f00 50%, #1a1000 100%);
+            border-color: var(--gold);
+            border-width: 2px;
+        }
+        .ticket-card--premium:hover { border-color: var(--gold-light); }
+
+        .ticket-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--white);
+            color: var(--orange-deep);
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            padding: 0.3rem 1.2rem;
+            border-radius: 2rem;
+            white-space: nowrap;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .ticket-badge--gold {
+            background: var(--gold);
+            color: #1a0f00;
+        }
+
+        .ticket-tier {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,.5);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .ticket-name {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .ticket-desc {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,.65);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            min-height: 70px;
+        }
+        .ticket-price-section {
+            border-top: 1px solid rgba(255,255,255,.1);
+            border-bottom: 1px solid rgba(255,255,255,.1);
+            padding: 1rem 0;
+            margin-bottom: 1rem;
+        }
+        .ticket-price-row--dual {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.3rem;
+        }
+        .ticket-price-label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,.5);
+            text-transform: uppercase;
+            margin-bottom: 0.15rem;
+        }
+        .ticket-price {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .ticket-price--strike {
+            font-size: 1.2rem;
+            opacity: 0.45;
+            text-decoration: line-through;
+        }
+        .ticket-save {
+            font-size: 0.65rem;
+            font-weight: 800;
+            background: rgba(255,255,255,.15);
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.3rem;
+            white-space: nowrap;
+        }
+        .ticket-price-note {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,.45);
+            font-style: italic;
+            margin-top: 0.3rem;
+        }
+        .ticket-features-title {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,.45);
+            text-transform: uppercase;
+            margin: 1rem 0 0.8rem;
+        }
+        .ticket-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        .ticket-features li {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,.8);
+            padding-left: 1.4rem;
+            position: relative;
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
+        }
+        .ticket-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--orange);
+            font-weight: 700;
+        }
+        .ticket-card--featured .ticket-features li::before { color: var(--white); }
+        .ticket-card--premium .ticket-features li { color: rgba(240,192,64,.85); }
+        .ticket-card--premium .ticket-features li::before { color: var(--gold-light); }
+        .day-tag {
+            display: inline-block;
+            font-size: 0.55rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            background: rgba(255,255,255,.15);
+            color: rgba(255,255,255,.9);
+            padding: 0.15rem 0.4rem;
+            border-radius: 0.25rem;
+            margin-left: 0.4rem;
+            white-space: nowrap;
+        }
+        .day-tag--gold {
+            background: rgba(212,160,23,.3);
+            color: var(--gold-light);
+        }
+        .ticket-btn {
+            width: 100%;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Registration Section */
+        .reg-section {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: slideUpFade 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
+        }
+        .reg-header { text-align: center; margin-bottom: 2rem; }
+        .reg-header h2 { font-family: var(--font-display); font-size: 2rem; color: var(--white); margin-bottom: 0.5rem; }
+        .reg-header p { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .form-group { margin-bottom: 0; }
+        .form-group.full { grid-column: span 2; }
+        label { display: block; font-size: 0.75rem; margin-bottom: 8px; color: var(--orange); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--orange);
+            background: rgba(255,255,255,0.12);
+        }
+        input::placeholder { color: rgba(255,255,255,0.4); }
+        select option { background: var(--teal-dark); color: var(--white); }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--orange);
+            color: var(--white);
+            border: none;
+            padding: 1rem;
+            border-radius: var(--radius);
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-submit:hover {
+            background: var(--orange-deep);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(240,125,26,.4);
+        }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(240,125,26,0.15);
+            border: 1px solid rgba(240,125,26,0.3);
+            border-radius: var(--radius);
+            margin-top: 1.5rem;
+        }
+        .form-success.visible { display: block; }
+
+        /* Footer */
+        .footer { background: var(--black); padding: 4rem 0 2rem; margin-top: 0; }
+        .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+        .footer__brand .footer__logos-wrap { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .footer__logo-uduf { display: flex; align-items: center; gap: .3rem; }
+        .uduf-main, .uduf-sub { display: block; }
+        .footer__brand p { font-size: .8rem; color: rgba(255,255,255,.45); max-width: 260px; }
+        .footer__links h4 { font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+        .footer__links ul { display: flex; flex-direction: column; gap: .5rem; }
+        .footer__links a { color: rgba(255,255,255,.5); font-size: .8rem; transition: color .2s; }
+        .footer__links a:hover { color: var(--white); }
+        .social-icons { display: flex; gap: .8rem; }
+        .social-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.15); border-radius: var(--radius); color: rgba(255,255,255,.6); transition: all .25s; }
+        .social-icon:hover { background: var(--orange); border-color: var(--orange); color: var(--white); transform: translateY(-3px); }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+        .footer__bottom p { font-size: .75rem; color: rgba(255,255,255,.3); }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .pricing-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
+            .ticket-card--featured { transform: none; }
+            .ticket-card--featured:hover { transform: translateY(-10px); }
+            .footer__inner { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav__links, .nav > .btn--nav { display: none; }
+            .nav__hamburger { display: flex; }
+            .footer__inner { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full { grid-column: span 1; }
+            .reg-section { padding: 2rem 1.5rem; }
+            .sticky-banner__timer { order: 2; width: 100%; justify-content: center; }
+            .sticky-banner__text { order: 1; text-align: center; }
+            .sticky-banner__icon { order: 0; }
+            .sticky-banner__close { order: 3; }
+            .sticky-banner__content { justify-content: center; }
+            .sticky-banner__inner { padding: 0.75rem 1rem; }
+            .page-header { padding: 100px 20px 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Banner - Countdown Timer -->
+    <div class="sticky-banner" id="stickyBanner">
+        <div class="sticky-banner__inner">
+            <div class="sticky-banner__content">
+                <div class="sticky-banner__icon">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div class="sticky-banner__text">
+                    <span class="sticky-banner__title">Early Bird Discount Ends Soon!</span>
+                    <span class="sticky-banner__subtitle">Get your ticket at a discounted price</span>
+                </div>
+                <div class="sticky-banner__timer" id="countdownTimer">
+                    <div class="timer-block"><span id="timerDays">00</span><span class="timer-label">Days</span></div>
+                    <div class="timer-block"><span id="timerHours">00</span><span class="timer-label">Hrs</span></div>
+                    <div class="timer-block"><span id="timerMinutes">00</span><span class="timer-label">Mins</span></div>
+                    <div class="timer-block"><span id="timerSeconds">00</span><span class="timer-label">Secs</span></div>
+                </div>
+                <a href="#register" class="btn btn--primary btn--sm">Get Ticket →</a>
+                <button class="sticky-banner__close" id="closeBanner">×</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav__inner">
+            <div class="nav__logos">
+                <div class="nav__logo-uduf">
+                    <img src="logo.png" alt="UDUF Africa Logo" style="height: 40px; width: auto; display: block;">
+                </div>
+                <div class="nav__logo-divider">×</div>
+                <div class="nav__logo">
+                    <img src="under45.png" alt="Under 45 CEOs Logo" style="height: 44px; width: auto; display: block;">
+                </div>
+            </div>
+            <ul class="nav__links">
+                <li><a href="index.html#speakers">Speakers</a></li>
+                <li><a href="index.html#why">Why Attend?</a></li>
+                <li><a href="index.html#impact">Impact</a></li>
+                <li><a href="index.html#sponsors">Sponsors</a></li>
+                <li><a href="ticket.html">Tickets</a></li>
+            </ul>
+            <a href="ticket.html" class="btn btn--nav pulse-btn">REGISTER</a>
+            <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav__mobile" id="mobileMenu">
+            <a href="index.html#speakers">Speakers</a>
+            <a href="index.html#why">Why Attend?</a>
+            <a href="index.html#impact">Impact</a>
+            <a href="index.html#sponsors">Sponsors</a>
+            <a href="ticket.html">Tickets</a>
+            <a href="ticket.html" class="btn btn--nav">REGISTER</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <span>SECURE YOUR SEAT</span>
+        <h1>Ready to <span style="color: var(--orange);">Elevate?</span></h1>
+        <p>Seats are strictly limited. All registration fees are non-refundable.</p>
+    </section>
+
+    <!-- Pricing Section -->
+    <div class="pricing-section">
+        <div class="container">
+            <div class="pricing-grid">
+                <!-- TIER 01 — REGULAR -->
+                <div class="ticket-card">
+                    <div class="ticket-tier">TIER 01 / ENTRY</div>
+                    <div class="ticket-name">Regular</div>
+                    <p class="ticket-desc">Step into the room. Connect with fellow entrepreneurs and absorb the energy of Onitsha's most ambitious business gathering for young leaders.</p>
+                    <div class="ticket-price-section">
+                        <div class="ticket-price">₦12,500</div>
+                        <div class="ticket-price-note">Fixed price · Day 1 only · No early bird required</div>
+                    </div>
+                    <div class="ticket-features-title">INCLUDES</div>
+                    <ul class="ticket-features">
+                        <li>Full gate access <span class="day-tag">DAY 1</span></li>
+                        <li>Branded conference jotter &amp; pen</li>
+                        <li>Refreshments <span class="day-tag">DAY 1</span></li>
+                        <li>Open networking sessions</li>
+                    </ul>
+                    <a href="#register" class="btn btn--outline-light ticket-btn" onclick="selectTicket('regular')">Register Now →</a>
+                </div>
+
+                <!-- TIER 02 — STANDARD -->
+                <div class="ticket-card ticket-card--featured">
+                    <div class="ticket-badge">MOST POPULAR</div>
+                    <div class="ticket-tier" style="color:rgba(255,255,255,.7)">TIER 02 / CORE</div>
+                    <div class="ticket-name">Standard</div>
+                    <p class="ticket-desc">Get on the pitch stage. Build your credibility, grow your network, and leave Onitsha with recognised credentials for your business journey.</p>
+                    <div class="ticket-price-section">
+                        <div class="ticket-price-row--dual">
+                            <div>
+                                <div class="ticket-price-label">EARLY BIRD</div>
+                                <div class="ticket-price">₦20,000 <span class="ticket-save">Save ₦10k</span></div>
+                            </div>
+                            <div>
+                                <div class="ticket-price-label">REGULAR</div>
+                                <div class="ticket-price ticket-price--strike">₦30,000</div>
+                            </div>
+                        </div>
+                        <div class="ticket-price-note">Day 1 access · E-certificate of participation</div>
+                    </div>
+                    <div class="ticket-features-title">EVERYTHING IN REGULAR, PLUS</div>
+                    <ul class="ticket-features">
+                        <li>Access to the Pitch Stage <span class="day-tag">DAY 1</span></li>
+                        <li>Full branded conference materials</li>
+                        <li>Priority networking sessions</li>
+                        <li>E-Certificate of Participation</li>
+                    </ul>
+                    <a href="#register" class="btn btn--primary ticket-btn" onclick="selectTicket('standard')">Get Standard Ticket</a>
+                </div>
+
+                <!-- TIER 03 — PREMIUM -->
+                <div class="ticket-card ticket-card--premium">
+                    <div class="ticket-badge ticket-badge--gold">★ MOST EXCLUSIVE</div>
+                    <div class="ticket-tier" style="color:rgba(240,192,64,.6)">TIER 03 / PREMIUM</div>
+                    <div class="ticket-name">Premium</div>
+                    <p class="ticket-desc">Two full days of the Under45CEOs experience — masterclass, private speaker access, executive hospitality, and a complimentary night in Onitsha.</p>
+                    <div class="ticket-price-section">
+                        <div class="ticket-price-row--dual">
+                            <div>
+                                <div class="ticket-price-label">EARLY BIRD</div>
+                                <div class="ticket-price" style="color: var(--gold-light);">₦150,000 <span class="ticket-save" style="background: rgba(212,160,23,.25); color: var(--gold-light);">Save ₦100k</span></div>
+                            </div>
+                            <div>
+                                <div class="ticket-price-label">REGULAR</div>
+                                <div class="ticket-price ticket-price--strike" style="color: var(--gold-light); opacity: 0.5;">₦250,000</div>
+                            </div>
+                        </div>
+                        <div class="ticket-price-note" style="color: rgba(240,192,64,.45);">Day 1 &amp; Day 2 · Accommodation included</div>
+                    </div>
+                    <div class="ticket-features-title">THE FULL PREMIUM EXPERIENCE</div>
+                    <ul class="ticket-features">
+                        <li>Full gate access <span class="day-tag day-tag--gold">DAY 1</span> <span class="day-tag day-tag--gold">DAY 2</span></li>
+                        <li>Exclusive Masterclass <span class="day-tag day-tag--gold">DAY 2</span></li>
+                        <li>One-on-one session with Keynote Speakers</li>
+                        <li>Hardcopy Certificate of Excellence</li>
+                        <li>Signed autobiography — <em>Cosmos Maduka</em></li>
+                        <li>Refreshments <span class="day-tag day-tag--gold">DAY 1</span> <span class="day-tag day-tag--gold">DAY 2</span></li>
+                        <li>1-night complimentary accommodation, Onitsha</li>
+                        <li>VIP networking &amp; curated introductions</li>
+                        <li>All Standard &amp; Regular benefits</li>
+                    </ul>
+                    <a href="#register" class="btn btn--gold ticket-btn" onclick="selectTicket('premium')">Secure My Seat →</a>
+                </div>
+            </div>
+
+            <!-- Registration Section -->
+            <div class="reg-section" id="register">
+                <div class="reg-header">
+                    <h2>Complete Your Registration</h2>
+                    <p>Early Bird pricing ends soon. For group bookings, contact the team directly.</p>
+                </div>
+                
+                <form id="registrationForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>First Name *</label>
+                            <input type="text" id="regFirst" placeholder="Ada" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name *</label>
+                            <input type="text" id="regLast" placeholder="Okafor" required>
+                        </div>
+                        <div class="form-group full">
+                            <label>Email Address *</label>
+                            <input type="email" id="regEmail" placeholder="you@company.com" required>
+                        </div>
+                        <div class="form-group full">
+                            <label>Phone Number</label>
+                            <input type="tel" id="regPhone" placeholder="+234 800 000 0000">
+                        </div>
+                        <div class="form-group full">
+                            <label>Company *</label>
+                            <input type="text" id="regCompany" placeholder="Your Company" required>
+                        </div>
+                        <div class="form-group full">
+                            <label>Ticket Type *</label>
+                            <select id="ticketSelect" required>
+                                <option value="" disabled selected>Select a ticket...</option>
+                                <option value="regular">Regular — ₦12,500</option>
+                                <option value="standard">Standard — ₦20,000 (Early Bird) / ₦30,000</option>
+                                <option value="premium">Premium — ₦150,000 (Early Bird) / ₦250,000</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit">REGISTER NOW →</button>
+                </form>
+                <div class="form-success" id="regSuccess">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f07d1a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <p style="margin-top: 10px;">Registration received! Redirecting to payment...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <div class="footer__logos-wrap">
+                        <div class="footer__logo-uduf">
+                            <img src="logo.png" alt="UDUF Africa Logo" style="height: 32px; width: auto;">
+                            <div>
+                                <span class="uduf-main" style="font-size:.75rem; font-family: 'Bebas Neue', sans-serif; color: #1a3fde;">UDUF</span>
+                                <span class="uduf-sub" style="font-size:.6rem; font-family: 'Bebas Neue', sans-serif; color: rgba(255,255,255,.7);">AFRICA</span>
+                            </div>
+                        </div>
+                        <span style="color:rgba(255,255,255,.2);font-size:.8rem">×</span>
+                        <div class="footer__logo">
+                            <img src="under45.png" alt="Under 45 CEOs Logo" style="height: 36px; width: auto;">
+                        </div>
+                    </div>
+                    <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
+                </div>
+                <div class="footer__links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#speakers">Speakers</a></li>
+                        <li><a href="index.html#why">Why Attend</a></li>
+                        <li><a href="index.html#impact">Impact</a></li>
+                        <li><a href="ticket.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Accommodations</a></li>
+                        <li><a href="#">Sponsor Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer__social">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/under45ceos" target="_blank" class="social-icon" aria-label="Twitter/X"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p>
+                <p><a href="#">Privacy Policy</a> · <a href="#">Terms</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Optimized scroll handlers
+        let ticking = false;
+        
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        function updateNavbar() {
+            if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 60);
+            ticking = false;
+        }
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateNavbar);
+                ticking = true;
+            }
+        }, { passive: true });
+        updateNavbar();
+
+        // Mobile menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (hamburger && mobileMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
+            });
+            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                mobileMenu.classList.remove('open');
+            }));
+        }
+
+        // Sticky Banner
+        const stickyBanner = document.getElementById('stickyBanner');
+        const closeBanner = document.getElementById('closeBanner');
+        let bannerTicking = false;
+        
+        function updateBanner() {
+            if (stickyBanner) {
+                stickyBanner.classList.toggle('visible', window.scrollY > 300);
+            }
+            bannerTicking = false;
+        }
+        
+        window.addEventListener('scroll', () => {
+            if (!bannerTicking) {
+                requestAnimationFrame(updateBanner);
+                bannerTicking = true;
+            }
+        }, { passive: true });
+        
+        if (closeBanner) {
+            closeBanner.addEventListener('click', () => {
+                stickyBanner.style.display = 'none';
+            });
+        }
+
+        // Countdown Timer
+        const timerDays = document.getElementById('timerDays');
+        const timerHours = document.getElementById('timerHours');
+        const timerMinutes = document.getElementById('timerMinutes');
+        const timerSeconds = document.getElementById('timerSeconds');
+        const eventDate = new Date('October 10, 2026 00:00:00').getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+            
+            if (distance < 0) {
+                if (timerDays) timerDays.textContent = '00';
+                if (timerHours) timerHours.textContent = '00';
+                if (timerMinutes) timerMinutes.textContent = '00';
+                if (timerSeconds) timerSeconds.textContent = '00';
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            if (timerDays) timerDays.textContent = String(days).padStart(2, '0');
+            if (timerHours) timerHours.textContent = String(hours).padStart(2, '0');
+            if (timerMinutes) timerMinutes.textContent = String(minutes).padStart(2, '0');
+            if (timerSeconds) timerSeconds.textContent = String(seconds).padStart(2, '0');
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Select ticket function
+        function selectTicket(tier) {
+            const selector = document.getElementById('ticketSelect');
+            if (selector) selector.value = tier;
+            document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+        }
+        window.selectTicket = selectTicket;
+
+        // Form submission
+        const regForm = document.getElementById('registrationForm');
+        const regSuccess = document.getElementById('regSuccess');
+        
+        if (regForm) {
+            regForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = regForm.querySelector('button[type="submit"]');
+                btn.textContent = 'Processing…';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    regForm.style.opacity = '0';
+                    regForm.style.transform = 'translateY(-10px)';
+                    regForm.style.transition = 'opacity 0.4s, transform 0.4s';
+                    setTimeout(() => {
+                        regForm.style.display = 'none';
+                        regSuccess.classList.add('visible');
+                    }, 400);
+                }, 800);
+            });
+        }
+    </script>
+</body>
+</html>
