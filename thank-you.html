@@ -570,6 +570,28 @@
                 </div>
             </div>
 
+            <!-- ===== REFERRAL CODE SECTION (OPTION 2 - NEUTRAL DEFAULT) ===== -->
+            <div class="form-group">
+                <label>Were you referred by someone?</label>
+                <div style="display: flex; gap: 1rem; margin-top: 0.4rem;">
+                    <label style="display: flex; align-items: center; gap: 0.4rem; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.8); cursor: pointer;">
+                        <input type="radio" name="wasReferred" value="no" onchange="toggleReferralField(this)">
+                        No
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.8); cursor: pointer;">
+                        <input type="radio" name="wasReferred" value="yes" onchange="toggleReferralField(this)">
+                        Yes
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" id="referralCodeWrapper" style="display: none;">
+                <label for="referralCode">Referral Code</label>
+                <input type="text" id="referralCode" class="form-control" placeholder="e.g. U26-JOH8K2">
+                <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem;">Enter the code given to you by the person who referred you</div>
+            </div>
+            <!-- ===== END REFERRAL CODE SECTION ===== -->
+
             <div class="form-group">
                 <label>Upload Your Portrait Photo</label>
                 <div class="file-upload-wrapper">
@@ -696,6 +718,18 @@
         let imgNaturalWidth = 0;
         let imgNaturalHeight = 0;
         let containerRect = null;
+
+        function toggleReferralField(radio) {
+            const wrapper = document.getElementById('referralCodeWrapper');
+            const input = document.getElementById('referralCode');
+            if (radio.value === 'yes') {
+                wrapper.style.display = 'block';
+                input.focus();
+            } else {
+                wrapper.style.display = 'none';
+                input.value = '';
+            }
+        }
 
         function handleFileSelect(event) {
             const file = event.target.files[0];
@@ -1050,6 +1084,10 @@
                 const source = document.getElementById('source').value;
                 const otherSource = document.getElementById('otherSourceInput').value;
                 
+                // Step 2b: Get referral code (only if Yes was selected)
+                const wasReferred = document.querySelector('input[name="wasReferred"]:checked')?.value;
+                const referralCode = wasReferred === 'yes' ? document.getElementById('referralCode').value.trim() : null;
+                
                 // Step 3: Submit to Firestore
                 await db.collection('i_will_attend').add({
                     firstName: firstName,
@@ -1057,6 +1095,7 @@
                     age: age,
                     source: source === 'Other' ? otherSource : source,
                     photoUrl: imageUrl,
+                    referralCode: referralCode, // ← saved to Firestore
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 

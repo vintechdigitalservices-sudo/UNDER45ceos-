@@ -11,7 +11,7 @@
     <meta property="og:title" content="Executive & Premium | Under 45 CEOs Summit 2026">
     <meta property="og:description" content="Thank you for upgrading to Executive or Premium. Join our exclusive Pitch & Investment WhatsApp group to access your pitching rights and learn about the process.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://under45ceos.udufafrica.org/executive-premium.html">
+    <meta property="og:url" content="https://under45ceos.udufafrica.org/thanks.html">
     <meta property="og:image" content="https://under45ceos.udufafrica.org/under45.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -29,7 +29,7 @@
     <meta name="twitter:site" content="@under45ceos">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://under45ceos.udufafrica.org/executive-premium.html">
+    <link rel="canonical" href="https://under45ceos.udufafrica.org/thanks.html">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -767,6 +767,28 @@
                 </div>
             </div>
 
+            <!-- ===== REFERRAL CODE SECTION (OPTION 2 - NEUTRAL DEFAULT) ===== -->
+            <div class="form-group">
+                <label>Were you referred by someone?</label>
+                <div style="display: flex; gap: 1rem; margin-top: 0.4rem;">
+                    <label style="display: flex; align-items: center; gap: 0.4rem; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.8); cursor: pointer;">
+                        <input type="radio" name="wasReferred" value="no" onchange="toggleReferralField(this)">
+                        No
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; font-weight: 400; font-size: 0.9rem; color: rgba(255,255,255,0.8); cursor: pointer;">
+                        <input type="radio" name="wasReferred" value="yes" onchange="toggleReferralField(this)">
+                        Yes
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group" id="referralCodeWrapper" style="display: none;">
+                <label for="referralCode">Referral Code</label>
+                <input type="text" id="referralCode" class="form-control" placeholder="e.g. U26-JOH8K2">
+                <div style="font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem;">Enter the code given to you by the person who referred you</div>
+            </div>
+            <!-- ===== END REFERRAL CODE SECTION ===== -->
+
             <div class="form-group">
                 <label>Upload Your Portrait Photo</label>
                 <div class="file-upload-wrapper">
@@ -1085,6 +1107,18 @@
                 animationRunning = false;
             });
         })();
+
+        function toggleReferralField(radio) {
+            const wrapper = document.getElementById('referralCodeWrapper');
+            const input = document.getElementById('referralCode');
+            if (radio.value === 'yes') {
+                wrapper.style.display = 'block';
+                input.focus();
+            } else {
+                wrapper.style.display = 'none';
+                input.value = '';
+            }
+        }
 
         function handleFileSelect(event) {
             const file = event.target.files[0];
@@ -1417,6 +1451,10 @@
                 const source = document.getElementById('source').value;
                 const otherSource = document.getElementById('otherSourceInput').value;
                 
+                // Get referral code (only if Yes was selected)
+                const wasReferred = document.querySelector('input[name="wasReferred"]:checked')?.value;
+                const referralCode = wasReferred === 'yes' ? document.getElementById('referralCode').value.trim() : null;
+                
                 await db.collection('i_will_attend').add({
                     firstName: firstName,
                     lastName: lastName,
@@ -1424,6 +1462,7 @@
                     source: source === 'Other' ? otherSource : source,
                     photoUrl: imageUrl,
                     ticketType: 'Executive & Premium',
+                    referralCode: referralCode, // ← saved to Firestore
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
