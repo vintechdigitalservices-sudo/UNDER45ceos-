@@ -24,7 +24,8 @@
     { "source": "/admin", "destination": "/admin.html" },
 
     { "source": "/api/selar/verify", "destination": "/api/selar/verify.js" },
-    { "source": "/api/selar/verify-pending", "destination": "/api/selar/verify-pending.js" }
+    { "source": "/api/selar/verify-pending", "destination": "/api/selar/verify-pending.js" },
+    { "source": "/api/selar/webhook", "destination": "/api/selar/webhook.js" }
   ],
   "redirects": [
     { "source": "/privacy-policy", "destination": "/privacy", "permanent": true },
