@@ -1,0 +1,36 @@
+{
+  "trailingSlash": false,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/index", "destination": "/index.html" },
+    { "source": "/ticket", "destination": "/ticket.html" },
+    { "source": "/checkout", "destination": "/checkout.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/faqs", "destination": "/faqs.html" },
+    { "source": "/gallery", "destination": "/gallery.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/media", "destination": "/media.html" },
+    { "source": "/impact", "destination": "/impact.html" },
+    { "source": "/sponsor", "destination": "/sponsor.html" },
+    { "source": "/payment", "destination": "/payment.html" },
+    { "source": "/privacy", "destination": "/privacy-policy.html" },
+    { "source": "/status", "destination": "/status.html" },
+    { "source": "/gallery", "destination": "/gallery.html" },
+    { "source": "/ticket-view", "destination": "/ticket-view.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/speakers", "destination": "/index.html#speakers" },
+    { "source": "/why", "destination": "/index.html#why" }
+  ],
+  "redirects": [
+    { "source": "/privacy-policy", "destination": "/privacy", "permanent": true },
+    { "source": "/tickets", "destination": "/ticket", "permanent": true },
+    { "source": "/sponsors", "destination": "/sponsor", "permanent": true },
+    { "source": "/faq", "destination": "/faqs", "permanent": true },
+    { "source": "/signin", "destination": "/login", "permanent": true },
+    { "source": "/signup", "destination": "/login", "permanent": true },
+    { "source": "/volunteer", "destination": "/dashboard", "permanent": true }
+  ]
+}
