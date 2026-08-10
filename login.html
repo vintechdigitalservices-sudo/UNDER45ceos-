@@ -3,7 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ===== SEO & SOCIAL SHARING META TAGS ===== -->
     <title>Volunteer Portal | Under 45 CEOs Summit 2026</title>
+    <meta name="description" content="Sign in to your Under 45 CEOs Volunteer Portal. Track your referrals, monitor earnings, and manage your affiliate dashboard for the 2026 Business & Leadership Summit.">
+    <meta name="keywords" content="Under 45 CEOs, volunteer portal, referral tracking, affiliate dashboard, business summit, entrepreneurship, Nigeria, Onitsha, UDUF Africa">
+    <meta name="author" content="UDUF Africa">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Open Graph / Social Media Sharing (WhatsApp, Facebook, Twitter, LinkedIn, Telegram) -->
+    <meta property="og:title" content="Volunteer Portal | Under 45 CEOs Summit 2026">
+    <meta property="og:description" content="Sign in to your Under 45 CEOs Volunteer Portal. Track your referrals, monitor earnings, and manage your affiliate dashboard for the 2026 Business & Leadership Summit.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://under45ceos.udufafrica.org/login">
+    <meta property="og:image" content="https://under45ceos.udufafrica.org/under45.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Under45CEOs Summit 2026 - Africa's premier business event">
+    <meta property="og:site_name" content="Under 45 CEOs Summit">
+    <meta property="og:locale" content="en_NG">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Volunteer Portal | Under 45 CEOs Summit 2026">
+    <meta name="twitter:description" content="Sign in to your Under 45 CEOs Volunteer Portal. Track your referrals and earnings.">
+    <meta name="twitter:image" content="https://under45ceos.udufafrica.org/under45.png">
+    <meta name="twitter:site" content="@under45ceos">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://under45ceos.udufafrica.org/login">
+    
+    <!-- ===== EXISTING HEADER CONTENT (UNCHANGED) ===== -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +51,7 @@
         }
     }
     </script>
-
+    
     <style>
         :root {
             --teal-darker: #022a2d;
@@ -51,10 +82,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: 
-                radial-gradient(circle at top right, rgba(240,125,26,.15), transparent 40%),
-                radial-gradient(circle at bottom left, rgba(26,138,148,.12), transparent 35%),
-                linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
             padding: 2rem;
         }
 
@@ -280,42 +307,6 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
-        .social-login {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-btn {
-            flex: 1;
-            padding: 0.7rem;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: var(--radius);
-            background: rgba(255, 255, 255, 0.04);
-            color: var(--white);
-            font-family: var(--font-body);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .social-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .social-btn.google {
-            color: #ea4335;
-        }
-
-        .social-btn.google:hover {
-            background: rgba(234, 67, 53, 0.15);
-            border-color: #ea4335;
-        }
-
         .auth-footer {
             text-align: center;
             margin-top: 1.5rem;
@@ -381,10 +372,6 @@
             
             .auth-header h1 {
                 font-size: 1.8rem;
-            }
-            
-            .social-login {
-                flex-direction: column;
             }
             
             .toast {
@@ -476,12 +463,6 @@
 
             <div class="auth-divider">or</div>
 
-            <div class="social-login">
-                <button type="button" class="social-btn google" onclick="signInWithGoogle()">
-                    <i class="fab fa-google"></i> Google
-                </button>
-            </div>
-
             <div class="auth-footer">
                 Don't have an account? <a onclick="switchTab('signup')">Sign Up</a>
             </div>
@@ -530,7 +511,7 @@
             </div>
 
             <div class="terms">
-                By signing up, you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>
+                By signing up, you agree to our <a href="terms">Terms of Service</a> and <a href="privacy">Privacy Policy</a>
             </div>
 
             <button type="submit" class="btn-submit" id="signupBtn">
@@ -539,12 +520,6 @@
             </button>
 
             <div class="auth-divider">or</div>
-
-            <div class="social-login">
-                <button type="button" class="social-btn google" onclick="signUpWithGoogle()">
-                    <i class="fab fa-google"></i> Sign Up with Google
-                </button>
-            </div>
 
             <div class="auth-footer">
                 Already have an account? <a onclick="switchTab('login')">Sign In</a>
@@ -564,9 +539,7 @@
         import { 
             getAuth, 
             createUserWithEmailAndPassword, 
-            signInWithEmailAndPassword,
-            signInWithPopup,
-            GoogleAuthProvider
+            signInWithEmailAndPassword
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { 
             getFirestore, 
@@ -767,7 +740,7 @@
 
                 // Redirect to dashboard after short delay
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'dashboard';
                 }, 1500);
 
             } catch (error) {
@@ -841,7 +814,7 @@
                 showToast('Welcome Back!', 'Redirecting to your dashboard...', 'success');
                 
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'dashboard';
                 }, 1000);
 
             } catch (error) {
@@ -869,79 +842,6 @@
                 setLoading(loginBtn, false);
             }
         });
-
-        // ===== GOOGLE SIGN IN - UPDATED WITH NETWORK ERROR HANDLING =====
-        window.signInWithGoogle = async function() {
-            const provider = new GoogleAuthProvider();
-            
-            try {
-                console.log("🟡 Starting Google sign-in");
-                
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-                console.log("🟢 Google auth successful:", user.uid);
-                
-                // Check if user exists in volunteers collection
-                const userDoc = await getDoc(doc(db, 'volunteers', user.uid));
-                
-                if (!userDoc.exists()) {
-                    console.log("🟡 First time Google user - creating profile");
-                    
-                    // First time user - create profile in volunteers collection
-                    const name = user.displayName || 'Volunteer';
-                    const email = user.email || '';
-                    const referralCode = generateReferralCode(name);
-                    
-                    await setDoc(doc(db, 'volunteers', user.uid), {
-                        uid: user.uid,
-                        name: name,
-                        email: email,
-                        phone: '',
-                        referral_code: referralCode,
-                        created_at: serverTimestamp(),
-                        stats: {
-                            total_referrals: 0,
-                            confirmed_referrals: 0,
-                            total_revenue: 0,
-                            pending_payments: 0
-                        }
-                    });
-                    console.log("🟢 Google volunteer profile created");
-                    
-                    showToast('Welcome!', `Your referral code is ${referralCode}`, 'success');
-                } else {
-                    console.log("🟢 Existing Google user found");
-                    showToast('Welcome Back!', 'Redirecting to your dashboard...', 'success');
-                }
-                
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1500);
-                
-            } catch (error) {
-                console.error('❌ Google sign-in error:', error);
-                
-                let message = 'Unable to sign in with Google. Please try again.';
-                
-                // Check for network/connection errors
-                if (error.code === 'auth/network-request-failed' || 
-                    error.message?.includes('network') || 
-                    error.message?.includes('connection') ||
-                    !navigator.onLine) {
-                    message = 'No internet connection. Please check your network and try again.';
-                } else if (error.message?.includes('offline') || error.message?.includes('unavailable')) {
-                    message = 'Network connection unavailable. Please check your internet.';
-                } else if (error.code === 'auth/popup-closed-by-user') {
-                    message = 'Sign-in popup was closed. Please try again.';
-                } else if (error.code === 'auth/cancelled-popup-request') {
-                    message = 'Sign-in was cancelled. Please try again.';
-                }
-                
-                showToast('Authentication Failed', message, 'error');
-            }
-        };
-
-        window.signUpWithGoogle = window.signInWithGoogle;
 
         // ===== AUTH STATE OBSERVER - REMOVED THE REDIRECT =====
         // We intentionally DO NOT redirect on auth state change here.
