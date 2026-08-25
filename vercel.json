@@ -33,6 +33,7 @@
     { "source": "/tickets", "destination": "/ticket", "permanent": true },
     { "source": "/sponsors", "destination": "/sponsor", "permanent": true },
     { "source": "/faq", "destination": "/faqs", "permanent": true },
+    { "source": "/awards", "destination": "/awards", "permanent": true },
     { "source": "/signin", "destination": "/login", "permanent": true },
     { "source": "/signup", "destination": "/login", "permanent": true }
   ]
