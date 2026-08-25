@@ -18,6 +18,7 @@
     { "source": "/privacy", "destination": "/privacy-policy.html" },
     { "source": "/status", "destination": "/status.html" },
     { "source": "/ticket-view", "destination": "/ticket-view.html" },
+    { "source": "/awards", "destination": "/award-nominations.html" },
 
     { "source": "/login", "destination": "/login.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" },
