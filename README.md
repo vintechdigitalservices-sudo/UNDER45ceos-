@@ -1,12 +1,5 @@
 # Under 45 CEOs - Selar Payment Integration
 
-## 🔑 API Keys & Secrets
-These keys are stored in Vercel Environment Variables. Do NOT expose them in frontend code.
-
-| Key | Where it lives | Purpose |
-|-----|----------------|---------|
-| `SELAR_API_KEY` | Vercel Env Vars | Used to verify Selar payments |
-| `FIREBASE_PRIVATE_KEY` | Vercel Env Vars | Allows Vercel to write to Firestore |
 
 ## 📞 Who to contact if something breaks
 
