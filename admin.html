@@ -681,7 +681,7 @@
         </div>
         <div class="table-container">
             <table class="admin-table">
-                <thead><tr><th>Date & Time</th><th>Order ID</th><th>Customer</th><th>Email</th><th>Phone</th><th>Total</th><th>Tickets</th><th>Status</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Date & Time</th><th>Order ID</th><th>Attendee</th><th>Email</th><th>Phone</th><th>Total</th><th>Tickets</th><th>Status</th><th>Actions</th></tr></thead>
                 <tbody id="ticketsTableBody"><tr><td colspan="9"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading orders...</div></td></tr></tbody>
             </table>
         </div>
@@ -804,7 +804,7 @@
             <div class="whatsapp-number-box" id="whatsappNumberBox" style="display: none;">
                 <i class="fab fa-whatsapp" style="font-size: 1.5rem; color: #25D366;"></i>
                 <p id="whatsappNumberDisplay"></p>
-                <small style="color: rgba(255,255,255,0.6);">Customer's WhatsApp number will be extracted automatically</small>
+                <small style="color: rgba(255,255,255,0.6);">Attendee's WhatsApp number will be extracted automatically</small>
             </div>
             
             <div class="order-summary-box" id="orderSummaryBox"></div>
@@ -855,6 +855,41 @@
     let currentOrderForApproval = null;
     let currentDeliveryMethod = "email";
 
+    // Helper function to get attendee info from order
+    function getAttendeeInfo(order) {
+        // First try to get from attendees array (first attendee)
+        if (order.attendees && order.attendees.length > 0) {
+            const firstAttendee = order.attendees[0];
+            return {
+                fullName: (firstAttendee.firstname || '') + ' ' + (firstAttendee.lastname || '') || firstAttendee.fullName || 'N/A',
+                email: firstAttendee.email || 'N/A',
+                phone: firstAttendee.phone || 'N/A',
+                firstName: firstAttendee.firstname || '',
+                lastName: firstAttendee.lastname || '',
+                company: firstAttendee.company || 'N/A'
+            };
+        }
+        // Fallback to customer info if available
+        if (order.customer) {
+            return {
+                fullName: order.customer.fullName || 'N/A',
+                email: order.customer.email || 'N/A',
+                phone: order.customer.phone || 'N/A',
+                firstName: order.customer.firstName || '',
+                lastName: order.customer.lastName || '',
+                company: 'N/A'
+            };
+        }
+        return {
+            fullName: 'N/A',
+            email: 'N/A',
+            phone: 'N/A',
+            firstName: '',
+            lastName: '',
+            company: 'N/A'
+        };
+    }
+
     // Helper functions
     function showToast(message, isError = false) {
         const toast = document.getElementById('toastMessage');
@@ -896,7 +931,8 @@
     }
 
     function generateEmailMessage(order) {
-        const customerName = order.customer?.fullName || 'Valued Customer';
+        const attendee = getAttendeeInfo(order);
+        const customerName = attendee.fullName || 'Valued Customer';
         let ticketSummary = '';
         if (order.tickets) {
             const tickets = [];
@@ -937,7 +973,8 @@ Under45CEOs Team`;
     }
 
     function generateWhatsAppMessage(order) {
-        const customerName = order.customer?.fullName || 'Valued Customer';
+        const attendee = getAttendeeInfo(order);
+        const customerName = attendee.fullName || 'Valued Customer';
         let ticketSummary = '';
         if (order.tickets) {
             const tickets = [];
@@ -996,7 +1033,12 @@ Under45CEOs Team`;
         if (ticketFilter !== 'all') filtered = filtered.filter(t => t.paymentStatus === ticketFilter);
         if (ticketSearch.trim()) {
             const s = ticketSearch.toLowerCase();
-            filtered = filtered.filter(t => t.id.toLowerCase().includes(s) || (t.customer?.fullName || '').toLowerCase().includes(s) || (t.customer?.email || '').toLowerCase().includes(s));
+            filtered = filtered.filter(t => {
+                const attendee = getAttendeeInfo(t);
+                return t.id.toLowerCase().includes(s) || 
+                       attendee.fullName.toLowerCase().includes(s) || 
+                       attendee.email.toLowerCase().includes(s);
+            });
         }
         filteredTickets = filtered;
         currentTicketPage = 1;
@@ -1015,6 +1057,7 @@ Under45CEOs Team`;
         }
         
         tbody.innerHTML = pageOrders.map(order => {
+            const attendee = getAttendeeInfo(order);
             let ticketHtml = '';
             if (order.tickets) {
                 if (order.tickets.regular) ticketHtml += `<span class="ticket-tag">${order.tickets.regular} Regular</span> `;
@@ -1047,9 +1090,9 @@ Under45CEOs Team`;
                 <tr>
                     <td>${formatDateTime(order.orderDate)}</td>
                     <td><code>${order.id.substring(0, 12)}...</code></td>
-                    <td>${order.customer?.fullName || 'N/A'}</td>
-                    <td>${order.customer?.email || 'N/A'}</td>
-                    <td>${order.customer?.phone || 'N/A'}</td>
+                    <td>${attendee.fullName}</td>
+                    <td>${attendee.email}</td>
+                    <td>${attendee.phone}</td>
                     <td>₦${(order.totalAmount || 0).toLocaleString()}</td>
                     <td>${ticketHtml}</td>
                     <td><span class="status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText}</span></td>
@@ -1116,24 +1159,26 @@ Under45CEOs Team`;
     window.viewTicketDetails = async function(orderId) {
         const order = allTicketOrders.find(o => o.id === orderId);
         if (!order) return;
+        const attendee = getAttendeeInfo(order);
         
         let attendeesHtml = '';
         if (order.attendees && order.attendees.length) {
             order.attendees.forEach((a, idx) => {
-                attendeesHtml += `<div class="attendee-item"><strong>Attendee ${idx + 1}</strong><br>Name: ${a.firstname || ''} ${a.lastname || ''}<br>Phone: ${a.phone || 'N/A'}<br>Company: ${a.company || 'N/A'}<br>Ticket: ${a.ticketTier || 'N/A'}</div>`;
+                attendeesHtml += `<div class="attendee-item"><strong>Attendee ${idx + 1}</strong><br>Name: ${a.firstname || ''} ${a.lastname || ''}<br>Phone: ${a.phone || 'N/A'}<br>Email: ${a.email || 'N/A'}<br>Company: ${a.company || 'N/A'}<br>Ticket: ${a.ticketTier || 'N/A'}</div>`;
             });
         }
         
         document.getElementById('modalTitle').textContent = 'Ticket Order Details';
         document.getElementById('modalBody').innerHTML = `
-            <div class="detail-section"><h3>Customer Information</h3><div class="detail-grid">
+            <div class="detail-section"><h3>Attendee Information</h3><div class="detail-grid">
                 <div class="detail-item"><span class="detail-label">Order ID:</span><span class="detail-value">${order.id}</span></div>
-                <div class="detail-item"><span class="detail-label">Name:</span><span class="detail-value">${order.customer?.fullName || 'N/A'}</span></div>
-                <div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${order.customer?.email || 'N/A'}</span></div>
-                <div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${order.customer?.phone || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Full Name:</span><span class="detail-value">${attendee.fullName}</span></div>
+                <div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${attendee.email}</span></div>
+                <div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${attendee.phone}</span></div>
+                <div class="detail-item"><span class="detail-label">Company:</span><span class="detail-value">${attendee.company}</span></div>
                 <div class="detail-item"><span class="detail-label">Total:</span><span class="detail-value">₦${(order.totalAmount || 0).toLocaleString()}</span></div>
             </div></div>
-            <div class="detail-section"><h3>Attendees</h3>${attendeesHtml || '<p>No attendee details</p>'}</div>
+            <div class="detail-section"><h3>All Attendees</h3>${attendeesHtml || '<p>No attendee details</p>'}</div>
             ${order.receiptUrl ? `<div class="detail-section"><h3>Receipt</h3><img src="${order.receiptUrl}" class="receipt-img"></div>` : ''}
             <div class="modal-actions">
                 ${order.paymentStatus !== 'approved' ? `<button class="modal-action-btn approve" onclick="approveOrderOnlyAndClose('${order.id}')">✓ Approve (No Message)</button>` : ''}
@@ -1153,16 +1198,17 @@ Under45CEOs Team`;
         const order = allTicketOrders.find(o => o.id === orderId);
         if (!order) return;
         currentOrderForApproval = order;
+        const attendee = getAttendeeInfo(order);
         
-        updateModalForMethod(currentDeliveryMethod);
+        updateModalForMethod(currentDeliveryMethod, attendee);
         
         if (currentDeliveryMethod === "email") {
-            document.getElementById('recipientValue').value = order.customer?.email || '';
+            document.getElementById('recipientValue').value = attendee.email;
             document.getElementById('recipientLabel').innerHTML = 'To <span style="color:var(--orange);">*</span>';
         } else {
-            const whatsappNumber = formatPhoneForWhatsApp(order.customer?.phone || '');
-            document.getElementById('recipientValue').value = order.customer?.phone || 'Not available';
-            document.getElementById('whatsappNumberDisplay').innerHTML = whatsappNumber || order.customer?.phone || 'Not available';
+            const whatsappNumber = formatPhoneForWhatsApp(attendee.phone);
+            document.getElementById('recipientValue').value = attendee.phone;
+            document.getElementById('whatsappNumberDisplay').innerHTML = whatsappNumber || attendee.phone || 'Not available';
             document.getElementById('recipientLabel').innerHTML = 'Phone Number <span style="color:var(--orange);">*</span>';
         }
         
@@ -1183,7 +1229,7 @@ Under45CEOs Team`;
             <p><strong>Order ID:</strong> ${order.id}</p>
             <p><strong>Tickets:</strong> ${ticketSummary || 'N/A'}</p>
             <p><strong>Total Amount:</strong> ₦${(order.totalAmount || 0).toLocaleString()}</p>
-            <p><strong>Customer:</strong> ${order.customer?.fullName || 'N/A'}</p>
+            <p><strong>Attendee:</strong> ${attendee.fullName}</p>
         `;
         
         document.getElementById('ticketLinkBox').innerHTML = `
@@ -1198,7 +1244,7 @@ Under45CEOs Team`;
         document.getElementById('emailModal').classList.add('active');
     };
     
-    function updateModalForMethod(method) {
+    function updateModalForMethod(method, attendee) {
         if (method === "email") {
             document.getElementById('modalMethodTitle').innerHTML = '<i class="fas fa-envelope"></i> Approve & Send Tickets via Email';
             document.getElementById('subjectField').style.display = 'block';
@@ -1220,6 +1266,7 @@ Under45CEOs Team`;
     }
     
     function updateModalForMethodPreserveMessage(method) {
+        const attendee = getAttendeeInfo(currentOrderForApproval);
         if (method === "email") {
             document.getElementById('modalMethodTitle').innerHTML = '<i class="fas fa-envelope"></i> Approve & Send Tickets via Email';
             document.getElementById('subjectField').style.display = 'block';
@@ -1231,7 +1278,7 @@ Under45CEOs Team`;
             document.getElementById('emailMessage').value = generateEmailMessage(currentOrderForApproval);
             const recipientField = document.getElementById('recipientValue');
             if (recipientField && currentOrderForApproval) {
-                recipientField.value = currentOrderForApproval.customer?.email || '';
+                recipientField.value = attendee.email;
             }
             document.getElementById('recipientLabel').innerHTML = 'To <span style="color:var(--orange);">*</span>';
         } else {
@@ -1245,8 +1292,8 @@ Under45CEOs Team`;
             document.getElementById('emailMessage').value = generateWhatsAppMessage(currentOrderForApproval);
             const recipientField = document.getElementById('recipientValue');
             if (recipientField && currentOrderForApproval) {
-                recipientField.value = currentOrderForApproval.customer?.phone || 'Not available';
-                document.getElementById('whatsappNumberDisplay').innerHTML = formatPhoneForWhatsApp(currentOrderForApproval.customer?.phone) || currentOrderForApproval.customer?.phone || 'Not available';
+                recipientField.value = attendee.phone;
+                document.getElementById('whatsappNumberDisplay').innerHTML = formatPhoneForWhatsApp(attendee.phone) || attendee.phone || 'Not available';
             }
             document.getElementById('recipientLabel').innerHTML = 'Phone Number <span style="color:var(--orange);">*</span>';
         }
@@ -1308,7 +1355,8 @@ Under45CEOs Team`;
     async function sendWhatsAppMessage() {
         if (!currentOrderForApproval) return;
         
-        const phoneNumber = currentOrderForApproval.customer?.phone || '';
+        const attendee = getAttendeeInfo(currentOrderForApproval);
+        const phoneNumber = attendee.phone;
         const formattedPhone = formatPhoneForWhatsApp(phoneNumber);
         const message = document.getElementById('emailMessage').value;
         
