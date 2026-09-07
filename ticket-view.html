@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Your Tickets | Under 45 CEOs Business & Leadership Summit 2026</title>
+    <meta name="description" content="Enter your Order ID to view, download and print your e-tickets for the Under 45 CEOs Summit. Each ticket includes a unique QR code for event check-in.">
+    <meta name="author" content="UDUF Africa">
+    <meta name="robots" content="noindex, nofollow">
+    <link class="icon" type="image/png" href="/assets/under45.png" />
+    <link class="apple-touch-icon" href="/assets/under45.png" />
+    <link class="shortcut icon" href="/assets/under45.png" />
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js">
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js">
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #053c40;
+            --teal: #0e6b73;
+            --teal-light: #1a8a94;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --off-white: #f5f3ef;
+            --gray-400: #c0c0c0;
+            --gray-700: #3a3a3a;
+            --black: #0a0a0a;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --shadow-card: 0 8px 40px rgba(0, 0, 0, 0.2);
+            --shadow-deep: 0 24px 80px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font-body);
+            background: var(--teal-darker);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Order ID Input Section */
+        .order-input-section {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .order-input-section h2 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--orange);
+            margin-bottom: 0.5rem;
+        }
+        .order-input-section p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+        .order-input-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .order-input-group input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .order-input-group input:focus {
+            outline: none;
+            border-color: var(--orange);
+        }
+        .order-input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: normal;
+        }
+        .order-input-group button {
+            padding: 0.85rem 2rem;
+            border-radius: var(--radius);
+            border: none;
+            background: var(--orange);
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .order-input-group button:hover {
+            background: var(--orange-deep);
+            transform: translateY(-2px);
+        }
+        .order-input-group button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .85rem 2rem;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: .9rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        .btn--primary {
+            background: var(--orange);
+            color: var(--white);
+            border-color: var(--orange);
+        }
+        .btn--primary:hover {
+            background: var(--orange-deep);
+            box-shadow: 0 8px 30px rgba(240, 125, 26, .4);
+        }
+        .btn--outline {
+            background: transparent;
+            color: var(--orange);
+            border-color: var(--orange);
+        }
+        .btn--outline:hover {
+            background: var(--orange);
+            color: var(--white);
+        }
+        .btn--success {
+            background: #10b981;
+            color: var(--white);
+            border-color: #10b981;
+        }
+        .btn--success:hover {
+            background: #059669;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, .4);
+        }
+        .btn--nav {
+            background: var(--orange);
+            color: var(--white);
+            padding: .55rem 1.4rem;
+            font-size: .8rem;
+            border-radius: 6px;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            transition: all .35s;
+            padding: 1.2rem 0;
+            background: transparent;
+        }
+        .nav.scrolled {
+            background: var(--teal-darker);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, .3);
+            padding: .7rem 0;
+        }
+        .nav__inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .nav__logos {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+            margin-right: auto;
+        }
+        .nav__logo-uduf {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+        }
+        .nav__links {
+            display: flex;
+            gap: 1.8rem;
+            align-items: center;
+        }
+        .nav__links a {
+            color: rgba(255, 255, 255, .9);
+            font-size: .875rem;
+            font-weight: 600;
+            transition: color .2s;
+        }
+        .nav__links a:hover {
+            color: var(--orange);
+        }
+        .nav__hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .nav__hamburger span {
+            width: 24px;
+            height: 2px;
+            background: var(--white);
+            transition: all .3s;
+        }
+        .nav__hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .nav__hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .nav__hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+        .nav__mobile {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--teal-darker);
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            z-index: 998;
+        }
+        .nav__mobile.open {
+            display: flex;
+        }
+        .nav__mobile a {
+            color: rgba(255, 255, 255, .9);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.5rem;
+        }
+
+        /* Page Header */
+        .ticket-header {
+            text-align: center;
+            padding: 120px 20px 40px;
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .ticket-header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            letter-spacing: 1px;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .ticket-header p {
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        /* Loading */
+        .page-loader {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            gap: 1rem;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Action Bar */
+        .action-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        /* Tickets Container */
+        .tickets-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Ticket Card - Template Based */
+        .ticket-card {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 0px;
+            overflow: hidden;
+            box-shadow: var(--shadow-deep);
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .ticket-template-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 45%;
+            background: transparent;
+            display: block;
+        }
+
+        .ticket-template-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            pointer-events: none;
+        }
+
+        .ticket-overlay-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        /* 1. ATTENDEE NAME */
+        .ticket-attendee {
+            position: absolute;
+            top: 22%;
+            left: 5%;
+            width: 60%;
+            text-align: center;
+            font-family: var(--font-serif);
+            font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        /* 2. TICKET TYPE */
+        .ticket-val-type {
+            position: absolute;
+            top: 40%;
+            left: 21.5%;
+            width: 52%;
+            text-align: left;
+            font-family: var(--font-body);
+            font-size: clamp(0.7rem, 1.2vw, 1.1rem);
+            font-weight: 700;
+            color: var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        /* 3. TICKET PRICE */
+        .ticket-val-price {
+            position: absolute;
+            top: 50%;
+            left: 22.5%;
+            width: 52%;
+            text-align: left;
+            font-family: var(--font-body);
+            font-size: clamp(0.7rem, 1.2vw, 1.1rem);
+            font-weight: 700;
+            color: var(--gold-light);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        /* 4. TICKET ID */
+        .ticket-val-id {
+            position: absolute;
+            top: 62%;
+            left: 20.5%;
+            width: 52%;
+            text-align: left;
+            font-family: var(--font-body);
+            font-size: clamp(0.7rem, 1.2vw, 1.1rem);
+            font-weight: 700;
+            color: var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        /* 5. EVENT DATE */
+        .ticket-val-date {
+            position: absolute;
+            top: 73%;
+            left: 20.5%;
+            width: 52%;
+            text-align: left;
+            font-family: var(--font-body);
+            font-size: clamp(0.7rem, 1.2vw, 1.1rem);
+            font-weight: 700;
+            color: var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        /* QR Code */
+        .ticket-qr-container {
+            position: absolute;
+            top: 30%;
+            right: 8%;
+            width: 18%;
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ticket-qr-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Error Card */
+        .error-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .error-card i {
+            font-size: 3rem;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--black);
+            padding: 4rem 0 2rem;
+            margin-top: 2rem;
+        }
+        .footer__inner {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer__brand .footer__logos-wrap {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .footer__brand p {
+            font-size: .8rem;
+            color: rgba(255, 255, 255, .5);
+            max-width: 260px;
+            font-weight: 500;
+        }
+        .footer__links h4 {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+        .footer__links ul {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+        .footer__links a {
+            color: rgba(255, 255, 255, .5);
+            font-size: .8rem;
+            transition: color .2s;
+            font-weight: 500;
+        }
+        .social-icons {
+            display: flex;
+            gap: .8rem;
+        }
+        .social-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, .15);
+            border-radius: var(--radius);
+            color: rgba(255, 255, 255, .6);
+            transition: all .25s;
+        }
+        .social-icon:hover {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+        .footer__bottom {
+            border-top: 1px solid rgba(255, 255, 255, .08);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer__bottom p {
+            font-size: .75rem;
+            color: rgba(255, 255, 255, .3);
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .nav__links,
+            .nav>.btn--nav {
+                display: none;
+            }
+            .nav__hamburger {
+                display: flex;
+            }
+            .footer__inner {
+                grid-template-columns: 1fr;
+            }
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .action-bar .btn {
+                justify-content: center;
+            }
+            .order-input-group {
+                flex-direction: column;
+            }
+            .order-input-group button {
+                width: 100%;
+            }
+            .tickets-container {
+                max-width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .nav,
+            .action-bar,
+            .footer,
+            .ticket-header,
+            .order-input-section {
+                display: none !important;
+            }
+            .ticket-card {
+                break-inside: avoid;
+                margin-bottom: 20px;
+                box-shadow: none;
+                border-radius: 0;
+            }
+            .ticket-attendee,
+            .ticket-val-type,
+            .ticket-val-price,
+            .ticket-val-id,
+            .ticket-val-date {
+                color: #ffffff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .ticket-val-price {
+                color: #f0c040 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav" id="navbar">
+        <div class="nav__inner">
+            <div class="nav__logos">
+                <div class="nav__logo-uduf"><img src="/assets/logo.png" alt="UDUF Africa Logo" style="height: 65px; width: auto; display: block;"></div>
+                <div class="nav__logo"><img src="/assets/under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto; display: block;"></div>
+            </div>
+            <ul class="nav__links">
+                <li><a href="impact.html">Impact</a></li>
+                <li><a href="sponsor.html">Sponsors</a></li>
+                <li><a href="ticket.html">Tickets</a></li>
+            </ul>
+            <a href="ticket.html" class="btn btn--nav pulse-btn">REGISTER</a>
+            <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="nav__mobile" id="mobileMenu">
+            <a href="impact.html">Impact</a>
+            <a href="sponsor.html">Sponsors</a>
+            <a href="ticket.html">Tickets</a>
+            <a href="ticket.html" class="btn btn--nav">REGISTER</a>
+        </div>
+    </nav>
+
+    <section class="ticket-header">
+        <h1>Your E-Tickets</h1>
+        <p>Enter your Order ID below to view, download and print your tickets</p>
+    </section>
+
+    <div class="container">
+        <div id="ticketContent">
+            <div class="order-input-section" id="orderInputSection">
+                <h2>Get Your Tickets</h2>
+                <p>Please enter the Order ID for your Ticket</p>
+                <div class="order-input-group">
+                    <input type="text" id="orderIdInput" placeholder="Enter Order ID (e.g., U45-2026-7ANB5N7I-001)" autocomplete="off">
+                    <button id="fetchOrderBtn">View My Tickets</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <div class="footer__logos-wrap">
+                        <div class="footer__logo-uduf"><img src="/assets/logo.png" alt="UDUF Africa Logo" style="height: 72px; width: auto;"></div>
+                        <div class="footer__logo"><img src="/assets/under45.png" alt="Under 45 CEOs Logo" style="height: 56px; width: auto;"></div>
+                    </div>
+                    <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
+                </div>
+                <div class="footer__links">
+                    <h4>Quick Links</h4>
+                    <ul><li><a href="impact.html">Impact</a></li><li><a href="ticket.html">Register</a></li></ul>
+                </div>
+                <div class="footer__links">
+                    <h4>Resources</h4>
+                    <ul><li><a href="faqs.html">FAQs</a></li><li><a href="sponsor.html">Sponsor Us</a></li><li><a href="contact.html">Contact</a></li></ul>
+                </div>
+                <div class="footer__links footer__social"><h4>Follow Us</h4><div class="social-icons"><a href="https://web.facebook.com/share/1QeQa7Y5uC/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a><a href="https://x.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a><a href="https://www.instagram.com/under45ceos" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a></div></div>
+            </div>
+            <div class="footer__bottom"><p>© 2026 Under 45 CEOs · UDUF Africa. All rights reserved.</p><p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p></div>
+        </div>
+    </footer>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc", authDomain: "under45ceos-submit.firebaseapp.com", projectId: "under45ceos-submit", storageBucket: "under45ceos-submit.firebasestorage.app", messagingSenderId: "801982436580", appId: "1:801982436580:web:3769913cb6ec23fbaa88f1" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        let currentOrderRef = null;
+        let orderData = null;
+        const EVENT_DATE = "October 10th 2026";
+        const EVENT_VENUE = "MAIN BOWL, ARCHBISHOP C.J. PATTERSON AUDITORIUM, ALL SAINTS CATHEDRAL, ONITSHA ANAMBRA STATE.";
+
+        window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60), { passive: true });
+
+        document.getElementById('fetchOrderBtn').addEventListener('click', () => {
+            const orderId = document.getElementById('orderIdInput').value.trim();
+            if (orderId) loadOrderByRef(orderId);
+        });
+
+        function getTicketPrice(ticketTier) {
+            const tierMap = { 'essential': 5000, 'growth': 15000, 'executive': 25000, 'founders inner circle': 130000 };
+            return tierMap[(ticketTier || '').toLowerCase().trim()] || 0;
+        }
+
+        function getTicketDisplayName(ticketTier) {
+            const tierMap = { 'essential': 'ESSENTIAL', 'growth': 'GROWTH', 'executive': 'EXECUTIVE', 'founders inner circle': 'FOUNDERS INNER CIRCLE' };
+            return tierMap[(ticketTier || '').toLowerCase().trim()] || (ticketTier || 'REGULAR').toUpperCase();
+        }
+
+        async function loadOrderByRef(orderRef) {
+            document.getElementById('ticketContent').innerHTML =
+                `<div class="page-loader"><div class="loader-spinner"></div><p>Fetching your tickets...</p></div>`;
+            try {
+                const doc = await db.collection('checkouts').doc(orderRef).get();
+                if (!doc.exists) return showError('Order Not Found', 'Order ID not found.');
+                orderData = doc.data();
+                currentOrderRef = doc.id;
+                await renderTickets();
+            } catch (e) { showError('Error', 'Failed to load.'); }
+        }
+
+        function generateQRCodeAsImage(qrData) {
+            return new Promise((resolve) => {
+                const tempDiv = document.createElement('div');
+                tempDiv.style.position = 'absolute';
+                tempDiv.style.left = '-9999px';
+                document.body.appendChild(tempDiv);
+                new QRCode(tempDiv, { text: qrData, width: 300, height: 300, colorDark: "#000000", colorLight: "#ffffff",
+                    correctLevel: 1 });
+                setTimeout(() => {
+                    const canvas = tempDiv.querySelector('canvas');
+                    const url = canvas ? canvas.toDataURL('image/png') : null;
+                    document.body.removeChild(tempDiv);
+                    resolve(url);
+                }, 150);
+            });
+        }
+
+        // Determine which completion page to redirect to based on ticket tier
+        function getCompletionPage(tier) {
+            const normalized = (tier || '').toLowerCase().trim();
+            // essential and growth → thank-you.html
+            if (normalized === 'essential' || normalized === 'growth') {
+                return 'thank-you.html';
+            }
+            // executive and founders inner circle (or premium) → thanks.html
+            // also treat 'premium' as alias for founders inner circle
+            if (normalized === 'executive' || normalized === 'founders inner circle' || normalized === 'premium') {
+                return 'thanks.html';
+            }
+            // fallback to thank-you.html (safe default)
+            return 'thank-you.html';
+        }
+
+        async function renderTickets() {
+            const attendees = orderData.attendees || [];
+            let html =
+                `<div class="action-bar">
+                    <button class="btn btn--primary" id="downloadPDFBtn"><i class="fas fa-download"></i> Download PDF</button>
+                    <button class="btn btn--success" id="completeRegistrationBtn">Complete Registration</button>
+                </div>
+                <div class="tickets-container" id="ticketsContainer">`;
+
+            for (let i = 0; i < attendees.length; i++) {
+                const a = attendees[i];
+                const tier = a.ticketTier || 'executive';
+                const name = `${a.firstname || ''} ${a.lastname || ''}`.trim();
+                const price = getTicketPrice(tier);
+                const qrUrl = await generateQRCodeAsImage(`Order: ${currentOrderRef}, Name: ${name}`);
+
+                html += `
+                    <div class="ticket-card">
+                        <div class="ticket-template-wrapper">
+                            <img src="/assets/background1.webp" alt="Template" class="ticket-template-bg" />
+                            <div class="ticket-overlay-content">
+                                <div class="ticket-qr-container"><img src="/assets/${qrUrl}" /></div>
+                                <div class="ticket-attendee">${name.toUpperCase()}</div>
+                                <div class="ticket-val-type">${getTicketDisplayName(tier)}</div>
+                                <div class="ticket-val-price">₦${price.toLocaleString()}</div>
+                                <div class="ticket-val-id">${currentOrderRef}</div>
+                                <div class="ticket-val-date">${EVENT_DATE}</div>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+            html += `</div>`;
+            document.getElementById('ticketContent').innerHTML = html;
+
+            // Attach event listeners
+            // Download PDF — each ticket page sized exactly to the ticket template dimensions with zero margins
+            document.getElementById('downloadPDFBtn').addEventListener('click', async function() {
+                const ticketCards = document.querySelectorAll('.ticket-card');
+                if (!ticketCards.length) return;
+
+                // Access jsPDF from the html2pdf bundle (exposed globally as window.jspdf)
+                const jsPDF = (window.jspdf && window.jspdf.jsPDF) || (window.jspdf && window.jspdf.default) || window.jspdf;
+                if (!jsPDF) {
+                    // Fallback: use html2pdf with zero margins on a large landscape sheet
+                    const element = document.getElementById('ticketsContainer');
+                    if (!element) return;
+                    const opt = {
+                        margin: 0,
+                        filename: `tickets-${currentOrderRef || 'download'}.pdf`,
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { scale: 2, useCORS: true, logging: false },
+                        jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
+                        pagebreak: { mode: 'avoid-all' }
+                    };
+                    html2pdf().set(opt).from(element).save();
+                    return;
+                }
+
+                let pdf = null;
+
+                for (let i = 0; i < ticketCards.length; i++) {
+                    const wrapper = ticketCards[i].querySelector('.ticket-template-wrapper');
+                    if (!wrapper) continue;
+
+                    // Render the ticket wrapper at 2x scale for crisp output
+                    const canvas = await html2canvas(wrapper, {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        backgroundColor: null
+                    });
+
+                    const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                    const w = canvas.width;
+                    const h = canvas.height;
+
+                    if (i === 0) {
+                        // Create PDF with first page dimensions matching the ticket exactly
+                        pdf = new jsPDF({
+                            unit: 'px',
+                            format: [w, h],
+                            hotfixes: ['px_scaling']
+                        });
+                    } else {
+                        // Add subsequent tickets on new pages of identical size
+                        pdf.addPage([w, h]);
+                    }
+
+                    // Place image at origin filling the entire page — no margins, no padding, no white space
+                    pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
+                }
+
+                if (pdf) {
+                    pdf.save(`tickets-${currentOrderRef || 'download'}.pdf`);
+                }
+            });
+
+            // Complete Registration button – redirect based on ticket tier
+            const completeBtn = document.getElementById('completeRegistrationBtn');
+            if (completeBtn) {
+                // Determine tier from first attendee (or fallback)
+                const firstTier = attendees.length > 0 ? attendees[0].ticketTier : 'executive';
+                const targetPage = getCompletionPage(firstTier);
+                completeBtn.addEventListener('click', () => {
+                    window.location.href = targetPage;
+                });
+            }
+        }
+
+        function showError(t, m) {
+            document.getElementById('ticketContent').innerHTML =
+                `<div class="error-card"><h3>${t}</h3><p>${m}</p></div>`;
+        }
+    </script>
+</body>
+</html>

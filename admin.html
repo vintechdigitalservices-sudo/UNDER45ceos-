@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Admin Dashboard | Under 45 CEOs Summit 2026</title>
+    <meta name="description" content="Admin dashboard to manage ticket orders, sponsorships, messages, award nominations, and attendee registrations">
+     <!-- Favicon - Use under45.png as the icon in search results -->
+  <link rel="icon" type="image/png" href="/assets/under45.png" />
+  <link rel="apple-touch-icon" href="/assets/under45.png" />
+  <link rel="shortcut icon" href="/assets/under45.png" />
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #053c40;
+            --teal: #0e6b73;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --gold: #d4a017;
+            --gold-light: #f0c040;
+            --white: #ffffff;
+            --whatsapp: #25D366;
+            --whatsapp-dark: #128C7E;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+        
+        .admin-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem;
+            overflow-x: hidden;
+        }
+        
+        /* Login Overlay */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .login-overlay.hidden { display: none; }
+        .login-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+        .login-card h2 { font-family: var(--font-display); font-size: 2rem; color: var(--orange); margin-bottom: 0.5rem; }
+        .login-card p { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; font-size: 0.85rem; }
+        .login-card input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .login-card input:focus { outline: none; border-color: var(--orange); }
+        .login-card button {
+            width: 100%;
+            padding: 0.85rem;
+            border-radius: var(--radius);
+            border: none;
+            background: var(--orange);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .login-card button:hover { background: var(--orange-deep); transform: translateY(-2px); }
+        .login-card button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .error-msg { color: #ef4444; font-size: 0.8rem; margin-top: 0.5rem; display: none; }
+
+        /* Header with Logo Images */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .logo-area img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo-area h1 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--orange);
+        }
+        .logout-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .logout-btn:hover { background: rgba(239,68,68,0.3); border-color: #ef4444; }
+
+        /* Delivery Method Selector */
+        .delivery-method {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius);
+        }
+        .method-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: white;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .method-btn i { font-size: 1.2rem; }
+        .method-btn.active {
+            border-color: var(--orange);
+            background: rgba(240,125,26,0.2);
+            color: var(--orange);
+        }
+        .method-btn.email.active { border-color: #3b82f6; background: rgba(59,130,246,0.2); color: #3b82f6; }
+        .method-btn.whatsapp.active { border-color: var(--whatsapp); background: rgba(37,211,102,0.2); color: var(--whatsapp); }
+        .method-btn.email:hover { border-color: #3b82f6; }
+        .method-btn.whatsapp:hover { border-color: var(--whatsapp); }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.5rem;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.8rem 1.2rem;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+        .tab-btn.active { background: var(--orange); color: white; }
+        .tab-btn:hover:not(.active) { color: var(--orange); }
+        .tab-content { display: none; width: 100%; }
+        .tab-content.active { display: block; }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.2rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s;
+        }
+        .stat-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.15); }
+        .stat-card .stat-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .stat-card.pending .stat-icon { color: #f59e0b; }
+        .stat-card.approved .stat-icon { color: #10b981; }
+        .stat-card.rejected .stat-icon { color: #ef4444; }
+        .stat-card.total .stat-icon { color: var(--orange); }
+        .stat-card.executive .stat-icon { color: var(--gold); }
+        .stat-card.essential .stat-icon { color: var(--teal); }
+        .stat-card .stat-number { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; }
+        .stat-card .stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* Filters */
+        .filters-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: var(--radius);
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.08);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            flex: 1;
+            max-width: 300px;
+        }
+        .search-box input {
+            background: none;
+            border: none;
+            color: white;
+            padding: 0.3rem 0;
+            width: 100%;
+            outline: none;
+        }
+        .status-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn {
+            background: rgba(255,255,255,0.08);
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .filter-btn.active { background: var(--orange); color: white; }
+        .refresh-btn {
+            background: rgba(255,255,255,0.08);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            overflow-x: auto;
+            border: 1px solid rgba(255,255,255,0.08);
+            width: 100%;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+        .admin-table th, .admin-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            vertical-align: middle;
+        }
+        .admin-table th {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.05);
+        }
+        .admin-table tr:hover td { background: rgba(255,255,255,0.05); }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .status-badge.pending { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .status-badge.approved { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .status-badge.rejected { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .status-badge.read { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .status-badge.unread { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .status-badge.reviewed { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+
+        .ticket-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.08);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin: 0.1rem;
+        }
+        .ticket-tag.executive { background: rgba(212,160,23,0.2); color: var(--gold); border: 1px solid rgba(212,160,23,0.3); }
+        .ticket-tag.essential { background: rgba(14,107,115,0.2); color: var(--teal); border: 1px solid rgba(14,107,115,0.3); }
+
+        /* NEW: Dropdown Actions */
+        .action-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .action-dropdown-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .action-dropdown-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--orange);
+        }
+        .action-dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 0.3rem;
+            background: var(--teal-dark);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius);
+            min-width: 160px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            z-index: 100;
+            overflow: hidden;
+        }
+        .action-dropdown-menu.show {
+            display: block;
+        }
+        .action-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            color: rgba(255,255,255,0.85);
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: background 0.2s;
+            font-family: var(--font-body);
+        }
+        .action-dropdown-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .action-dropdown-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .action-dropdown-item.view i { color: var(--orange); }
+        .action-dropdown-item.receipt i { color: #3b82f6; }
+        .action-dropdown-item.approve i { color: #10b981; }
+        .action-dropdown-item.approve-send i { color: #10b981; }
+        .action-dropdown-item.reject i { color: #ef4444; }
+        .action-dropdown-item .item-label {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            margin-left: auto;
+        }
+
+        /* Email/WhatsApp Modal */
+        .email-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .email-modal.active { opacity: 1; visibility: visible; }
+        .email-modal-content {
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            border-radius: var(--radius-lg);
+            max-width: 700px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            border: 1px solid var(--orange);
+        }
+        .email-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .email-modal-header h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--orange); }
+        .email-modal-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius);
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--orange); }
+        
+        /* WhatsApp Number Display */
+        .whatsapp-number-box {
+            background: rgba(37,211,102,0.15);
+            border: 1px solid var(--whatsapp);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .whatsapp-number-box p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--whatsapp);
+            margin-top: 0.5rem;
+        }
+        
+        .order-summary-box {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .order-summary-box h4 { color: #10b981; margin-bottom: 0.5rem; font-size: 0.9rem; }
+        .order-summary-box p { font-size: 0.85rem; color: rgba(255,255,255,0.8); margin-bottom: 0.3rem; }
+        .ticket-link-box {
+            background: rgba(240,125,26,0.15);
+            border: 1px solid var(--orange);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .ticket-link-box a { color: var(--orange); word-break: break-all; font-size: 0.85rem; }
+        
+        .email-modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .email-modal-actions button { flex: 1; padding: 0.7rem; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
+        .btn--primary { background: #10b981; color: white; }
+        .btn--whatsapp { background: var(--whatsapp); color: white; }
+        .btn--outline { background: rgba(255,255,255,0.1); color: white; }
+
+        /* Regular Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .modal.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
+            border-radius: var(--radius-lg);
+            max-width: 800px;
+            width: 95%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            border: 1px solid var(--orange);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal-header h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--orange); }
+        .modal-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+        .detail-item { display: flex; justify-content: space-between; font-size: 0.85rem; }
+        .detail-label { color: rgba(255,255,255,0.6); }
+        .detail-value { font-weight: 600; text-align: right; }
+        .detail-value a { color: var(--orange); word-break: break-all; }
+        .attendee-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius);
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+        .detail-section { margin-bottom: 1.5rem; }
+        .detail-section h3 { font-size: 0.9rem; color: var(--orange); margin-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.3rem; }
+        .receipt-img { max-width: 100%; border-radius: var(--radius); margin-top: 0.5rem; }
+        .photo-thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        .photo-thumb-lg {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--orange);
+            margin: 0 auto 1rem;
+            display: block;
+        }
+        .modal-actions { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .modal-action-btn { flex: 1; padding: 0.7rem; border-radius: 8px; border: none; font-weight: 700; cursor: pointer; }
+        .modal-action-btn.approve { background: #10b981; color: white; }
+        .modal-action-btn.reject { background: #ef4444; color: white; }
+        
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: var(--radius);
+            z-index: 10003;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            max-width: 90%;
+        }
+        .toast-message.error { background: #ef4444; }
+        .toast-message.show { display: flex; }
+        
+        .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .page-btn {
+            background: rgba(255,255,255,0.08);
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+        }
+        .page-btn.active { background: var(--orange); }
+        .no-data { text-align: center; padding: 2rem; color: rgba(255,255,255,0.5); }
+        .loading-spinner { text-align: center; padding: 2rem; }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+            .filters-bar { flex-direction: column; align-items: stretch; }
+            .search-box { max-width: none; }
+            .email-modal-actions { flex-direction: column; }
+            .logo-area h1 { font-size: 1rem; }
+            .logo-area img { height: 35px; }
+            .delivery-method { flex-direction: column; }
+            .action-dropdown-menu { right: auto; left: 0; }
+            .tab-btn { padding: 0.6rem 0.8rem; font-size: 0.8rem; }
+            .admin-table { min-width: 800px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-card">
+        <h2>Admin Login</h2>
+        <p>Enter your credentials to access the dashboard</p>
+        <input type="email" id="adminEmail" placeholder="Enter email">
+        <input type="password" id="adminPassword" placeholder="Enter password">
+        <button id="loginBtn">Login</button>
+        <div class="error-msg" id="loginError">Incorrect email or password. Please try again.</div>
+    </div>
+</div>
+
+<div class="admin-container" id="adminContainer" style="display: none;">
+    <div class="admin-header">
+        <div class="logo-area">
+            <!-- Logo images -->
+            <img src="/assets/logo.png" alt="UDUF Africa Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2745%27 fill=%27%23f07d1a%27/%3E%3Ctext x=%2750%27 y=%2767%27 font-size=%2740%27 text-anchor=%27middle%27 fill=%27white%27 font-weight=%27bold%27%3EU%3C/text%3E%3C/svg%3E'">
+            <img src="/assets/under45.png" alt="Under 45 CEOs Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 fill=%27%23022a2d%27/%3E%3Ctext x=%2750%27 y=%2755%27 font-size=%2718%27 text-anchor=%27middle%27 fill=%27%23f07d1a%27 font-weight=%27bold%27%3EU45%3C/text%3E%3C/svg%3E'">
+            <h1>ADMIN DASHBOARD</h1>
+        </div>
+        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="tickets"><i class="fas fa-ticket-alt"></i> Ticket Orders</button>
+        <button class="tab-btn" data-tab="sponsorships"><i class="fas fa-handshake"></i> Sponsorship Requests</button>
+        <button class="tab-btn" data-tab="messages"><i class="fas fa-envelope"></i> Contact Messages</button>
+        <button class="tab-btn" data-tab="nominations"><i class="fas fa-trophy"></i> Award Nominations</button>
+        <button class="tab-btn" data-tab="attendees"><i class="fas fa-users"></i> I Am Attending</button>
+    </div>
+
+    <!-- Tickets Tab -->
+    <div class="tab-content active" id="ticketsTab">
+        <div class="stats-grid" id="ticketStats">
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-ticket-alt"></i></div><div class="stat-number" id="totalOrders">0</div><div class="stat-label">Total Orders</div></div>
+            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="pendingOrders">0</div><div class="stat-label">Pending</div></div>
+            <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-number" id="approvedOrders">0</div><div class="stat-label">Approved</div></div>
+            <div class="stat-card rejected"><div class="stat-icon"><i class="fas fa-times-circle"></i></div><div class="stat-number" id="rejectedOrders">0</div><div class="stat-label">Rejected</div></div>
+        </div>
+        <div class="filters-bar">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="ticketSearch" placeholder="Search by Order ID, Name, or Email..."></div>
+            <div class="status-filter">
+                <button class="filter-btn active" data-status="all">All</button>
+                <button class="filter-btn" data-status="pending">Pending</button>
+                <button class="filter-btn" data-status="approved">Approved</button>
+                <button class="filter-btn" data-status="rejected">Rejected</button>
+            </div>
+            <button class="refresh-btn" id="refreshTickets"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-container">
+            <table class="admin-table">
+                <thead><tr><th>Date & Time</th><th>Order ID</th><th>Customer</th><th>Email</th><th>Phone</th><th>Total</th><th>Tickets</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="ticketsTableBody"><tr><td colspan="9"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading orders...</div></td></tr></tbody>
+            </table>
+        </div>
+        <div class="pagination" id="ticketsPagination"></div>
+    </div>
+
+    <!-- Sponsorships Tab -->
+    <div class="tab-content" id="sponsorshipsTab">
+        <div class="stats-grid" id="sponsorStats">
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-handshake"></i></div><div class="stat-number" id="totalSponsorships">0</div><div class="stat-label">Total Requests</div></div>
+            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="pendingSponsorships">0</div><div class="stat-label">Pending</div></div>
+            <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-number" id="reviewedSponsorships">0</div><div class="stat-label">Reviewed</div></div>
+        </div>
+        <div class="filters-bar">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="sponsorSearch" placeholder="Search..."></div>
+            <button class="refresh-btn" id="refreshSponsors"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-container"><table class="admin-table"><thead><tr><th>Date</th><th>Company</th><th>Contact</th><th>Email</th><th>Phone</th><th>Tier</th><th>Status</th><th>Actions</th></tr></thead><tbody id="sponsorsTableBody"><tr><td colspan="8"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading sponsorships...</div></td></tr></tbody></table></div>
+    </div>
+
+    <!-- Messages Tab -->
+    <div class="tab-content" id="messagesTab">
+        <div class="stats-grid" id="messageStats">
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-envelope"></i></div><div class="stat-number" id="totalMessages">0</div><div class="stat-label">Total</div></div>
+            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="unreadMessages">0</div><div class="stat-label">Unread</div></div>
+        </div>
+        <div class="filters-bar">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="messageSearch" placeholder="Search..."></div>
+            <button class="refresh-btn" id="refreshMessages"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-container"><table class="admin-table"><thead><tr><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Subject</th><th>Status</th><th>Actions</th></tr></thead><tbody id="messagesTableBody"><tr><td colspan="7"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading messages...</div></td></tr></tbody></table></div>
+    </div>
+
+    <!-- Award Nominations Tab -->
+    <div class="tab-content" id="nominationsTab">
+        <div class="stats-grid" id="nominationStats">
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-trophy"></i></div><div class="stat-number" id="totalNominations">0</div><div class="stat-label">Total Nominations</div></div>
+            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="pendingNominations">0</div><div class="stat-label">Pending</div></div>
+            <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-number" id="reviewedNominations">0</div><div class="stat-label">Reviewed</div></div>
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-tag"></i></div><div class="stat-number" id="categoryCount">0</div><div class="stat-label">Categories</div></div>
+        </div>
+        <div class="filters-bar">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="nominationSearch" placeholder="Search by Name, Company, Category..."></div>
+            <div class="status-filter">
+                <button class="filter-btn active" data-status="all">All</button>
+                <button class="filter-btn" data-status="pending">Pending</button>
+                <button class="filter-btn" data-status="reviewed">Reviewed</button>
+            </div>
+            <button class="refresh-btn" id="refreshNominations"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-container">
+            <table class="admin-table">
+                <thead><tr><th>Date</th><th>Nominee</th><th>Company</th><th>Category</th><th>Email</th><th>Phone</th><th>Country</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="nominationsTableBody"><tr><td colspan="9"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading nominations...</div></td></tr></tbody>
+            </table>
+        </div>
+        <div class="pagination" id="nominationsPagination"></div>
+    </div>
+
+    <!-- I Am Attending Tab -->
+    <div class="tab-content" id="attendeesTab">
+        <div class="stats-grid" id="attendeeStats">
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-number" id="totalAttendees">0</div><div class="stat-label">Total Attendees</div></div>
+            <div class="stat-card executive"><div class="stat-icon"><i class="fas fa-crown"></i></div><div class="stat-number" id="executiveAttendees">0</div><div class="stat-label">Executive & Premium</div></div>
+            <div class="stat-card essential"><div class="stat-icon"><i class="fas fa-user"></i></div><div class="stat-number" id="essentialAttendees">0</div><div class="stat-label">Essential & Growth</div></div>
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-calendar-day"></i></div><div class="stat-number" id="todayAttendees">0</div><div class="stat-label">Today's Registrations</div></div>
+        </div>
+        <div class="filters-bar">
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="attendeeSearch" placeholder="Search by Name..."></div>
+            <div class="status-filter">
+                <button class="filter-btn active" data-type="all">All</button>
+                <button class="filter-btn" data-type="executive">Executive & Premium</button>
+                <button class="filter-btn" data-type="essential">Essential & Growth</button>
+            </div>
+            <button class="refresh-btn" id="refreshAttendees"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-container">
+            <table class="admin-table">
+                <thead><tr><th>Date</th><th>Photo</th><th>First Name</th><th>Last Name</th><th>Age</th><th>Ticket Type</th><th>Source</th><th>Actions</th></tr></thead>
+                <tbody id="attendeesTableBody"><tr><td colspan="8"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading attendees...</div></td></tr></tbody>
+            </table>
+        </div>
+        <div class="pagination" id="attendeesPagination"></div>
+    </div>
+</div>
+
+<!-- Email/WhatsApp Modal -->
+<div class="email-modal" id="emailModal">
+    <div class="email-modal-content">
+        <div class="email-modal-header">
+            <h2 id="modalMethodTitle"><i class="fas fa-envelope"></i> Approve & Send Tickets</h2>
+            <button class="email-modal-close" id="closeEmailModalBtn">&times;</button>
+        </div>
+        
+        <!-- Delivery Method Selector -->
+        <div class="delivery-method">
+            <button class="method-btn email active" id="methodEmailBtn">
+                <i class="fas fa-envelope"></i> Email
+            </button>
+            <button class="method-btn whatsapp" id="methodWhatsAppBtn">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+        </div>
+        
+        <div id="emailModalBody">
+            <div class="form-group" id="recipientField">
+                <label id="recipientLabel">To <span style="color:var(--orange);">*</span></label>
+                <input type="text" id="recipientValue" readonly>
+            </div>
+            <div class="form-group" id="subjectField">
+                <label>Subject</label>
+                <input type="text" id="emailSubject" placeholder="Your Under45CEOs Summit Tickets">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea id="emailMessage" rows="6"></textarea>
+            </div>
+            
+            <!-- WhatsApp Number Display -->
+            <div class="whatsapp-number-box" id="whatsappNumberBox" style="display: none;">
+                <i class="fab fa-whatsapp" style="font-size: 1.5rem; color: #25D366;"></i>
+                <p id="whatsappNumberDisplay"></p>
+                <small style="color: rgba(255,255,255,0.6);">Customer's WhatsApp number will be extracted automatically</small>
+            </div>
+            
+            <div class="order-summary-box" id="orderSummaryBox"></div>
+            <div class="ticket-link-box" id="ticketLinkBox"></div>
+        </div>
+        <div class="email-modal-actions">
+            <button class="btn--outline" id="cancelEmailBtn">Cancel</button>
+            <button class="btn--primary" id="sendEmailBtn"><i class="fas fa-paper-plane"></i> Send via Email</button>
+            <button class="btn--whatsapp" id="sendWhatsAppBtn" style="display: none;"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
+        </div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal" id="detailModal">
+    <div class="modal-content">
+        <div class="modal-header"><h2 id="modalTitle">Details</h2><button class="modal-close" id="closeModalBtn">&times;</button></div>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+<div id="toastMessage" class="toast-message"><i class="fas fa-check-circle"></i><span id="toastText">Success!</span></div>
+
+<script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc",
+        authDomain: "under45ceos-submit.firebaseapp.com",
+        projectId: "under45ceos-submit",
+        storageBucket: "under45ceos-submit.firebasestorage.app",
+        messagingSenderId: "801982436580",
+        appId: "1:801982436580:web:3769913cb6ec23fbaa88f1"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    
+    const TICKET_PAGE_URL = "https://under45ceos.udufafrica.org/ticket-view.html";
+    
+    // Data stores
+    let allTicketOrders = [], filteredTickets = [], currentTicketPage = 1, ticketFilter = "all", ticketSearch = "";
+    let allSponsorships = [], filteredSponsorships = [], sponsorSearch = "";
+    let allMessages = [], filteredMessages = [], messageSearch = "";
+    let allNominations = [], filteredNominations = [], currentNominationPage = 1, nominationFilter = "all", nominationSearch = "";
+    let allAttendees = [], filteredAttendees = [], currentAttendeePage = 1, attendeeFilter = "all", attendeeSearch = "";
+    const itemsPerPage = 15;
+    let currentOrderForApproval = null;
+    let currentDeliveryMethod = "email";
+
+    // Helper functions
+    function showToast(message, isError = false) {
+        const toast = document.getElementById('toastMessage');
+        const toastText = document.getElementById('toastText');
+        toastText.textContent = message;
+        if (isError) toast.classList.add('error'); else toast.classList.remove('error');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+    
+    function formatDateTime(timestamp) {
+        if (!timestamp) return 'N/A';
+        if (timestamp.toDate) return timestamp.toDate().toLocaleString('en-NG');
+        return new Date(timestamp).toLocaleString('en-NG');
+    }
+    
+    function formatDate(timestamp) {
+        if (!timestamp) return 'N/A';
+        if (timestamp.toDate) return timestamp.toDate().toLocaleDateString('en-NG');
+        return new Date(timestamp).toLocaleDateString('en-NG');
+    }
+    
+    function normalizeStatus(status) {
+        if (!status) return 'pending';
+        const s = status.toLowerCase();
+        if (s === 'approved' || s === 'verified') return 'approved';
+        if (s === 'rejected') return 'rejected';
+        if (s === 'read' || s === 'reviewed') return 'reviewed';
+        return 'pending';
+    }
+
+    function formatPhoneForWhatsApp(phone) {
+        if (!phone) return '';
+        let cleaned = phone.replace(/\D/g, '');
+        if (cleaned.startsWith('0')) {
+            cleaned = '234' + cleaned.substring(1);
+        }
+        return cleaned;
+    }
+
+    function generateEmailMessage(order) {
+        const customerName = order.customer?.fullName || 'Valued Customer';
+        let ticketSummary = '';
+        if (order.tickets) {
+            const tickets = [];
+            if (order.tickets.regular) tickets.push(`${order.tickets.regular} Regular`);
+            if (order.tickets.standard) tickets.push(`${order.tickets.standard} Standard`);
+            if (order.tickets.premium) tickets.push(`${order.tickets.premium} Premium`);
+            ticketSummary = tickets.join(', ');
+        }
+        
+        return `Dear ${customerName},
+
+Your payment for the Under45CEOs Business & Leadership Summit 2026 has been approved! 🎉
+
+🎫 **Your tickets are ready!**
+
+Click the link below to view, download and print your tickets:
+🔗 ${TICKET_PAGE_URL}
+
+**Instructions:**
+1. Click the link above or copy and paste it into your browser
+2. Enter your Order ID: ${order.id}
+3. Your tickets will appear with unique QR codes for event check-in
+4. You can download all tickets as PDF or print them
+
+**Order Summary:**
+• Order ID: ${order.id}
+• Tickets: ${ticketSummary}
+• Total: ₦${(order.totalAmount || 0).toLocaleString()}
+
+**Event Details:**
+📅 Date: October 10, 2026
+📍 Venue: Onitsha, Anambra State, Nigeria
+
+We look forward to hosting you at the Under45CEOs Summit!
+
+Best regards,
+Under45CEOs Team`;
+    }
+
+    function generateWhatsAppMessage(order) {
+        const customerName = order.customer?.fullName || 'Valued Customer';
+        let ticketSummary = '';
+        if (order.tickets) {
+            const tickets = [];
+            if (order.tickets.regular) tickets.push(`${order.tickets.regular} Regular`);
+            if (order.tickets.standard) tickets.push(`${order.tickets.standard} Standard`);
+            if (order.tickets.premium) tickets.push(`${order.tickets.premium} Premium`);
+            ticketSummary = tickets.join(', ');
+        }
+        
+        return `🎫 *Your Under45CEOs Summit Tickets are Ready!* 🎫
+
+Dear ${customerName},
+
+Your payment has been approved! 
+
+🔗 *Get your tickets here:* ${TICKET_PAGE_URL}
+
+*Instructions:*
+1. Click the link above
+2. Enter your Order ID: *${order.id}*
+3. Download/print your tickets with QR codes
+
+*Order Summary:*
+• Order ID: ${order.id}
+• Tickets: ${ticketSummary}
+• Total: ₦${(order.totalAmount || 0).toLocaleString()}
+
+*Event Details:*
+📅 Date: October 10, 2026
+📍 Venue: Onitsha, Anambra State
+
+Thank you for registering!
+Under45CEOs Team`;
+    }
+
+    // ==================== TICKETS ====================
+    async function loadTickets() {
+        try {
+            const snapshot = await db.collection('checkouts').orderBy('orderDate', 'desc').get();
+            allTicketOrders = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                allTicketOrders.push({ id: doc.id, ...data, paymentStatus: normalizeStatus(data.paymentStatus) });
+            });
+            applyTicketFilters();
+            updateTicketStats();
+        } catch (error) {
+            console.error("Error loading tickets:", error);
+            showToast("Error loading tickets: " + error.message, true);
+            document.getElementById('ticketsTableBody').innerHTML = `<tr><td colspan="9"><div class="no-data">Error loading data.</div></td></tr>`;
+        }
+    }
+    
+    function applyTicketFilters() {
+        let filtered = [...allTicketOrders];
+        if (ticketFilter !== 'all') filtered = filtered.filter(t => t.paymentStatus === ticketFilter);
+        if (ticketSearch.trim()) {
+            const s = ticketSearch.toLowerCase();
+            filtered = filtered.filter(t => t.id.toLowerCase().includes(s) || (t.customer?.fullName || '').toLowerCase().includes(s) || (t.customer?.email || '').toLowerCase().includes(s));
+        }
+        filteredTickets = filtered;
+        currentTicketPage = 1;
+        renderTicketsTable();
+    }
+    
+    function renderTicketsTable() {
+        const start = (currentTicketPage - 1) * itemsPerPage;
+        const pageOrders = filteredTickets.slice(start, start + itemsPerPage);
+        const tbody = document.getElementById('ticketsTableBody');
+        
+        if (pageOrders.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9"><div class="no-data">No orders found</div></td></tr>';
+            document.getElementById('ticketsPagination').innerHTML = '';
+            return;
+        }
+        
+        tbody.innerHTML = pageOrders.map(order => {
+            let ticketHtml = '';
+            if (order.tickets) {
+                if (order.tickets.regular) ticketHtml += `<span class="ticket-tag">${order.tickets.regular} Regular</span> `;
+                if (order.tickets.standard) ticketHtml += `<span class="ticket-tag">${order.tickets.standard} Standard</span> `;
+                if (order.tickets.premium) ticketHtml += `<span class="ticket-tag">${order.tickets.premium} Premium</span> `;
+            }
+            const statusClass = order.paymentStatus;
+            const statusText = statusClass.toUpperCase();
+            const statusIcon = statusClass === 'pending' ? 'fa-hourglass-half' : statusClass === 'approved' ? 'fa-check-circle' : 'fa-times-circle';
+            
+            let dropdownItems = '';
+            dropdownItems += `<button class="action-dropdown-item view" onclick="viewTicketDetails('${order.id}')"><i class="fas fa-eye"></i> View <span class="item-label">View</span></button>`;
+            
+            if (order.receiptUrl) {
+                dropdownItems += `<button class="action-dropdown-item receipt" onclick="window.open('${order.receiptUrl}','_blank')"><i class="fas fa-receipt"></i> Receipt <span class="item-label">View</span></button>`;
+            } else {
+                dropdownItems += `<button class="action-dropdown-item receipt" disabled style="opacity:0.5;cursor:not-allowed;"><i class="fas fa-receipt"></i> Receipt <span class="item-label">N/A</span></button>`;
+            }
+            
+            if (order.paymentStatus !== 'approved') {
+                dropdownItems += `<button class="action-dropdown-item approve" onclick="approveOrderOnly('${order.id}')"><i class="fas fa-check-circle"></i> Approve <span class="item-label">Quick</span></button>`;
+                dropdownItems += `<button class="action-dropdown-item approve-send" onclick="openApproveModal('${order.id}')"><i class="fas fa-check"></i> Approve & Send <span class="item-label">With Message</span></button>`;
+            }
+            
+            if (order.paymentStatus !== 'rejected') {
+                dropdownItems += `<button class="action-dropdown-item reject" onclick="rejectOrder('${order.id}')"><i class="fas fa-times"></i> Reject <span class="item-label">Reject</span></button>`;
+            }
+            
+            return `
+                <tr>
+                    <td>${formatDateTime(order.orderDate)}</td>
+                    <td><code>${order.id.substring(0, 12)}...</code></td>
+                    <td>${order.customer?.fullName || 'N/A'}</td>
+                    <td>${order.customer?.email || 'N/A'}</td>
+                    <td>${order.customer?.phone || 'N/A'}</td>
+                    <td>₦${(order.totalAmount || 0).toLocaleString()}</td>
+                    <td>${ticketHtml}</td>
+                    <td><span class="status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText}</span></td>
+                    <td>
+                        <div class="action-dropdown">
+                            <button class="action-dropdown-btn" onclick="toggleDropdown(event, '${order.id}')">
+                                <i class="fas fa-ellipsis-v"></i> Actions
+                            </button>
+                            <div class="action-dropdown-menu" id="dropdown-${order.id}">
+                                ${dropdownItems}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        
+        renderPagination('ticketsPagination', filteredTickets.length, currentTicketPage, (page) => { currentTicketPage = page; renderTicketsTable(); });
+    }
+    
+    function toggleDropdown(event, orderId) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-${orderId}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-${orderId}`);
+        menu.classList.toggle('show');
+    }
+    
+    document.addEventListener('click', function() {
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            menu.classList.remove('show');
+        });
+    });
+    
+    window.approveOrderOnly = async function(orderId) {
+        if (!confirm('Approve this order without sending a message?')) return;
+        try {
+            await db.collection('checkouts').doc(orderId).update({ 
+                paymentStatus: 'approved', 
+                status: 'approved',
+                adminActionDate: firebase.firestore.FieldValue.serverTimestamp(),
+                approvedWithoutMessage: true
+            });
+            const idx = allTicketOrders.findIndex(o => o.id === orderId);
+            if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
+            applyTicketFilters();
+            updateTicketStats();
+            showToast('Order approved successfully!');
+        } catch (error) {
+            showToast('Error approving order: ' + error.message, true);
+        }
+    };
+    
+    function updateTicketStats() {
+        document.getElementById('totalOrders').textContent = allTicketOrders.length;
+        document.getElementById('pendingOrders').textContent = allTicketOrders.filter(t => t.paymentStatus === 'pending').length;
+        document.getElementById('approvedOrders').textContent = allTicketOrders.filter(t => t.paymentStatus === 'approved').length;
+        document.getElementById('rejectedOrders').textContent = allTicketOrders.filter(t => t.paymentStatus === 'rejected').length;
+    }
+    
+    window.viewTicketDetails = async function(orderId) {
+        const order = allTicketOrders.find(o => o.id === orderId);
+        if (!order) return;
+        
+        let attendeesHtml = '';
+        if (order.attendees && order.attendees.length) {
+            order.attendees.forEach((a, idx) => {
+                attendeesHtml += `<div class="attendee-item"><strong>Attendee ${idx + 1}</strong><br>Name: ${a.firstname || ''} ${a.lastname || ''}<br>Phone: ${a.phone || 'N/A'}<br>Company: ${a.company || 'N/A'}<br>Ticket: ${a.ticketTier || 'N/A'}</div>`;
+            });
+        }
+        
+        document.getElementById('modalTitle').textContent = 'Ticket Order Details';
+        document.getElementById('modalBody').innerHTML = `
+            <div class="detail-section"><h3>Customer Information</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">Order ID:</span><span class="detail-value">${order.id}</span></div>
+                <div class="detail-item"><span class="detail-label">Name:</span><span class="detail-value">${order.customer?.fullName || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${order.customer?.email || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${order.customer?.phone || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Total:</span><span class="detail-value">₦${(order.totalAmount || 0).toLocaleString()}</span></div>
+            </div></div>
+            <div class="detail-section"><h3>Attendees</h3>${attendeesHtml || '<p>No attendee details</p>'}</div>
+            ${order.receiptUrl ? `<div class="detail-section"><h3>Receipt</h3><img src="/assets/${order.receiptUrl}" class="receipt-img"></div>` : ''}
+            <div class="modal-actions">
+                ${order.paymentStatus !== 'approved' ? `<button class="modal-action-btn approve" onclick="approveOrderOnlyAndClose('${order.id}')">✓ Approve (No Message)</button>` : ''}
+                ${order.paymentStatus !== 'approved' ? `<button class="modal-action-btn approve" onclick="openApproveModalAndClose('${order.id}')">✓ Approve & Send</button>` : ''}
+                ${order.paymentStatus !== 'rejected' ? `<button class="modal-action-btn reject" onclick="rejectOrderAndClose('${order.id}')">✗ Reject Order</button>` : ''}
+            </div>
+        `;
+        document.getElementById('detailModal').classList.add('active');
+    };
+    
+    window.approveOrderOnlyAndClose = async function(orderId) {
+        await approveOrderOnly(orderId);
+        document.getElementById('detailModal').classList.remove('active');
+    };
+    
+    window.openApproveModal = async function(orderId) {
+        const order = allTicketOrders.find(o => o.id === orderId);
+        if (!order) return;
+        currentOrderForApproval = order;
+        
+        updateModalForMethod(currentDeliveryMethod);
+        
+        if (currentDeliveryMethod === "email") {
+            document.getElementById('recipientValue').value = order.customer?.email || '';
+            document.getElementById('recipientLabel').innerHTML = 'To <span style="color:var(--orange);">*</span>';
+        } else {
+            const whatsappNumber = formatPhoneForWhatsApp(order.customer?.phone || '');
+            document.getElementById('recipientValue').value = order.customer?.phone || 'Not available';
+            document.getElementById('whatsappNumberDisplay').innerHTML = whatsappNumber || order.customer?.phone || 'Not available';
+            document.getElementById('recipientLabel').innerHTML = 'Phone Number <span style="color:var(--orange);">*</span>';
+        }
+        
+        document.getElementById('emailSubject').value = `Your Under45CEOs Summit Tickets - ${order.id}`;
+        document.getElementById('emailMessage').value = generateEmailMessage(order);
+        
+        let ticketSummary = '';
+        if (order.tickets) {
+            const tickets = [];
+            if (order.tickets.regular) tickets.push(`${order.tickets.regular} Regular (₦12,500 each)`);
+            if (order.tickets.standard) tickets.push(`${order.tickets.standard} Standard (₦20,000 each)`);
+            if (order.tickets.premium) tickets.push(`${order.tickets.premium} Premium (₦150,000 each)`);
+            ticketSummary = tickets.join(', ');
+        }
+        
+        document.getElementById('orderSummaryBox').innerHTML = `
+            <h4><i class="fas fa-receipt"></i> Order Summary</h4>
+            <p><strong>Order ID:</strong> ${order.id}</p>
+            <p><strong>Tickets:</strong> ${ticketSummary || 'N/A'}</p>
+            <p><strong>Total Amount:</strong> ₦${(order.totalAmount || 0).toLocaleString()}</p>
+            <p><strong>Customer:</strong> ${order.customer?.fullName || 'N/A'}</p>
+        `;
+        
+        document.getElementById('ticketLinkBox').innerHTML = `
+            <i class="fas fa-link" style="color: var(--orange); margin-bottom: 8px; display: inline-block;"></i>
+            <p style="margin-bottom: 8px;"><strong>Ticket Access Link:</strong></p>
+            <a href="${TICKET_PAGE_URL}" target="_blank">${TICKET_PAGE_URL}</a>
+            <p style="margin-top: 8px; font-size: 0.75rem; color: rgba(255,255,255,0.6);">
+                Customer will need Order ID: <strong style="color: var(--orange);">${order.id}</strong>
+            </p>
+        `;
+        
+        document.getElementById('emailModal').classList.add('active');
+    };
+    
+    function updateModalForMethod(method) {
+        if (method === "email") {
+            document.getElementById('modalMethodTitle').innerHTML = '<i class="fas fa-envelope"></i> Approve & Send Tickets via Email';
+            document.getElementById('subjectField').style.display = 'block';
+            document.getElementById('whatsappNumberBox').style.display = 'none';
+            document.getElementById('sendEmailBtn').style.display = 'flex';
+            document.getElementById('sendWhatsAppBtn').style.display = 'none';
+            document.getElementById('methodEmailBtn').classList.add('active');
+            document.getElementById('methodWhatsAppBtn').classList.remove('active');
+        } else {
+            document.getElementById('modalMethodTitle').innerHTML = '<i class="fab fa-whatsapp"></i> Approve & Send Tickets via WhatsApp';
+            document.getElementById('subjectField').style.display = 'none';
+            document.getElementById('whatsappNumberBox').style.display = 'block';
+            document.getElementById('sendEmailBtn').style.display = 'none';
+            document.getElementById('sendWhatsAppBtn').style.display = 'flex';
+            document.getElementById('methodWhatsAppBtn').classList.add('active');
+            document.getElementById('methodEmailBtn').classList.remove('active');
+            document.getElementById('emailMessage').value = generateWhatsAppMessage(currentOrderForApproval);
+        }
+    }
+    
+    function updateModalForMethodPreserveMessage(method) {
+        if (method === "email") {
+            document.getElementById('modalMethodTitle').innerHTML = '<i class="fas fa-envelope"></i> Approve & Send Tickets via Email';
+            document.getElementById('subjectField').style.display = 'block';
+            document.getElementById('whatsappNumberBox').style.display = 'none';
+            document.getElementById('sendEmailBtn').style.display = 'flex';
+            document.getElementById('sendWhatsAppBtn').style.display = 'none';
+            document.getElementById('methodEmailBtn').classList.add('active');
+            document.getElementById('methodWhatsAppBtn').classList.remove('active');
+            document.getElementById('emailMessage').value = generateEmailMessage(currentOrderForApproval);
+            const recipientField = document.getElementById('recipientValue');
+            if (recipientField && currentOrderForApproval) {
+                recipientField.value = currentOrderForApproval.customer?.email || '';
+            }
+            document.getElementById('recipientLabel').innerHTML = 'To <span style="color:var(--orange);">*</span>';
+        } else {
+            document.getElementById('modalMethodTitle').innerHTML = '<i class="fab fa-whatsapp"></i> Approve & Send Tickets via WhatsApp';
+            document.getElementById('subjectField').style.display = 'none';
+            document.getElementById('whatsappNumberBox').style.display = 'block';
+            document.getElementById('sendEmailBtn').style.display = 'none';
+            document.getElementById('sendWhatsAppBtn').style.display = 'flex';
+            document.getElementById('methodWhatsAppBtn').classList.add('active');
+            document.getElementById('methodEmailBtn').classList.remove('active');
+            document.getElementById('emailMessage').value = generateWhatsAppMessage(currentOrderForApproval);
+            const recipientField = document.getElementById('recipientValue');
+            if (recipientField && currentOrderForApproval) {
+                recipientField.value = currentOrderForApproval.customer?.phone || 'Not available';
+                document.getElementById('whatsappNumberDisplay').innerHTML = formatPhoneForWhatsApp(currentOrderForApproval.customer?.phone) || currentOrderForApproval.customer?.phone || 'Not available';
+            }
+            document.getElementById('recipientLabel').innerHTML = 'Phone Number <span style="color:var(--orange);">*</span>';
+        }
+    }
+    
+    window.openApproveModalAndClose = async function(orderId) {
+        document.getElementById('detailModal').classList.remove('active');
+        await openApproveModal(orderId);
+    };
+    
+    window.rejectOrder = async function(orderId) {
+        if (!confirm('Are you sure you want to REJECT this order?')) return;
+        try {
+            await db.collection('checkouts').doc(orderId).update({ paymentStatus: 'rejected', status: 'rejected', adminActionDate: firebase.firestore.FieldValue.serverTimestamp() });
+            const idx = allTicketOrders.findIndex(o => o.id === orderId);
+            if (idx !== -1) allTicketOrders[idx].paymentStatus = 'rejected';
+            applyTicketFilters();
+            updateTicketStats();
+            showToast('Order rejected');
+        } catch (error) {
+            showToast('Error rejecting order: ' + error.message, true);
+        }
+    };
+    
+    window.rejectOrderAndClose = async function(orderId) {
+        await rejectOrder(orderId);
+        document.getElementById('detailModal').classList.remove('active');
+    };
+    
+    async function sendApprovalEmail() {
+        if (!currentOrderForApproval) return;
+        
+        const to = document.getElementById('recipientValue').value;
+        const subject = document.getElementById('emailSubject').value;
+        const message = document.getElementById('emailMessage').value;
+        
+        const fullMessage = `${message}\n\n---\nTicket Access: ${TICKET_PAGE_URL}\nOrder ID: ${currentOrderForApproval.id}`;
+        
+        window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullMessage)}`;
+        
+        await db.collection('checkouts').doc(currentOrderForApproval.id).update({
+            paymentStatus: 'approved',
+            status: 'approved',
+            ticketsSentAt: firebase.firestore.FieldValue.serverTimestamp(),
+            ticketsSentTo: to,
+            sentVia: 'email'
+        });
+        
+        const idx = allTicketOrders.findIndex(o => o.id === currentOrderForApproval.id);
+        if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
+        applyTicketFilters();
+        updateTicketStats();
+        
+        showToast(`Order approved! Email client opened for ${to}`);
+        document.getElementById('emailModal').classList.remove('active');
+        currentOrderForApproval = null;
+    }
+    
+    async function sendWhatsAppMessage() {
+        if (!currentOrderForApproval) return;
+        
+        const phoneNumber = currentOrderForApproval.customer?.phone || '';
+        const formattedPhone = formatPhoneForWhatsApp(phoneNumber);
+        const message = document.getElementById('emailMessage').value;
+        
+        const fullMessage = `${message}\n\n---\nTicket Access: ${TICKET_PAGE_URL}\nOrder ID: ${currentOrderForApproval.id}`;
+        
+        const encodedMessage = encodeURIComponent(fullMessage);
+        const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodedMessage}`;
+        
+        window.open(whatsappUrl, '_blank');
+        
+        await db.collection('checkouts').doc(currentOrderForApproval.id).update({
+            paymentStatus: 'approved',
+            status: 'approved',
+            ticketsSentAt: firebase.firestore.FieldValue.serverTimestamp(),
+            ticketsSentTo: formattedPhone,
+            sentVia: 'whatsapp'
+        });
+        
+        const idx = allTicketOrders.findIndex(o => o.id === currentOrderForApproval.id);
+        if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
+        applyTicketFilters();
+        updateTicketStats();
+        
+        showToast(`Order approved! WhatsApp chat opened for ${formattedPhone}`);
+        document.getElementById('emailModal').classList.remove('active');
+        currentOrderForApproval = null;
+    }
+
+    // ==================== SPONSORSHIPS ====================
+    async function loadSponsorships() {
+        try {
+            const snapshot = await db.collection('sponsorship').orderBy('timestamp', 'desc').get();
+            allSponsorships = [];
+            snapshot.forEach(doc => { allSponsorships.push({ id: doc.id, ...doc.data(), status: doc.data().status || 'pending' }); });
+            applySponsorFilters();
+            updateSponsorStats();
+        } catch (error) { console.error(error); showToast("Error loading sponsorships: " + error.message, true); }
+    }
+    
+    function applySponsorFilters() {
+        let filtered = [...allSponsorships];
+        if (sponsorSearch.trim()) {
+            const s = sponsorSearch.toLowerCase();
+            filtered = filtered.filter(sp => (sp.companyName || '').toLowerCase().includes(s) || (sp.email || '').toLowerCase().includes(s));
+        }
+        filteredSponsorships = filtered;
+        renderSponsorsTable();
+    }
+    
+    function renderSponsorsTable() {
+        const tbody = document.getElementById('sponsorsTableBody');
+        if (filteredSponsorships.length === 0) { tbody.innerHTML = '<tr><td colspan="8"><div class="no-data">No sponsorship requests</div></td></tr>'; return; }
+        tbody.innerHTML = filteredSponsorships.map(sp => `
+            <tr>
+                <td>${formatDateTime(sp.timestamp)}</td>
+                <td>${sp.companyName || 'N/A'}</td>
+                <td>${sp.fullName || 'N/A'}</td>
+                <td>${sp.email || 'N/A'}</td>
+                <td>${sp.phone || 'N/A'}</td>
+                <td><span class="ticket-tag">${sp.selectedTier || 'N/A'}</span></td>
+                <td><span class="status-badge ${sp.status === 'read' ? 'read' : 'unread'}">${sp.status === 'read' ? 'REVIEWED' : 'PENDING'}</span></td>
+                <td>
+                    <div class="action-dropdown">
+                        <button class="action-dropdown-btn" onclick="toggleSponsorDropdown(event, '${sp.id}')">
+                            <i class="fas fa-ellipsis-v"></i> Actions
+                        </button>
+                        <div class="action-dropdown-menu" id="dropdown-sponsor-${sp.id}">
+                            <button class="action-dropdown-item view" onclick="viewSponsorship('${sp.id}')"><i class="fas fa-eye"></i> View <span class="item-label">Details</span></button>
+                        </div>
+                    </div>
+                </td>
+            </tr>`).join('');
+    }
+    
+    function toggleSponsorDropdown(event, id) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-sponsor-${id}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-sponsor-${id}`);
+        menu.classList.toggle('show');
+    }
+    
+    function updateSponsorStats() {
+        document.getElementById('totalSponsorships').textContent = allSponsorships.length;
+        document.getElementById('pendingSponsorships').textContent = allSponsorships.filter(s => s.status !== 'read').length;
+        document.getElementById('reviewedSponsorships').textContent = allSponsorships.filter(s => s.status === 'read').length;
+    }
+    
+    window.viewSponsorship = async function(id) {
+        const sp = allSponsorships.find(s => s.id === id);
+        if (!sp) return;
+        document.getElementById('modalBody').innerHTML = `<div class="detail-section"><h3>${sp.companyName}</h3><div class="detail-grid"><div class="detail-item"><span class="detail-label">Tier:</span><span class="detail-value">${sp.selectedTier}</span></div><div class="detail-item"><span class="detail-label">Contact:</span><span class="detail-value">${sp.fullName} (${sp.jobTitle})</span></div><div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${sp.email}</span></div><div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${sp.phone}</span></div></div></div><div class="detail-section"><p>${sp.comments || 'No comments'}</p></div>`;
+        document.getElementById('detailModal').classList.add('active');
+        if (sp.status !== 'read') {
+            await db.collection('sponsorship').doc(id).update({ status: 'read' });
+            sp.status = 'read';
+            renderSponsorsTable();
+            updateSponsorStats();
+        }
+    };
+
+    // ==================== MESSAGES ====================
+    async function loadMessages() {
+        try {
+            const snapshot = await db.collection('contact_messages').orderBy('createdAt', 'desc').get();
+            allMessages = [];
+            snapshot.forEach(doc => { allMessages.push({ id: doc.id, ...doc.data(), status: doc.data().status || 'unread' }); });
+            applyMessageFilters();
+            updateMessageStats();
+        } catch (error) { console.error(error); showToast("Error loading messages: " + error.message, true); }
+    }
+    
+    function applyMessageFilters() {
+        let filtered = [...allMessages];
+        if (messageSearch.trim()) {
+            const s = messageSearch.toLowerCase();
+            filtered = filtered.filter(m => (m.name || '').toLowerCase().includes(s) || (m.email || '').toLowerCase().includes(s));
+        }
+        filteredMessages = filtered;
+        renderMessagesTable();
+    }
+    
+    function renderMessagesTable() {
+        const tbody = document.getElementById('messagesTableBody');
+        if (filteredMessages.length === 0) { tbody.innerHTML = '<tr><td colspan="7"><div class="no-data">No messages</div></td></tr>'; return; }
+        tbody.innerHTML = filteredMessages.map(msg => `
+            <tr>
+                <td>${formatDateTime(msg.createdAt)}</td>
+                <td>${msg.name || 'N/A'}</td>
+                <td>${msg.email || 'N/A'}</td>
+                <td>${msg.phone || 'N/A'}</td>
+                <td>${msg.subject || 'N/A'}</td>
+                <td><span class="status-badge ${msg.status === 'read' ? 'read' : 'unread'}">${msg.status === 'read' ? 'READ' : 'UNREAD'}</span></td>
+                <td>
+                    <div class="action-dropdown">
+                        <button class="action-dropdown-btn" onclick="toggleMessageDropdown(event, '${msg.id}')">
+                            <i class="fas fa-ellipsis-v"></i> Actions
+                        </button>
+                        <div class="action-dropdown-menu" id="dropdown-message-${msg.id}">
+                            <button class="action-dropdown-item view" onclick="viewMessage('${msg.id}')"><i class="fas fa-eye"></i> View <span class="item-label">Details</span></button>
+                            <button class="action-dropdown-item" onclick="window.location.href='mailto:${msg.email}'"><i class="fas fa-reply"></i> Reply <span class="item-label">Email</span></button>
+                            <button class="action-dropdown-item" onclick="window.open('https://wa.me/${formatPhoneForWhatsApp(msg.phone)}','_blank')"><i class="fab fa-whatsapp" style="color:#25D366;"></i> WhatsApp <span class="item-label">Chat</span></button>
+                        </div>
+                    </div>
+                </td>
+            </tr>`).join('');
+    }
+    
+    function toggleMessageDropdown(event, id) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-message-${id}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-message-${id}`);
+        menu.classList.toggle('show');
+    }
+    
+    function updateMessageStats() {
+        document.getElementById('totalMessages').textContent = allMessages.length;
+        document.getElementById('unreadMessages').textContent = allMessages.filter(m => m.status !== 'read').length;
+    }
+    
+    window.viewMessage = async function(id) {
+        const msg = allMessages.find(m => m.id === id);
+        if (!msg) return;
+        document.getElementById('modalBody').innerHTML = `<div class="detail-section"><h3>From: ${msg.name}</h3><div class="detail-grid"><div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${msg.email}</span></div><div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${msg.phone || 'N/A'}</span></div></div></div><div class="detail-section"><strong>Subject:</strong> ${msg.subject}<br><br><strong>Message:</strong><p>${msg.message || ''}</p></div>`;
+        document.getElementById('detailModal').classList.add('active');
+        if (msg.status !== 'read') {
+            await db.collection('contact_messages').doc(id).update({ status: 'read' });
+            msg.status = 'read';
+            renderMessagesTable();
+            updateMessageStats();
+        }
+    };
+
+    // ==================== AWARD NOMINATIONS ====================
+    async function loadNominations() {
+        try {
+            const snapshot = await db.collection('award-nominations').orderBy('timestamp', 'desc').get();
+            allNominations = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                allNominations.push({ id: doc.id, ...data, status: data.status || 'pending' });
+            });
+            applyNominationFilters();
+            updateNominationStats();
+        } catch (error) {
+            console.error("Error loading nominations:", error);
+            showToast("Error loading nominations: " + error.message, true);
+            document.getElementById('nominationsTableBody').innerHTML = `<tr><td colspan="9"><div class="no-data">Error loading data.</div></td></tr>`;
+        }
+    }
+    
+    function applyNominationFilters() {
+        let filtered = [...allNominations];
+        if (nominationFilter !== 'all') filtered = filtered.filter(n => n.status === nominationFilter);
+        if (nominationSearch.trim()) {
+            const s = nominationSearch.toLowerCase();
+            filtered = filtered.filter(n => 
+                (n.fullName || '').toLowerCase().includes(s) || 
+                (n.company || '').toLowerCase().includes(s) ||
+                (n.awardCategory || '').toLowerCase().includes(s) ||
+                (n.email || '').toLowerCase().includes(s)
+            );
+        }
+        filteredNominations = filtered;
+        currentNominationPage = 1;
+        renderNominationsTable();
+    }
+    
+    function renderNominationsTable() {
+        const start = (currentNominationPage - 1) * itemsPerPage;
+        const pageItems = filteredNominations.slice(start, start + itemsPerPage);
+        const tbody = document.getElementById('nominationsTableBody');
+        
+        if (pageItems.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="9"><div class="no-data">No nominations found</div></td></tr>';
+            document.getElementById('nominationsPagination').innerHTML = '';
+            return;
+        }
+        
+        tbody.innerHTML = pageItems.map(nom => {
+            const statusClass = nom.status === 'reviewed' ? 'reviewed' : 'pending';
+            const statusText = nom.status === 'reviewed' ? 'REVIEWED' : 'PENDING';
+            const statusIcon = nom.status === 'reviewed' ? 'fa-check-circle' : 'fa-hourglass-half';
+            
+            return `
+                <tr>
+                    <td>${formatDateTime(nom.timestamp)}</td>
+                    <td>${nom.fullName || 'N/A'}</td>
+                    <td>${nom.company || 'N/A'}</td>
+                    <td><span class="ticket-tag">${nom.awardCategory || 'N/A'}</span></td>
+                    <td>${nom.email || 'N/A'}</td>
+                    <td>${nom.phone || 'N/A'}</td>
+                    <td>${nom.country || 'N/A'}</td>
+                    <td><span class="status-badge ${statusClass}"><i class="fas ${statusIcon}"></i> ${statusText}</span></td>
+                    <td>
+                        <div class="action-dropdown">
+                            <button class="action-dropdown-btn" onclick="toggleNominationDropdown(event, '${nom.id}')">
+                                <i class="fas fa-ellipsis-v"></i> Actions
+                            </button>
+                            <div class="action-dropdown-menu" id="dropdown-nom-${nom.id}">
+                                <button class="action-dropdown-item view" onclick="viewNomination('${nom.id}')"><i class="fas fa-eye"></i> View <span class="item-label">Details</span></button>
+                                ${nom.status !== 'reviewed' ? `<button class="action-dropdown-item approve" onclick="reviewNomination('${nom.id}')"><i class="fas fa-check-circle"></i> Mark Reviewed <span class="item-label">Done</span></button>` : ''}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        
+        renderPagination('nominationsPagination', filteredNominations.length, currentNominationPage, (page) => { currentNominationPage = page; renderNominationsTable(); });
+    }
+    
+    function toggleNominationDropdown(event, id) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-nom-${id}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-nom-${id}`);
+        menu.classList.toggle('show');
+    }
+    
+    function updateNominationStats() {
+        document.getElementById('totalNominations').textContent = allNominations.length;
+        document.getElementById('pendingNominations').textContent = allNominations.filter(n => n.status !== 'reviewed').length;
+        document.getElementById('reviewedNominations').textContent = allNominations.filter(n => n.status === 'reviewed').length;
+        
+        const categories = new Set();
+        allNominations.forEach(n => { if (n.awardCategory) categories.add(n.awardCategory); });
+        document.getElementById('categoryCount').textContent = categories.size;
+    }
+    
+    window.reviewNomination = async function(id) {
+        try {
+            await db.collection('award-nominations').doc(id).update({ 
+                status: 'reviewed',
+                reviewedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            const idx = allNominations.findIndex(n => n.id === id);
+            if (idx !== -1) allNominations[idx].status = 'reviewed';
+            applyNominationFilters();
+            updateNominationStats();
+            showToast('Nomination marked as reviewed!');
+        } catch (error) {
+            showToast('Error updating nomination: ' + error.message, true);
+        }
+    };
+    
+    window.viewNomination = async function(id) {
+        const nom = allNominations.find(n => n.id === id);
+        if (!nom) return;
+        
+        document.getElementById('modalTitle').textContent = 'Award Nomination Details';
+        document.getElementById('modalBody').innerHTML = `
+            <div class="detail-section"><h3>Personal Information</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">Full Name:</span><span class="detail-value">${nom.fullName || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Gender:</span><span class="detail-value">${nom.gender || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Age Range:</span><span class="detail-value">${nom.ageRange || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Country:</span><span class="detail-value">${nom.country || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">State/Province:</span><span class="detail-value">${nom.state || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">City:</span><span class="detail-value">${nom.city || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Email:</span><span class="detail-value">${nom.email || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Phone:</span><span class="detail-value">${nom.phone || 'N/A'}</span></div>
+            </div></div>
+            <div class="detail-section"><h3>Professional Information</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">Company:</span><span class="detail-value">${nom.company || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Job Title:</span><span class="detail-value">${nom.jobTitle || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Website:</span><span class="detail-value">${nom.website ? `<a href="${nom.website}" target="_blank">${nom.website}</a>` : 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Social Handle:</span><span class="detail-value">${nom.socialHandle || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Employees:</span><span class="detail-value">${nom.numEmployees || 'N/A'}</span></div>
+            </div></div>
+            <div class="detail-section"><h3>Award Details</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">Category:</span><span class="detail-value"><strong>${nom.awardCategory || 'N/A'}</strong></span></div>
+                <div class="detail-item"><span class="detail-label">Status:</span><span class="detail-value">${nom.status === 'reviewed' ? '✅ Reviewed' : '⏳ Pending'}</span></div>
+            </div></div>
+            <div class="detail-section"><h3>About the Nominee</h3>
+                <p><strong>About:</strong> ${nom.aboutNominee || 'N/A'}</p>
+                <p><strong>Inspiration:</strong> ${nom.inspiration || 'N/A'}</p>
+                <p><strong>Problem Solving:</strong> ${nom.problemSolving || 'N/A'}</p>
+                <p><strong>Unique Innovation:</strong> ${nom.uniqueInnovative || 'N/A'}</p>
+            </div>
+            <div class="detail-section"><h3>Impact</h3>
+                <p><strong>Measurable Impact:</strong> ${nom.measurableImpact || 'N/A'}</p>
+                <p><strong>Biggest Achievement:</strong> ${nom.biggestAchievement || 'N/A'}</p>
+                <p><strong>Social/Economic Contribution:</strong> ${nom.socialEconomic || 'N/A'}</p>
+            </div>
+            <div class="detail-section"><h3>Leadership</h3>
+                <p><strong>Leadership Style:</strong> ${nom.leadershipStyle || 'N/A'}</p>
+                <p><strong>Inspire/Mentor:</strong> ${nom.inspireMentor || 'N/A'}</p>
+                <p><strong>Challenge Overcome:</strong> ${nom.challengeOvercome || 'N/A'}</p>
+            </div>
+            <div class="detail-section"><h3>Declaration</h3>
+                <p>✅ Info accurate: ${nom.declaration1 ? 'Yes' : 'No'}</p>
+                <p>✅ Verify info: ${nom.declaration2 ? 'Yes' : 'No'}</p>
+                <p>✅ Publicity consent: ${nom.declaration3 ? 'Yes' : 'No'}</p>
+                <p><strong>Signature:</strong> ${nom.signature || 'N/A'}</p>
+                <p><strong>Date:</strong> ${nom.declDate || 'N/A'}</p>
+            </div>
+            ${nom.photoUrl ? `<div class="detail-section"><h3>Photo</h3><img src="/assets/${nom.photoUrl}" style="max-width:200px;border-radius:12px;"></div>` : ''}
+            ${nom.logoUrl ? `<div class="detail-section"><h3>Company Logo</h3><img src="/assets/${nom.logoUrl}" style="max-width:150px;border-radius:8px;"></div>` : ''}
+            ${nom.status !== 'reviewed' ? `<div class="modal-actions"><button class="modal-action-btn approve" onclick="reviewNominationAndClose('${nom.id}')">✓ Mark as Reviewed</button></div>` : ''}
+        `;
+        document.getElementById('detailModal').classList.add('active');
+    };
+    
+    window.reviewNominationAndClose = async function(id) {
+        await reviewNomination(id);
+        document.getElementById('detailModal').classList.remove('active');
+    };
+
+    // ==================== I AM ATTENDING ====================
+    async function loadAttendees() {
+        try {
+            const snapshot = await db.collection('i_will_attend').orderBy('createdAt', 'desc').get();
+            allAttendees = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                allAttendees.push({ id: doc.id, ...data });
+            });
+            applyAttendeeFilters();
+            updateAttendeeStats();
+        } catch (error) {
+            console.error("Error loading attendees:", error);
+            showToast("Error loading attendees: " + error.message, true);
+            document.getElementById('attendeesTableBody').innerHTML = `<tr><td colspan="8"><div class="no-data">Error loading data.</div></td></tr>`;
+        }
+    }
+    
+    function applyAttendeeFilters() {
+        let filtered = [...allAttendees];
+        if (attendeeFilter !== 'all') {
+            if (attendeeFilter === 'executive') {
+                filtered = filtered.filter(a => a.ticketType === 'Executive & Premium');
+            } else if (attendeeFilter === 'essential') {
+                filtered = filtered.filter(a => a.ticketType === 'Essential & Growth' || !a.ticketType);
+            }
+        }
+        if (attendeeSearch.trim()) {
+            const s = attendeeSearch.toLowerCase();
+            filtered = filtered.filter(a => 
+                (a.firstName || '').toLowerCase().includes(s) || 
+                (a.lastName || '').toLowerCase().includes(s) ||
+                ((a.firstName || '') + ' ' + (a.lastName || '')).toLowerCase().includes(s)
+            );
+        }
+        filteredAttendees = filtered;
+        currentAttendeePage = 1;
+        renderAttendeesTable();
+    }
+    
+    function renderAttendeesTable() {
+        const start = (currentAttendeePage - 1) * itemsPerPage;
+        const pageItems = filteredAttendees.slice(start, start + itemsPerPage);
+        const tbody = document.getElementById('attendeesTableBody');
+        
+        if (pageItems.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8"><div class="no-data">No attendees found</div></td></tr>';
+            document.getElementById('attendeesPagination').innerHTML = '';
+            return;
+        }
+        
+        tbody.innerHTML = pageItems.map(attendee => {
+            const ticketType = attendee.ticketType || 'Essential & Growth';
+            const isExecutive = ticketType === 'Executive & Premium';
+            const typeClass = isExecutive ? 'executive' : 'essential';
+            
+            return `
+                <tr>
+                    <td>${formatDateTime(attendee.createdAt)}</td>
+                    <td>${attendee.photoUrl ? `<img src="/assets/${attendee.photoUrl}" class="photo-thumb" alt="Photo">` : '<span style="color:rgba(255,255,255,0.3);">No photo</span>'}</td>
+                    <td>${attendee.firstName || 'N/A'}</td>
+                    <td>${attendee.lastName || 'N/A'}</td>
+                    <td>${attendee.age || 'N/A'}</td>
+                    <td><span class="ticket-tag ${typeClass}">${ticketType}</span></td>
+                    <td>${attendee.source || 'N/A'}</td>
+                    <td>
+                        <div class="action-dropdown">
+                            <button class="action-dropdown-btn" onclick="toggleAttendeeDropdown(event, '${attendee.id}')">
+                                <i class="fas fa-ellipsis-v"></i> Actions
+                            </button>
+                            <div class="action-dropdown-menu" id="dropdown-attendee-${attendee.id}">
+                                <button class="action-dropdown-item view" onclick="viewAttendee('${attendee.id}')"><i class="fas fa-eye"></i> View <span class="item-label">Details</span></button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        
+        renderPagination('attendeesPagination', filteredAttendees.length, currentAttendeePage, (page) => { currentAttendeePage = page; renderAttendeesTable(); });
+    }
+    
+    function toggleAttendeeDropdown(event, id) {
+        event.stopPropagation();
+        document.querySelectorAll('.action-dropdown-menu').forEach(menu => {
+            if (menu.id !== `dropdown-attendee-${id}`) {
+                menu.classList.remove('show');
+            }
+        });
+        const menu = document.getElementById(`dropdown-attendee-${id}`);
+        menu.classList.toggle('show');
+    }
+    
+    function updateAttendeeStats() {
+        document.getElementById('totalAttendees').textContent = allAttendees.length;
+        const executiveCount = allAttendees.filter(a => a.ticketType === 'Executive & Premium').length;
+        const essentialCount = allAttendees.filter(a => a.ticketType !== 'Executive & Premium').length;
+        document.getElementById('executiveAttendees').textContent = executiveCount;
+        document.getElementById('essentialAttendees').textContent = essentialCount || allAttendees.length - executiveCount;
+        
+        // Today's registrations
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayCount = allAttendees.filter(a => {
+            if (!a.createdAt) return false;
+            const date = a.createdAt.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+            date.setHours(0, 0, 0, 0);
+            return date.getTime() === today.getTime();
+        }).length;
+        document.getElementById('todayAttendees').textContent = todayCount;
+    }
+    
+    window.viewAttendee = async function(id) {
+        const attendee = allAttendees.find(a => a.id === id);
+        if (!attendee) return;
+        
+        const ticketType = attendee.ticketType || 'Essential & Growth';
+        const isExecutive = ticketType === 'Executive & Premium';
+        
+        document.getElementById('modalTitle').textContent = 'Attendee Details';
+        document.getElementById('modalBody').innerHTML = `
+            ${attendee.photoUrl ? `<img src="/assets/${attendee.photoUrl}" class="photo-thumb-lg" alt="Photo">` : ''}
+            <div class="detail-section"><h3>Personal Information</h3><div class="detail-grid">
+                <div class="detail-item"><span class="detail-label">First Name:</span><span class="detail-value">${attendee.firstName || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Last Name:</span><span class="detail-value">${attendee.lastName || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Age Group:</span><span class="detail-value">${attendee.age || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Ticket Type:</span><span class="detail-value"><span class="ticket-tag ${isExecutive ? 'executive' : 'essential'}">${ticketType}</span></span></div>
+                <div class="detail-item"><span class="detail-label">How Heard:</span><span class="detail-value">${attendee.source || 'N/A'}</span></div>
+                <div class="detail-item"><span class="detail-label">Registered:</span><span class="detail-value">${formatDateTime(attendee.createdAt)}</span></div>
+            </div></div>
+        `;
+        document.getElementById('detailModal').classList.add('active');
+    };
+
+    // ==================== PAGINATION ====================
+    function renderPagination(containerId, total, currentPage, onPageChange) {
+        const totalPages = Math.ceil(total / itemsPerPage);
+        const container = document.getElementById(containerId);
+        if (totalPages <= 1) { container.innerHTML = ''; return; }
+        let html = '';
+        for (let i = 1; i <= Math.min(totalPages, 10); i++) { html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>`; }
+        container.innerHTML = html;
+        container.querySelectorAll('.page-btn').forEach(btn => btn.addEventListener('click', () => { onPageChange(parseInt(btn.dataset.page)); }));
+    }
+    
+    // ==================== EVENT LISTENERS ====================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`${btn.dataset.tab}Tab`).classList.add('active');
+        });
+    });
+    
+    // Ticket listeners
+    document.getElementById('ticketSearch').addEventListener('input', (e) => { ticketSearch = e.target.value; applyTicketFilters(); });
+    document.querySelectorAll('#ticketsTab .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#ticketsTab .filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            ticketFilter = btn.dataset.status;
+            applyTicketFilters();
+        });
+    });
+    document.getElementById('refreshTickets').addEventListener('click', loadTickets);
+    
+    // Sponsor listeners
+    document.getElementById('sponsorSearch').addEventListener('input', (e) => { sponsorSearch = e.target.value; applySponsorFilters(); });
+    document.getElementById('refreshSponsors').addEventListener('click', loadSponsorships);
+    
+    // Message listeners
+    document.getElementById('messageSearch').addEventListener('input', (e) => { messageSearch = e.target.value; applyMessageFilters(); });
+    document.getElementById('refreshMessages').addEventListener('click', loadMessages);
+    
+    // Nomination listeners
+    document.getElementById('nominationSearch').addEventListener('input', (e) => { nominationSearch = e.target.value; applyNominationFilters(); });
+    document.querySelectorAll('#nominationsTab .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#nominationsTab .filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            nominationFilter = btn.dataset.status;
+            applyNominationFilters();
+        });
+    });
+    document.getElementById('refreshNominations').addEventListener('click', loadNominations);
+    
+    // Attendee listeners
+    document.getElementById('attendeeSearch').addEventListener('input', (e) => { attendeeSearch = e.target.value; applyAttendeeFilters(); });
+    document.querySelectorAll('#attendeesTab .filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('#attendeesTab .filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            attendeeFilter = btn.dataset.type;
+            applyAttendeeFilters();
+        });
+    });
+    document.getElementById('refreshAttendees').addEventListener('click', loadAttendees);
+    
+    // Modal controls
+    document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('detailModal').classList.remove('active'));
+    document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target === document.getElementById('detailModal')) document.getElementById('detailModal').classList.remove('active'); });
+    document.getElementById('closeEmailModalBtn').addEventListener('click', () => document.getElementById('emailModal').classList.remove('active'));
+    document.getElementById('cancelEmailBtn').addEventListener('click', () => document.getElementById('emailModal').classList.remove('active'));
+    document.getElementById('sendEmailBtn').addEventListener('click', sendApprovalEmail);
+    document.getElementById('sendWhatsAppBtn').addEventListener('click', sendWhatsAppMessage);
+    
+    // Delivery method toggle
+    document.getElementById('methodEmailBtn').addEventListener('click', () => {
+        currentDeliveryMethod = "email";
+        if (currentOrderForApproval) {
+            updateModalForMethodPreserveMessage("email");
+        } else {
+            updateModalForMethod("email");
+        }
+    });
+    document.getElementById('methodWhatsAppBtn').addEventListener('click', () => {
+        currentDeliveryMethod = "whatsapp";
+        if (currentOrderForApproval) {
+            updateModalForMethodPreserveMessage("whatsapp");
+        } else {
+            updateModalForMethod("whatsapp");
+        }
+    });
+    
+    // ==================== LOGIN ====================
+    const loginOverlay = document.getElementById('loginOverlay');
+    const adminContainer = document.getElementById('adminContainer');
+    let dataLoaded = false;
+    
+    function showDashboard() {
+        loginOverlay.classList.add('hidden');
+        adminContainer.style.display = 'block';
+        if (!dataLoaded) {
+            dataLoaded = true;
+            loadTickets();
+            loadSponsorships();
+            loadMessages();
+            loadNominations();
+            loadAttendees();
+        }
+    }
+    
+    function showLogin() {
+        dataLoaded = false;
+        adminContainer.style.display = 'none';
+        loginOverlay.classList.remove('hidden');
+        document.getElementById('adminEmail').value = '';
+        document.getElementById('adminPassword').value = '';
+    }
+    
+    auth.onAuthStateChanged(user => { if (user) showDashboard(); else showLogin(); });
+    
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const email = document.getElementById('adminEmail').value.trim();
+        const password = document.getElementById('adminPassword').value;
+        const btn = document.getElementById('loginBtn');
+        const err = document.getElementById('loginError');
+        
+        if (!email || !password) {
+            err.textContent = 'Please enter both email and password.';
+            err.style.display = 'block';
+            setTimeout(() => err.style.display = 'none', 3000);
+            return;
+        }
+        
+        btn.disabled = true;
+        btn.textContent = 'Logging in...';
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            showDashboard();
+        } catch (e) {
+            err.textContent = 'Incorrect email or password. Please try again.';
+            err.style.display = 'block';
+            setTimeout(() => err.style.display = 'none', 3000);
+            btn.disabled = false;
+            btn.textContent = 'Login';
+        }
+    });
+    
+    document.getElementById('adminPassword').addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
+    document.getElementById('adminEmail').addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
+    document.getElementById('logoutBtn').addEventListener('click', async () => { await auth.signOut(); showLogin(); });
+</script>
+</body>
+</html>
