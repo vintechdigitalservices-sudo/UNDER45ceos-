@@ -392,7 +392,7 @@
             <div class="sticky-banner__content">
                 <div class="sticky-banner__icon"><i class="fas fa-ticket-alt"></i></div>
                 <div class="sticky-banner__text">
-                    <span class="sticky-banner__title">🔥 DISCOUNT TICKETS END IN 8 DAYS</span>
+                    <span class="sticky-banner__title">🔥 DISCOUNT TICKETS END IN <span id="discountDaysLeft">8</span> DAYS</span>
                     <span class="sticky-banner__subtitle">Get your ticket at a discounted price</span>
                 </div>
                 <div class="sticky-banner__timer" id="countdownTimer">
@@ -536,6 +536,8 @@
                 return;
             }
             document.getElementById('timerDays').textContent = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+            const daysLeftEl = document.getElementById('discountDaysLeft');
+            if (daysLeftEl) daysLeftEl.textContent = String(Math.floor(distance / (1000 * 60 * 60 * 24)));
             document.getElementById('timerHours').textContent = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
             document.getElementById('timerMinutes').textContent = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
             document.getElementById('timerSeconds').textContent = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');

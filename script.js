@@ -88,6 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const daysLeftEl = document.getElementById('discountDaysLeft');
+    if (daysLeftEl) daysLeftEl.textContent = String(days);
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
