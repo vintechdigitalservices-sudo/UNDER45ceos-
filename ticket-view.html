@@ -7,19 +7,13 @@
     <meta name="description" content="Enter your Order ID to view, download and print your e-tickets for the Under 45 CEOs Summit. Each ticket includes a unique QR code for event check-in.">
     <meta name="author" content="UDUF Africa">
     <meta name="robots" content="noindex, nofollow">
-    <link class="icon" type="image/png" href="/assets/under45.png" />
-    <link class="apple-touch-icon" href="/assets/under45.png" />
-    <link class="shortcut icon" href="/assets/under45.png" />
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js">
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js">
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
-    </script>
+    <link class="icon" type="image/png" href="under45.png" />
+    <link class="apple-touch-icon" href="under45.png" />
+    <link class="shortcut icon" href="under45.png" />
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -354,143 +348,110 @@
             flex-direction: column;
             gap: 2rem;
             margin-bottom: 3rem;
-            max-width: 900px;
+            max-width: 750px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* Ticket Card - Template Based */
-        .ticket-card {
+        /* White Receipt Ticket UI */
+        .receipt-ticket {
+            background: #ffffff;
+            color: #1a1a1a;
+            padding: 3rem 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            font-family: var(--font-body);
             position: relative;
             width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
-            border-radius: 0px;
-            overflow: hidden;
-            box-shadow: var(--shadow-deep);
-            transition: all 0.3s ease;
-            background: transparent;
         }
-
-        .ticket-template-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 45%;
-            background: transparent;
-            display: block;
-        }
-
-        .ticket-template-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-            pointer-events: none;
-        }
-
-        .ticket-overlay-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        /* 1. ATTENDEE NAME */
-        .ticket-attendee {
-            position: absolute;
-            top: 22%;
-            left: 5%;
-            width: 60%;
-            text-align: center;
-            font-family: var(--font-serif);
-            font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+        .receipt-header-ref {
+            font-size: 0.95rem;
             font-weight: 700;
-            color: #ffffff;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        /* 2. TICKET TYPE */
-        .ticket-val-type {
-            position: absolute;
-            top: 40%;
-            left: 21.5%;
-            width: 52%;
-            text-align: left;
-            font-family: var(--font-body);
-            font-size: clamp(0.7rem, 1.2vw, 1.1rem);
-            font-weight: 700;
-            color: var(--white);
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        /* 3. TICKET PRICE */
-        .ticket-val-price {
-            position: absolute;
-            top: 50%;
-            left: 22.5%;
-            width: 52%;
-            text-align: left;
-            font-family: var(--font-body);
-            font-size: clamp(0.7rem, 1.2vw, 1.1rem);
-            font-weight: 700;
-            color: var(--gold-light);
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        /* 4. TICKET ID */
-        .ticket-val-id {
-            position: absolute;
-            top: 62%;
-            left: 20.5%;
-            width: 52%;
-            text-align: left;
-            font-family: var(--font-body);
-            font-size: clamp(0.7rem, 1.2vw, 1.1rem);
-            font-weight: 700;
-            color: var(--white);
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        /* 5. EVENT DATE */
-        .ticket-val-date {
-            position: absolute;
-            top: 73%;
-            left: 20.5%;
-            width: 52%;
-            text-align: left;
-            font-family: var(--font-body);
-            font-size: clamp(0.7rem, 1.2vw, 1.1rem);
-            font-weight: 700;
-            color: var(--white);
-            white-space: nowrap;
-            overflow: hidden;
-        }
-
-        /* QR Code */
-        .ticket-qr-container {
-            position: absolute;
-            top: 30%;
-            right: 8%;
-            width: 18%;
-            aspect-ratio: 1/1;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.4rem;
         }
-
-        .ticket-qr-container img {
-            width: 100%;
-            height: 100%;
+        .receipt-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #111111;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .receipt-box {
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 1.8rem 1.5rem;
+            margin-bottom: 2rem;
+            background: #ffffff;
+        }
+        .receipt-field {
+            margin-bottom: 1.2rem;
+        }
+        .receipt-field:last-child {
+            margin-bottom: 0;
+        }
+        .receipt-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-bottom: 0.2rem;
+            font-weight: 400;
+        }
+        .receipt-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #111111;
+            word-break: break-word;
+        }
+        .receipt-add-info {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 1.2rem;
+        }
+        .receipt-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .receipt-item-left {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .receipt-item-left img {
+            height: 38px;
+            width: auto;
             object-fit: contain;
+        }
+        .receipt-item-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #111111;
+        }
+        .receipt-qr-wrap {
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0 2rem;
+        }
+        .receipt-qr-wrap img {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+        }
+        .receipt-footer-note {
+            border-top: 1px dashed #e5e7eb;
+            padding-top: 1.2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6b7280;
+            font-weight: 500;
         }
 
         /* Error Card */
@@ -614,6 +575,12 @@
             .tickets-container {
                 max-width: 100%;
             }
+            .receipt-ticket {
+                padding: 1.5rem 1.2rem;
+            }
+            .receipt-title {
+                font-size: 1.6rem;
+            }
         }
 
         @media print {
@@ -628,23 +595,11 @@
             .order-input-section {
                 display: none !important;
             }
-            .ticket-card {
+            .receipt-ticket {
                 break-inside: avoid;
                 margin-bottom: 20px;
                 box-shadow: none;
                 border-radius: 0;
-            }
-            .ticket-attendee,
-            .ticket-val-type,
-            .ticket-val-price,
-            .ticket-val-id,
-            .ticket-val-date {
-                color: #ffffff !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .ticket-val-price {
-                color: #f0c040 !important;
             }
         }
     </style>
@@ -654,8 +609,8 @@
     <nav class="nav" id="navbar">
         <div class="nav__inner">
             <div class="nav__logos">
-                <div class="nav__logo-uduf"><img src="/assets/logo.png" alt="UDUF Africa Logo" style="height: 65px; width: auto; display: block;"></div>
-                <div class="nav__logo"><img src="/assets/under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto; display: block;"></div>
+                <div class="nav__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 65px; width: auto; display: block;"></div>
+                <div class="nav__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 60px; width: auto; display: block;"></div>
             </div>
             <ul class="nav__links">
                 <li><a href="impact.html">Impact</a></li>
@@ -698,8 +653,8 @@
             <div class="footer__inner">
                 <div class="footer__brand">
                     <div class="footer__logos-wrap">
-                        <div class="footer__logo-uduf"><img src="/assets/logo.png" alt="UDUF Africa Logo" style="height: 72px; width: auto;"></div>
-                        <div class="footer__logo"><img src="/assets/under45.png" alt="Under 45 CEOs Logo" style="height: 56px; width: auto;"></div>
+                        <div class="footer__logo-uduf"><img src="logo.png" alt="UDUF Africa Logo" style="height: 72px; width: auto;"></div>
+                        <div class="footer__logo"><img src="under45.png" alt="Under 45 CEOs Logo" style="height: 56px; width: auto;"></div>
                     </div>
                     <p>Empowering the next generation of bold, decisive, unstoppable leaders through business education and mentorship.</p>
                 </div>
@@ -723,8 +678,7 @@
         const db = firebase.firestore();
         let currentOrderRef = null;
         let orderData = null;
-        const EVENT_DATE = "October 10th 2026";
-        const EVENT_VENUE = "MAIN BOWL, ARCHBISHOP C.J. PATTERSON AUDITORIUM, ALL SAINTS CATHEDRAL, ONITSHA ANAMBRA STATE.";
+        const EVENT_VENUE = "Main Bowl, Archbishop C.J. Patterson Auditorium, All Saints Cathedral, Onitsha Anambra State.";
 
         window.addEventListener('scroll', () => document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60), { passive: true });
 
@@ -739,8 +693,8 @@
         }
 
         function getTicketDisplayName(ticketTier) {
-            const tierMap = { 'essential': 'ESSENTIAL', 'growth': 'GROWTH', 'executive': 'EXECUTIVE', 'founders inner circle': 'FOUNDERS INNER CIRCLE' };
-            return tierMap[(ticketTier || '').toLowerCase().trim()] || (ticketTier || 'REGULAR').toUpperCase();
+            const tierMap = { 'essential': 'ESSENTIAL TIER', 'growth': 'GROWTH TIER', 'executive': 'EXECUTIVE TIER', 'founders inner circle': 'FOUNDERS INNER CIRCLE' };
+            return tierMap[(ticketTier || '').toLowerCase().trim()] || (ticketTier || 'REGULAR TIER').toUpperCase();
         }
 
         async function loadOrderByRef(orderRef) {
@@ -772,19 +726,14 @@
             });
         }
 
-        // Determine which completion page to redirect to based on ticket tier
         function getCompletionPage(tier) {
             const normalized = (tier || '').toLowerCase().trim();
-            // essential and growth → thank-you.html
             if (normalized === 'essential' || normalized === 'growth') {
                 return 'thank-you.html';
             }
-            // executive and founders inner circle (or premium) → thanks.html
-            // also treat 'premium' as alias for founders inner circle
             if (normalized === 'executive' || normalized === 'founders inner circle' || normalized === 'premium') {
                 return 'thanks.html';
             }
-            // fallback to thank-you.html (safe default)
             return 'thank-you.html';
         }
 
@@ -801,37 +750,62 @@
                 const a = attendees[i];
                 const tier = a.ticketTier || 'executive';
                 const name = `${a.firstname || ''} ${a.lastname || ''}`.trim();
+                const email = a.email || orderData.email || 'N/A';
                 const price = getTicketPrice(tier);
                 const qrUrl = await generateQRCodeAsImage(`Order: ${currentOrderRef}, Name: ${name}`);
 
                 html += `
-                    <div class="ticket-card">
-                        <div class="ticket-template-wrapper">
-                            <img src="/assets/background1.webp" alt="Template" class="ticket-template-bg" />
-                            <div class="ticket-overlay-content">
-                                <div class="ticket-qr-container"><img src="/assets/${qrUrl}" /></div>
-                                <div class="ticket-attendee">${name.toUpperCase()}</div>
-                                <div class="ticket-val-type">${getTicketDisplayName(tier)}</div>
-                                <div class="ticket-val-price">₦${price.toLocaleString()}</div>
-                                <div class="ticket-val-id">${currentOrderRef}</div>
-                                <div class="ticket-val-date">${EVENT_DATE}</div>
+                    <div class="receipt-ticket">
+                        <div class="receipt-header-ref">
+                            REF: ${currentOrderRef} <i class="far fa-copy" style="cursor:pointer; font-size: 0.85rem;" onclick="navigator.clipboard.writeText('${currentOrderRef}')"></i>
+                        </div>
+                        <h2 class="receipt-title">${name.toUpperCase()}</h2>
+                        <div class="receipt-box">
+                            <div class="receipt-field">
+                                <div class="receipt-label">Email</div>
+                                <div class="receipt-value">${email}</div>
                             </div>
+                            <div class="receipt-field">
+                                <div class="receipt-label">Ticket Type</div>
+                                <div class="receipt-value">${getTicketDisplayName(tier)}</div>
+                            </div>
+                            <div class="receipt-field">
+                                <div class="receipt-label">Amount</div>
+                                <div class="receipt-value">₦${price.toLocaleString()}.00</div>
+                            </div>
+                            <div class="receipt-field">
+                                <div class="receipt-label">Venue</div>
+                                <div class="receipt-value">${EVENT_VENUE}</div>
+                            </div>
+                        </div>
+
+                        <div class="receipt-add-info">Additional Information</div>
+
+                        <div class="receipt-item-row">
+                            <div class="receipt-item-left">
+                                <img src="under45.png" alt="Under 45 CEOs Logo">
+                                <span class="receipt-item-title">Under 45 CEOs — ${getTicketDisplayName(tier)}</span>
+                            </div>
+                        </div>
+
+                        <div class="receipt-qr-wrap">
+                            <img src="${qrUrl}" alt="Event QR Code">
+                        </div>
+
+                        <div class="receipt-footer-note">
+                            Please present your ticket at the entrance of the event for registration.
                         </div>
                     </div>`;
             }
             html += `</div>`;
             document.getElementById('ticketContent').innerHTML = html;
 
-            // Attach event listeners
-            // Download PDF — each ticket page sized exactly to the ticket template dimensions with zero margins
             document.getElementById('downloadPDFBtn').addEventListener('click', async function() {
-                const ticketCards = document.querySelectorAll('.ticket-card');
+                const ticketCards = document.querySelectorAll('.receipt-ticket');
                 if (!ticketCards.length) return;
 
-                // Access jsPDF from the html2pdf bundle (exposed globally as window.jspdf)
                 const jsPDF = (window.jspdf && window.jspdf.jsPDF) || (window.jspdf && window.jspdf.default) || window.jspdf;
                 if (!jsPDF) {
-                    // Fallback: use html2pdf with zero margins on a large landscape sheet
                     const element = document.getElementById('ticketsContainer');
                     if (!element) return;
                     const opt = {
@@ -839,7 +813,7 @@
                         filename: `tickets-${currentOrderRef || 'download'}.pdf`,
                         image: { type: 'jpeg', quality: 0.98 },
                         html2canvas: { scale: 2, useCORS: true, logging: false },
-                        jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' },
+                        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
                         pagebreak: { mode: 'avoid-all' }
                     };
                     html2pdf().set(opt).from(element).save();
@@ -849,15 +823,14 @@
                 let pdf = null;
 
                 for (let i = 0; i < ticketCards.length; i++) {
-                    const wrapper = ticketCards[i].querySelector('.ticket-template-wrapper');
+                    const wrapper = ticketCards[i];
                     if (!wrapper) continue;
 
-                    // Render the ticket wrapper at 2x scale for crisp output
                     const canvas = await html2canvas(wrapper, {
                         scale: 2,
                         useCORS: true,
                         logging: false,
-                        backgroundColor: null
+                        backgroundColor: "#ffffff"
                     });
 
                     const imgData = canvas.toDataURL('image/jpeg', 0.98);
@@ -865,18 +838,15 @@
                     const h = canvas.height;
 
                     if (i === 0) {
-                        // Create PDF with first page dimensions matching the ticket exactly
                         pdf = new jsPDF({
                             unit: 'px',
                             format: [w, h],
                             hotfixes: ['px_scaling']
                         });
                     } else {
-                        // Add subsequent tickets on new pages of identical size
                         pdf.addPage([w, h]);
                     }
 
-                    // Place image at origin filling the entire page — no margins, no padding, no white space
                     pdf.addImage(imgData, 'JPEG', 0, 0, w, h);
                 }
 
@@ -885,10 +855,8 @@
                 }
             });
 
-            // Complete Registration button – redirect based on ticket tier
             const completeBtn = document.getElementById('completeRegistrationBtn');
             if (completeBtn) {
-                // Determine tier from first attendee (or fallback)
                 const firstTier = attendees.length > 0 ? attendees[0].ticketTier : 'executive';
                 const targetPage = getCompletionPage(firstTier);
                 completeBtn.addEventListener('click', () => {
