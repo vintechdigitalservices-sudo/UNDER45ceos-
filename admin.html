@@ -1660,7 +1660,8 @@ Under45CEOs Team`;
             // Fix: Sort by date field, including fallback to 'dateEnter' etc.
             allNominations.sort((a, b) => {
                 const getT = (x) => {
-                    const t = x.timestamp || x.createdAt || x.submittedAt || x.nominationDate || x.date || x.submitted || x.dateEnter || x.entryDate;
+                    // Strongly prioritize declDate based on user's specific data storage schema
+                    const t = x.declDate || x.timestamp || x.createdAt || x.submittedAt || x.nominationDate || x.date || x.submitted || x.dateEnter || x.entryDate;
                     if (!t) return 0;
                     if (t.toDate) { try { return t.toDate().getTime(); } catch (e) { return 0; } }
                     const n = new Date(t).getTime();
@@ -1717,11 +1718,12 @@ Under45CEOs Team`;
             const statusText = nom.status === 'reviewed' ? 'REVIEWED' : 'PENDING';
             const statusIcon = nom.status === 'reviewed' ? 'fa-check-circle' : 'fa-hourglass-half';
             
-            const timestamp = nom.timestamp || nom.createdAt || nom.submittedAt || nom.nominationDate || nom.date || nom.submitted || nom.dateEnter;
+            // Fix: Use formatDate instead of formatDateTime for award nominations to show only date
+            const timestamp = nom.declDate || nom.timestamp || nom.createdAt || nom.submittedAt || nom.nominationDate || nom.date || nom.submitted || nom.dateEnter;
             
             return `
                 <tr>
-                    <td>${formatDateTime(timestamp)}</td>
+                    <td>${formatDate(timestamp)}</td>
                     <td>${nom.fullName || nom.name || 'N/A'}</td>
                     <td>${nom.company || nom.organization || 'N/A'}</td>
                     <td><span class="ticket-tag">${nom.awardCategory || nom.category || 'N/A'}</span></td>
