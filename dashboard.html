@@ -1145,11 +1145,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     // --- FIELD MAPPING (exactly as stored in Firestore) ---
                     
                     // 1. Participant's full name
-                    const fullName = data.customer?.fullName || 
-                                     data.buyer_name || 
-                                     data.name || 
-                                     data.fullName || 
+                    let fullName = 'Anonymous';
+                    if (data.attendees && data.attendees.length > 0) {
+                        const first = data.attendees[0];
+                        const fName = first.firstname || first.firstName || '';
+                        const mName = first.middlename || first.middleName || '';
+                        const lName = first.lastname || first.lastName || '';
+                        fullName = [fName, mName, lName].filter(Boolean).join(' ').trim();
+                    }
+                    if (!fullName || fullName === 'Anonymous') {
+                        fullName = data.customer?.fullName ||
+                                     data.buyer_name ||
+                                     data.name ||
+                                     data.fullName ||
                                      'Anonymous';
+                    }
                     
                     // 2. Ticket tier (firebase field: "ticketTier")
                     const ticketTier = data.ticketTier ||
