@@ -1142,32 +1142,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 checkoutsSnapshot.forEach(doc => {
                     const data = doc.data();
                     
-                    // --- SMART FIELD DETECTION ---
+                    // --- FIELD MAPPING (exactly as stored in Firestore) ---
                     
-                    // 1. Get the participant's full name
+                    // 1. Participant's full name
                     const fullName = data.customer?.fullName || 
                                      data.buyer_name || 
                                      data.name || 
                                      data.fullName || 
                                      'Anonymous';
                     
-                    // 2. Get the ticket tier (check all possible field names)
-                    const ticketTier = data.ticketTier || 
-                                       data.ticket || 
-                                       data.tier || 
-                                       data.ticket_type || 
+                    // 2. Ticket tier (firebase field: "ticketTier")
+                    const ticketTier = data.ticketTier ||
+                                       data.customer?.ticketTier ||
+                                       (data.attendees && data.attendees[0]?.ticketTier) ||
+                                       data.ticket ||
+                                       data.tier ||
+                                       data.ticket_type ||
                                        'Unknown';
                     
-                    // 3. Get the payment status (check all possible field names)
-                    const paymentStatus = data.paymentStatus || 
-                                          data.status || 
-                                          data.payment_status || 
-                                          'pending';
+                    // 3. Payment status (firebase fields: "status" and "paymentStatus")
+                    // Use paymentStatus first, fallback to status, and normalize to lowercase
+                    const rawPaymentStatus = data.paymentStatus ||
+                                             data.status ||
+                                             data.payment_status ||
+                                             'pending';
+                    const paymentStatus = String(rawPaymentStatus).toLowerCase();
                     
-                    // 4. Get the amount
+                    // 4. Amount
                     const amount = data.amount || data.totalAmount || 0;
                     
-                    // 5. Get the date
+                    // 5. Date
                     const date = data.created_at?.toDate() || 
                                  data.orderDate?.toDate() || 
                                  data.createdAt?.toDate() || 
@@ -1188,9 +1192,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 // Sort by date (newest first)
                 allReferrals.sort((a, b) => b.date - a.date);
                 
-                // Separate confirmed and pending
-                confirmedReferrals = allReferrals.filter(r => r.status === 'confirmed' || r.status === 'paid');
-                pendingReferrals = allReferrals.filter(r => r.status === 'pending');
+                // Separate confirmed and pending (treat approved, confirmed, paid, and verified as confirmed)
+                confirmedReferrals = allReferrals.filter(r =>
+                    r.status === 'approved' || r.status === 'confirmed' || r.status === 'paid' || r.status === 'verified'
+                );
+                pendingReferrals = allReferrals.filter(r =>
+                    !confirmedReferrals.includes(r)
+                );
                 
                 // Update KPI cards
                 totalReferralsEl.textContent = confirmedReferrals.length;
@@ -1220,8 +1228,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 
                 // If error is permission denied, treat as empty data (user just has no referrals)
                 if (error.code === 'permission-denied') {
-                    // This likely means there are no documents in the collection yet
-                    // Show empty state instead of error
                     allReferrals = [];
                     confirmedReferrals = [];
                     pendingReferrals = [];
@@ -1275,8 +1281,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     tierClass = 'inner-circle';
                 }
                 
-                // Status badge
-                const isConfirmed = referral.status === 'confirmed' || referral.status === 'paid';
+                // Status badge (treat "approved", "confirmed", "paid", and "verified" as paid)
+                const isConfirmed = referral.status === 'approved' || referral.status === 'confirmed' || referral.status === 'paid' || referral.status === 'verified';
                 const statusClass = isConfirmed ? 'paid' : 'pending';
                 const statusIcon = isConfirmed ? 'fa-check-circle' : 'fa-clock';
                 const statusText = isConfirmed ? 'Paid' : 'Pending Verification';
@@ -1325,12 +1331,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
         });
 
-        // ===== AUTO-REFRESH (every 30 seconds) =====
+        // ===== REAL-TIME REFRESH (every 15 seconds) =====
         setInterval(() => {
             if (currentUser && volunteerData) {
                 loadReferrals(volunteerData.referral_code);
             }
-        }, 30000);
+        }, 15000);
 
         console.log('🟢 Volunteer Dashboard initialized successfully');
     </script>
