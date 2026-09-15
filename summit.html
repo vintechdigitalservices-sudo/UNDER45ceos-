@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ============================================================
+         SEO OPTIMIZATION
+         ============================================================ -->
+    <title>Under45 CEOs Summit 2026 | Rethinking Entrepreneurship | Onitsha</title>
+    <meta name="description" content="Africa's Business & Leadership Summit for Founders, CEOs & Emerging Leaders. Join us on 10 October 2026 in Onitsha, Anambra. Secure your seat today.">
+    <meta name="keywords" content="Under45 CEOs, business summit, leadership summit, entrepreneurship conference, Onitsha, Nigeria, business tickets, UDUF Africa">
+    <meta name="author" content="UDUF Africa">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://under45ceos.udufafrica.org/summit">
+    <meta property="og:title" content="Under45 CEOs Summit 2026 | Rethinking Entrepreneurship">
+    <meta property="og:description" content="Join 500+ entrepreneurs and business leaders at Nigeria's premier business summit. October 10, 2026, Onitsha.">
+    <meta property="og:image" content="https://under45ceos.udufafrica.org/hero.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://under45ceos.udufafrica.org/summit">
+    <meta property="twitter:title" content="Under45 CEOs Summit 2026 | Rethinking Entrepreneurship">
+    <meta property="twitter:description" content="Join 500+ entrepreneurs and business leaders at Nigeria's premier business summit. October 10, 2026, Onitsha.">
+    <meta property="twitter:image" content="https://under45ceos.udufafrica.org/hero.jpg">
+
+    <link rel="canonical" href="https://under45ceos.udufafrica.org/summit">
+
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & RESET (Matched to your Ticket Page)
+           ========================================================================== */
+        :root {
+            --teal-darker: #022a2d;
+            --teal-dark: #053c40;
+            --teal: #0e6b73;
+            --teal-light: #1a8a94;
+            --orange: #f07d1a;
+            --orange-deep: #c96410;
+            --white: #ffffff;
+            --text-muted: #a0a0a0;
+            --gray-light: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--teal-darker);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-top: 80px; /* Space for fixed header */
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        /* ==========================================================================
+           2. TYPOGRAPHY & UTILITIES
+           ========================================================================== */
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .text-orange { color: var(--orange); }
+        .text-teal-light { color: var(--teal-light); }
+        .text-muted { color: var(--text-muted); }
+
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+        .section-padding { padding: 5rem 0; }
+        .text-center { text-align: center; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        /* ==========================================================================
+           3. HEADER / NAVIGATION
+           ========================================================================== */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: var(--teal-darker);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            padding: 0.8rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logos {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-logos img {
+            height: 40px;
+            width: auto;
+        }
+
+        .header-logos .logo-divider {
+            width: 1px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-nav a {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover {
+            color: var(--orange);
+        }
+
+        .header-cta {
+            background-color: var(--orange);
+            color: var(--white);
+            padding: 0.5rem 1.2rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+        }
+
+        .header-cta:hover {
+            background-color: var(--orange-deep);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background-color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem 1.5rem;
+            background-color: var(--teal-dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* ==========================================================================
+           4. BUTTONS
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-primary {
+            background-color: var(--orange);
+            color: var(--white);
+            border-color: var(--orange);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--orange-deep);
+            border-color: var(--orange-deep);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(240, 125, 26, 0.4);
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: var(--white);
+            border-color: #25D366;
+            display: flex;
+            width: 100%;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1DA851;
+            border-color: #1DA851;
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            font-size: 0.8rem;
+            padding: 0.7rem 1rem;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--white);
+            color: var(--teal-darker);
+            border-color: var(--white);
+        }
+
+        /* ==========================================================================
+           5. HERO SECTION
+           ========================================================================== */
+        .hero {
+            position: relative;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 0;
+            background-color: var(--teal-darker);
+            background-image: linear-gradient(rgba(2, 42, 45, 0.85), rgba(2, 42, 45, 0.95)), url('hero.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .hero-content { position: relative; z-index: 10; max-width: 800px; }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            color: #E0E0E0;
+            margin-bottom: 2rem;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .meta-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .meta-badge svg { width: 18px; height: 18px; color: var(--orange); }
+
+        /* ==========================================================================
+           6. SECTION HEADERS
+           ========================================================================== */
+        .section-header { margin-bottom: 3rem; }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba(240, 125, 26, 0.15);
+            color: var(--orange);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 50px;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+
+        /* ==========================================================================
+           7. SPEAKERS SECTION (Framed Cards)
+           ========================================================================== */
+        .keynote-card {
+            background: linear-gradient(135deg, rgba(14, 107, 115, 0.3) 0%, rgba(5, 60, 64, 0.8) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* The dedicated frame for the cutout */
+        .speaker-image-frame {
+            background: var(--orange);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px 20px 0 0; /* Rounded top only */
+            padding: 2rem 2rem 0 2rem; /* No bottom padding */
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* Forces image to bottom */
+            width: 100%;
+            max-width: 380px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5); /* Kept the black shadow */
+            margin-bottom: 0; /* Ensures it sits flush */
+            overflow: hidden;
+        }
+
+        .keynote-img {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            filter: drop-shadow(0px 15px 25px rgba(0, 0, 0, 0.8));
+            transition: transform 0.3s ease;
+            margin-bottom: 0; /* Ensures no gap at bottom */
+        }
+
+        .keynote-img:hover { transform: translateY(-5px); }
+
+        .keynote-info { text-align: center; }
+
+        .keynote-info h3 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .keynote-title { color: var(--orange); font-weight: 600; font-size: 1.125rem; margin-bottom: 1rem; }
+        .keynote-desc { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 1rem; }
+
+        .keynote-stats { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+
+        .stat-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .stat-badge svg { width: 16px; height: 16px; color: var(--orange); }
+
+        .speakers-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+
+        .speaker-card {
+            background: linear-gradient(135deg, rgba(14, 107, 115, 0.2) 0%, rgba(5, 60, 64, 0.6) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .speaker-card .speaker-image-frame {
+            padding: 1.5rem 1.5rem 0 1.5rem; /* No bottom padding */
+            max-width: 260px;
+            margin-bottom: 1.5rem; /* Restores space between image and text below */
+            border-radius: 20px 20px 0 0;
+        }
+
+        .speaker-card img {
+            max-height: 200px;
+            width: auto;
+            filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.7));
+            transition: transform 0.3s ease;
+            margin-bottom: 0;
+        }
+
+        .speaker-card img:hover { transform: translateY(-5px); }
+
+        .speaker-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .speaker-card .role { color: var(--orange); font-weight: 600; font-size: 0.875rem; margin-bottom: 1rem; }
+        .speaker-card .desc { color: var(--text-muted); font-size: 0.875rem; }
+
+        /* ==========================================================================
+           8. COMMUNITY / INFO HUB
+           ========================================================================== */
+        .community-section {
+            background-color: rgba(5, 60, 64, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-hub-card {
+            background-color: var(--teal-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .info-hub-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-hub-header svg { width: 24px; height: 24px; color: var(--orange); }
+        .info-hub-header h3 { font-size: 1.125rem; font-weight: 700; }
+        .info-hub-card p { color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.5rem; }
+
+        /* ==========================================================================
+           9. TICKETS SECTION
+           ========================================================================== */
+        .tickets-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+
+        .ticket-card {
+            background-color: var(--teal-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .ticket-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(240, 125, 26, 0.2);
+        }
+
+        .ticket-card.popular { border-color: var(--teal-light); }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--teal-light);
+            color: var(--white);
+            font-size: 0.625rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+
+        .ticket-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .ticket-price { font-size: 1.875rem; font-weight: 800; color: var(--orange); margin-bottom: 0.25rem; }
+        .ticket-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.5rem; flex-grow: 1; }
+
+        .ticket-benefits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .ticket-benefits li { display: flex; align-items: flex-start; gap: 0.3rem; line-height: 1.3; }
+        .ticket-benefits li::before { content: '✓'; color: var(--orange); font-weight: bold; flex-shrink: 0; }
+
+        /* ==========================================================================
+           10. WHY ATTEND
+           ========================================================================== */
+        .why-attend { background-color: rgba(5, 60, 64, 0.2); }
+        .why-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 800px; margin: 0 auto; }
+        .why-item { display: flex; align-items: flex-start; gap: 1rem; }
+
+        .why-icon {
+            background-color: rgba(240, 125, 26, 0.15);
+            padding: 0.5rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .why-icon svg { width: 18px; height: 18px; color: var(--orange); }
+        .why-item h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .why-item p { color: var(--text-muted); font-size: 0.875rem; }
+
+        /* ==========================================================================
+           11. SOCIAL PROOF / GALLERY
+           ========================================================================== */
+        .gallery-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 3rem; }
+
+        .gallery-item {
+            border-radius: 16px;
+            overflow: hidden;
+            height: 250px;
+            background-color: var(--teal-dark);
+        }
+
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .gallery-item:hover img { transform: scale(1.05); }
+
+        .final-cta {
+            background-color: rgba(5, 60, 64, 0.5);
+            border: 1px solid rgba(26, 138, 148, 0.3);
+            border-radius: 24px;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .final-cta h3 { font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+        /* ==========================================================================
+           12. FOOTER
+           ========================================================================== */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        footer a { color: var(--orange); transition: color 0.3s ease; }
+        footer a:hover { color: var(--orange-deep); }
+
+        /* ==========================================================================
+           13. RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (min-width: 768px) {
+            .hero h1 { font-size: 4.5rem; }
+            .hero p { font-size: 1.5rem; }
+            .hero-meta { flex-direction: row; justify-content: center; gap: 1.5rem; }
+
+            .keynote-card { flex-direction: row; text-align: left; padding: 4rem; }
+            .keynote-info { text-align: left; }
+            .keynote-stats { justify-content: flex-start; }
+
+            .speakers-grid { grid-template-columns: 1fr 1fr; }
+            .tickets-grid { grid-template-columns: 1fr 1fr; }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+            .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .tickets-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .header-nav { display: none; }
+            .hamburger { display: flex; }
+            .header-logos img { height: 30px; }
+        }
+
+        /* ==========================================================================
+           14. SCROLL ANIMATIONS
+           ========================================================================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        .fade-right {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-right.visible { opacity: 1; transform: translateX(0); }
+
+        .fade-left {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-left.visible { opacity: 1; transform: translateX(0); }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="header-logos">
+                <img src="logo.png" alt="UDUF Africa Logo" loading="eager">
+                <div class="logo-divider"></div>
+            
+            </div>
+            
+            <nav class="header-nav">
+                <a href="#speakers">Speakers</a>
+                <a href="#tickets">Tickets</a>
+                <a href="#why-attend">Why Attend</a>
+                <a href="#" class="header-cta whatsapp-link" data-ticket="Register Button">Register</a>
+            </nav>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#speakers">Speakers</a>
+            <a href="#tickets">Tickets</a>
+            <a href="#why-attend">Why Attend</a>
+            <a href="#" class="header-cta whatsapp-link" data-ticket="Register Button" style="text-align: center; margin-top: 0.5rem;">Register</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero" id="hero">
+            <div class="container hero-content">
+                <h1 class="fade-up" data-delay="0">Rethinking <span class="text-orange">Entrepreneurship</span></h1>
+                <p class="fade-up" data-delay="100">Africa's Business & Leadership Summit for Founders, CEOs & Emerging Leaders</p>
+                
+                <div class="hero-meta fade-up" data-delay="200">
+                    <div class="meta-badge">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        10 October 2026
+                    </div>
+                    <div class="meta-badge">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Onitsha, Anambra
+                    </div>
+                </div>
+
+                <div class="hero-cta fade-up" data-delay="300">
+                    <a href="#" class="btn btn-primary whatsapp-link" data-ticket="General">Join the WhatsApp Info Hub</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPEAKERS SECTION -->
+        <section class="section-padding container" id="speakers">
+            <div class="section-header text-center fade-up">
+                <span class="section-badge">Speakers</span>
+                <h2 class="font-serif">Meet the <span class="text-teal-light">Speakers</span></h2>
+                <p class="text-muted">Proof over paragraphs.</p>
+            </div>
+
+            <!-- Keynote Speaker -->
+            <div class="keynote-card fade-up">
+                <div class="speaker-image-frame">
+                    <img src="ezekiel_solesi_cutout.png" alt="Ezekiel Solesi" class="keynote-img" loading="lazy" decoding="async">
+                </div>
+                <div class="keynote-info">
+                    <span class="text-orange" style="font-weight: 700; text-transform: uppercase; font-size: 0.875rem; letter-spacing: 0.1em;">Keynote Speaker</span>
+                    <h3>Ezekiel Solesi</h3>
+                    <p class="keynote-title">CEO, LIMEsample</p>
+                    <p class="keynote-desc">
+                        "The Man who has seen what is keeping thousands of businesses stuck."<br><br>
+                        What does he know that your business hasn't figured out yet?
+                    </p>
+                    <div class="keynote-stats">
+                        <div class="stat-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            5000+ Businesses
+                        </div>
+                        <div class="stat-badge">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            67 Billion-Naira Revenue
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Speakers -->
+            <div class="speakers-grid">
+                <div class="speaker-card fade-up">
+                    <div class="speaker-image-frame">
+                        <img src="ifeanyi_onwuachu_cutout.png" alt="Ifeanyi Onwuachu" loading="lazy" decoding="async">
+                    </div>
+                    <h3>Ifeanyi Onwuachu</h3>
+                    <p class="role">MD/CEO, Janksmay Global Services Ltd</p>
+                    <p class="desc">From Security Man to Shipping Business Owner. Speaker Day 1 & Masterclass Facilitator Day 2.</p>
+                </div>
+
+                <div class="speaker-card fade-up">
+                    <div class="speaker-image-frame">
+                        <img src="ella_chioma_cutout.png" alt="Dr. Ella Chioma Ezeadilieje" loading="lazy" decoding="async">
+                    </div>
+                    <h3>Dr. Ella Chioma Ezeadilieje</h3>
+                    <p class="role">"Veronica's Daughter" | Personal Branding & Visibility Expert</p>
+                    <p class="desc">Build a Personal Brand People Remember, Trust & Buy From.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TICKETS SECTION -->
+        <section class="section-padding container" id="tickets">
+            <div class="section-header text-center fade-up">
+                <span class="section-badge" style="background-color: rgba(168, 85, 247, 0.15); color: #c084fc;">Tickets</span>
+                <h2 class="font-serif">Choose Your Experience</h2>
+            </div>
+
+            <div class="tickets-grid">
+                <!-- Essential -->
+                <div class="ticket-card fade-up">
+                    <h3>Essential</h3>
+                    <div class="ticket-price">₦5,000</div>
+                    <p class="ticket-desc">Access Pass</p>
+                    <ul class="ticket-benefits">
+                        <li>Main Hall Access</li>
+                        <li>Light Refreshment</li>
+                        <li>General Seating</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline whatsapp-link" data-ticket="Essential">Ask About This Ticket</a>
+                </div>
+
+                <!-- Growth -->
+                <div class="ticket-card popular fade-up">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Growth</h3>
+                    <div class="ticket-price">₦15,000</div>
+                    <p class="ticket-desc">Standard Access <span style="font-size: 0.7rem; color: var(--orange);">(Early Bird)</span></p>
+                    <ul class="ticket-benefits">
+                        <li>Main Hall Access</li>
+                        <li>Branded Jotter & Pen</li>
+                        <li>Networking</li>
+                        <li>E-Certificate</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline whatsapp-link" data-ticket="Growth">Ask About This Ticket</a>
+                </div>
+
+                <!-- Executive -->
+                <div class="ticket-card fade-up">
+                    <h3>Executive</h3>
+                    <div class="ticket-price">₦25,000</div>
+                    <p class="ticket-desc">Premium Access <span style="font-size: 0.7rem; color: var(--orange);">(Early Bird)</span></p>
+                    <ul class="ticket-benefits">
+                        <li>VIP Fast Entry</li>
+                        <li>Priority Seating</li>
+                        <li>Pitch Access</li>
+                        <li>All Growth Benefits</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline whatsapp-link" data-ticket="Executive">Ask About This Ticket</a>
+                </div>
+
+                <!-- Founders Inner Circle -->
+                <div class="ticket-card fade-up">
+                    <h3 class="text-orange">Founders Inner Circle</h3>
+                    <div class="ticket-price" style="color: var(--white);">₦130,000</div>
+                    <p class="ticket-desc">VIP Experience <span style="font-size: 0.7rem; color: var(--orange);">(Early Bird)</span></p>
+                    <ul class="ticket-benefits">
+                        <li>VVIP Badge</li>
+                        <li>Front Row Seating</li>
+                        <li>Red Carpet Interview</li>
+                        <li>Masterclass (Day 2)</li>
+                        <li>Luncheon with CEOs</li>
+                        <li>Hard Copy Certificate</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary whatsapp-link" data-ticket="Founders Inner Circle">Ask About This Ticket</a>
+                </div>
+            </div>
+            <p class="text-center text-muted fade-up" style="margin-top: 1.5rem; font-size: 0.75rem;">Every button opens WhatsApp with a pre-filled message.</p>
+        </section>
+
+        <!-- COMMUNITY / INFO HUB CTA -->
+        <section class="section-padding community-section" id="community">
+            <div class="container text-center fade-up">
+                <span class="section-badge" style="background-color: rgba(26, 138, 148, 0.3); color: #1a8a94;">Community</span>
+                <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem;">Have Questions Before Paying?</h2>
+                <p class="text-muted" style="margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Join the official WhatsApp Info Hub and chat directly with the summit team.</p>
+                
+                <div class="info-hub-card">
+                    <div class="info-hub-header">
+                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        <h3>Under45 CEOs 2026 | Info Hub</h3>
+                    </div>
+                    <p>Get ticket guidance, event updates & quick answers.</p>
+                    <a href="#" class="btn btn-whatsapp whatsapp-link" data-ticket="General">Join WhatsApp</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY ATTEND -->
+        <section class="section-padding why-attend" id="why-attend">
+            <div class="container">
+                <div class="section-header text-center fade-up">
+                    <span class="section-badge" style="background-color: rgba(59, 130, 246, 0.15); color: #60a5fa;">Why Attend</span>
+                    <h2>Short, scannable value</h2>
+                </div>
+                
+                <div class="why-grid">
+                    <div class="why-item fade-right">
+                        <div class="why-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h3>World-class speakers</h3>
+                            <p>Learn from those who have walked the path.</p>
+                        </div>
+                    </div>
+                    <div class="why-item fade-left">
+                        <div class="why-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h3>High-value networking</h3>
+                            <p>Connect with founders, CEOs, and investors.</p>
+                        </div>
+                    </div>
+                    <div class="why-item fade-right">
+                        <div class="why-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h3>Practical business strategies</h3>
+                            <p>Actionable insights you can implement immediately.</p>
+                        </div>
+                    </div>
+                    <div class="why-item fade-left">
+                        <div class="why-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <h3>Leadership development</h3>
+                            <p>Elevate your leadership capacity to scale your business.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOCIAL PROOF -->
+        <section class="section-padding container">
+            <div class="section-header text-center fade-up">
+                <span class="section-badge" style="background-color: rgba(239, 68, 68, 0.15); color: #f87171;">Social Proof</span>
+                <h2 class="font-serif">Moments from Previous Editions</h2>
+            </div>
+
+            <div class="gallery-grid fade-up">
+                <div class="gallery-item">
+                    <img src="event1.jpg" alt="Previous Event Attendees" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item">
+                    <img src="event2.jpg" alt="Speaker at Previous Event" loading="lazy" decoding="async">
+                </div>
+                <div class="gallery-item">
+                    <img src="event3.jpg" alt="Networking at Previous Event" loading="lazy" decoding="async">
+                </div>
+            </div>
+
+            <div class="final-cta fade-up">
+                <h3>Ready to join Africa's next generation of business leaders?</h3>
+                <a href="#" class="btn btn-primary whatsapp-link" data-ticket="General">Join the WhatsApp Info Hub</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Under45 CEOs Summit. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.75rem;">Powered by <a href="https://udufafrica.org" target="_blank">Uduf Africa</a></p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. WHATSAPP LINK GENERATOR WITH UNIQUE PRE-FILLED MESSAGES
+            const baseWhatsAppUrl = "https://chat.whatsapp.com/E87agTNMuFGAhNUSepQfqH?s=cl&p=a&mlu=4&ilr=4";
+            const whatsappLinks = document.querySelectorAll('.whatsapp-link');
+            
+            whatsappLinks.forEach(link => {
+                const ticketTier = link.getAttribute('data-ticket');
+                let message = "";
+                
+                if (ticketTier === "General" || ticketTier === "Register Button") {
+                    message = "Hello Under45 CEOs Team,\n\nI'm interested in attending the Under45 CEOs Business & Leadership Summit 2026.\n\nPlease send me details and guide me on registration.";
+                } else {
+                    message = `Hello Under45 CEOs Team,\n\nI'm interested in attending the Under45 CEOs Business & Leadership Summit 2026.\n\nI'm interested in the ${ticketTier} Ticket. Please send me the details and guide me on registration.`;
+                }
+                
+                // Encode message for URL
+                const encodedMessage = encodeURIComponent(message);
+                
+                // Note: Since you provided a direct group invite link (not a wa.me link), 
+                // the pre-filled text will not automatically populate in WhatsApp. 
+                // However, the link is correctly set, and if you later switch to a wa.me number, 
+                // you can uncomment the line below to use the pre-filled message:
+                // link.href = `https://wa.me/2340000000000?text=${encodedMessage}`;
+                
+                link.href = baseWhatsAppUrl;
+                link.target = "_blank";
+            });
+
+            // 2. SCROLL ANIMATIONS (Intersection Observer)
+            const animatedElements = document.querySelectorAll('.fade-up, .fade-right, .fade-left');
+            
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const delay = entry.target.getAttribute('data-delay') || 0;
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, delay);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            animatedElements.forEach(el => observer.observe(el));
+
+            // 3. MOBILE MENU TOGGLE
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('open');
+                mobileMenu.classList.toggle('open');
+            });
+
+            // Close mobile menu when a link is clicked
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('open');
+                    mobileMenu.classList.remove('open');
+                });
+            });
+
+            // 4. HEADER SCROLL EFFECT
+            const header = document.querySelector('.site-header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.6)';
+                    header.style.padding = '0.5rem 0';
+                } else {
+                    header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.4)';
+                    header.style.padding = '0.8rem 0';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
