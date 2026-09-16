@@ -1253,7 +1253,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 }
             });
         }
-        handleEarlyBirdDeadline();
+        // NOTE: Early Bird auto-switch is DISABLED so the ticket page always shows Early Bird prices.
+        // To automatically switch to Regular prices after a deadline, uncomment the line below
+        // and set the desired date inside handleEarlyBirdDeadline() above.
+        // handleEarlyBirdDeadline();
 
         // ===== EXISTING: NAVBAR SCROLL =====
         let ticking = false;
