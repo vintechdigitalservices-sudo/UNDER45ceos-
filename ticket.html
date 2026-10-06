@@ -186,24 +186,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             }
         }
 
-        /* Pricing Grid */
-        .pricing-section { padding: 4rem 0; }
+        /* Pricing Grid
+           2×2 rather than 1×4. Four columns forced each card into a
+           narrow column and made the stack taller than the viewport;
+           a 2×2 grid keeps every card fully readable without the page
+           feeling like an endless scroll. Cards are equal height and
+           the CTA is pinned to the bottom via margin-top:auto, so the
+           rows line up instead of ending ragged. */
+        .pricing-section { padding: 3rem 0 4rem; }
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 1.5rem;
-            margin-bottom: 4rem;
+            max-width: 960px;
+            margin: 0 auto 3rem;
+            align-items: stretch;
         }
 
         .ticket-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1.5px solid rgba(255, 255, 255, 0.12);
             border-radius: var(--radius-lg);
-            padding: 2rem;
+            padding: 1.5rem 1.6rem;
             position: relative;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
+            /* Fills its grid row so all four cards share a height. */
+            height: 100%;
             opacity: 0;
             transform: translateY(40px);
             transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
@@ -227,48 +237,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         }
         .ticket-card--premium:hover { border-color: var(--gold-light); }
 
-        .savings-ribbon {
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: var(--orange-deep);
-            color: var(--white);
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            padding: 0.3rem 0.9rem;
-            border-radius: var(--radius-lg) 0 var(--radius) 0;
-        }
-        .ticket-card--featured .savings-ribbon {
-            background: rgba(0,0,0,0.3);
-            color: var(--white);
-        }
-        .ticket-card--premium .savings-ribbon {
-            background: var(--gold);
-            color: #1a0f00;
-            font-weight: 800;
-        }
+        .ticket-card--featured        .ticket-card--premium
 
-        .ticket-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--white);
-            color: var(--orange-deep);
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            padding: 0.3rem 1.2rem;
-            border-radius: 2rem;
-            white-space: nowrap;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .ticket-badge--gold {
-            background: var(--gold);
-            color: #1a0f00;
-        }
-
+        /* The discount ribbon and the "MOST POPULAR" badge used to be
+           absolutely positioned at the top of each card. Both were
+           removed, so the top margin that made room for the badge is
+           gone too — otherwise every card would start 1.2rem lower
+           than it needs to. */
         .ticket-tier {
             font-size: 0.65rem;
             font-weight: 800;
@@ -276,14 +251,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             color: rgba(255,255,255,.6);
             text-transform: uppercase;
             margin-bottom: 0.5rem;
-            margin-top: 1.2rem;
+            margin-top: 0;
         }
         .ticket-name {
             font-family: var(--font-serif);
-            font-size: 1.8rem;
+            font-size: 1.65rem;
             color: var(--white);
             font-weight: 800;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.15;
         }
         .ticket-subheader {
             font-size: 0.7rem;
@@ -296,14 +272,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         }
         .ticket-card--premium .ticket-subheader {
             color: var(--gold-light);
-        }
-        .ticket-desc {
-            font-size: 0.85rem;
-            color: rgba(255,255,255,.75);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            min-height: 70px;
-            font-weight: 600;
         }
         .ticket-price-section {
             border-top: 1px solid rgba(255,255,255,.1);
@@ -363,17 +331,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             text-transform: uppercase;
             margin: 1rem 0 0.8rem;
         }
+        /* Two features per row on desktop. Each cell is a grid item so the
+           row height is set by the taller of the two, which keeps the
+           ✓ marks on a consistent baseline. Collapses to a single
+           column on mobile, where wrapping is cheaper than scrolling. */
         .ticket-features {
             list-style: none;
             margin-bottom: 1.5rem;
             flex-grow: 1;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem 1rem;
+            align-content: start;
         }
         .ticket-features li {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: rgba(255,255,255,.85);
-            padding-left: 1.4rem;
+            padding-left: 1.3rem;
             position: relative;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0;
             line-height: 1.4;
             font-weight: 600;
         }
@@ -407,7 +383,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .ticket-btn {
             width: 100%;
             justify-content: center;
-            margin-top: 0.5rem;
+            /* margin-top:auto pushes the CTA to the bottom of the flex
+               column, so every card's button lines up across the row
+               no matter how many features that tier lists. */
+            margin-top: auto;
+            padding-top: 1rem;
             cursor: pointer;
             font-weight: 800;
         }
@@ -422,6 +402,83 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             color: var(--white);
             border-color: var(--white);
             transform: translateY(-3px);
+        }
+
+        /* ===== TICKET AVAILABILITY (backed by /api/tickets/inventory) ===== */
+        .ticket-stock {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            align-self: flex-start;
+            margin: 0 0 1rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid transparent;
+            transition: background .3s ease, color .3s ease, border-color .3s ease;
+        }
+        .ticket-stock i { font-size: 0.7rem; }
+
+        .ticket-stock--loading,
+        .ticket-stock--unavailable {
+            background: rgba(255,255,255,.07);
+            border-color: rgba(255,255,255,.12);
+            color: rgba(255,255,255,.6);
+            text-transform: none;
+            letter-spacing: 0.04em;
+            font-weight: 600;
+        }
+
+        .ticket-stock--ok {
+            background: rgba(255,255,255,.09);
+            border-color: rgba(255,255,255,.16);
+            color: rgba(255,255,255,.85);
+        }
+
+        /* Low stock: warmer, but still inside the site palette. */
+        .ticket-stock--low {
+            background: rgba(240,125,26,.16);
+            border-color: rgba(240,125,26,.5);
+            color: var(--orange-bright);
+        }
+
+        .ticket-stock--soldout {
+            background: rgba(0,0,0,.35);
+            border-color: rgba(255,255,255,.22);
+            color: rgba(255,255,255,.6);
+            text-decoration: line-through;
+        }
+
+        .ticket-card--premium .ticket-stock--low {
+            background: rgba(212,160,23,.18);
+            border-color: rgba(212,160,23,.55);
+            color: var(--gold-light);
+        }
+
+        .ticket-card--soldout { opacity: .62; }
+        .ticket-card--soldout:hover { transform: none; box-shadow: none; }
+
+        .ticket-btn--disabled,
+        .ticket-btn[aria-disabled="true"] {
+            cursor: not-allowed;
+            opacity: .55;
+            /* pointer-events:none alone would disable the whole card,
+               so the :not() guard keeps the card hoverable while still
+               blocking the click on the button itself. */
+            filter: grayscale(.4);
+        }
+        .ticket-btn--disabled:hover { transform: none; }
+        .ticket-btn--disabled::after {
+            content: 'SOLD OUT';
+            font-size: .8em;
+            letter-spacing: .08em;
+        }
+
+        @media (max-width: 768px) {
+            .ticket-stock { font-size: 0.65rem; padding: 0.3rem 0.7rem; }
         }
 
         /* ===== SPONSORSHIP TEASER ===== */
@@ -876,10 +933,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
         /* Responsive for modal + drawer */
         @media (max-width: 1024px) {
-            .pricing-grid { grid-template-columns: repeat(2, 1fr); max-width: 800px; margin-left: auto; margin-right: auto; }
+            .pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 760px; }
             .ticket-card--featured { transform: none; }
             .ticket-card--featured:hover { transform: translateY(-10px); }
             .footer__inner { grid-template-columns: 1fr 1fr; }
+            /* Not enough width for two feature columns to read cleanly. */
+            .ticket-features { grid-template-columns: 1fr; gap: 0.5rem; }
         }
         @media (max-width: 768px) {
             .nav__links, .nav > .btn--nav { display: none; }
@@ -887,10 +946,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             .footer__inner { grid-template-columns: 1fr; }
             .page-header { padding: 100px 20px 40px; }
             .pricing-grid { grid-template-columns: 1fr; max-width: 500px; }
+            /* Single column on mobile, so features go back to a list. */
+            .ticket-features { grid-template-columns: 1fr; gap: 0.45rem; }
+            .ticket-card { padding: 1.5rem 1.35rem; }
             .modal-box { padding: 2rem 1.25rem 1.5rem; margin: 1rem; }
             .drawer { max-width: 100%; }
         }
     </style>
+    <script src="/js/event-countdown.js" defer></script>
+    <script src="/js/ticket-availability.js" defer></script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -938,6 +1002,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </p>
     </section>
 
+
     <!-- Pricing Section -->
     <div class="pricing-section">
         <div class="container">
@@ -947,11 +1012,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <div class="ticket-card" data-delay="0" data-tier="Essential" data-price="5000" data-type="Tier 01 / Entry" data-selar="https://selar.com/m/udufu45ceos2026">
                     <div class="ticket-tier">TIER 01 / ENTRY</div>
                     <div class="ticket-name">Essential</div>
-                    <p class="ticket-desc">Affordable access to the main stage. Perfect for students, early-stage founders, and budget-conscious go-getters.</p>
                     <div class="ticket-price-section">
                         <div class="ticket-price">₦5,000</div>
                         <div class="ticket-price-note">Fixed price · Day 1 access</div>
                     </div>
+                    <div data-u45-stock></div>
                     <div class="ticket-features-title">INCLUDES</div>
                     <ul class="ticket-features">
                         <li>Full access to main conference hall <span class="day-tag">DAY 1</span></li>
@@ -963,11 +1028,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <!-- TIER 02 — GROWTH (Early Bird ₦15,000 / Regular ₦20,000) -->
                 <div class="ticket-card" data-delay="1" data-tier="Growth" data-price="15000" data-type="Tier 02 / Core" data-selar="https://selar.com/m/udufu45ceos2026">
-                    <div class="savings-ribbon">-25% OFF</div>
                     <div class="ticket-tier">TIER 02 / CORE</div>
                     <div class="ticket-name">Growth</div>
                     <div class="ticket-subheader">E-CERTIFICATE + NETWORKING</div>
-                    <p class="ticket-desc">Step up with official recognition, branded materials, and open networking to accelerate your entrepreneurial journey.</p>
                     <div class="ticket-price-section">
                         <div class="ticket-price-row--dual">
                             <div>
@@ -981,6 +1044,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                         <div class="ticket-price-note">Day 1 access · E-certificate + branded materials</div>
                     </div>
+                    <div data-u45-stock></div>
                     <div class="ticket-features-title">INCLUDES</div>
                     <ul class="ticket-features">
                         <li>Full access to main conference hall <span class="day-tag">DAY 1</span></li>
@@ -995,12 +1059,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <!-- TIER 03 — EXECUTIVE (Early Bird ₦25,000 / Regular ₦35,000) -->
                 <div class="ticket-card ticket-card--featured" data-delay="2" data-tier="Executive" data-price="25000" data-type="Tier 03 / Executive" data-selar="https://selar.com/m/udufu45ceos2026">
-                    <div class="savings-ribbon">-29% OFF</div>
-                    <div class="ticket-badge">MOST POPULAR</div>
                     <div class="ticket-tier" style="color:rgba(255,255,255,.7)">TIER 03 / EXECUTIVE</div>
                     <div class="ticket-name">Executive</div>
                     <div class="ticket-subheader">PITCH ACCESS + VIP PRIORITY</div>
-                    <p class="ticket-desc">Fast-track your visibility: priority seating, pitch stage access, and executive treatment throughout Day 1.</p>
                     <div class="ticket-price-section">
                         <div class="ticket-price-row--dual">
                             <div>
@@ -1014,6 +1075,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                         <div class="ticket-price-note">VIP fast entry · Priority visibility · All Growth Benefits</div>
                     </div>
+                    <div data-u45-stock></div>
                     <div class="ticket-features-title">INCLUDES</div>
                     <ul class="ticket-features">
                         <li>Pitch access <span class="day-tag">DAY 1</span></li>
@@ -1031,12 +1093,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <!-- TIER 04 — FOUNDERS INNER CIRCLE (Early Bird ₦130,000 / Regular ₦200,000) -->
                 <div class="ticket-card ticket-card--premium" data-delay="3" data-tier="Founders Inner Circle" data-price="130000" data-type="Tier 04 / Pinnacle" data-selar="https://selar.com/m/udufu45ceos2026">
-                    <div class="savings-ribbon">-35% OFF</div>
-                    <div class="ticket-badge ticket-badge--gold">★ FOUNDER'S EXCLUSIVE</div>
                     <div class="ticket-tier" style="color:rgba(240,192,64,.6)">TIER 04 / PINNACLE</div>
                     <div class="ticket-name">Founders Inner Circle</div>
                     <div class="ticket-subheader">VVIP + MASTERCLASS + LUNCHEON</div>
-                    <p class="ticket-desc">The ultimate summit experience: red carpet, masterclass with industry titans, luncheon with CEOs, and premium recognition.</p>
                     <div class="ticket-price-section">
                         <div class="ticket-price-row--dual">
                             <div>
@@ -1050,6 +1109,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                         <div class="ticket-price-note" style="color: rgba(240,192,64,.45);">Day 1 & Day 2 · Masterclass + Luncheon</div>
                     </div>
+                    <div data-u45-stock></div>
                     <div class="ticket-features-title">THE FOUNDER'S EDGE</div>
                     <ul class="ticket-features">
                         <li>VVIP attendee badge</li>
@@ -1225,11 +1285,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             if (now < deadline) return;
 
             document.querySelectorAll('.ticket-card').forEach(card => {
-                // 1. Hide savings ribbon
-                const ribbon = card.querySelector('.savings-ribbon');
-                if (ribbon) ribbon.style.display = 'none';
-
-                // 2. Handle pricing display
+                // 1. Pricing display (the discount ribbons and the
+                // per-card description have been removed from the
+                // markup, so there is nothing to hide here)
                 const priceRow = card.querySelector('.ticket-price-row--dual');
                 if (priceRow) {
                     const earlyBirdDiv = priceRow.querySelector('div:first-child');
@@ -1346,8 +1404,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             const type = card.dataset.type || '';
             const selar = card.dataset.selar || 'https://selar.com/m/udufu45ceos2026';
 
-            // Try to get description and features from the card
-            const descEl = card.querySelector('.ticket-desc');
+            // Descriptions were removed from the cards to keep them within the
+            // viewport; the subheader carries the same positioning.
+            const descEl = card.querySelector('.ticket-subheader');
             const desc = descEl ? descEl.textContent.trim() : '';
 
             const features = [];
@@ -1434,6 +1493,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 const card = this.closest('.ticket-card');
                 if (!card) return;
 
+                // Backend-authoritative sold-out guard. The API validates
+                // again at payment confirmation; this only stops the UI
+                // from opening a checkout for a tier with nothing left.
+                if (window.U45TicketAvailability && window.U45TicketAvailability.isSoldOut(card.dataset.tier)) {
+                    alert('Sorry, this ticket tier is sold out.');
+                    window.U45TicketAvailability.refresh();
+                    return;
+                }
+
+                // Keyboard activation reaches the handler even though the
+                // button has no href while sold out, so the same guard
+                // above has to cover it. Nothing else is blocked.
+                if (this.getAttribute('aria-disabled') === 'true') {
+                    window.U45TicketAvailability.refresh();
+                    return;
+                }
+
                 const ticketData = getTicketDataFromCard(card);
                 // Store the card reference for later use (for features etc.)
                 ticketData._card = card;
@@ -1496,6 +1572,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         });
 
         // ===== Drawer: quantity =====
+        // Cap is the lower of 10 and the tier's live remaining stock, so a
+        // user can never build an order the backend will refuse.
+        function maxQuantity() {
+            let cap = 10;
+            if (window.U45TicketAvailability && selectedTicket) {
+                const left = window.U45TicketAvailability.maxSelectable(selectedTicket.tier);
+                if (left !== null && left !== undefined) cap = Math.min(cap, left);
+            }
+            return Math.max(cap, 1);
+        }
+
         qtyMinus.addEventListener('click', function() {
             if (quantity > 1) {
                 quantity--;
@@ -1505,7 +1592,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         });
 
         qtyPlus.addEventListener('click', function() {
-            if (quantity < 10) {
+            if (quantity < maxQuantity()) {
                 quantity++;
                 qtyNum.textContent = quantity;
                 updateDrawerTotal();
@@ -1513,8 +1600,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         });
 
         // ===== Drawer: Proceed to Checkout (UPDATED WITH REFERRAL) =====
-        drawerProceed.addEventListener('click', function() {
+        drawerProceed.addEventListener('click', async function() {
             if (!selectedTicket) return;
+
+            // Re-check availability at the last possible moment before
+            // handing off to checkout. Advisory only — the server re-checks.
+            if (window.U45TicketAvailability) {
+                const left = window.U45TicketAvailability.maxSelectable(selectedTicket.tier);
+                if (left !== null && left !== undefined && quantity > left) {
+                    alert(`Only ${left} ${selectedTicket.name} ticket${left === 1 ? '' : 's'} remaining. Please reduce the quantity.`);
+                    window.U45TicketAvailability.refresh();
+                    return;
+                }
+            }
 
             const refCode = getStoredReferral();
 

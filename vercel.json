@@ -28,6 +28,12 @@
     { "source": "/api/selar/verify-pending", "destination": "/api/selar/verify-pending.js" },
     { "source": "/api/selar/webhook", "destination": "/api/selar/webhook.js" },
 
+{ "source": "/api/tickets/inventory", "destination": "/api/tickets/inventory.js" },
+    { "source": "/api/tickets/confirm-order", "destination": "/api/tickets/confirm-order.js" },
+    { "source": "/api/tickets/review-order", "destination": "/api/tickets/review-order.js" },
+    { "source": "/api/tickets/claim", "destination": "/api/tickets/claim.js" },
+    { "source": "/api/tickets/admin/inventory", "destination": "/api/tickets/admin/inventory.js" },
+
     { "source": "/:path*", "destination": "/index.html" }
   ],
   "redirects": [

@@ -862,6 +862,52 @@ a:focus-visible, button:focus-visible {
   padding: 0.12rem 0.65rem; border-radius: 20px; font-size: 0.52rem; font-weight: 700; margin-top: 0.4rem;
 }
 
+/* ═══ Flyer cards (2026 lineup) — the artwork carries the name and role,
+   so these show the whole poster and add no text of their own. ═══ */
+.flyer-feature {
+  max-width: 440px;
+  margin: 2.4rem auto 0.5rem;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-deep);
+  background: var(--surface);
+  position: relative;
+  z-index: 1;
+}
+.flyer-feature img { display: block; width: 100%; height: auto; }
+
+.flyer-section-label { margin-top: 3.4rem; }
+
+.flyer-note {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0.4rem auto 0;
+  max-width: 640px;
+}
+
+.flyers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 260px));
+  gap: 1.5rem;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 1.6rem auto 0;
+}
+.flyer-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+.flyer-card:hover { transform: translateY(-6px); border-color: var(--orange); box-shadow: var(--shadow-card); }
+/* width:100% + height:auto = never crop the artwork, so the name and role
+   printed on the flyer always stay in frame. */
+.flyer-card img { display: block; width: 100%; height: auto; }
+
 @media (max-width: 768px) {
   .keynote-speaker { flex-direction: column; align-items: center; text-align: center; padding: 1.4rem; }
   .keynote-speaker__img { width: 120px; height: 120px; }
@@ -874,6 +920,9 @@ a:focus-visible, button:focus-visible {
   .panelists-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
   .panelist-card__img-wrap { height: 130px; }
   .speaker-card__img-wrap { aspect-ratio: 1 / 1; }
+  .flyer-feature { max-width: 100%; margin-top: 1.8rem; }
+  .flyers-grid { grid-template-columns: 1fr; max-width: 340px; gap: 1.1rem; }
+  .flyer-section-label { margin-top: 2.6rem; }
 }
 
 /* ═══ Highlights / Gallery ═══ */

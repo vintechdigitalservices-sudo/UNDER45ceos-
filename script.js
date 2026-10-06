@@ -48,61 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Sticky Banner - appears after scrolling past hero
-  const stickyBanner = document.getElementById('stickyBanner');
-  const closeBanner = document.getElementById('closeBanner');
-
-  if (stickyBanner) {
-    window.addEventListener('scroll', () => {
-      const heroHeight = document.querySelector('.hero')?.offsetHeight || 500;
-      if (window.scrollY > heroHeight - 100) {
-        stickyBanner.classList.add('visible');
-      } else {
-        stickyBanner.classList.remove('visible');
-      }
-    });
-
-    if (closeBanner) {
-      closeBanner.addEventListener('click', () => {
-        stickyBanner.style.display = 'none';
-      });
-    }
-  }
-
-  // Countdown Timer - for Discount Tickets ending Sept 15, 2026
-  function updateCountdown() {
-    const discountDate = new Date('September 15, 2026 00:00:00').getTime();
-    const now = new Date().getTime();
-    const distance = discountDate - now;
-
-    const daysEl = document.getElementById('timerDays');
-    const hoursEl = document.getElementById('timerHours');
-    const minsEl = document.getElementById('timerMinutes');
-    const secsEl = document.getElementById('timerSeconds');
-    const stickyBanner = document.getElementById('stickyBanner');
-    if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
-
-    if (distance < 0) {
-      if (stickyBanner) stickyBanner.style.display = 'none';
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const daysLeftEl = document.getElementById('discountDaysLeft');
-    if (daysLeftEl) daysLeftEl.textContent = String(days);
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    daysEl.textContent = String(days).padStart(2, '0');
-    hoursEl.textContent = String(hours).padStart(2, '0');
-    minsEl.textContent = String(minutes).padStart(2, '0');
-    secsEl.textContent = String(seconds).padStart(2, '0');
-  }
-
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

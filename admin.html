@@ -740,6 +740,7 @@
         <button class="tab-btn" data-tab="messages"><i class="fas fa-envelope"></i> Contact Messages</button>
         <button class="tab-btn" data-tab="nominations"><i class="fas fa-trophy"></i> Award Nominations</button>
         <button class="tab-btn" data-tab="attendees"><i class="fas fa-users"></i> I Am Attending</button>
+        <button class="tab-btn" data-tab="inventory"><i class="fas fa-boxes-stacked"></i> Ticket Inventory</button>
     </div>
 
     <div class="tab-content active" id="ticketsTab">
@@ -841,6 +842,29 @@
             </table>
         </div>
         <div class="pagination" id="attendeesPagination"></div>
+    </div>
+
+    <!-- ===== TICKET INVENTORY (authoritative stock) ===== -->
+    <div class="tab-content" id="inventoryTab">
+        <div class="stats-grid" id="inventoryStats">
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-boxes-stacked"></i></div><div class="stat-number" id="invTotal">0</div><div class="stat-label">Tickets Released</div></div>
+            <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-ticket-alt"></i></div><div class="stat-number" id="invSold">0</div><div class="stat-label">Tickets Sold</div></div>
+            <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="invRemaining">0</div><div class="stat-label">Tickets Remaining</div></div>
+            <div class="stat-card rejected"><div class="stat-icon"><i class="fas fa-ban"></i></div><div class="stat-number" id="invSoldOut">0</div><div class="stat-label">Sold-Out Tiers</div></div>
+        </div>
+        <div class="filters-bar">
+            <p style="color:rgba(255,255,255,.6);font-size:.8rem;flex:1;">
+                Remaining quantity is the value shown on the ticket page. Tickets Sold is derived
+                (Initial &minus; Remaining) and is never stored separately.
+            </p>
+            <button class="refresh-btn" id="refreshInventory"><i class="fas fa-sync-alt"></i> Refresh</button>
+        </div>
+        <div class="table-container">
+            <table class="admin-table">
+                <thead><tr><th>Ticket Type</th><th>Initial Qty</th><th>Tickets Sold</th><th>Tickets Remaining</th><th>Status</th><th>Adjust</th></tr></thead>
+                <tbody id="inventoryTableBody"><tr><td colspan="6"><div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading inventory...</div></td></tr></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -1166,23 +1190,77 @@ Under45CEOs Team`;
         });
     });
     
-    window.approveOrderOnly = async function(orderId) {
-        if (!confirm('Approve this order without sending a message?')) return;
+    /* ─────────────────────────────────────────────────────────────
+       TICKET INVENTORY — confirmed-payment hook
+       The payment confirmation point for this project is an admin
+       approving an order. Both the status change and the stock move go
+       through POST /api/tickets/review-order, which requires an
+       ADMIN_EMAILS token.
+
+       These writes deliberately do NOT happen from this page. The
+       browser can only move an order between 'pending' and
+       'awaiting_verification' (see firestore.rules) so that a buyer can
+       never approve their own payment. The Admin SDK is what flips it to
+       'approved', and it does so in the same request that reduces
+       ticket_inventory, so stock cannot be left un-deducted behind a
+       half-failed client write.
+       ───────────────────────────────────────────────────────────── */
+    async function reviewOrderOnServer(orderId, decision, extra) {
+        const token = await auth.currentUser.getIdToken();
+        const res = await fetch('/api/tickets/review-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+            body: JSON.stringify(Object.assign({ orderId: orderId, decision: decision }, extra || {}))
+        });
+        return { res: res, body: await res.json().catch(() => ({})) };
+    }
+
+    /** Approves (or rejects) and reduces stock server-side in one call. */
+    async function commitInventoryForOrder(orderId, extra) {
         try {
-            await db.collection('checkouts').doc(orderId).update({ 
-                paymentStatus: 'approved', 
-                status: 'approved',
-                adminActionDate: firebase.firestore.FieldValue.serverTimestamp(),
-                approvedWithoutMessage: true
-            });
-            const idx = allTicketOrders.findIndex(o => o.id === orderId);
-            if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
-            applyTicketFilters();
-            updateTicketStats();
-            showToast('Order approved successfully!');
-        } catch (error) {
-            showToast('Error approving order: ' + error.message, true);
+            const { res, body } = await reviewOrderOnServer(orderId, 'approve', extra);
+
+            if (res.status === 409) {
+                if (body.code === 'PAYMENT_NOT_CONFIRMED') {
+                    showToast('Order is not marked paid in Firestore — inventory was NOT reduced. Check the payment status, then re-approve.', true);
+                    return { ok: false, reason: 'not_confirmed' };
+                }
+                const detail = (body.shortages || [])
+                    .map(s => `${s.key}: needs ${s.requested}, only ${s.available} left`)
+                    .join('; ');
+                showToast('Approved, but inventory was NOT reduced — ' + (detail || 'sold out'), true);
+                return { ok: false, reason: 'sold_out' };
+            }
+            if (!res.ok) {
+                showToast('Order was approved, but the inventory sync failed (' + res.status + '). Run "Sync Inventory".', true);
+                return { ok: false, reason: 'http_' + res.status };
+            }
+
+            showToast(body.alreadyProcessed
+                ? 'Order approved (inventory already deducted for this order).'
+                : 'Order approved — inventory updated.');
+            if (typeof loadInventoryTable === 'function') loadInventoryTable();
+            return { ok: true, alreadyProcessed: !!body.alreadyProcessed };
+        } catch (err) {
+            showToast('Inventory sync failed: ' + err.message, true);
+            return { ok: false, reason: 'network' };
         }
+    }
+
+window.approveOrderOnly = async function(orderId) {
+        if (!confirm('Approve this order without sending a message?')) return;
+        // Server-side approval + deduction in one request. This path
+        // previously updated Firestore from the browser and never
+        // committed inventory at all, so approving without a message
+        // left stock untouched.
+        const result = await commitInventoryForOrder(orderId, { approvedWithoutMessage: true });
+        if (!result.ok) return;
+        const idx = allTicketOrders.findIndex(o => o.id === orderId);
+        if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
+        applyTicketFilters();
+        updateTicketStats();
+        await loadTickets();
+    }
     };
     
     function updateTicketStats() {
@@ -1339,12 +1417,17 @@ Under45CEOs Team`;
     window.rejectOrder = async function(orderId) {
         if (!confirm('Are you sure you want to REJECT this order?')) return;
         try {
-            await db.collection('checkouts').doc(orderId).update({ paymentStatus: 'rejected', status: 'rejected', adminActionDate: firebase.firestore.FieldValue.serverTimestamp() });
+            const { res, body } = await reviewOrderOnServer(orderId, 'reject');
+            if (!res.ok) {
+                showToast('Failed to reject order: ' + (body.error || res.status), true);
+                return;
+            }
             const idx = allTicketOrders.findIndex(o => o.id === orderId);
             if (idx !== -1) allTicketOrders[idx].paymentStatus = 'rejected';
             applyTicketFilters();
             updateTicketStats();
             showToast('Order rejected');
+            await loadTickets();
         } catch (error) {
             showToast('Error rejecting order: ' + error.message, true);
         }
@@ -1365,23 +1448,22 @@ Under45CEOs Team`;
         const fullMessage = `${message}\n\n---\nTicket Access: ${TICKET_PAGE_URL}\nOrder ID: ${currentOrderForApproval.id}`;
         
         window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullMessage)}`;
-        
-        await db.collection('checkouts').doc(currentOrderForApproval.id).update({
-            paymentStatus: 'approved',
-            status: 'approved',
-            ticketsSentAt: firebase.firestore.FieldValue.serverTimestamp(),
-            ticketsSentTo: to,
-            sentVia: 'email'
+
+        // Approve + deduct server-side, recording where the ticket went.
+        const approveResult = await commitInventoryForOrder(currentOrderForApproval.id, {
+            delivery: { channel: 'email', to: to }
         });
-        
+        if (!approveResult.ok) return;
+
         const idx = allTicketOrders.findIndex(o => o.id === currentOrderForApproval.id);
         if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
         applyTicketFilters();
         updateTicketStats();
-        
+
         showToast(`Order approved! Email client opened for ${to}`);
         document.getElementById('emailModal').classList.remove('active');
         currentOrderForApproval = null;
+        await loadTickets();
     }
     
     async function sendWhatsAppMessage() {
@@ -1397,23 +1479,21 @@ Under45CEOs Team`;
         const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodedMessage}`;
         
         window.open(whatsappUrl, '_blank');
-        
-        await db.collection('checkouts').doc(currentOrderForApproval.id).update({
-            paymentStatus: 'approved',
-            status: 'approved',
-            ticketsSentAt: firebase.firestore.FieldValue.serverTimestamp(),
-            ticketsSentTo: formattedPhone,
-            sentVia: 'whatsapp'
+
+        const approveResult = await commitInventoryForOrder(currentOrderForApproval.id, {
+            delivery: { channel: 'whatsapp', to: formattedPhone }
         });
-        
+        if (!approveResult.ok) return;
+
         const idx = allTicketOrders.findIndex(o => o.id === currentOrderForApproval.id);
         if (idx !== -1) allTicketOrders[idx].paymentStatus = 'approved';
         applyTicketFilters();
         updateTicketStats();
-        
+
         showToast(`Order approved! WhatsApp chat opened for ${formattedPhone}`);
         document.getElementById('emailModal').classList.remove('active');
         currentOrderForApproval = null;
+        await loadTickets();
     }
 
     async function loadSponsorships() {
@@ -2043,6 +2123,7 @@ Under45CEOs Team`;
         });
     });
     document.getElementById('refreshAttendees').addEventListener('click', loadAttendees);
+    document.getElementById('refreshInventory').addEventListener('click', loadInventoryTable);
     
     document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('detailModal').classList.remove('active'));
     document.getElementById('detailModal').addEventListener('click', (e) => { if (e.target === document.getElementById('detailModal')) document.getElementById('detailModal').classList.remove('active'); });
@@ -2072,6 +2153,85 @@ Under45CEOs Team`;
     const adminContainer = document.getElementById('adminContainer');
     let dataLoaded = false;
     
+    /* ── Ticket inventory table ────────────────────────────────────
+       Reads the same backend collection the ticket page reads, so the
+       admin view and the public view can never disagree. Adjust writes
+       go through /api/tickets/admin/inventory, which verifies the
+       caller's ID token server-side and clamps the value so
+       remaining stays within [0, initial].                        */
+    async function loadInventoryTable() {
+        const tbody = document.getElementById('inventoryTableBody');
+        if (!tbody) return;
+        try {
+            const token = await auth.currentUser.getIdToken();
+            const res = await fetch('/api/tickets/admin/inventory', {
+                headers: { Authorization: 'Bearer ' + token }
+            });
+            if (res.status === 401 || res.status === 403) {
+                tbody.innerHTML = '<tr><td colspan="6"><div class="no-data">Set ADMIN_EMAILS in Vercel to grant inventory access.</div></td></tr>';
+                return;
+            }
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const data = await res.json();
+
+            const total = data.tiers.reduce((a, t) => a + t.initialQuantity, 0);
+            const sold = data.tiers.reduce((a, t) => a + t.ticketsSold, 0);
+            const remaining = data.tiers.reduce((a, t) => a + t.remainingQuantity, 0);
+            document.getElementById('invTotal').textContent = total;
+            document.getElementById('invSold').textContent = sold;
+            document.getElementById('invRemaining').textContent = remaining;
+            document.getElementById('invSoldOut').textContent = data.tiers.filter(t => t.soldOut).length;
+
+            tbody.innerHTML = data.tiers.map(t => `
+                <tr>
+                    <td><strong>${t.ticketType}</strong></td>
+                    <td>${t.initialQuantity}</td>
+                    <td>${t.ticketsSold}</td>
+                    <td>${t.remainingQuantity}</td>
+                    <td>${t.soldOut
+                        ? '<span class="status-badge rejected">SOLD OUT</span>'
+                        : (t.lowStock
+                            ? '<span class="status-badge pending">LOW</span>'
+                            : '<span class="status-badge approved">AVAILABLE</span>')}</td>
+                    <td>
+                        <input type="number" min="0" max="${t.initialQuantity}" value="${t.remainingQuantity}"
+                               style="width:80px;padding:.4rem;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;"
+                               id="inv-${t.key}">
+                        <button class="refresh-btn" style="padding:.4rem .8rem;margin-left:.4rem;"
+                                onclick="window.saveInventory('${t.key}')">Save</button>
+                    </td>
+                </tr>`).join('');
+        } catch (error) {
+            tbody.innerHTML = `<tr><td colspan="6"><div class="no-data">Failed to load inventory: ${error.message}</div></td></tr>`;
+        }
+    }
+
+    window.saveInventory = async function(key) {
+        const input = document.getElementById('inv-' + key);
+        if (!input) return;
+        const value = parseInt(input.value, 10);
+        if (Number.isNaN(value) || value < 0) {
+            showToast('Enter a valid quantity (0 or more)', true);
+            return;
+        }
+        try {
+            const token = await auth.currentUser.getIdToken();
+            const res = await fetch('/api/tickets/admin/inventory', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+                body: JSON.stringify({ action: 'set', key: key, remainingQuantity: value })
+            });
+            if (!res.ok) {
+                const body = await res.json().catch(() => ({}));
+                throw new Error(body.error || 'HTTP ' + res.status);
+            }
+            showToast('Inventory updated');
+            loadInventoryTable();
+        } catch (error) {
+            showToast('Update failed: ' + error.message, true);
+        }
+    };
+    
     function showDashboard() {
         loginOverlay.classList.add('hidden');
         adminContainer.style.display = 'block';
@@ -2082,6 +2242,7 @@ Under45CEOs Team`;
             loadMessages();
             loadNominations();
             loadAttendees();
+            loadInventoryTable();
         }
     }
     

@@ -124,33 +124,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         @keyframes pulseCTA { 0%,100% { box-shadow: 0 0 0 0 rgba(240,125,26,.6); } 50% { box-shadow: 0 0 0 10px rgba(240,125,26,0); } }
 
         /* Sticky Banner - HIGHEST Z-INDEX, at the very front */
-        .sticky-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 20000;
-            background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-dark) 100%);
-            transform: translateY(-100%);
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            border-bottom: 1px solid rgba(240,125,26,0.2);
-        }
-        .sticky-banner.visible { 
-            transform: translateY(0); 
-        }
-        .sticky-banner__inner { max-width: 1280px; margin: 0 auto; padding: 0.75rem 2rem; }
-        .sticky-banner__content { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-        .sticky-banner__icon { background: var(--orange); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.2rem; }
-        .sticky-banner__text { flex: 1; }
-        .sticky-banner__title { font-weight: 700; color: var(--white); font-size: 0.9rem; display: block; }
-        .sticky-banner__subtitle { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
-        .sticky-banner__timer { display: flex; gap: 0.8rem; }
-        .timer-block { text-align: center; background: rgba(255,255,255,0.1); padding: 0.3rem 0.6rem; border-radius: 8px; min-width: 55px; }
-        .timer-block span:first-child { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--orange); display: block; line-height: 1.2; text-shadow: 0 0 5px var(--orange-glow); }
-        .timer-label { font-size: 0.55rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.05em; }
-        .sticky-banner__close { background: none; border: none; color: rgba(255,255,255,0.6); font-size: 1.5rem; cursor: pointer; padding: 0 0.5rem; transition: color 0.2s; }
-        .sticky-banner__close:hover { color: var(--orange); }
 
         /* Navigation - FIXED: Always at top, no shifting gaps */
         .nav { 
@@ -162,9 +135,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             transition: all .35s; 
             padding: 1.2rem 0; 
             background: transparent;
-        }
-        body.sticky-banner-visible .nav {
-            top: 0px;
         }
         .nav.scrolled { background: var(--teal-darker); box-shadow: 0 4px 30px rgba(0,0,0,.2); padding: .7rem 0; }
         .nav__inner { max-width: 1280px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 2rem; }
@@ -195,9 +165,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             border-bottom: 1px solid rgba(240,125,26,0.2); 
             box-shadow: 0 20px 30px rgba(0,0,0,0.4);
         }
-        body.sticky-banner-visible .nav__mobile {
-            top: calc(80px + 74px);
-        }
         .nav__mobile.open { display: flex; }
         .nav__mobile a { color: rgba(255,255,255,.95); font-weight: 600; font-size: 1rem; padding: 0.75rem; width: 100%; text-align: center; border-radius: 8px; transition: background 0.2s; }
         .nav__mobile a:hover { background: rgba(240,125,26,0.2); color: var(--orange); }
@@ -212,9 +179,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             padding: 140px 20px 80px;
             position: relative;
             overflow: hidden;
-        }
-        body.sticky-banner-visible .hero {
-            padding-top: calc(140px + 74px);
         }
         .hero__bg {
             position: absolute;
@@ -383,13 +347,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             .why-grid, .roi-grid, .tiers-grid, .activations-grid { grid-template-columns: 1fr; }
             .footer__inner { grid-template-columns: 1fr; }
             .stats-row { flex-direction: column; gap: 1rem; }
-            .sticky-banner__timer { order: 2; width: 100%; justify-content: center; }
-            .sticky-banner__text { order: 1; text-align: center; }
             .hero { padding-top: 140px; }
-            body.sticky-banner-visible .hero { padding-top: calc(140px + 74px); }
             .tier-features li { font-size: 0.9rem; }
         }
     </style>
+  <script src="/js/event-countdown.js" defer></script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -398,25 +360,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
     <!-- STICKY BANNER - HIGHEST Z-INDEX, AT THE VERY FRONT -->
-    <div class="sticky-banner" id="stickyBanner">
-        <div class="sticky-banner__inner">
-            <div class="sticky-banner__content">
-                <div class="sticky-banner__icon"><i class="fas fa-ticket-alt"></i></div>
-                <div class="sticky-banner__text">
-                    <span class="sticky-banner__title">🔥 DISCOUNT TICKETS END IN <span id="discountDaysLeft">8</span> DAYS</span>
-                    <span class="sticky-banner__subtitle">Get your ticket at a discounted price</span>
-                </div>
-                <div class="sticky-banner__timer" id="countdownTimer">
-                    <div class="timer-block"><span id="timerDays">00</span><span class="timer-label">Days</span></div>
-                    <div class="timer-block"><span id="timerHours">00</span><span class="timer-label">Hrs</span></div>
-                    <div class="timer-block"><span id="timerMinutes">00</span><span class="timer-label">Mins</span></div>
-                    <div class="timer-block"><span id="timerSeconds">00</span><span class="timer-label">Secs</span></div>
-                </div>
-                <a href="ticket.html" class="btn btn--primary btn--sm">Get Ticket →</a>
-                <button class="sticky-banner__close" id="closeBanner">×</button>
-            </div>
-        </div>
-    </div>
 
     <!-- NAVIGATION -->
     <nav class="nav" id="navbar">
@@ -457,6 +400,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </section>
 
     <!-- ABOUT SECTION -->
+
     <section class="about-section">
         <div class="container">
             <div class="about-grid">
@@ -519,42 +463,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); }));
         }
 
-        const stickyBanner = document.getElementById('stickyBanner');
-        const closeBanner = document.getElementById('closeBanner');
-        if (stickyBanner && closeBanner) {
-            window.addEventListener('scroll', () => { 
-                const isVisible = window.scrollY > 300;
-                stickyBanner.classList.toggle('visible', isVisible);
-                if (isVisible) {
-                    document.body.classList.add('sticky-banner-visible');
-                } else {
-                    document.body.classList.remove('sticky-banner-visible');
-                }
-            });
-            closeBanner.addEventListener('click', () => { 
-                stickyBanner.style.display = 'none'; 
-                document.body.classList.remove('sticky-banner-visible');
-            });
-        }
-
-        function updateCountdown() {
-            const discountDate = new Date('September 15, 2026 00:00:00').getTime();
-            const now = new Date().getTime();
-            const distance = discountDate - now;
-            const stickyBanner = document.getElementById('stickyBanner');
-            if (distance < 0) {
-                if (stickyBanner) stickyBanner.style.display = 'none';
-                return;
-            }
-            document.getElementById('timerDays').textContent = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
-            const daysLeftEl = document.getElementById('discountDaysLeft');
-            if (daysLeftEl) daysLeftEl.textContent = String(Math.floor(distance / (1000 * 60 * 60 * 24)));
-            document.getElementById('timerHours').textContent = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-            document.getElementById('timerMinutes').textContent = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-            document.getElementById('timerSeconds').textContent = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
-        }
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
 
         function animateNumbers(selector) {
             document.querySelectorAll(selector).forEach(el => {

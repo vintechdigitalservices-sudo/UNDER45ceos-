@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UDUF Africa Bulk WhatsApp Dispatcher</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f4f6f9; margin: 0; padding: 20px; color: #333; }
+    .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    h1 { margin-top: 0; color: #075e54; font-size: 24px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+    label { font-weight: bold; display: block; margin-bottom: 8px; font-size: 14px; }
+    .label-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .label-header label { margin-bottom: 0; }
+    .count-badge { font-size: 12px; background: #e0f2f1; color: #004d40; padding: 2px 8px; border-radius: 12px; font-weight: bold; }
+    textarea { width: 100%; height: 180px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; resize: vertical; }
+    .controls { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e9ecef; margin-bottom: 20px; }
+    .control-group { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .control-group input { width: 80px; padding: 6px; border-radius: 4px; border: 1px solid #ccc; text-align: center; }
+    .stats-bar { display: flex; gap: 15px; margin-bottom: 15px; background: #e8f5e9; padding: 12px; border-radius: 8px; color: #1b5e20; font-weight: bold; }
+    .progress-container { width: 100%; background: #e0e0e0; border-radius: 8px; height: 12px; overflow: hidden; margin-bottom: 20px; }
+    .progress-bar { width: 0%; height: 100%; background: #25d366; transition: width 0.3s; }
+    .btn-group { display: flex; gap: 10px; }
+    button { padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
+    .btn-start { background: #25d366; color: white; flex: 2; }
+    .btn-start:hover { background: #1eb954; }
+    .btn-copy { background: #007bff; color: white; flex: 1; }
+    .btn-copy:hover { background: #0056b3; }
+    .btn-stop { background: #dc3545; color: white; flex: 1; display: none; }
+    .img-preview { width: 100%; max-height: 120px; object-fit: cover; border-radius: 6px; margin-top: 8px; border: 1px solid #ddd; }
+    
+    /* Manual List Styling */
+    .dispatch-list { max-height: 350px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px; margin-top: 15px; padding: 10px; background: #fafafa; }
+    .dispatch-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff; border-bottom: 1px solid #eee; border-radius: 6px; margin-bottom: 6px; }
+    .dispatch-item:last-child { border-bottom: none; margin-bottom: 0; }
+    .phone-info { font-weight: 600; font-size: 14px; color: #2c3e50; }
+    .btn-send-single { background: #128c7e; color: white; padding: 8px 14px; border-radius: 4px; font-size: 13px; text-decoration: none; font-weight: bold; cursor: pointer; border: none; }
+    .btn-send-single:hover { background: #075e54; }
+    .btn-send-single.sent { background: #6c757d; cursor: default; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>UDUF WhatsApp Message Dispatcher</h1>
+
+  <div class="grid">
+    <div>
+      <div class="label-header">
+        <label for="numbersInput">Phone Numbers (One per line or comma-separated):</label>
+        <span class="count-badge">Count: <span id="inputCount">0</span></span>
+      </div>
+      <textarea id="numbersInput" placeholder="Paste your phone numbers here..." oninput="updateStats()"></textarea>
+    </div>
+    <div>
+      <label for="messageInput">Message Copy:</label>
+      <textarea id="messageInput"></textarea>
+      <label style="margin-top: 10px;">Attached Image:</label>
+      <img src="https://uduf-certificates.vercel.app/september-meeting.jpg" class="img-preview" id="flyerImg" alt="Meeting Flyer">
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <span>Delay between tabs (Seconds):</span>
+      <input type="number" id="delayInput" value="6" min="3" max="30">
+    </div>
+    <div class="stats-bar">
+      <div>Total Contacts Loaded: <span id="totalCount">0</span></div>
+      <div>Current Progress: <span id="currentProgress">0</span> / <span id="targetCount">0</span></div>
+    </div>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn-copy" onclick="copyImageToClipboard()">Copy Image to Clipboard</button>
+    <button class="btn-start" id="startBtn" onclick="startDispatch()">Start Auto Dispatching</button>
+    <button class="btn-stop" id="stopBtn" onclick="stopDispatch()">Pause / Stop</button>
+  </div>
+
+  <div class="dispatch-list" id="dispatchList">
+    <div style="text-align: center; color: #777; padding: 20px;">Paste phone numbers above to generate manual dispatch buttons.</div>
+  </div>
+</div>
+
+<!-- Hidden iframe to dispatch protocol requests without page reloads -->
+<iframe id="dispatchFrame" style="display:none;"></iframe>
+
+<script>
+  // Pre-fill message copy with encoded text
+  const defaultMessage = `PLAN TO ATTEND!
+
+UDUF AFRICA SEPTEMBER BUSINESS MEETING & MENTORSHIP SESSION
+
+What are your next five moves in business?
+
+Join us for an impactful session on:
+
+THE BUSINESS JOURNEY: STARTING, STRUGGLING, SURVIVING AND SUCCEEDING
+An Entrepreneur’s Story of Persistence, Resilience and Growth
+
+Date: Saturday, 12th September 2026
+Time: 12:00 PM
+Venue: AI HUB AFRICA, No. 2 Awka Road, Onitsha
+
+Theme Discussant: Hon. Chioma Ugwu
+Book Review: Your Next Five Moves by Patrick Bet-David
+Facilitator: Uplifter Umeh Kelechukwu
+
+Expect practical insights, interactive discussions, networking and mentorship to help you make better business decisions.
+
+Admission: FREE | No Late Entry
+
+Come ready to learn, connect and discover your next five moves!
+
+UDUF AFRICA
+CONNECT • INSPIRE • TRANSFORM`;
+
+  document.getElementById('messageInput').value = defaultMessage;
+
+  let numberList = [];
+  let currentIndex = 0;
+  let dispatchTimeout = null;
+  let sentCount = 0;
+
+  function cleanPhoneNumber(numStr) {
+    let cleaned = numStr.replace(/[^0-9]/g, '');
+    if (cleaned.startsWith('0') && cleaned.length === 11) {
+      cleaned = '234' + cleaned.substring(1);
+    }
+    return cleaned;
+  }
+
+  function parseNumbers() {
+    const rawText = document.getElementById('numbersInput').value;
+    const lines = rawText.split(/[\n,]+/);
+    const cleanedList = [];
+    
+    lines.forEach(line => {
+      const clean = cleanPhoneNumber(line);
+      if (clean.length >= 10 && clean.length <= 15) {
+        cleanedList.push(clean);
+      }
+    });
+
+    return [...new Set(cleanedList)];
+  }
+
+  function executeAppLaunch(appUrl) {
+    const iframe = document.getElementById('dispatchFrame');
+    if (iframe) {
+      iframe.src = appUrl;
+    }
+  }
+
+  function sendSingleManual(index) {
+    const number = numberList[index];
+    const message = encodeURIComponent(document.getElementById('messageInput').value);
+    const appUrl = `whatsapp://send?phone=${number}&text=${message}`;
+    
+    executeAppLaunch(appUrl);
+    markAsSent(index);
+  }
+
+  function renderDispatchList() {
+    const listContainer = document.getElementById('dispatchList');
+    if (numberList.length === 0) {
+      listContainer.innerHTML = '<div style="text-align: center; color: #777; padding: 20px;">Paste phone numbers above to generate manual dispatch buttons.</div>';
+      return;
+    }
+
+    let html = '';
+
+    numberList.forEach((number, index) => {
+      html += `
+        <div class="dispatch-item">
+          <span class="phone-info">#${index + 1} &nbsp;&nbsp; +${number}</span>
+          <button class="btn-send-single" id="btn-single-${index}" onclick="sendSingleManual(${index})">
+            Send via WhatsApp App
+          </button>
+        </div>
+      `;
+    });
+
+    listContainer.innerHTML = html;
+  }
+
+  function markAsSent(index) {
+    const btn = document.getElementById(`btn-single-${index}`);
+    if (btn && !btn.classList.contains('sent')) {
+      btn.classList.add('sent');
+      btn.innerText = 'Sent ✓';
+      sentCount++;
+      document.getElementById('currentProgress').innerText = sentCount;
+      const percent = numberList.length > 0 ? (sentCount / numberList.length) * 100 : 0;
+      document.getElementById('progressBar').style.width = percent + '%';
+    }
+  }
+
+  function updateStats() {
+    numberList = parseNumbers();
+    document.getElementById('inputCount').innerText = numberList.length;
+    document.getElementById('totalCount').innerText = numberList.length;
+    document.getElementById('targetCount').innerText = numberList.length;
+    renderDispatchList();
+  }
+
+  async function copyImageToClipboard() {
+    try {
+      const img = document.getElementById('flyerImg');
+      const data = await fetch(img.src);
+      const blob = await data.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ [blob.type]: blob })
+      ]);
+      alert("Flyer copied to clipboard! You can now press CTRL + V in WhatsApp to paste the image.");
+    } catch (err) {
+      alert("Image copying isn't supported directly in this browser context, but you can paste the image manually into WhatsApp.");
+    }
+  }
+
+  function dispatchNext() {
+    if (currentIndex >= numberList.length) {
+      alert("Dispatch Completed!");
+      stopDispatch();
+      return;
+    }
+
+    const number = numberList[currentIndex];
+    const message = encodeURIComponent(document.getElementById('messageInput').value);
+    const appUrl = `whatsapp://send?phone=${number}&text=${message}`;
+
+    executeAppLaunch(appUrl);
+    markAsSent(currentIndex);
+
+    currentIndex++;
+
+    const delaySeconds = parseInt(document.getElementById('delayInput').value) || 6;
+    dispatchTimeout = setTimeout(dispatchNext, delaySeconds * 1000);
+  }
+
+  function startDispatch() {
+    updateStats();
+    if (numberList.length === 0) {
+      alert("Please paste your phone numbers into the text box first.");
+      return;
+    }
+
+    document.getElementById('startBtn').style.display = 'none';
+    document.getElementById('stopBtn').style.display = 'block';
+
+    dispatchNext();
+  }
+
+  function stopDispatch() {
+    if (dispatchTimeout) {
+      clearTimeout(dispatchTimeout);
+    }
+    document.getElementById('startBtn').style.display = 'block';
+    document.getElementById('stopBtn').style.display = 'none';
+  }
+</script>
+
+</body>
+</html>

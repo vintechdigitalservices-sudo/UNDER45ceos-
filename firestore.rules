@@ -1,0 +1,83 @@
+rules_version = '2';
+
+// Firestore security rules for the Under 45 CEOs summit site.
+//
+// The key principle: ticket inventory is ADMIN-SERVER-ONLY. The public
+// website reads remaining counts through /api/tickets/inventory (a
+// serverless function using the Admin SDK, which bypasses these rules).
+// Nothing a browser can send can write to ticket_inventory — that is
+// what stops a client from posting {"remaining_quantity": 48}.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Ticket inventory: server only ────────────────────────────
+    match /ticket_inventory/{tier} {
+      allow read: if false;            // served by the API, not the client SDK
+      allow write: if false;           // Admin SDK bypasses rules
+    }
+
+    match /ticket_inventory_ledger/{orderId} {
+      allow read, write: if false;     // idempotency ledger, server only
+    }
+
+    match /ticket_inventory_claims/{claimId} {
+      allow read, write: if false;     // checkout holds, server only
+    }
+
+    // ── Orders ───────────────────────────────────────────────────
+    match /checkouts/{orderId} {
+      // A buyer may create their own order (checkout writes it before
+      // payment). Creation is allowed so the flow keeps working; note
+      // that a buyer cannot self-declare a successful payment because
+      // only the Admin SDK (server) may set paymentStatus to approved —
+      // which now happens exclusively through
+      // POST /api/tickets/review-order, gated on ADMIN_EMAILS.
+      allow create: if request.resource.data.paymentStatus == 'pending'
+                    && request.resource.data.status == 'awaiting_payment';
+
+      // Buyers may attach their receipt while still pending, and may
+      // read their own order. Nothing else.
+      allow read: if true;             // order ref is an unguessable token
+
+      // Two conditions, and both matter:
+      //  • the NEW status must still be an unpaid one, and
+      //  • the CURRENT status must also still be unpaid.
+      // The second is what stops a buyer quietly reverting an already
+      // approved order back to 'pending' after they have their ticket.
+      allow update: if request.resource.data.diff(resource.data)
+                          .affectedKeys().hasOnly([
+                            'paymentStatus', 'status', 'receiptUrl',
+                            'paymentDate', 'amountPaid', 'paymentSubmittedAt'
+                          ])
+                    && request.resource.data.paymentStatus in
+                         ['pending', 'awaiting_verification']
+                    && resource.data.paymentStatus in
+                         ['pending', 'awaiting_verification'];
+      allow delete: if false;
+
+      match /{document=**} {
+        allow read, write: if false;
+      }
+    }
+
+    // ── Public form submissions ──────────────────────────────────
+    match /contact_messages/{id} { allow create: if true; allow read, update, delete: if false; }
+    match /sponsorship/{id}       { allow create: if true; allow read, update, delete: if false; }
+    match /i_will_attend/{id}     { allow create: if true; allow read, update, delete: if false; }
+    match /award_nominations/{id} { allow create: if true; allow read, update, delete: if false; }
+
+    // ── Authenticated areas (volunteers) ─────────────────────────
+    match /volunteers/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    match /referrals/{document=**} {
+      allow read, write: if request.auth != null;
+    }
+
+    // Default deny.
+    match /{document=**} { allow read, write: if false; }
+  }
+}

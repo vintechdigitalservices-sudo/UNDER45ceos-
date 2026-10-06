@@ -1,0 +1,365 @@
+/* ═══════════════════════════════════════════════════════════════
+   UNDER 45 CEOs — Sticky Event Countdown Banner
+
+   Brand colours only. Every value is read from the site's own design
+   tokens so the banner is automatically correct in both themes:
+
+     --orange / --orange-deep   the brand accent (CTA, live digits)
+     --teal  / --teal-light     the brand secondary
+     --nav-bg / --bg-elevated  the header surface
+     --text / --text-muted      the type colours
+     --border-strong           hairlines
+
+   Those tokens live on [data-theme="dark"] and [data-theme="light"] in
+   style.css. Pages with their own inline token block define the same
+   names, so the banner inherits either. The literals below are only
+   fallbacks for pages that define no tokens at all.
+
+   OVERLAY, NOT OFFSET
+   -------------------
+   The banner deliberately sits ON TOP of the site header and stays
+   there until dismissed. It does not push the header down — the header
+   keeps its position and the banner covers it. The z-index sits above
+   every header on the site (.nav is 999, .site-header 1000, the old
+   discount banner used 20000).
+   ═══════════════════════════════════════════════════════════════ */
+
+.u45-cd {
+  /* ---- brand tokens, with fallbacks ---- */
+  --u45-cd-orange: var(--orange, #f07d1a);
+  --u45-cd-orange-deep: var(--orange-deep, #c96410);
+  --u45-cd-teal: var(--teal, #0e6b73);
+  --u45-cd-teal-light: var(--teal-light, #1a8a94);
+
+  --u45-cd-bg: var(--nav-bg, var(--bg-elevated, #03191c));
+  --u45-cd-fg: var(--text, #f7f4ec);
+  --u45-cd-muted: var(--text-muted, rgba(247, 244, 236, 0.66));
+  --u45-cd-line: var(--border-strong, rgba(255, 255, 255, 0.18));
+
+  /* ---- sizing contract ---- */
+  --u45-cd-h: 76px;
+  --u45-cd-pad: clamp(1rem, 2.6vw, 2rem);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Above every header on the site, so the banner covers it. */
+  z-index: 30000;
+  box-sizing: border-box;
+
+  /* Slide + fade in. Transform only, so it stays on the compositor. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(0, -100%, 0);
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms ease,
+    visibility 0s linear 420ms;
+
+  background: var(--u45-cd-bg);
+  color: var(--u45-cd-fg);
+  border-bottom: 3px solid var(--u45-cd-orange);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.4);
+}
+
+/* Accent stripe along the leading edge — brand orange, reads as a tab
+   that has slid down over the header. */
+.u45-cd::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(
+    180deg,
+    var(--u45-cd-orange),
+    var(--u45-cd-orange-deep)
+  );
+}
+
+.u45-cd.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 260ms ease,
+    visibility 0s linear 0s;
+}
+
+/* Explicitly dismissed — never returns this session. */
+.u45-cd.is-dismissed {
+  display: none;
+}
+
+/* ── Row layout ───────────────────────────────────────────────── */
+
+.u45-cd__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: var(--u45-cd-h);
+  padding: 0 var(--u45-cd-pad);
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.6vw, 1.25rem);
+  box-sizing: border-box;
+}
+
+.u45-cd__label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--u45-cd-fg);
+  white-space: nowrap;
+}
+
+.u45-cd__pulse {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--u45-cd-orange);
+  flex: 0 0 auto;
+  animation: u45-cd-pulse 2.2s ease-out infinite;
+}
+
+@keyframes u45-cd-pulse {
+  0%   { box-shadow: 0 0 0 0 var(--u45-cd-orange); }
+  70%  { box-shadow: 0 0 0 9px rgba(240, 125, 26, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(240, 125, 26, 0); }
+}
+
+/* ── Digits ───────────────────────────────────────────────────── */
+
+.u45-cd__digits {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.3rem, 1vw, 0.55rem);
+  flex: 0 0 auto;
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.u45-cd__unit {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.u45-cd__value {
+  font-size: clamp(1.5rem, 3vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--u45-cd-fg);
+  min-width: 2ch;
+  text-align: right;
+}
+
+/* The days figure carries the brand accent, so the eye lands on it. */
+.u45-cd__unit--days .u45-cd__value {
+  color: var(--u45-cd-orange);
+}
+
+.u45-cd__label-sm {
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--u45-cd-muted);
+}
+
+.u45-cd__sep {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--u45-cd-muted);
+  opacity: 0.45;
+  transform: translateY(-1px);
+}
+
+/* ── Text + CTA ───────────────────────────────────────────────── */
+
+.u45-cd__text {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-body, 'DM Sans', sans-serif);
+  font-size: 0.92rem;
+  color: var(--u45-cd-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.u45-cd__text strong {
+  color: var(--u45-cd-fg);
+  font-weight: 600;
+}
+
+/* Brand orange fill, deep-orange hover — same treatment as the site's
+   primary buttons. */
+.u45-cd__cta {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius, 8px);
+  background: var(--u45-cd-orange);
+  color: var(--white, #fff);
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.u45-cd__cta:hover {
+  background: var(--u45-cd-orange-deep);
+  transform: translateY(-1px);
+}
+
+/* ── Animated close button ────────────────────────────────────── */
+
+.u45-cd__close {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--u45-cd-line);
+  border-radius: 50%;
+  background: var(--surface-strong, rgba(255, 255, 255, 0.07));
+  color: var(--u45-cd-fg);
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.u45-cd__close:hover {
+  background: var(--u45-cd-orange);
+  border-color: var(--u45-cd-orange);
+  color: var(--white, #fff);
+  transform: rotate(90deg);
+}
+
+.u45-cd__close:focus-visible {
+  outline: 2px solid var(--u45-cd-orange);
+  outline-offset: 2px;
+}
+
+.u45-cd__close svg {
+  width: 15px;
+  height: 15px;
+  overflow: visible;
+}
+
+/* The ✕ strokes draw themselves in, then the button gets the dismissed
+   animation applied by JS. */
+.u45-cd__close path {
+  stroke: currentColor;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  fill: none;
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+  animation: u45-cd-draw 340ms ease forwards;
+}
+
+.u45-cd__close path:nth-child(2) {
+  animation-delay: 90ms;
+}
+
+@keyframes u45-cd-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.u45-cd.is-dismissing .u45-cd__inner {
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 240ms ease, transform 240ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+.u45-cd.is-dismissing {
+  transform: translate3d(0, -100%, 0);
+  opacity: 0;
+  transition:
+    transform 260ms cubic-bezier(0.4, 0, 1, 1),
+    opacity 200ms ease,
+    visibility 0s linear 260ms;
+}
+
+/* ── Event-day / live ─────────────────────────────────────────── */
+
+.u45-cd__live {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--u45-cd-orange);
+}
+
+.u45-cd--live {
+  border-bottom-color: var(--u45-cd-teal-light);
+}
+
+.u45-cd--live::before {
+  background: linear-gradient(180deg, var(--u45-cd-teal-light), var(--u45-cd-teal));
+}
+
+.u45-cd--live .u45-cd__pulse {
+  background: var(--u45-cd-teal-light);
+  animation-duration: 1.1s;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .u45-cd__text { display: none; }
+}
+
+@media (max-width: 640px) {
+  .u45-cd { --u45-cd-h: 64px; }
+  .u45-cd__label span:not(.u45-cd__pulse) { display: none; }
+  .u45-cd__label-sm { display: none; }
+  .u45-cd__cta { padding: 0.5rem 1rem; font-size: 0.85rem; }
+  .u45-cd__sep { display: none; }
+  .u45-cd__digits { gap: 0.5rem; }
+  .u45-cd__unit { gap: 0.1rem; }
+}
+
+@media (max-width: 380px) {
+  .u45-cd__cta { display: none; }
+}
+
+/* ── Motion / print ───────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .u45-cd,
+  .u45-cd.is-visible,
+  .u45-cd.is-dismissing {
+    transition: opacity 1ms linear;
+    transform: none;
+  }
+  .u45-cd__pulse,
+  .u45-cd__close path {
+    animation: none;
+  }
+  .u45-cd__close path { stroke-dashoffset: 0; }
+}
+
+@media print {
+  .u45-cd { display: none !important; }
+}
