@@ -864,37 +864,15 @@ a:focus-visible, button:focus-visible {
 
 /* ═══ Flyer cards (2026 lineup) — the artwork carries the name and role,
    so these show the whole poster and add no text of their own. ═══ */
-.flyer-feature {
-  max-width: 440px;
-  margin: 2.4rem auto 0.5rem;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--border-strong);
-  box-shadow: var(--shadow-deep);
-  background: var(--surface);
-  position: relative;
-  z-index: 1;
-}
-.flyer-feature img { display: block; width: 100%; height: auto; }
-
-.flyer-section-label { margin-top: 3.4rem; }
-
-.flyer-note {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  margin: 0.4rem auto 0;
-  max-width: 640px;
-}
+/* Wider than the standard .container so the four columns use more of the
+   screen and the left/right gutters stay small. */
+.lineup-wrap { max-width: 1400px; padding: 0 0.75rem; }
 
 .flyers-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 260px));
-  gap: 1.5rem;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-  max-width: 1200px;
-  margin: 1.6rem auto 0;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.9rem;
+  margin: 2.2rem 0 0;
 }
 .flyer-card {
   border-radius: var(--radius-lg);
@@ -908,6 +886,20 @@ a:focus-visible, button:focus-visible {
    printed on the flyer always stay in frame. */
 .flyer-card img { display: block; width: 100%; height: auto; }
 
+/* The reveal transition also drives the scroll-in animation, so keep the
+   lift from fighting it while the card is still hidden. */
+.flyer-card.reveal-up { transform: translateY(36px); }
+.flyer-card.reveal-up.visible { transform: translateY(0); }
+.flyer-card.reveal-up.visible:hover { transform: translateY(-6px); }
+
+@media (max-width: 1024px) {
+  .flyers-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+}
+@media (max-width: 560px) {
+  .flyers-grid { grid-template-columns: 1fr; gap: 1.1rem; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .lineup-wrap { padding: 0 0.9rem; }
+}
+
 @media (max-width: 768px) {
   .keynote-speaker { flex-direction: column; align-items: center; text-align: center; padding: 1.4rem; }
   .keynote-speaker__img { width: 120px; height: 120px; }
@@ -920,9 +912,6 @@ a:focus-visible, button:focus-visible {
   .panelists-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
   .panelist-card__img-wrap { height: 130px; }
   .speaker-card__img-wrap { aspect-ratio: 1 / 1; }
-  .flyer-feature { max-width: 100%; margin-top: 1.8rem; }
-  .flyers-grid { grid-template-columns: 1fr; max-width: 340px; gap: 1.1rem; }
-  .flyer-section-label { margin-top: 2.6rem; }
 }
 
 /* ═══ Highlights / Gallery ═══ */
