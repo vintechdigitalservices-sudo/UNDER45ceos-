@@ -79,16 +79,13 @@
     }
 
     // ── Sold out ─────────────────────────────────────────────────
+    // Informational only. The count reaching zero must NOT disable or
+    // block the purchase path, so the button is left exactly as it was
+    // and the tier stays fully clickable — the badge is what changes.
     if (available <= 0) {
       host.className = 'ticket-stock ticket-stock--soldout';
       host.innerHTML = '<i>&#10005;</i> SOLD OUT';
       card.classList.add('ticket-card--soldout');
-      if (btn) {
-        btn.setAttribute('aria-disabled', 'true');
-        btn.classList.add('ticket-btn--disabled');
-        btn.removeAttribute('href');
-        btn.setAttribute('title', 'This tier is sold out');
-      }
       return;
     }
 
@@ -100,6 +97,8 @@
       '<i>' + (low ? '&#9679;' : '&#9679;') + '</i>' + plural(available, 'Ticket') + ' Left';
 
     if (btn) {
+      // Clear any legacy disabled state left by an older build, so a
+      // tier that was once sold out is never left un-clickable.
       btn.removeAttribute('aria-disabled');
       btn.classList.remove('ticket-btn--disabled');
       btn.removeAttribute('title');

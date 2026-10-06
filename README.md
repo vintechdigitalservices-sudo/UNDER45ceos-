@@ -186,11 +186,23 @@ Deliberately **not** mounted on: `checkout`, `payment`, `ticket-view`,
 |-------|--------|------|---------|
 | `/api/tickets/inventory` | GET | none | Public remaining counts. |
 | `/api/tickets/claim` | GET/POST | none | Availability check / release a checkout hold. Never reduces stock. |
-| `/api/tickets/confirm-order` | POST | admin ID token, or webhook secret | **The only deduction trigger.** Requires the order to already be `approved`/`verified` in Firestore; rejects unpaid orders with `409 PAYMENT_NOT_CONFIRMED`. Idempotent on `orderId`. |
+| `/api/tickets/reserve` | POST | none | **The checkout-time deduction trigger.** Called by `checkout.html` immediately after the `checkouts/{orderId}` document is written, so the count drops at submission — independent of payment, receipt and approval. Reads the quantities back from Firestore (never trusts the request), and is idempotent on `orderId`. |
+| `/api/tickets/confirm-order` | POST | admin ID token, or webhook secret | Legacy paid-order deduction. Requires the order to already be `approved`/`verified` in Firestore; rejects unpaid orders with `409 PAYMENT_NOT_CONFIRMED`. Idempotent on `orderId`, so an order already reserved at checkout is a no-op here. |
 | `/api/tickets/review-order` | POST | admin ID token | The admin approve/reject transition. Flips the order to `approved`/`rejected` via the Admin SDK and commits the deduction in the same request, so stock cannot be left un-deducted behind a failed browser write. Rejection never touches stock. |
 | `/api/tickets/admin/inventory` | GET/POST | admin ID token | Admin read/adjust, clamped to `[0, initial]`. |
 | `/api/selar/webhook` | POST | `x-webhook-secret` | Selar payment callback → deduction. |
 | `/api/selar/verify`, `/api/selar/verify-pending` | — | — | Routed but **handlers not present in this repo**; they 404. |
+
+### Ticket availability badge
+
+Each ticket card shows a compact pill at the very top (`[ 48 Tickets Left ]`,
+or `SOLD OUT` at zero), driven by `/api/tickets/inventory`. The number is
+always the backend value — nothing is counted client-side. Stock is deducted
+**when the checkout form is submitted** (`/api/tickets/reserve`), not on page
+view, tier selection, payment or approval. The badge is an urgency cue only:
+a tier at zero shows `SOLD OUT` but its card and button stay fully clickable,
+and payment approval never deducts a second time because the shared
+`ticket_inventory_ledger/{orderId}` makes every later call idempotent.
 
 ### Ticket page layout
 

@@ -1402,6 +1402,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             try {
                 await db.collection('checkouts').doc(transactionId).set(orderData);
 
+                // ----- Inventory decrement (the checkout-time trigger) -----
+                // The registration above now exists, so the ticket is
+                // counted as taken for this tier immediately. This is
+                // deliberately independent of payment/receipt/approval.
+                // The call is keyed on transactionId, so a double click
+                // or retry cannot reduce the count twice.
+                try {
+                    const reserve = await fetch('/api/tickets/reserve', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ orderId: transactionId })
+                    });
+                    if (!reserve.ok && reserve.status !== 409) {
+                        console.warn('Inventory reserve responded with', reserve.status);
+                    }
+                } catch (reserveError) {
+                    // A counting hiccup must never block a valid
+                    // registration: the order already exists and the
+                    // admin/approval path can settle stock on the same
+                    // idempotency ledger.
+                    console.warn('Inventory reserve failed:', reserveError);
+                }
+
                 // Clear localStorage cart and progress (no local storage for checkout)
                 localStorage.removeItem('under45_cart');
                 localStorage.removeItem('checkout_progress');

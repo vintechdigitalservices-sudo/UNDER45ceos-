@@ -410,8 +410,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             align-items: center;
             gap: 0.45rem;
             align-self: flex-start;
-            margin: 0 0 1rem;
-            padding: 0.35rem 0.85rem;
+            /* Sits at the very top of the card, just above the tier
+               label. Empty until the count loads, so it costs no space
+               when the API is unreachable. */
+            margin: 0 0 0.85rem;
+            padding: 0.32rem 0.8rem;
             border-radius: 40px;
             font-size: 0.7rem;
             font-weight: 800;
@@ -458,24 +461,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             color: var(--gold-light);
         }
 
-        .ticket-card--soldout { opacity: .62; }
-        .ticket-card--soldout:hover { transform: none; box-shadow: none; }
+        /* The featured card is orange, so the warmer low-stock colours
+           would vanish on it. Force dark-chip contrast there. */
+        .ticket-card--featured .ticket-stock--ok {
+            background: rgba(0,0,0,.22);
+            border-color: rgba(255,255,255,.42);
+            color: #fff;
+        }
+        .ticket-card--featured .ticket-stock--low {
+            background: rgba(0,0,0,.3);
+            border-color: rgba(255,255,255,.6);
+            color: #fff;
+        }
 
-        .ticket-btn--disabled,
-        .ticket-btn[aria-disabled="true"] {
-            cursor: not-allowed;
-            opacity: .55;
-            /* pointer-events:none alone would disable the whole card,
-               so the :not() guard keeps the card hoverable while still
-               blocking the click on the button itself. */
-            filter: grayscale(.4);
-        }
-        .ticket-btn--disabled:hover { transform: none; }
-        .ticket-btn--disabled::after {
-            content: 'SOLD OUT';
-            font-size: .8em;
-            letter-spacing: .08em;
-        }
+        /* NOTE: a tier at zero shows the SOLD OUT badge, but the card
+           and its button are intentionally NOT dimmed or disabled — the
+           indicator is an urgency cue, not a purchase gate. */
 
         @media (max-width: 768px) {
             .ticket-stock { font-size: 0.65rem; padding: 0.3rem 0.7rem; }
@@ -1010,13 +1011,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <!-- TIER 01 — ESSENTIAL (₦5,000) -->
                 <div class="ticket-card" data-delay="0" data-tier="Essential" data-price="5000" data-type="Tier 01 / Entry" data-selar="https://selar.com/m/udufu45ceos2026">
+                    <div data-u45-stock></div>
                     <div class="ticket-tier">TIER 01 / ENTRY</div>
                     <div class="ticket-name">Essential</div>
                     <div class="ticket-price-section">
                         <div class="ticket-price">₦5,000</div>
                         <div class="ticket-price-note">Fixed price · Day 1 access</div>
                     </div>
-                    <div data-u45-stock></div>
                     <div class="ticket-features-title">INCLUDES</div>
                     <ul class="ticket-features">
                         <li>Full access to main conference hall <span class="day-tag">DAY 1</span></li>
@@ -1028,6 +1029,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <!-- TIER 02 — GROWTH (Early Bird ₦15,000 / Regular ₦20,000) -->
                 <div class="ticket-card" data-delay="1" data-tier="Growth" data-price="15000" data-type="Tier 02 / Core" data-selar="https://selar.com/m/udufu45ceos2026">
+                    <div data-u45-stock></div>
                     <div class="ticket-tier">TIER 02 / CORE</div>
                     <div class="ticket-name">Growth</div>
                     <div class="ticket-subheader">E-CERTIFICATE + NETWORKING</div>
@@ -1044,7 +1046,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                         <div class="ticket-price-note">Day 1 access · E-certificate + branded materials</div>
                     </div>
-                    <div data-u45-stock></div>
                     <div class="ticket-features-title">INCLUDES</div>
                     <ul class="ticket-features">
                         <li>Full access to main conference hall <span class="day-tag">DAY 1</span></li>
@@ -1059,6 +1060,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <!-- TIER 03 — EXECUTIVE (Early Bird ₦25,000 / Regular ₦35,000) -->
                 <div class="ticket-card ticket-card--featured" data-delay="2" data-tier="Executive" data-price="25000" data-type="Tier 03 / Executive" data-selar="https://selar.com/m/udufu45ceos2026">
+                    <div data-u45-stock></div>
                     <div class="ticket-tier" style="color:rgba(255,255,255,.7)">TIER 03 / EXECUTIVE</div>
                     <div class="ticket-name">Executive</div>
                     <div class="ticket-subheader">PITCH ACCESS + VIP PRIORITY</div>
@@ -1075,7 +1077,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                         <div class="ticket-price-note">VIP fast entry · Priority visibility · All Growth Benefits</div>
                     </div>
-                    <div data-u45-stock></div>
                     <div class="ticket-features-title">INCLUDES</div>
                     <ul class="ticket-features">
                         <li>Pitch access <span class="day-tag">DAY 1</span></li>
@@ -1093,6 +1094,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
                 <!-- TIER 04 — FOUNDERS INNER CIRCLE (Early Bird ₦130,000 / Regular ₦200,000) -->
                 <div class="ticket-card ticket-card--premium" data-delay="3" data-tier="Founders Inner Circle" data-price="130000" data-type="Tier 04 / Pinnacle" data-selar="https://selar.com/m/udufu45ceos2026">
+                    <div data-u45-stock></div>
                     <div class="ticket-tier" style="color:rgba(240,192,64,.6)">TIER 04 / PINNACLE</div>
                     <div class="ticket-name">Founders Inner Circle</div>
                     <div class="ticket-subheader">VVIP + MASTERCLASS + LUNCHEON</div>
@@ -1109,7 +1111,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                         <div class="ticket-price-note" style="color: rgba(240,192,64,.45);">Day 1 & Day 2 · Masterclass + Luncheon</div>
                     </div>
-                    <div data-u45-stock></div>
                     <div class="ticket-features-title">THE FOUNDER'S EDGE</div>
                     <ul class="ticket-features">
                         <li>VVIP attendee badge</li>
@@ -1493,23 +1494,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 const card = this.closest('.ticket-card');
                 if (!card) return;
 
-                // Backend-authoritative sold-out guard. The API validates
-                // again at payment confirmation; this only stops the UI
-                // from opening a checkout for a tier with nothing left.
-                if (window.U45TicketAvailability && window.U45TicketAvailability.isSoldOut(card.dataset.tier)) {
-                    alert('Sorry, this ticket tier is sold out.');
-                    window.U45TicketAvailability.refresh();
-                    return;
-                }
-
-                // Keyboard activation reaches the handler even though the
-                // button has no href while sold out, so the same guard
-                // above has to cover it. Nothing else is blocked.
-                if (this.getAttribute('aria-disabled') === 'true') {
-                    window.U45TicketAvailability.refresh();
-                    return;
-                }
-
+                // Availability is informational only. A tier showing
+                // SOLD OUT still opens normally, so the badge can never
+                // block the registration flow.
                 const ticketData = getTicketDataFromCard(card);
                 // Store the card reference for later use (for features etc.)
                 ticketData._card = card;
@@ -1605,9 +1592,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             // Re-check availability at the last possible moment before
             // handing off to checkout. Advisory only — the server re-checks.
+            // Skipped when nothing is left: a zero count must not be the
+            // thing that stops a buyer, so the badge stays informational.
             if (window.U45TicketAvailability) {
                 const left = window.U45TicketAvailability.maxSelectable(selectedTicket.tier);
-                if (left !== null && left !== undefined && quantity > left) {
+                if (left !== null && left !== undefined && left > 0 && quantity > left) {
                     alert(`Only ${left} ${selectedTicket.name} ticket${left === 1 ? '' : 's'} remaining. Please reduce the quantity.`);
                     window.U45TicketAvailability.refresh();
                     return;
