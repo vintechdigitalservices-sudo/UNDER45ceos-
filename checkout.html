@@ -26,7 +26,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js">
     </script>
-    <script src="/js/ticket-inventory-client.js"></script>
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1373,25 +1372,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 await db.collection('checkouts').doc(transactionId).set(orderData);
 
                 // ----- Inventory decrement (the checkout-time trigger) -----
-                // The registration above now exists, so the ticket is
-                // counted as taken for this tier immediately. This is
-                // deliberately independent of payment/receipt/approval.
-                // The transaction is keyed on transactionId, so a double
-                // click, retry or refresh cannot reduce the count twice.
-                if (window.U45InventoryClient) {
-                    try {
-                        await window.U45InventoryClient.deductInventory(
-                            db,
-                            firebase.firestore.FieldValue,
-                            transactionId,
-                            cart
-                        );
-                    } catch (inventoryError) {
-                        // A counting hiccup must never block a valid
-                        // registration; the order already exists.
-                        console.warn('Inventory deduction failed:', inventoryError);
-                    }
-                }
+                // The order document written above IS the decrement:
+                // the ticket page counts submitted checkouts against
+                // each tier's opening allocation. Nothing else is
+                // needed here, and a double click cannot reduce the
+                // count twice because the order id is the document id.
 
                 // Clear localStorage cart and progress (no local storage for checkout)
                 localStorage.removeItem('under45_cart');

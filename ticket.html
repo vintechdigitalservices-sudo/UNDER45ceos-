@@ -408,25 +408,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
            shows SOLD OUT but never disables the card or its button. */
         .ticket-stock {
             position: absolute;
-            top: -12px;
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            padding: 0.32rem 0.95rem;
-            border-radius: 40px;
-            font-size: 0.66rem;
+            gap: 0.5rem;
+            padding: 0.6rem 1.6rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
             font-weight: 800;
             letter-spacing: 0.12em;
             text-transform: uppercase;
             white-space: nowrap;
-            box-shadow: 0 4px 14px rgba(0,0,0,.28);
+            box-shadow: 0 6px 18px rgba(0,0,0,.32);
             z-index: 3;
             pointer-events: none;
             transition: background .3s ease, color .3s ease;
         }
-        .ticket-stock i { font-size: 0.62rem; }
+        .ticket-stock i { font-size: 0.8rem; }
 
         /* Healthy stock: white chip, brand-orange text. */
         .ticket-stock--ok {
@@ -472,7 +472,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         }
 
         @media (max-width: 768px) {
-            .ticket-stock { font-size: 0.6rem; padding: 0.28rem 0.8rem; letter-spacing: 0.1em; }
+            .ticket-stock { font-size: 0.78rem; padding: 0.5rem 1.2rem; letter-spacing: 0.1em; }
         }
 
         /* ===== SPONSORSHIP TEASER ===== */
@@ -947,11 +947,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             .drawer { max-width: 100%; }
         }
     </style>
-    <!-- Firestore, so the availability badge reads the live count
-         straight from the database (the Admin API is not configured). -->
+    <!-- Firestore, so the availability badge can count submitted
+         checkouts straight from the database. -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="/js/ticket-inventory-client.js"></script>
     <script>
         (function () {
             var firebaseConfig = {

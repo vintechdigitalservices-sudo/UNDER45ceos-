@@ -1,7 +1,8 @@
 # UNDER45ceos — website + Selar/payment API
 
 Static site for the Under 45 CEOs Business & Leadership Summit (Onitsha),
-plus Vercel serverless functions that own ticket inventory.
+Ticket availability is derived in the browser from submitted checkouts;
+the `/api/*` serverless functions are present but not required for it.
 
 > **Note on this file:** the merge-conflict markers that were previously in
 > `README.md` have been resolved. If you were reading the old version, the
@@ -26,83 +27,60 @@ Never put these in frontend code.
 
 ## 🗄️ Ticket inventory
 
-### Where it lives
+### Where the number comes from
 
-Firestore collection **`ticket_inventory`**, one document per tier:
+There is nothing to configure and no admin step. Each tier has a fixed
+opening allocation written into the code:
 
 ```
-ticket_inventory/essential              { ticketType, initialQuantity: 49, remainingQuantity, price, updatedAt }
-ticket_inventory/growth                 { ticketType, initialQuantity: 25, remainingQuantity, price, updatedAt }
-ticket_inventory/executive              { ticketType, initialQuantity: 18, remainingQuantity, price, updatedAt }
-ticket_inventory/founders_inner_circle  { ticketType, initialQuantity: 10, remainingQuantity, price, updatedAt }
+Essential             49
+Growth                25
+Executive             18
+Founders Inner Circle 10
 ```
 
-Two supporting collections, both server-only:
+The remaining count is derived from the orders themselves:
 
-- **`ticket_inventory_ledger/{orderId}`** — the idempotency ledger. The document ID *is* the payment reference.
-- **`ticket_inventory_claims/{claimId}`** — in-flight checkout holds with a 20-minute TTL.
+```
+remaining = opening - sum(quantity of submitted checkouts for that tier)
+```
 
-`tickets_sold` is never stored. It is always derived as
-`initial_quantity - remaining_quantity` (see `readInventory()` in
-`api/_lib/ticket-inventory.js`), so the two numbers cannot drift.
+Because it is computed from `checkouts`, the number is always consistent
+with the orders that actually exist, and every ticket type has its own
+independent counter. `tickets_sold` is never stored separately — it is
+just `opening - remaining`.
 
-The docs are created lazily on first read, so there is no migration step.
+The `ticket_inventory` / `ticket_inventory_ledger` collections and the
+`api/_lib/ticket-inventory.js` helpers still exist for the (currently
+unused) Admin-SDK path, but the public site does not depend on them.
 
 ### What triggers the deduction
 
-A **confirmed** payment. In this project that is one of:
+Submitting the checkout form. `checkout.html` writes the order to
+`checkouts/{orderId}`; that new document is what the ticket page counts.
+It is the only thing that moves the number.
 
-| Path | Trigger |
-|------|---------|
-| Bank transfer (the main flow) | An admin approves the order in `admin.html` → `commitInventoryForOrder()` → `POST /api/tickets/review-order`, which sets the status and moves the stock in one admin-gated request. |
-| Selar card payment | Selar calls `POST /api/selar/webhook` with the shared secret. |
-
-The browser cannot perform that status change itself. `firestore.rules`
-only lets a client move an order between `pending` and
-`awaiting_verification`, so a buyer can never approve their own payment —
-and the rule checks the order's *current* status too, so a buyer cannot
-revert an already-approved order back to `pending`. Only the Admin SDK,
-through `review-order.js` behind `ADMIN_EMAILS`, can set `approved`.
-
-The server does not take the admin's word for it either: `confirm-order.js`
-re-reads the order from Firestore and requires `paymentStatus` (or
-`status`) to be `approved` or `verified` before it will move stock.
-Calling it with a valid admin token on an unpaid order returns
-`409 PAYMENT_NOT_CONFIRMED` and leaves inventory untouched.
-
-Nothing else moves stock. Opening the ticket page, choosing a tier,
-starting checkout, entering details, refreshing, abandoning, or a failed
-payment all leave `remaining_quantity` untouched.
-
-### How duplicate payment processing is prevented
-
-`commitDeduction()` runs a Firestore transaction that **creates
-`ticket_inventory_ledger/{orderId}`** in the same atomic commit as the
-decrement. Replaying the same reference finds the existing ledger
-document and returns `{ alreadyProcessed: true }` without touching stock.
-Concurrent duplicates hit Firestore's `ALREADY_EXISTS` and are treated the
-same way.
-
-The quantity is read from the order document in Firestore on the admin
-path — a client cannot post `remaining_quantity` and have it believed.
-
-### How concurrent purchases are handled
-
-Firestore transactions with optimistic locking. The read of
-`remainingQuantity`, the availability check, the decrement, and the ledger
-write all happen inside one transaction, so two buyers racing for the last
-ticket are serialised: the loser re-runs the transaction, re-reads the
-now-zero stock, and receives `409 SOLD_OUT`. `remaining_quantity` can never
-go negative because the check runs against the locked read.
+Opening the ticket page, selecting a tier, opening the drawer, entering
+details, refreshing, payment, uploading a receipt, and an admin approving
+the payment all leave the count untouched. Because the order id is the
+document id, a double click, retry or refresh cannot count the same order
+twice.
 
 ### How the frontend gets the current quantity
 
-`js/ticket-availability.js` renders `N Tickets Left` / `SOLD OUT` on each
-card from a real-time Firestore `onSnapshot` on `ticket_inventory`, so an
-open page updates the moment a checkout reduces a tier. If the Firestore
-client is unavailable it falls back to `GET /api/tickets/inventory` (which
-needs Admin credentials). No value is stored in `localStorage` /
-`sessionStorage`; the browser only ever mirrors what Firestore holds.
+`js/ticket-availability.js` reads the `checkouts` collection with a
+real-time Firestore `onSnapshot` (`window.u45db`), sums the tickets per
+tier, subtracts them from each opening allocation, and paints
+`N Tickets Left` / `SOLD OUT` onto every card. Every open device updates
+the moment a checkout is created.
+
+The opening figures are painted immediately on load, so the page always
+shows real numbers. There is no "unavailable" state: if the snapshot
+cannot be reached, the opening figures simply stay on screen. No value is
+stored in `localStorage` / `sessionStorage`.
+
+The badge is informational only. A tier at zero shows `SOLD OUT`, but the
+card and its button stay live — the count never blocks a registration.
 
 ---
 
@@ -185,8 +163,7 @@ Deliberately **not** mounted on: `checkout`, `payment`, `ticket-view`,
 
 | Route | Method | Auth | Purpose |
 |-------|--------|------|---------|
-| `/api/tickets/inventory` | GET | none | Remaining counts. **Fallback only** — the page reads Firestore directly. Needs Admin credentials to respond. |
-| `/api/tickets/reserve` | POST | none | Server-side checkout-time deduction; idempotent on `orderId`. Retained but currently non-functional (no Admin credentials); the browser performs the equivalent Firestore transaction in `js/ticket-inventory-client.js`. |
+| `/api/tickets/inventory` | GET | none | Remaining counts for the (currently unused) Admin-SDK path. Needs Admin credentials to respond. The public page does not call it. |
 | `/api/tickets/confirm-order` | POST | admin ID token, or webhook secret | Legacy paid-order deduction. Requires the order to already be `approved`/`verified` in Firestore; rejects unpaid orders with `409 PAYMENT_NOT_CONFIRMED`. Idempotent on `orderId`, so an order already reserved at checkout is a no-op here. |
 | `/api/tickets/review-order` | POST | admin ID token | The admin approve/reject transition. Flips the order to `approved`/`rejected` via the Admin SDK and commits the deduction in the same request, so stock cannot be left un-deducted behind a failed browser write. Rejection never touches stock. |
 | `/api/tickets/admin/inventory` | GET/POST | admin ID token | Admin read/adjust, clamped to `[0, initial]`. |
@@ -196,18 +173,15 @@ Deliberately **not** mounted on: `checkout`, `payment`, `ticket-view`,
 ### Ticket availability badge
 
 Each ticket card shows a pill pinned to its top edge (`48 Tickets Left`, or
-`SOLD OUT` at zero). The count lives in Firestore `ticket_inventory` and is
-read by the browser through a real-time `onSnapshot` (`js/ticket-inventory-client.js`
-+ `js/ticket-availability.js`), so every open device updates the moment a
-checkout reduces a tier. `/api/tickets/inventory` is used only as a fallback
-if the Firestore client is unavailable.
+`SOLD OUT` at zero). The count is derived in the browser from the
+`checkouts` collection (`js/ticket-availability.js` + `window.u45db`), so
+every open device updates the moment a checkout is submitted.
 
-Stock is deducted **when the checkout form is submitted** — `checkout.html`
-runs a Firestore transaction right after writing the `checkouts/{orderId}`
-document. This is independent of payment, receipt and approval. The
-transaction creates `ticket_inventory_ledger/{orderId}` as an idempotency
-key, so a double click, retry, refresh or duplicate request can only ever
-count once.
+The count moves **when the checkout form is submitted** — the order
+document `checkout.html` writes to `checkouts/{orderId}` is what the page
+counts. This is independent of payment, receipt and approval, and because
+the order id is the document id a double click, retry or refresh can only
+ever count once.
 
 The badge is an urgency cue only: a tier at zero shows `SOLD OUT` but its
 card and button stay fully clickable, and no code path disables a purchase
@@ -215,12 +189,9 @@ based on the count.
 
 > **Deployment note.** The `/api/tickets/*` serverless functions need
 > `FIREBASE_PRIVATE_KEY` / `FIREBASE_CLIENT_EMAIL` / `FIREBASE_PROJECT_ID`.
-> On this deployment those credentials are absent, so every `/api/tickets/*`
-> call returns HTTP 500 and the availability flow runs entirely on the
-> client SDK instead (which is why `firestore.rules` now grants public read
-> and a guarded decrement on `ticket_inventory`). If you later set the
-> Admin credentials, `api/tickets/reserve.js` will work again and stays
-> idempotent with the client path via the shared ledger.
+> Those credentials are absent on this deployment, so the availability
+> feature reads the `checkouts` collection directly from the browser and
+> none of the `/api/tickets/*` functions are involved.
 
 ### Ticket page layout
 
@@ -269,10 +240,11 @@ npm test
 **Technical Lead / System Admin**
 - Immanuel — 09021773508 — vintechdigitalservices@gmail.com
 
-If ticket counts look stuck or a payment is not reflected:
-1. Check Vercel logs.
-2. Confirm `FIREBASE_PRIVATE_KEY` and `ADMIN_EMAILS` are set.
-3. In the admin dashboard open **Ticket Inventory** and hit Refresh.
+If a ticket count looks wrong:
+1. It is derived from the orders in the `checkouts` collection — confirm
+   the expected order document exists and its `tickets` field holds the
+   right tier/quantity.
+2. Reload the ticket page; it reads the collection in real time.
 
 Payment orders are polled from Selar every 5 minutes. If an order has not
 appeared after 30 minutes, contact support.
