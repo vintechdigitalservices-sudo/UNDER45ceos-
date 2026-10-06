@@ -471,8 +471,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             color: #fff;
         }
 
+/* On small screens the badge sits in the normal flow, centred above
+           the tier label, so a wider rectangle can never overlap the card
+           above or spill past the edges. */
         @media (max-width: 768px) {
-            .ticket-stock { font-size: 0.78rem; padding: 0.5rem 1.2rem; letter-spacing: 0.1em; }
+            .ticket-stock {
+                position: static;
+                top: auto;
+                left: auto;
+                transform: none;
+                align-self: center;
+                margin: 0 auto 1rem;
+                max-width: 100%;
+                font-size: 0.78rem;
+                padding: 0.5rem 1.2rem;
+                letter-spacing: 0.1em;
+            }
+            .ticket-tier { margin-top: 0; }
         }
 
         /* ===== SPONSORSHIP TEASER ===== */

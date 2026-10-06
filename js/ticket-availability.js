@@ -13,11 +13,14 @@
 
    A ticket is counted as taken the moment a checkout is submitted and
    its order document is written to the `checkouts` collection. This
-   module reads that collection and subtracts the tickets it finds, so:
+   module reads that collection and subtracts the tickets found *since
+   go-live* (COUNT_FROM), so:
 
-       remaining = opening - sum(quantity of submitted checkouts)
+       remaining = opening - sum(quantity of checkouts after go-live)
 
-   Nothing else moves the number. Opening the page, picking a tier,
+   Orders that already existed before the feature shipped are left out —
+   the 49/25/18/10 figures are the numbers available from that moment.
+   Nothing else moves the count. Opening the page, picking a tier,
    paying, uploading a receipt or an admin approving the payment do NOT
    change it — only a new checkout document does.
 
@@ -43,6 +46,13 @@
     executive: 18,
     founders_inner_circle: 10
   };
+
+  // Only checkouts submitted at or after this instant count against the
+  // opening allocation. The 49 / 25 / 18 / 10 figures are the number
+  // available from go-live, so orders that already existed before the
+  // feature shipped must not be subtracted from them a second time.
+  // Change this timestamp if the go-live moment ever needs to move.
+  var COUNT_FROM = Date.parse('2026-10-06T17:18:35Z');
 
   var LOW_STOCK = 5;
 
@@ -121,6 +131,14 @@
     }));
   }
 
+  function orderTime(value) {
+    if (!value) return 0;
+    if (typeof value.toDate === 'function') return value.toDate().getTime();
+    if (typeof value === 'number') return value;
+    var parsed = Date.parse(value);
+    return isNaN(parsed) ? 0 : parsed;
+  }
+
   // Turn the checkouts snapshot into remaining counts.
   function remainingFromSnapshot(snap) {
     var sold = {};
@@ -128,6 +146,14 @@
 
     snap.forEach(function (doc) {
       var data = doc.data() || {};
+
+      // Only real checkouts submitted since go-live count. Rejected
+      // orders release their tickets; anything older is part of the
+      // opening allocation already.
+      var status = String(data.status || data.paymentStatus || '').toLowerCase();
+      if (status === 'rejected') return;
+      if (orderTime(data.orderDate) < COUNT_FROM) return;
+
       var tickets = data.tickets;
       if (!tickets || typeof tickets !== 'object') return;
       Object.keys(tickets).forEach(function (name) {
