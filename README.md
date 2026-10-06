@@ -97,11 +97,12 @@ go negative because the check runs against the locked read.
 
 ### How the frontend gets the current quantity
 
-`js/ticket-availability.js` calls `GET /api/tickets/inventory` and renders
-`N Tickets Left` / `SOLD OUT` on each card. It refetches on load, on
-`pageshow`, on tab focus, on `visibilitychange`, and every 30 s. No value
-is stored in `localStorage`/`sessionStorage`, and no counter is decremented
-in the browser.
+`js/ticket-availability.js` renders `N Tickets Left` / `SOLD OUT` on each
+card from a real-time Firestore `onSnapshot` on `ticket_inventory`, so an
+open page updates the moment a checkout reduces a tier. If the Firestore
+client is unavailable it falls back to `GET /api/tickets/inventory` (which
+needs Admin credentials). No value is stored in `localStorage` /
+`sessionStorage`; the browser only ever mirrors what Firestore holds.
 
 ---
 
@@ -184,9 +185,8 @@ Deliberately **not** mounted on: `checkout`, `payment`, `ticket-view`,
 
 | Route | Method | Auth | Purpose |
 |-------|--------|------|---------|
-| `/api/tickets/inventory` | GET | none | Public remaining counts. |
-| `/api/tickets/claim` | GET/POST | none | Availability check / release a checkout hold. Never reduces stock. |
-| `/api/tickets/reserve` | POST | none | **The checkout-time deduction trigger.** Called by `checkout.html` immediately after the `checkouts/{orderId}` document is written, so the count drops at submission — independent of payment, receipt and approval. Reads the quantities back from Firestore (never trusts the request), and is idempotent on `orderId`. |
+| `/api/tickets/inventory` | GET | none | Remaining counts. **Fallback only** — the page reads Firestore directly. Needs Admin credentials to respond. |
+| `/api/tickets/reserve` | POST | none | Server-side checkout-time deduction; idempotent on `orderId`. Retained but currently non-functional (no Admin credentials); the browser performs the equivalent Firestore transaction in `js/ticket-inventory-client.js`. |
 | `/api/tickets/confirm-order` | POST | admin ID token, or webhook secret | Legacy paid-order deduction. Requires the order to already be `approved`/`verified` in Firestore; rejects unpaid orders with `409 PAYMENT_NOT_CONFIRMED`. Idempotent on `orderId`, so an order already reserved at checkout is a no-op here. |
 | `/api/tickets/review-order` | POST | admin ID token | The admin approve/reject transition. Flips the order to `approved`/`rejected` via the Admin SDK and commits the deduction in the same request, so stock cannot be left un-deducted behind a failed browser write. Rejection never touches stock. |
 | `/api/tickets/admin/inventory` | GET/POST | admin ID token | Admin read/adjust, clamped to `[0, initial]`. |
@@ -195,14 +195,32 @@ Deliberately **not** mounted on: `checkout`, `payment`, `ticket-view`,
 
 ### Ticket availability badge
 
-Each ticket card shows a compact pill at the very top (`[ 48 Tickets Left ]`,
-or `SOLD OUT` at zero), driven by `/api/tickets/inventory`. The number is
-always the backend value — nothing is counted client-side. Stock is deducted
-**when the checkout form is submitted** (`/api/tickets/reserve`), not on page
-view, tier selection, payment or approval. The badge is an urgency cue only:
-a tier at zero shows `SOLD OUT` but its card and button stay fully clickable,
-and payment approval never deducts a second time because the shared
-`ticket_inventory_ledger/{orderId}` makes every later call idempotent.
+Each ticket card shows a pill pinned to its top edge (`48 Tickets Left`, or
+`SOLD OUT` at zero). The count lives in Firestore `ticket_inventory` and is
+read by the browser through a real-time `onSnapshot` (`js/ticket-inventory-client.js`
++ `js/ticket-availability.js`), so every open device updates the moment a
+checkout reduces a tier. `/api/tickets/inventory` is used only as a fallback
+if the Firestore client is unavailable.
+
+Stock is deducted **when the checkout form is submitted** — `checkout.html`
+runs a Firestore transaction right after writing the `checkouts/{orderId}`
+document. This is independent of payment, receipt and approval. The
+transaction creates `ticket_inventory_ledger/{orderId}` as an idempotency
+key, so a double click, retry, refresh or duplicate request can only ever
+count once.
+
+The badge is an urgency cue only: a tier at zero shows `SOLD OUT` but its
+card and button stay fully clickable, and no code path disables a purchase
+based on the count.
+
+> **Deployment note.** The `/api/tickets/*` serverless functions need
+> `FIREBASE_PRIVATE_KEY` / `FIREBASE_CLIENT_EMAIL` / `FIREBASE_PROJECT_ID`.
+> On this deployment those credentials are absent, so every `/api/tickets/*`
+> call returns HTTP 500 and the availability flow runs entirely on the
+> client SDK instead (which is why `firestore.rules` now grants public read
+> and a guarded decrement on `ticket_inventory`). If you later set the
+> Admin credentials, `api/tickets/reserve.js` will work again and stays
+> idempotent with the client path via the shared ledger.
 
 ### Ticket page layout
 

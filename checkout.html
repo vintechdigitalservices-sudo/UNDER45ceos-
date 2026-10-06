@@ -26,6 +26,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js">
     </script>
+    <script src="/js/ticket-inventory-client.js"></script>
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1343,40 +1344,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             const transactionId = generateTransactionId();
 
-            // ----- Server-side availability gate -----
-            // The cart lives in localStorage, so it cannot be trusted as
-            // the source of truth for what is still buyable. Ask the
-            // backend before creating the order. Nothing is reserved here:
-            // stock only moves when payment is confirmed.
-            try {
-                const cartLines = Object.entries(cart || {})
-                    .filter(([, qty]) => Number(qty) > 0)
-                    .map(([tier, qty]) => ({ key: tier, qty: Number(qty) }));
-
-                if (cartLines.length) {
-                    const check = await fetch('/api/tickets/claim', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ orderId: transactionId, lines: cartLines })
-                    });
-
-                    if (check.status === 409) {
-                        const body = await check.json().catch(() => ({}));
-                        const short = (body.shortages || [])
-                            .map((s) => `${s.requested} requested, only ${s.available} left`)
-                            .join('\n');
-                        throw new Error(short || 'Those tickets are no longer available.');
-                    }
-                    if (!check.ok) throw new Error('Could not verify ticket availability.');
-                }
-            } catch (availabilityError) {
-                loadingOverlay.classList.remove('active');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Proceed to Payment <i class="fas fa-arrow-right"></i>';
-                alert('Ticket availability check failed:\n\n' + availabilityError.message +
-                      '\n\nPlease review your cart and try again.');
-                return;
-            }
+            // Availability is informational only — the remaining count never
+            // blocks a registration. The count is what moves when the order
+            // is created (below); it is never used to refuse a checkout.
 
             // Get email and referral code from the fields
             const emailInput = document.getElementById('customerEmail');
@@ -1406,23 +1376,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 // The registration above now exists, so the ticket is
                 // counted as taken for this tier immediately. This is
                 // deliberately independent of payment/receipt/approval.
-                // The call is keyed on transactionId, so a double click
-                // or retry cannot reduce the count twice.
-                try {
-                    const reserve = await fetch('/api/tickets/reserve', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ orderId: transactionId })
-                    });
-                    if (!reserve.ok && reserve.status !== 409) {
-                        console.warn('Inventory reserve responded with', reserve.status);
+                // The transaction is keyed on transactionId, so a double
+                // click, retry or refresh cannot reduce the count twice.
+                if (window.U45InventoryClient) {
+                    try {
+                        await window.U45InventoryClient.deductInventory(
+                            db,
+                            firebase.firestore.FieldValue,
+                            transactionId,
+                            cart
+                        );
+                    } catch (inventoryError) {
+                        // A counting hiccup must never block a valid
+                        // registration; the order already exists.
+                        console.warn('Inventory deduction failed:', inventoryError);
                     }
-                } catch (reserveError) {
-                    // A counting hiccup must never block a valid
-                    // registration: the order already exists and the
-                    // admin/approval path can settle stock on the same
-                    // idempotency ledger.
-                    console.warn('Inventory reserve failed:', reserveError);
                 }
 
                 // Clear localStorage cart and progress (no local storage for checkout)

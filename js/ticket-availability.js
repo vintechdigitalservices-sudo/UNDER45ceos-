@@ -1,20 +1,22 @@
 /* ═══════════════════════════════════════════════════════════════
    Ticket availability — renders the live remaining count on each
-   ticket card and drives the sold-out state.
+   ticket card and drives the sold-out badge.
 
-   The numbers on screen are never computed here. Every figure comes
-   from GET /api/tickets/inventory, which reads Firestore. There is no
-   local counter, and nothing is written to localStorage or
-   sessionStorage — a user editing storage cannot change what is shown,
-   and the backend revalidates availability before any deduction.
+   Source of truth
+   ---------------
+   Firestore `ticket_inventory`, read straight from the browser via a
+   real-time snapshot, so every open device updates the moment a
+   checkout reduces a tier. The count is never stored or computed
+   locally — window.U45InventoryClient just formats what Firestore
+   holds (missing docs fall back to the opening stock).
 
-   Refresh triggers: initial load, pageshow (bfcache restore), tab
-   focus, visibilitychange, and a 30 s poll while the page is visible.
+   If the Firestore client is unavailable the module falls back to the
+   /api/tickets/inventory endpoint, and if that also fails the cards
+   show a neutral "Availability unavailable" note and stay fully
+   purchasable — a backend outage must not look like a sold-out event.
 
-   Depends on /api/tickets/inventory being live. If the endpoint is
-   unreachable the cards show a neutral "Availability unavailable"
-   note and stay fully purchasable — a backend outage must not look
-   like a sold-out event.
+   The badge is informational. A tier at zero shows SOLD OUT but the
+   button is left alone; this module never disables a purchase.
    ═══════════════════════════════════════════════════════════════ */
 
 (function () {
@@ -31,15 +33,15 @@
     'founders inner circle': 'founders_inner_circle'
   };
 
-  // At or below this, the count is emphasised. Below LOW_STOCK the
-  // card is marked low; at or below this the tier is effectively gone.
   var LOW_STOCK = 5;
 
   var timer = null;
+  var unsubscribe = null;
   var lastSeen = null;
-  // Last figures received from the backend, keyed by tier. Purely a
-  // mirror of the last server response.
   var counts = null;
+
+  function clientLib() { return window.U45InventoryClient || null; }
+  function firestoreDb() { return window.u45db || null; }
 
   function keyFor(tierName) {
     return TIER_MAP[String(tierName || '').trim().toLowerCase()] || null;
@@ -48,8 +50,6 @@
   function stockHost(card) {
     var host = card.querySelector('[data-u45-stock]');
     if (!host) {
-      // Fallback: inject above the INCLUDES heading so the component
-      // still works on a card that predates the placeholder.
       var anchor = card.querySelector('.ticket-features-title');
       if (!anchor) return null;
       host = document.createElement('div');
@@ -67,21 +67,14 @@
     var host = stockHost(card);
     if (!host) return;
 
-    var btn = card.querySelector('.js-get-ticket');
     var available = tier.remainingQuantity;
 
-    // ── Loading / unavailable ────────────────────────────────────
     if (tier.status === 'unavailable') {
       host.className = 'ticket-stock ticket-stock--unavailable';
-      host.innerHTML = '<i>&#9888;</i> Availability unavailable &mdash; check before buying';
-      // Do NOT disable: an unreachable backend is not a sold-out tier.
+      host.innerHTML = '<i>&#9888;</i> Availability unavailable';
       return;
     }
 
-    // ── Sold out ─────────────────────────────────────────────────
-    // Informational only. The count reaching zero must NOT disable or
-    // block the purchase path, so the button is left exactly as it was
-    // and the tier stays fully clickable — the badge is what changes.
     if (available <= 0) {
       host.className = 'ticket-stock ticket-stock--soldout';
       host.innerHTML = '<i>&#10005;</i> SOLD OUT';
@@ -89,49 +82,69 @@
       return;
     }
 
-    // ── In stock ─────────────────────────────────────────────────
     card.classList.remove('ticket-card--soldout');
     var low = available <= LOW_STOCK;
     host.className = 'ticket-stock ' + (low ? 'ticket-stock--low' : 'ticket-stock--ok');
     host.innerHTML =
-      '<i>' + (low ? '&#9679;' : '&#9679;') + '</i>' + plural(available, 'Ticket') + ' Left';
-
-    if (btn) {
-      // Clear any legacy disabled state left by an older build, so a
-      // tier that was once sold out is never left un-clickable.
-      btn.removeAttribute('aria-disabled');
-      btn.classList.remove('ticket-btn--disabled');
-      btn.removeAttribute('title');
-      btn.setAttribute('href', btn.dataset.selar || btn.getAttribute('href') || '#');
-    }
+      '<i>&#9679;</i>' + plural(available, 'Ticket') + ' Left';
   }
 
-  function paint(payload) {
-    var remaining = (payload && payload.remaining) || {};
-    var tiers = (payload && payload.tiers) || [];
+  function paintTiers(tiers) {
+    if (!Array.isArray(tiers)) return;
 
-    // Mirror the server response. Nothing is derived or incremented.
-    counts = Object.assign({}, remaining);
+    counts = {};
+    tiers.forEach(function (tier) { counts[tier.key] = tier.remainingQuantity; });
 
-    tiers.forEach(function (tier) {
-      var cards = document.querySelectorAll(
-        '.ticket-card[data-tier="' + tier.key + '"],' +
-        '.ticket-card[data-tier="' + (tier.ticketType || '') + '"]'
-      );
-      Array.prototype.forEach.call(cards, function (card) {
-        if (keyFor(card.dataset.tier) !== tier.key) return;
-        render(card, tier);
-      });
+    var cards = document.querySelectorAll('.ticket-card[data-tier]');
+    Array.prototype.forEach.call(cards, function (card) {
+      var key = keyFor(card.dataset.tier);
+      if (!key) return;
+      var tier = null;
+      tiers.forEach(function (t) { if (t.key === key) tier = t; });
+      if (tier) render(card, tier);
     });
 
-    // A tier the backend did not mention is not proof of zero stock, so
-    // only mark cards explicitly reported as sold out.
-    lastSeen = payload && payload.serverTime ? payload.serverTime : new Date().toISOString();
+    lastSeen = new Date().toISOString();
     document.dispatchEvent(new CustomEvent('u45:inventory-updated', {
-      detail: { tiers, remaining, serverTime: lastSeen }
+      detail: { tiers: tiers, remaining: counts, serverTime: lastSeen }
     }));
   }
 
+  function markUnavailable() {
+    document.querySelectorAll('.ticket-card').forEach(function (card) {
+      var host = stockHost(card);
+      if (!host) return;
+      host.className = 'ticket-stock ticket-stock--unavailable';
+      host.innerHTML = '<i>&#9888;</i> Availability unavailable';
+    });
+  }
+
+  // ── Source A: Firestore real-time ─────────────────────────────
+  function startRealtime() {
+    var db = firestoreDb();
+    var lib = clientLib();
+    if (!db || !db.collection || !lib) return false;
+
+    try {
+      unsubscribe = db.collection('ticket_inventory').onSnapshot(
+        function (snap) {
+          var docs = {};
+          snap.forEach(function (doc) { docs[doc.id] = doc.data(); });
+          paintTiers(lib.tiersFromDocs(docs));
+        },
+        function (err) {
+          console.warn('[ticket-availability] snapshot failed, falling back:', err && err.message);
+          fetchOnce();
+        }
+      );
+      return true;
+    } catch (err) {
+      console.warn('[ticket-availability] realtime unavailable:', err && err.message);
+      return false;
+    }
+  }
+
+  // ── Source B: API fallback ────────────────────────────────────
   function fetchOnce() {
     return fetch(ENDPOINT, { headers: { Accept: 'application/json' } })
       .then(function (res) {
@@ -139,38 +152,33 @@
         return res.json();
       })
       .then(function (payload) {
-        paint(payload);
+        paintTiers((payload && payload.tiers) || []);
         return payload;
       })
       .catch(function (err) {
-        // Network or server failure: mark availability unknown rather
-        // than silently leaving stale numbers on screen.
-        document.querySelectorAll('.ticket-card').forEach(function (card) {
-          var host = stockHost(card);
-          if (!host) return;
-          host.className = 'ticket-stock ticket-stock--unavailable';
-          host.innerHTML = '<i>&#9888;</i> Availability unavailable &mdash; check before buying';
-        });
+        markUnavailable();
         console.warn('[ticket-availability] fetch failed:', err.message);
       });
   }
 
-  function refresh() {
-    // Pause polling while the tab is hidden; resync on return.
-    if (document.hidden) return Promise.resolve();
-    return fetchOnce();
-  }
-
   function start() {
     stop();
-    refresh();
-    timer = window.setInterval(refresh, POLL_MS);
+    if (startRealtime()) return;
+    // No Firestore handle: poll the API instead.
+    fetchOnce();
+    timer = window.setInterval(function () {
+      if (!document.hidden) fetchOnce();
+    }, POLL_MS);
   }
 
   function stop() {
     if (timer) {
       window.clearInterval(timer);
       timer = null;
+    }
+    if (unsubscribe) {
+      try { unsubscribe(); } catch (e) { /* ignore */ }
+      unsubscribe = null;
     }
   }
 
@@ -179,12 +187,15 @@
 
     start();
 
+    // Re-sync when the tab comes back, in case the snapshot had been
+    // throttled while hidden.
     var onVisible = function () {
-      if (!document.hidden) fetchOnce();
+      if (document.hidden) return;
+      if (unsubscribe) return; // real-time stays live on its own
+      fetchOnce();
     };
     document.addEventListener('visibilitychange', onVisible);
     window.addEventListener('pageshow', onVisible);
-    window.addEventListener('focus', onVisible);
     window.addEventListener('online', onVisible);
 
     window.U45TicketAvailability = {
@@ -192,22 +203,16 @@
       stop: stop,
       start: start,
 
-      // Latest figures from the backend, keyed by tier. This is a
-      // read-only cache of the last server response — never a counter
-      // that the page increments.
       lastSeen: function () { return lastSeen; },
       counts: function () { return counts; },
 
       isSoldOut: function (tierName) {
         var key = keyFor(tierName);
         if (!key) return false;
-        // Unknown tier or no data yet: allow, so a failed fetch can
-        // never masquerade as sold out.
         if (!counts || !(key in counts)) return false;
         return counts[key] <= 0;
       },
 
-      // Keeps the drawer quantity stepper within the remaining stock.
       maxSelectable: function (tierName) {
         var key = keyFor(tierName);
         if (!key || !counts || !(key in counts)) return null;

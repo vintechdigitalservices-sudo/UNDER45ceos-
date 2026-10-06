@@ -2,23 +2,51 @@ rules_version = '2';
 
 // Firestore security rules for the Under 45 CEOs summit site.
 //
-// The key principle: ticket inventory is ADMIN-SERVER-ONLY. The public
-// website reads remaining counts through /api/tickets/inventory (a
-// serverless function using the Admin SDK, which bypasses these rules).
-// Nothing a browser can send can write to ticket_inventory — that is
-// what stops a client from posting {"remaining_quantity": 48}.
+// Ticket inventory is stored in ticket_inventory and read straight from
+// the browser (the Admin-SDK API is not configured on this deployment).
+// The rules below let anyone READ a count and let the checkout page make
+// it go DOWN by exactly the shape of a real deduction — never up, never
+// below zero, and only the count/timestamp fields. The per-order ledger
+// document is the idempotency key that stops a double deduction.
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Ticket inventory: server only ────────────────────────────
+    // ── Ticket inventory ─────────────────────────────────────────
     match /ticket_inventory/{tier} {
-      allow read: if false;            // served by the API, not the client SDK
-      allow write: if false;           // Admin SDK bypasses rules
+      allow read: if true;             // public remaining counts
+
+      // Create only with the official opening stock for that tier, so no
+      // one can invent a tier or seed a fake count.
+      allow create: if (
+        (tier == 'essential'             && request.resource.data.initialQuantity == 49) ||
+        (tier == 'growth'                && request.resource.data.initialQuantity == 25) ||
+        (tier == 'executive'             && request.resource.data.initialQuantity == 18) ||
+        (tier == 'founders_inner_circle' && request.resource.data.initialQuantity == 10)
+      )
+        && request.resource.data.remainingQuantity is int
+        && request.resource.data.remainingQuantity >= 0
+        && request.resource.data.remainingQuantity <= request.resource.data.initialQuantity;
+
+      // Deduction only: the count may never increase or go negative, and
+      // only the count/timestamp fields may change.
+      allow update: if request.resource.data.diff(resource.data)
+                          .affectedKeys().hasOnly(['remainingQuantity', 'updatedAt'])
+                    && request.resource.data.remainingQuantity is int
+                    && request.resource.data.remainingQuantity >= 0
+                    && request.resource.data.remainingQuantity <= resource.data.remainingQuantity;
+
+      allow delete: if false;
     }
 
     match /ticket_inventory_ledger/{orderId} {
-      allow read, write: if false;     // idempotency ledger, server only
+      // Idempotency key, created once per order. Public read so the
+      // checkout page can check it; immutable once written.
+      allow read: if true;
+      allow create: if request.resource.data.orderId == orderId
+                    && request.resource.data.lines is list
+                    && request.resource.data.lines.size() > 0;
+      allow update, delete: if false;
     }
 
     match /ticket_inventory_claims/{claimId} {
