@@ -513,10 +513,10 @@
 
     /*
       Certificate background — hidden on the page until the user generates.
-      Keep background.webp in the same folder (repo root) as this HTML file.
+      Uses assets/certificate-background.webp (converted from certificate-background.jpg).
     */
     const background = new Image();
-    background.src = "background.webp";
+    background.src = "assets/certificate-background.webp";
 
     let certificateGenerated = false;
     let currentRecipient = "";
@@ -529,7 +529,7 @@
       Fine-tune these values if the placement ever needs to move.
     */
     const NAME_X = 768;       // Horizontal center
-    const NAME_Y = 558;       // Vertical position
+    const NAME_Y = 590;       // Vertical position
     const MAX_NAME_WIDTH = 1120;
 
     function drawCertificate(name = "") {
@@ -574,7 +574,7 @@
     }
 
     background.onerror = () => {
-      setStatus("Could not load background.webp. Make sure it is in the same folder as this HTML file.", true);
+      setStatus("Could not load the certificate background image. Please refresh and try again.", true);
     };
 
     // ---- Eligible tier detection ----

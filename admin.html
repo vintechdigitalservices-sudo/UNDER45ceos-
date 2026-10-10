@@ -138,6 +138,7 @@
         .tab-content { display: none; width: 100%; }
         .tab-content.active { display: block; }
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        #ticketStats { grid-template-columns: repeat(5, 1fr); }
         .stat-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 16px; padding: 1.2rem; border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s; }
         .stat-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.15); }
         .stat-card .stat-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
@@ -288,6 +289,7 @@
             <div class="stat-card pending"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div><div class="stat-number" id="pendingOrders">0</div><div class="stat-label">Pending</div></div>
             <div class="stat-card approved"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-number" id="approvedOrders">0</div><div class="stat-label">Approved</div></div>
             <div class="stat-card rejected"><div class="stat-icon"><i class="fas fa-times-circle"></i></div><div class="stat-number" id="rejectedOrders">0</div><div class="stat-label">Rejected</div></div>
+            <div class="stat-card total"><div class="stat-icon"><i class="fas fa-coins"></i></div><div class="stat-number" id="totalRevenue">₦0</div><div class="stat-label">Total Revenue</div></div>
         </div>
         <div class="filters-bar">
             <div class="search-box"><i class="fas fa-search"></i><input type="text" id="ticketSearch" placeholder="Search by Order ID, Name, or Email..."></div>
@@ -774,6 +776,10 @@
         document.getElementById('pendingOrders').textContent = allTicketOrders.filter(t => t.paymentStatus === 'pending').length;
         document.getElementById('approvedOrders').textContent = allTicketOrders.filter(t => t.paymentStatus === 'approved').length;
         document.getElementById('rejectedOrders').textContent = allTicketOrders.filter(t => t.paymentStatus === 'rejected').length;
+        const revenue = allTicketOrders
+            .filter(t => t.paymentStatus === 'approved')
+            .reduce((sum, t) => sum + (Number(t.totalAmount) || 0), 0);
+        document.getElementById('totalRevenue').textContent = '₦' + revenue.toLocaleString();
     }
 
     window.viewTicketDetails = async function(orderId) {
