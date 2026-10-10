@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Meta Tags -->
+  <title>Certificate Generator | Under 45 CEOs Business &amp; Leadership Summit 2026</title>
+  <meta name="description" content="Generate your personalized Under 45 CEOs Summit 2026 certificate of participation. Enter your name, preview it instantly, and download a print-ready PDF." />
+  <meta name="keywords" content="Under 45 CEOs certificate, certificate generator, summit certificate, participation certificate, Under 45 CEOs Summit 2026, Onitsha, Nigeria" />
+  <meta name="author" content="UDUF Africa" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://under45ceos.udufafrica.org/certificate.html" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/under45.png" />
+  <link rel="apple-touch-icon" href="/assets/under45.png" />
+  <link rel="shortcut icon" href="/assets/under45.png" />
+
+  <!-- Open Graph / Social Media Meta Tags -->
+  <meta property="og:title" content="Certificate Generator | Under 45 CEOs Summit 2026" />
+  <meta property="og:description" content="Generate and download your personalized Under 45 CEOs Summit 2026 certificate of participation." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://under45ceos.udufafrica.org/certificate.html" />
+  <meta property="og:image" content="https://under45ceos.udufafrica.org/assets/under45.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Under 45 CEOs Summit" />
+  <meta property="og:locale" content="en_NG" />
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Certificate Generator | Under 45 CEOs Summit 2026" />
+  <meta name="twitter:description" content="Generate and download your personalized Under 45 CEOs Summit 2026 certificate of participation." />
+  <meta name="twitter:image" content="https://under45ceos.udufafrica.org/assets/under45.png" />
+
+  <!-- Additional SEO Meta Tags -->
+  <meta name="geo.region" content="NG-AN" />
+  <meta name="geo.placename" content="Onitsha" />
+  <meta name="geo.position" content="6.1667;6.7833" />
+  <meta name="ICBM" content="6.1667, 6.7833" />
+
+  <!-- Schema.org / Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Under 45 CEOs Certificate Generator",
+    "url": "https://under45ceos.udufafrica.org/certificate.html",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "description": "Generate and download a personalized Under 45 CEOs Summit 2026 certificate of participation as a print-ready PDF.",
+    "image": "https://under45ceos.udufafrica.org/assets/under45.png",
+    "author": {
+      "@type": "Organization",
+      "name": "UDUF Africa",
+      "url": "https://under45ceos.udufafrica.org"
+    }
+  }
+  </script>
+
+  <!-- PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Brand fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --orange: #f07d1a;
+      --orange-deep: #c96410;
+      --teal: #0e6b73;
+      --teal-light: #1a8a94;
+      --accent2: #4bb3bc;
+      --white: #ffffff;
+      --bg: #04262a;
+      --bg-deep: #021a1d;
+      --bg-elevated: #0a3338;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-strong: rgba(255, 255, 255, 0.07);
+      --border: rgba(255, 255, 255, 0.10);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      --text: #f7f4ec;
+      --text-muted: rgba(247, 244, 236, 0.66);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --radius: 8px;
+      --radius-lg: 14px;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      font-family: var(--font-body);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(26, 138, 148, 0.20), transparent 60%),
+        radial-gradient(900px 500px at 110% 10%, rgba(240, 125, 26, 0.12), transparent 55%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+      background-attachment: fixed;
+    }
+
+    .app {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+    }
+
+    /* ---- brand header ---- */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .brand__logo {
+      height: 52px;
+      width: auto;
+      display: block;
+    }
+
+    .brand__divider {
+      width: 1px;
+      height: 34px;
+      background: var(--border-strong);
+    }
+
+    .brand__text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+
+    .brand__title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+
+    .brand__sub {
+      font-size: 0.66rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-top: 4px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, var(--surface-strong), var(--surface));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: 0 10px 34px rgba(0, 0, 0, 0.35);
+      margin-bottom: 24px;
+      backdrop-filter: blur(6px);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      margin: 0 0 6px;
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      margin: 0 0 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent2);
+    }
+
+    input {
+      width: 100%;
+      height: 48px;
+      background: rgba(2, 26, 29, 0.55);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      padding: 0 14px;
+      font-size: 16px;
+      font-family: var(--font-body);
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+    }
+
+    input::placeholder { color: rgba(247, 244, 236, 0.35); }
+
+    input:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(240, 125, 26, 0.18);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 0;
+      border-radius: var(--radius);
+      min-height: 46px;
+      padding: 0 20px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s var(--ease), box-shadow .2s var(--ease), transform .1s var(--ease);
+    }
+
+    button:active { transform: translateY(1px); }
+
+    #generateBtn {
+      background: linear-gradient(180deg, var(--orange), var(--orange-deep));
+      color: var(--white);
+      box-shadow: 0 10px 26px rgba(240, 125, 26, 0.30);
+    }
+
+    #generateBtn:hover:not(:disabled) {
+      box-shadow: 0 12px 30px rgba(240, 125, 26, 0.45);
+    }
+
+    #downloadBtn {
+      background: linear-gradient(180deg, var(--teal-light), var(--teal));
+      color: var(--white);
+      display: none;
+    }
+
+    #downloadBtn:hover:not(:disabled) {
+      box-shadow: 0 12px 30px rgba(14, 107, 115, 0.45);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* ---- preview ---- */
+    .preview-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: rgba(2, 26, 29, 0.5);
+      min-height: 260px;
+    }
+
+    #certificateCanvas {
+      display: none;
+      width: 100%;
+      height: auto;
+    }
+
+    #certificateCanvas.is-visible {
+      display: block;
+      animation: certFade .45s var(--ease);
+    }
+
+    @keyframes certFade {
+      from { opacity: 0; transform: scale(0.99); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text-muted);
+    }
+
+    .placeholder__icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px dashed var(--border-strong);
+      color: var(--accent2);
+      font-size: 26px;
+      background: var(--surface);
+    }
+
+    .placeholder__title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+
+    .placeholder__text {
+      font-size: 13px;
+      max-width: 320px;
+    }
+
+    .placeholder.is-hidden { display: none; }
+
+    /* ---- spinner overlay ---- */
+    .generating {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: rgba(2, 26, 29, 0.78);
+      backdrop-filter: blur(3px);
+      z-index: 3;
+    }
+
+    .generating.is-active { display: flex; }
+
+    .spinner {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.12);
+      border-top-color: var(--orange);
+      border-right-color: var(--orange);
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .generating__text {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .btn-spinner {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-top-color: var(--white);
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+
+    #generateBtn.is-busy .btn-spinner { display: inline-block; }
+
+    /* ---- status ---- */
+    .status {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .error { color: #ff8a8a; }
+
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      .panel { padding: 16px; }
+      h1 { font-size: 1.6rem; }
+      .brand__logo { height: 42px; }
+      .actions button { width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header class="brand">
+      <img class="brand__logo" src="/assets/under45.png" alt="Under 45 CEOs">
+      <div class="brand__divider"></div>
+      <div class="brand__text">
+        <span class="brand__title">Certificate Generator</span>
+        <span class="brand__sub">Under 45 CEOs Summit 2026</span>
+      </div>
+    </header>
+
+    <section class="panel">
+      <h1>Generate Your Certificate</h1>
+      <p class="subtitle">
+        Enter the recipient's name exactly as it should appear on the certificate.
+      </p>
+
+      <label for="nameInput">Recipient Name</label>
+      <input
+        id="nameInput"
+        type="text"
+        placeholder="Enter full name"
+        autocomplete="name"
+      >
+
+      <div class="actions">
+        <button id="generateBtn" type="button">
+          <span class="btn-spinner" aria-hidden="true"></span>
+          <span id="generateBtnLabel">Generate Certificate</span>
+        </button>
+        <button id="downloadBtn" type="button">Download PDF</button>
+      </div>
+
+      <div id="status" class="status">
+        Enter a name and generate the certificate.
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="preview-wrap" id="previewWrap">
+        <canvas id="certificateCanvas" width="1536" height="1087"></canvas>
+
+        <div class="placeholder" id="placeholder">
+          <div class="placeholder__icon">&#127894;</div>
+          <div class="placeholder__title">Your certificate preview</div>
+          <div class="placeholder__text">Enter a name above and click “Generate Certificate” to see it here.</div>
+        </div>
+
+        <div class="generating" id="generating">
+          <div class="spinner" aria-hidden="true"></div>
+          <div class="generating__text">Generating certificate…</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("certificateCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const nameInput = document.getElementById("nameInput");
+    const generateBtn = document.getElementById("generateBtn");
+    const generateBtnLabel = document.getElementById("generateBtnLabel");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const status = document.getElementById("status");
+    const placeholder = document.getElementById("placeholder");
+    const generating = document.getElementById("generating");
+
+    /*
+      Certificate background — hidden on the page until the user generates.
+      Keep background.webp in the same folder (repo root) as this HTML file.
+    */
+    const background = new Image();
+    background.src = "background.webp";
+
+    let certificateGenerated = false;
+
+    /*
+      NAME POSITION
+      The certificate artwork is drawn on a 1536 × 1087 canvas.
+      Fine-tune these values if the placement ever needs to move.
+    */
+    const NAME_X = 768;       // Horizontal center
+    const NAME_Y = 558;       // Vertical position
+    const MAX_NAME_WIDTH = 1120;
+
+    function drawCertificate(name = "") {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+      if (!name) return;
+
+      let fontSize = 64;
+      const fontFamily = "Arial, Helvetica, sans-serif";
+
+      do {
+        ctx.font = `700 ${fontSize}px ${fontFamily}`;
+        if (ctx.measureText(name).width <= MAX_NAME_WIDTH) break;
+        fontSize -= 2;
+      } while (fontSize >= 30);
+
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#111111";
+      ctx.fillText(name, NAME_X, NAME_Y);
+    }
+
+    function setStatus(message, isError = false) {
+      status.textContent = message;
+      status.classList.toggle("error", isError);
+    }
+
+    // Resolve once the background image is ready (or reject if it fails).
+    function ensureBackground() {
+      if (background.complete && background.naturalWidth > 0) {
+        return Promise.resolve();
+      }
+      return new Promise((resolve, reject) => {
+        background.addEventListener("load", () => resolve(), { once: true });
+        background.addEventListener("error", () => reject(new Error("background")), { once: true });
+      });
+    }
+
+    function wait(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    background.onerror = () => {
+      setStatus("Could not load background.webp. Make sure it is in the same folder as this HTML file.", true);
+    };
+
+    generateBtn.addEventListener("click", async () => {
+      const name = nameInput.value.trim();
+
+      if (!name) {
+        setStatus("Please enter a recipient name.", true);
+        nameInput.focus();
+        return;
+      }
+
+      // Lock the UI and show the spinner while we work.
+      generateBtn.disabled = true;
+      downloadBtn.disabled = true;
+      generateBtn.classList.add("is-busy");
+      generateBtnLabel.textContent = "Generating";
+      placeholder.classList.add("is-hidden");
+      generating.classList.add("is-active");
+      setStatus("Generating certificate…");
+
+      const startedAt = Date.now();
+      const MIN_SPIN = 800; // keep the spinner visible long enough to be seen
+
+      try {
+        await ensureBackground();
+
+        // Let the spinner show even when everything is already cached.
+        const elapsed = Date.now() - startedAt;
+        if (elapsed < MIN_SPIN) await wait(MIN_SPIN - elapsed);
+
+        drawCertificate(name);
+
+        certificateGenerated = true;
+        canvas.classList.add("is-visible");
+        downloadBtn.style.display = "inline-flex";
+
+        setStatus(`Certificate generated for ${name}.`);
+      } catch (err) {
+        placeholder.classList.remove("is-hidden");
+        setStatus("The certificate background could not be loaded. Please refresh and try again.", true);
+      } finally {
+        generating.classList.remove("is-active");
+        generateBtn.disabled = false;
+        downloadBtn.disabled = false;
+        generateBtn.classList.remove("is-busy");
+        generateBtnLabel.textContent = "Generate Certificate";
+      }
+    });
+
+    downloadBtn.addEventListener("click", () => {
+      if (!certificateGenerated) return;
+
+      const { jsPDF } = window.jspdf;
+
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "px",
+        format: [1536, 1087],
+        hotfixes: ["px_scaling"],
+        compress: true
+      });
+
+      const imageData = canvas.toDataURL("image/jpeg", 0.95);
+
+      pdf.addImage(imageData, "JPEG", 0, 0, 1536, 1087, undefined, "FAST");
+
+      const safeName = nameInput.value
+        .trim()
+        .replace(/[<>:"/\\|?*]/g, "")
+        .replace(/\s+/g, "-");
+
+      pdf.save(`${safeName || "certificate"}-certificate.pdf`);
+    });
+
+    // Generate when Enter is pressed inside the name field.
+    nameInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        generateBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>

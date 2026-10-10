@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+Disallow: /api/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /login
+Disallow: /checkout
+Disallow: /payment
+Disallow: /status
+
+Sitemap: https://under45ceos.udufafrica.org/sitemap.xml

@@ -19,6 +19,7 @@
     { "source": "/privacy", "destination": "/privacy-policy.html" },
     { "source": "/status", "destination": "/status.html" },
     { "source": "/ticket-view", "destination": "/ticket-view.html" },
+    { "source": "/certificate", "destination": "/certificate.html" },
 
     { "source": "/login", "destination": "/login.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" },
@@ -42,6 +43,16 @@
     { "source": "/sponsors", "destination": "/sponsor", "permanent": true },
     { "source": "/faq", "destination": "/faqs", "permanent": true },
     { "source": "/signin", "destination": "/login", "permanent": true },
-    { "source": "/signup", "destination": "/login", "permanent": true }
+    { "source": "/signup", "destination": "/login", "permanent": true },
+    { "source": "/certificates", "destination": "/certificate", "permanent": true },
+    { "source": "/cert", "destination": "/certificate", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
   ]
 }
