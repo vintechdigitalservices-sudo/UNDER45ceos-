@@ -6,7 +6,7 @@
 
   <!-- SEO Meta Tags -->
   <title>Certificate Generator | Under 45 CEOs Business &amp; Leadership Summit 2026</title>
-  <meta name="description" content="Generate your personalized Under 45 CEOs Summit 2026 certificate of participation. Enter your name, preview it instantly, and download a print-ready PDF." />
+  <meta name="description" content="Executive, Founders Inner Circle, and Growth ticket holders can generate their Under 45 CEOs Summit 2026 certificate. Enter your registration name or Order ID to preview and download a print-ready PDF." />
   <meta name="keywords" content="Under 45 CEOs certificate, certificate generator, summit certificate, participation certificate, Under 45 CEOs Summit 2026, Onitsha, Nigeria" />
   <meta name="author" content="UDUF Africa" />
   <meta name="robots" content="index, follow" />
@@ -22,20 +22,22 @@
 
   <!-- Open Graph / Social Media Meta Tags -->
   <meta property="og:title" content="Certificate Generator | Under 45 CEOs Summit 2026" />
-  <meta property="og:description" content="Generate and download your personalized Under 45 CEOs Summit 2026 certificate of participation." />
+  <meta property="og:description" content="Executive, Founders Inner Circle, and Growth ticket holders can generate their Under 45 CEOs Summit 2026 certificate with their registration name or Order ID." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://under45ceos.udufafrica.org/certificate.html" />
-  <meta property="og:image" content="https://under45ceos.udufafrica.org/assets/under45.png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image" content="https://under45ceos.udufafrica.org/assets/main-flyer.webp" />
+  <meta property="og:image:width" content="900" />
+  <meta property="og:image:height" content="1080" />
+  <meta property="og:image:alt" content="Under 45 CEOs Business &amp; Leadership Summit 2026 flyer" />
   <meta property="og:site_name" content="Under 45 CEOs Summit" />
   <meta property="og:locale" content="en_NG" />
 
   <!-- Twitter Card Meta Tags -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Certificate Generator | Under 45 CEOs Summit 2026" />
-  <meta name="twitter:description" content="Generate and download your personalized Under 45 CEOs Summit 2026 certificate of participation." />
-  <meta name="twitter:image" content="https://under45ceos.udufafrica.org/assets/under45.png" />
+  <meta name="twitter:description" content="Executive, Founders Inner Circle, and Growth ticket holders can generate their Under 45 CEOs Summit 2026 certificate with their registration name or Order ID." />
+  <meta name="twitter:image" content="https://under45ceos.udufafrica.org/assets/main-flyer.webp" />
+  <meta name="twitter:image:alt" content="Under 45 CEOs Business &amp; Leadership Summit 2026 flyer" />
 
   <!-- Additional SEO Meta Tags -->
   <meta name="geo.region" content="NG-AN" />
@@ -53,7 +55,7 @@
     "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "Any",
     "description": "Generate and download a personalized Under 45 CEOs Summit 2026 certificate of participation as a print-ready PDF.",
-    "image": "https://under45ceos.udufafrica.org/assets/under45.png",
+    "image": "https://under45ceos.udufafrica.org/assets/main-flyer.webp",
     "author": {
       "@type": "Organization",
       "name": "UDUF Africa",
@@ -64,6 +66,10 @@
 
   <!-- PDF generation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Firebase (Firestore) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
   <!-- Brand fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -209,6 +215,28 @@
       border-color: var(--orange);
       box-shadow: 0 0 0 3px rgba(240, 125, 26, 0.18);
     }
+
+    select {
+      width: 100%;
+      height: 48px;
+      background: rgba(2, 26, 29, 0.55);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      padding: 0 14px;
+      font-size: 16px;
+      font-family: var(--font-body);
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+    }
+
+    select:focus {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(240, 125, 26, 0.18);
+    }
+
+    .attendee-picker { margin-top: 16px; }
+    .attendee-picker[hidden] { display: none; }
 
     .actions {
       display: flex;
@@ -405,29 +433,37 @@
     </header>
 
     <section class="panel">
-      <h1>Generate Your Certificate</h1>
+      <h1>Summit Certificate</h1>
       <p class="subtitle">
-        Enter the recipient's name exactly as it should appear on the certificate.
+        This certificate is available to <strong>Executive</strong>, <strong>Founders Inner Circle</strong>, and <strong>Growth</strong> ticket holders.
+        Enter the exact name you used at registration, or your Order ID.
       </p>
 
-      <label for="nameInput">Recipient Name</label>
+      <label for="orderIdInput">Registration Name or Order ID</label>
       <input
-        id="nameInput"
+        id="orderIdInput"
         type="text"
-        placeholder="Enter full name"
-        autocomplete="name"
+        placeholder="e.g. the name you registered with, or U45-2026-7ANB5N7I"
+        autocomplete="off"
+        autocapitalize="characters"
+        spellcheck="false"
       >
+
+      <div class="attendee-picker" id="attendeePicker" hidden>
+        <label for="attendeeSelect">Certificate holder</label>
+        <select id="attendeeSelect"></select>
+      </div>
 
       <div class="actions">
         <button id="generateBtn" type="button">
           <span class="btn-spinner" aria-hidden="true"></span>
-          <span id="generateBtnLabel">Generate Certificate</span>
+          <span id="generateBtnLabel">Verify &amp; Generate</span>
         </button>
         <button id="downloadBtn" type="button">Download PDF</button>
       </div>
 
       <div id="status" class="status">
-        Enter a name and generate the certificate.
+        Enter your registration name or Order ID to generate your certificate.
       </div>
     </section>
 
@@ -438,7 +474,7 @@
         <div class="placeholder" id="placeholder">
           <div class="placeholder__icon">&#127894;</div>
           <div class="placeholder__title">Your certificate preview</div>
-          <div class="placeholder__text">Enter a name above and click “Generate Certificate” to see it here.</div>
+          <div class="placeholder__text">Enter the exact name you used at registration, or your Order ID, then click “Verify &amp; Generate”.</div>
         </div>
 
         <div class="generating" id="generating">
@@ -453,13 +489,27 @@
     const canvas = document.getElementById("certificateCanvas");
     const ctx = canvas.getContext("2d");
 
-    const nameInput = document.getElementById("nameInput");
+    const orderIdInput = document.getElementById("orderIdInput");
     const generateBtn = document.getElementById("generateBtn");
     const generateBtnLabel = document.getElementById("generateBtnLabel");
     const downloadBtn = document.getElementById("downloadBtn");
     const status = document.getElementById("status");
     const placeholder = document.getElementById("placeholder");
     const generating = document.getElementById("generating");
+    const attendeePicker = document.getElementById("attendeePicker");
+    const attendeeSelect = document.getElementById("attendeeSelect");
+
+    // ---- Firebase (Firestore) ----
+    const firebaseConfig = {
+      apiKey: "AIzaSyC8DNuOCSrVdhazlQxcQRBXlYZvHHZzqpc",
+      authDomain: "under45ceos-submit.firebaseapp.com",
+      projectId: "under45ceos-submit",
+      storageBucket: "under45ceos-submit.firebasestorage.app",
+      messagingSenderId: "801982436580",
+      appId: "1:801982436580:web:3769913cb6ec23fbaa88f1"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
     /*
       Certificate background — hidden on the page until the user generates.
@@ -469,6 +519,9 @@
     background.src = "background.webp";
 
     let certificateGenerated = false;
+    let currentRecipient = "";
+    let eligibleAttendees = [];
+    const MIN_SPIN = 800;
 
     /*
       NAME POSITION
@@ -524,36 +577,116 @@
       setStatus("Could not load background.webp. Make sure it is in the same folder as this HTML file.", true);
     };
 
-    generateBtn.addEventListener("click", async () => {
-      const name = nameInput.value.trim();
+    // ---- Eligible tier detection ----
+    const ELIGIBLE_TIERS = ["executive", "founders_inner_circle", "executive_&_premium", "premium", "growth"];
 
-      if (!name) {
-        setStatus("Please enter a recipient name.", true);
-        nameInput.focus();
-        return;
+    function normaliseTier(t) {
+      return String(t || "").trim().toLowerCase().replace(/\s+/g, "_");
+    }
+
+    function isEligibleTier(t) {
+      return ELIGIBLE_TIERS.includes(normaliseTier(t));
+    }
+
+    function attendeeName(a) {
+      if (!a) return "";
+      const parts = [a.firstname, a.middlename, a.lastname].filter(Boolean);
+      const joined = parts.join(" ").replace(/\s+/g, " ").trim();
+      return joined || String(a.name || "").trim();
+    }
+
+    // Lowercased + trimmed + space-collapsed, for case-insensitive matching.
+    function collapse(value) {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function attendeeMatches(attendee, query) {
+      const q = collapse(query);
+      if (!q) return false;
+
+      if (collapse(attendeeName(attendee)) === q) return true;
+
+      // Allow the middle name to be omitted: "John Doe" matches "John Paul Doe".
+      const first = collapse(attendee.firstname);
+      const last = collapse(attendee.lastname);
+      if (first && last && collapse(first + " " + last) === q) return true;
+
+      return false;
+    }
+
+    // Names of every eligible attendee on a single order.
+    function eligibleNamesFromOrder(data) {
+      const list = [];
+      const attendees = Array.isArray(data.attendees) ? data.attendees : [];
+      attendees.forEach((a) => {
+        if (isEligibleTier(a.ticketTier || a.tier)) {
+          const name = attendeeName(a);
+          if (name && !list.includes(name)) list.push(name);
+        }
+      });
+      return list;
+    }
+
+    // True when the order's ticket cart contains an eligible-tier ticket.
+    function hasEligibleTickets(tickets) {
+      if (!tickets || typeof tickets !== "object") return false;
+      return Object.keys(tickets).some((key) => isEligibleTier(key));
+    }
+
+    async function fetchOrder(orderId) {
+      const snap = await db.collection("checkouts").doc(orderId).get();
+      return snap.exists ? snap.data() : null;
+    }
+
+    // Case-insensitive name search across every checkout.
+    async function searchByName(query) {
+      const q = collapse(query);
+      const hits = [];
+      const snap = await db.collection("checkouts").get();
+      snap.forEach((doc) => {
+        const data = doc.data() || {};
+        const attendees = Array.isArray(data.attendees) ? data.attendees : [];
+        attendees.forEach((a) => {
+          if (isEligibleTier(a.ticketTier || a.tier) && attendeeMatches(a, q)) {
+            const name = attendeeName(a);
+            if (name && !hits.includes(name)) hits.push(name);
+          }
+        });
+      });
+      return hits;
+    }
+
+    function setBusy(isBusy, label) {
+      generateBtn.disabled = isBusy;
+      downloadBtn.disabled = isBusy;
+      generateBtn.classList.toggle("is-busy", isBusy);
+      generateBtnLabel.textContent = isBusy ? (label || "Working") : "Verify & Generate";
+      if (isBusy) {
+        placeholder.classList.add("is-hidden");
+        generating.classList.add("is-active");
+      } else {
+        generating.classList.remove("is-active");
       }
+    }
 
-      // Lock the UI and show the spinner while we work.
-      generateBtn.disabled = true;
-      downloadBtn.disabled = true;
-      generateBtn.classList.add("is-busy");
-      generateBtnLabel.textContent = "Generating";
-      placeholder.classList.add("is-hidden");
-      generating.classList.add("is-active");
+    // Draws the certificate for a validated Executive recipient.
+    async function renderFor(name, startedAt) {
+      setBusy(true, "Generating");
       setStatus("Generating certificate…");
-
-      const startedAt = Date.now();
-      const MIN_SPIN = 800; // keep the spinner visible long enough to be seen
 
       try {
         await ensureBackground();
 
-        // Let the spinner show even when everything is already cached.
-        const elapsed = Date.now() - startedAt;
+        // Keep the spinner visible briefly even when everything is cached.
+        const elapsed = Date.now() - (startedAt || Date.now());
         if (elapsed < MIN_SPIN) await wait(MIN_SPIN - elapsed);
 
         drawCertificate(name);
 
+        currentRecipient = name;
         certificateGenerated = true;
         canvas.classList.add("is-visible");
         downloadBtn.style.display = "inline-flex";
@@ -563,12 +696,83 @@
         placeholder.classList.remove("is-hidden");
         setStatus("The certificate background could not be loaded. Please refresh and try again.", true);
       } finally {
-        generating.classList.remove("is-active");
-        generateBtn.disabled = false;
-        downloadBtn.disabled = false;
-        generateBtn.classList.remove("is-busy");
-        generateBtnLabel.textContent = "Generate Certificate";
+        setBusy(false);
       }
+    }
+
+    async function verifyAndGenerate() {
+      const queryText = orderIdInput.value.trim();
+      if (!queryText) {
+        setStatus("Enter the exact name you used at registration, or your Order ID.", true);
+        orderIdInput.focus();
+        return;
+      }
+
+      // Reset the preview for a new lookup.
+      attendeePicker.hidden = true;
+      certificateGenerated = false;
+      currentRecipient = "";
+      canvas.classList.remove("is-visible");
+      downloadBtn.style.display = "none";
+
+      setBusy(true, "Verifying");
+      setStatus("Verifying your registration…");
+      const startedAt = Date.now();
+
+      let candidates = [];
+      let notFoundMsg = "";
+
+      try {
+        // Order IDs look like U45-2026-XXXXXXXX — resolve straight to the document.
+        if (/^U45-/i.test(queryText)) {
+          const data = await fetchOrder(queryText.toUpperCase());
+          if (!data) {
+            notFoundMsg = "Order ID not found. Please check the ID on your ticket confirmation and try again.";
+          } else {
+            candidates = eligibleNamesFromOrder(data);
+            if (candidates.length === 0 && hasEligibleTickets(data.tickets)) {
+              notFoundMsg = "We found your eligible order, but no attendee name is on file. Please contact the Under 45 CEOs team for help.";
+            }
+          }
+        } else {
+          candidates = await searchByName(queryText);
+          if (candidates.length === 0) {
+            notFoundMsg = "No registration found for the name you entered. Use exactly the name you provided at registration.";
+          }
+        }
+      } catch (err) {
+        console.error("Certificate lookup failed:", err);
+        setBusy(false);
+        placeholder.classList.remove("is-hidden");
+        setStatus("We couldn't reach the verification service. Please check your connection and try again.", true);
+        return;
+      }
+
+      if (candidates.length === 0) {
+        setBusy(false);
+        placeholder.classList.remove("is-hidden");
+        setStatus(notFoundMsg || "This certificate is for Executive, Founders Inner Circle, and Growth ticket holders only.", true);
+        return;
+      }
+
+      // One registration can cover several eligible tickets — let the holder pick.
+      eligibleAttendees = candidates;
+      if (candidates.length > 1) {
+        attendeeSelect.innerHTML = candidates
+          .map((n, i) => `<option value="${i}">${n}</option>`)
+          .join("");
+        attendeePicker.hidden = false;
+      }
+
+      await renderFor(candidates[0], startedAt);
+    }
+
+    generateBtn.addEventListener("click", verifyAndGenerate);
+
+    attendeeSelect.addEventListener("change", async () => {
+      const idx = Number(attendeeSelect.value) || 0;
+      const name = eligibleAttendees[idx];
+      if (name) await renderFor(name, Date.now());
     });
 
     downloadBtn.addEventListener("click", () => {
@@ -588,19 +792,25 @@
 
       pdf.addImage(imageData, "JPEG", 0, 0, 1536, 1087, undefined, "FAST");
 
-      const safeName = nameInput.value
-        .trim()
+      const safeName = currentRecipient
         .replace(/[<>:"/\\|?*]/g, "")
         .replace(/\s+/g, "-");
 
       pdf.save(`${safeName || "certificate"}-certificate.pdf`);
     });
 
-    // Generate when Enter is pressed inside the name field.
-    nameInput.addEventListener("keydown", (event) => {
+    // Verify when Enter is pressed inside the Order ID field.
+    orderIdInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         generateBtn.click();
       }
+    });
+
+    // Order IDs are uppercase — match as the user types.
+    orderIdInput.addEventListener("input", () => {
+      const pos = orderIdInput.selectionStart;
+      orderIdInput.value = orderIdInput.value.toUpperCase();
+      orderIdInput.setSelectionRange(pos, pos);
     });
   </script>
 </body>
