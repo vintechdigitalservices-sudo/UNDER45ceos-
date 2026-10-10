@@ -435,7 +435,7 @@
     <section class="panel">
       <h1>Summit Certificate</h1>
       <p class="subtitle">
-        This certificate is available to <strong>Executive</strong>, <strong>Founders Inner Circle</strong>, and <strong>Growth</strong> ticket holders.
+        This certificate is available to <strong>Growth</strong>, <strong>Executive</strong>, and <strong>Founders Inner Circle</strong> ticket holders only — <strong>Essential</strong> tickets are not eligible.
         Enter the exact name you used at registration, or your Order ID.
       </p>
 
@@ -641,7 +641,9 @@
       return snap.exists ? snap.data() : null;
     }
 
-    // Case-insensitive name search across every checkout.
+    // Case-insensitive name search across every checkout. Returns every
+    // matching attendee with an `eligible` flag, so we can tell an Essential
+    // holder apart from someone who didn't register at all.
     async function searchByName(query) {
       const q = collapse(query);
       const hits = [];
@@ -650,13 +652,43 @@
         const data = doc.data() || {};
         const attendees = Array.isArray(data.attendees) ? data.attendees : [];
         attendees.forEach((a) => {
-          if (isEligibleTier(a.ticketTier || a.tier) && attendeeMatches(a, q)) {
+          if (attendeeMatches(a, q)) {
             const name = attendeeName(a);
-            if (name && !hits.includes(name)) hits.push(name);
+            if (name) {
+              const eligible = isEligibleTier(a.ticketTier || a.tier);
+              const existing = hits.find((h) => h.name === name);
+              if (existing) {
+                existing.eligible = existing.eligible || eligible;
+              } else {
+                hits.push({ name, eligible });
+              }
+            }
           }
         });
       });
       return hits;
+    }
+
+    const ELIGIBILITY_NOTE = "Certificates are available to Growth, Executive, and Founders Inner Circle ticket holders.";
+
+    function lookupErrorMessage(err) {
+      const code = err && err.code;
+      if (!code && typeof navigator !== "undefined" && navigator.onLine === false) {
+        return "No internet connection detected. Please reconnect and try again.";
+      }
+      switch (code) {
+        case "permission-denied":
+          return "You don't have access to certificate verification right now. Please contact the Under 45 CEOs team.";
+        case "unavailable":
+        case "deadline-exceeded":
+          return "No internet connection detected, or the verification service is offline. Please check your connection and try again.";
+        case "resource-exhausted":
+          return "The verification service is busy right now. Please wait a moment and try again.";
+        case "not-found":
+          return "Order ID not found. Please check the ID on your ticket confirmation and try again.";
+        default:
+          return "Something went wrong while verifying your registration. Please try again in a few minutes.";
+      }
     }
 
     function setBusy(isBusy, label) {
@@ -701,6 +733,11 @@
     }
 
     async function verifyAndGenerate() {
+      if (typeof navigator !== "undefined" && navigator.onLine === false) {
+        setStatus("No internet connection detected. Please reconnect and try again.", true);
+        return;
+      }
+
       const queryText = orderIdInput.value.trim();
       if (!queryText) {
         setStatus("Enter the exact name you used at registration, or your Order ID.", true);
@@ -730,13 +767,22 @@
             notFoundMsg = "Order ID not found. Please check the ID on your ticket confirmation and try again.";
           } else {
             candidates = eligibleNamesFromOrder(data);
-            if (candidates.length === 0 && hasEligibleTickets(data.tickets)) {
-              notFoundMsg = "We found your eligible order, but no attendee name is on file. Please contact the Under 45 CEOs team for help.";
+            if (candidates.length === 0) {
+              if (hasEligibleTickets(data.tickets)) {
+                notFoundMsg = "We found your eligible order, but no attendee name is on file. Please contact the Under 45 CEOs team for help.";
+              } else {
+                notFoundMsg = "We found your order, but the Essential ticket tier isn't eligible for a certificate. " + ELIGIBILITY_NOTE;
+              }
             }
           }
         } else {
-          candidates = await searchByName(queryText);
-          if (candidates.length === 0) {
+          const matches = await searchByName(queryText);
+          const eligibleMatches = matches.filter((m) => m.eligible);
+          if (eligibleMatches.length > 0) {
+            candidates = eligibleMatches.map((m) => m.name);
+          } else if (matches.length > 0) {
+            notFoundMsg = "We found a registration for that name, but the Essential ticket tier isn't eligible for a certificate. " + ELIGIBILITY_NOTE;
+          } else {
             notFoundMsg = "No registration found for the name you entered. Use exactly the name you provided at registration.";
           }
         }
@@ -744,14 +790,14 @@
         console.error("Certificate lookup failed:", err);
         setBusy(false);
         placeholder.classList.remove("is-hidden");
-        setStatus("We couldn't reach the verification service. Please check your connection and try again.", true);
+        setStatus(lookupErrorMessage(err), true);
         return;
       }
 
       if (candidates.length === 0) {
         setBusy(false);
         placeholder.classList.remove("is-hidden");
-        setStatus(notFoundMsg || "This certificate is for Executive, Founders Inner Circle, and Growth ticket holders only.", true);
+        setStatus(notFoundMsg || ELIGIBILITY_NOTE, true);
         return;
       }
 
