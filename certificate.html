@@ -436,16 +436,17 @@
       <h1>Summit Certificate</h1>
       <p class="subtitle">
         This certificate is available to <strong>Growth</strong>, <strong>Executive</strong>, and <strong>Founders Inner Circle</strong> ticket holders only — <strong>Essential</strong> tickets are not eligible.
-        Enter the exact name you used at registration, or your Order ID.
+        Enter any part of the name you used at registration (first, middle, or last — in any order), or your Order ID.
+        If several names match, you'll pick yours before generating.
       </p>
 
       <label for="orderIdInput">Registration Name or Order ID</label>
       <input
         id="orderIdInput"
         type="text"
-        placeholder="e.g. the name you registered with, or U45-2026-7ANB5N7I"
+        placeholder="e.g. any part of your registered name, or U45-2026-7ANB5N7I"
         autocomplete="off"
-        autocapitalize="characters"
+        autocapitalize="words"
         spellcheck="false"
       >
 
@@ -474,7 +475,7 @@
         <div class="placeholder" id="placeholder">
           <div class="placeholder__icon">&#127894;</div>
           <div class="placeholder__title">Your certificate preview</div>
-          <div class="placeholder__text">Enter the exact name you used at registration, or your Order ID, then click “Verify &amp; Generate”.</div>
+          <div class="placeholder__text">Enter any part of your registered name, or your Order ID, then click “Verify &amp; Generate”.</div>
         </div>
 
         <div class="generating" id="generating">
@@ -603,18 +604,46 @@
         .trim();
     }
 
+    // Every whitespace/hyphen-separated piece of an attendee's name, lowercased.
+    function nameTokens(attendee) {
+      const parts = [attendee.firstname, attendee.middlename, attendee.lastname, attendee.name];
+      const tokens = [];
+      parts.forEach((part) => {
+        collapse(part)
+          .split(" ")
+          .forEach((word) => {
+            word.split("-").forEach((piece) => {
+              if (piece) tokens.push(piece);
+            });
+          });
+      });
+      return tokens;
+    }
+
+    function tokenMatches(queryToken, nameToken) {
+      if (!queryToken || !nameToken) return false;
+      if (nameToken === queryToken) return true;
+      // Single letters only match exactly (avoids returning everyone).
+      if (queryToken.length < 2) return false;
+      // Prefix match either way: "mary" ~ "maryrose", "chris" ~ "christopher".
+      return nameToken.startsWith(queryToken) || queryToken.startsWith(nameToken);
+    }
+
+    // Matches when every token the user typed appears somewhere in the attendee's
+    // name — any order, any casing. So a single name ("Mary"), a reordered name
+    // ("Oladipo Caleb") or a partial name all match instead of requiring an exact
+    // full-name string.
     function attendeeMatches(attendee, query) {
       const q = collapse(query);
       if (!q) return false;
 
-      if (collapse(attendeeName(attendee)) === q) return true;
+      const queryTokens = q.split(" ").filter(Boolean);
+      if (queryTokens.length === 0) return false;
 
-      // Allow the middle name to be omitted: "John Doe" matches "John Paul Doe".
-      const first = collapse(attendee.firstname);
-      const last = collapse(attendee.lastname);
-      if (first && last && collapse(first + " " + last) === q) return true;
+      const tokens = nameTokens(attendee);
+      if (tokens.length === 0) return false;
 
-      return false;
+      return queryTokens.every((qt) => tokens.some((nt) => tokenMatches(qt, nt)));
     }
 
     // Names of every eligible attendee on a single order.
@@ -801,16 +830,20 @@
         return;
       }
 
-      // One registration can cover several eligible tickets — let the holder pick.
+      // Always surface the matched name(s) so the holder confirms the right one.
       eligibleAttendees = candidates;
-      if (candidates.length > 1) {
-        attendeeSelect.innerHTML = candidates
-          .map((n, i) => `<option value="${i}">${n}</option>`)
-          .join("");
-        attendeePicker.hidden = false;
-      }
+      attendeeSelect.innerHTML = candidates
+        .map((n, i) => `<option value="${i}">${n}</option>`)
+        .join("");
+      attendeePicker.hidden = false;
 
       await renderFor(candidates[0], startedAt);
+
+      if (candidates.length > 1) {
+        setStatus(`Found ${candidates.length} matching registrations. Select the correct name — the certificate updates automatically.`);
+      } else {
+        setStatus(`Confirm this is you: ${candidates[0]}. Download your certificate below.`);
+      }
     }
 
     generateBtn.addEventListener("click", verifyAndGenerate);
@@ -845,18 +878,11 @@
       pdf.save(`${safeName || "certificate"}-certificate.pdf`);
     });
 
-    // Verify when Enter is pressed inside the Order ID field.
+    // Verify when Enter is pressed inside the name / Order ID field.
     orderIdInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         generateBtn.click();
       }
-    });
-
-    // Order IDs are uppercase — match as the user types.
-    orderIdInput.addEventListener("input", () => {
-      const pos = orderIdInput.selectionStart;
-      orderIdInput.value = orderIdInput.value.toUpperCase();
-      orderIdInput.setSelectionRange(pos, pos);
     });
   </script>
 </body>
