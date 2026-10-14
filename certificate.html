@@ -561,8 +561,10 @@
 
     // Resolve once the background image is ready (or reject if it fails).
     function ensureBackground() {
-      if (background.complete && background.naturalWidth > 0) {
-        return Promise.resolve();
+      if (background.complete) {
+        return background.naturalWidth > 0
+          ? Promise.resolve()
+          : Promise.reject(new Error("background"));
       }
       return new Promise((resolve, reject) => {
         background.addEventListener("load", () => resolve(), { once: true });
@@ -575,7 +577,7 @@
     }
 
     background.onerror = () => {
-      setStatus("Could not load the certificate background image. Please refresh and try again.", true);
+      setStatus("The certificate image couldn't load — check your internet connection, then refresh and try again.", true);
     };
 
     // ---- Eligible tier detection ----
@@ -700,24 +702,89 @@
 
     const ELIGIBILITY_NOTE = "Certificates are available to Growth, Executive, and Founders Inner Circle ticket holders.";
 
+    // ---- Network / error handling helpers ----
+
+    function isOffline() {
+      return typeof navigator !== "undefined" && navigator.onLine === false;
+    }
+
+    // Connection-aware suffix so weak / no-network messages stay helpful.
+    function connectionHint() {
+      return isOffline()
+        ? " You appear to be offline."
+        : " This is usually a weak or unstable internet connection.";
+    }
+
+    // Reject if a request takes too long — on a weak connection Firestore can
+    // otherwise hang for a long time with no feedback.
+    function withTimeout(promise, ms, label) {
+      let timer;
+      const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => {
+          const err = new Error(`${label} timed out`);
+          err.code = "deadline-exceeded";
+          reject(err);
+        }, ms);
+      });
+      return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+    }
+
+    function isRetryable(err) {
+      const code = err && err.code;
+      return code === "unavailable" || code === "deadline-exceeded" ||
+             code === "resource-exhausted" || code === "aborted" ||
+             code === "internal" || code === "unknown";
+    }
+
+    // Runs an async lookup, retrying transient network failures so a flaky
+    // connection does not immediately fail the user.
+    async function runWithRetry(fn, attempts, onRetry) {
+      let lastErr;
+      for (let i = 1; i <= attempts; i++) {
+        try {
+          return await fn();
+        } catch (err) {
+          lastErr = err;
+          if (i < attempts && isRetryable(err) && !isOffline()) {
+            if (onRetry) onRetry(i, attempts);
+            await wait(700 * i);
+            continue;
+          }
+          throw err;
+        }
+      }
+      throw lastErr;
+    }
+
+    const FIREBASE_ERROR_MESSAGES = {
+      "permission-denied": "You don't have access to certificate verification right now. Please contact the Under 45 CEOs team.",
+      "unauthenticated": "Your session expired. Please refresh the page and try again.",
+      "unavailable": "The verification service can't be reached right now — this usually means a weak or dropped internet connection. Check your network and try again.",
+      "deadline-exceeded": "Verification is taking too long. Your internet connection may be slow or unstable. Move to a better network and try again.",
+      "resource-exhausted": "The verification service is busy right now. Please wait a moment and try again.",
+      "cancelled": "The request was cancelled. Check your connection and try again.",
+      "aborted": "The request was interrupted — likely a dropped connection. Please try again.",
+      "internal": "The verification service had a temporary problem. Please try again in a few minutes.",
+      "unknown": "We couldn't verify your registration. This is often a weak or unstable connection — please try again.",
+      "not-found": "Order ID not found. Please check the ID on your ticket confirmation and try again.",
+      "failed-precondition": "The verification service is not ready right now. Please try again shortly.",
+      "invalid-argument": "We couldn't process that search. Please check what you entered and try again."
+    };
+
     function lookupErrorMessage(err) {
       const code = err && err.code;
-      if (!code && typeof navigator !== "undefined" && navigator.onLine === false) {
-        return "No internet connection detected. Please reconnect and try again.";
+
+      if (isOffline()) {
+        return "You're offline. Connect to the internet and try again.";
       }
-      switch (code) {
-        case "permission-denied":
-          return "You don't have access to certificate verification right now. Please contact the Under 45 CEOs team.";
-        case "unavailable":
-        case "deadline-exceeded":
-          return "No internet connection detected, or the verification service is offline. Please check your connection and try again.";
-        case "resource-exhausted":
-          return "The verification service is busy right now. Please wait a moment and try again.";
-        case "not-found":
-          return "Order ID not found. Please check the ID on your ticket confirmation and try again.";
-        default:
-          return "Something went wrong while verifying your registration. Please try again in a few minutes.";
+      if (code && FIREBASE_ERROR_MESSAGES[code]) {
+        return FIREBASE_ERROR_MESSAGES[code];
       }
+      // No code => generic network problem (DNS, dropped request, etc.).
+      if (!code) {
+        return "We couldn't reach the verification service." + connectionHint() + " Please try again.";
+      }
+      return "Something went wrong while verifying your registration. Please try again in a few minutes.";
     }
 
     function setBusy(isBusy, label) {
@@ -739,7 +806,7 @@
       setStatus("Generating certificate…");
 
       try {
-        await ensureBackground();
+        await withTimeout(ensureBackground(), 15000, "Background load");
 
         // Keep the spinner visible briefly even when everything is cached.
         const elapsed = Date.now() - (startedAt || Date.now());
@@ -754,16 +821,23 @@
 
         setStatus(`Certificate generated for ${name}.`);
       } catch (err) {
+        console.error("Certificate rendering failed:", err);
         placeholder.classList.remove("is-hidden");
-        setStatus("The certificate background could not be loaded. Please refresh and try again.", true);
+        if (isOffline()) {
+          setStatus("You're offline — the certificate image couldn't load. Reconnect and try again.", true);
+        } else if (err && err.code === "deadline-exceeded") {
+          setStatus("The certificate image is taking too long to load. Your connection may be unstable — please try again.", true);
+        } else {
+          setStatus("The certificate could not be generated. Check your internet connection and try again.", true);
+        }
       } finally {
         setBusy(false);
       }
     }
 
     async function verifyAndGenerate() {
-      if (typeof navigator !== "undefined" && navigator.onLine === false) {
-        setStatus("No internet connection detected. Please reconnect and try again.", true);
+      if (isOffline()) {
+        setStatus("You're offline. Connect to the internet and try again.", true);
         return;
       }
 
@@ -787,11 +861,17 @@
 
       let candidates = [];
       let notFoundMsg = "";
+      const onRetry = (attempt, total) =>
+        setStatus(`Connection unstable — retrying… (${attempt}/${total - 1})`);
 
       try {
         // Order IDs look like U45-2026-XXXXXXXX — resolve straight to the document.
         if (/^U45-/i.test(queryText)) {
-          const data = await fetchOrder(queryText.toUpperCase());
+          const data = await runWithRetry(
+            () => withTimeout(fetchOrder(queryText.toUpperCase()), 15000, "Order lookup"),
+            3,
+            onRetry
+          );
           if (!data) {
             notFoundMsg = "Order ID not found. Please check the ID on your ticket confirmation and try again.";
           } else {
@@ -805,7 +885,11 @@
             }
           }
         } else {
-          const matches = await searchByName(queryText);
+          const matches = await runWithRetry(
+            () => withTimeout(searchByName(queryText), 15000, "Name search"),
+            3,
+            onRetry
+          );
           const eligibleMatches = matches.filter((m) => m.eligible);
           if (eligibleMatches.length > 0) {
             candidates = eligibleMatches.map((m) => m.name);
@@ -857,31 +941,54 @@
     downloadBtn.addEventListener("click", () => {
       if (!certificateGenerated) return;
 
-      const { jsPDF } = window.jspdf;
+      const jspdfLib = window.jspdf;
+      if (!jspdfLib || !jspdfLib.jsPDF) {
+        setStatus("The PDF tool couldn't load — this is usually a weak internet connection. Reconnect, refresh the page and try again.", true);
+        return;
+      }
 
-      const pdf = new jsPDF({
-        orientation: "landscape",
-        unit: "px",
-        format: [1536, 1087],
-        hotfixes: ["px_scaling"],
-        compress: true
-      });
+      try {
+        const { jsPDF } = jspdfLib;
 
-      const imageData = canvas.toDataURL("image/jpeg", 0.95);
+        const pdf = new jsPDF({
+          orientation: "landscape",
+          unit: "px",
+          format: [1536, 1087],
+          hotfixes: ["px_scaling"],
+          compress: true
+        });
 
-      pdf.addImage(imageData, "JPEG", 0, 0, 1536, 1087, undefined, "FAST");
+        const imageData = canvas.toDataURL("image/jpeg", 0.95);
 
-      const safeName = currentRecipient
-        .replace(/[<>:"/\\|?*]/g, "")
-        .replace(/\s+/g, "-");
+        pdf.addImage(imageData, "JPEG", 0, 0, 1536, 1087, undefined, "FAST");
 
-      pdf.save(`${safeName || "certificate"}-certificate.pdf`);
+        const safeName = currentRecipient
+          .replace(/[<>:"/\\|?*]/g, "")
+          .replace(/\s+/g, "-");
+
+        pdf.save(`${safeName || "certificate"}-certificate.pdf`);
+        setStatus(`Downloaded certificate for ${currentRecipient}.`);
+      } catch (err) {
+        console.error("PDF generation failed:", err);
+        setStatus("We couldn't create the PDF. Please try again, or take a screenshot of the certificate as a fallback.", true);
+      }
     });
 
     // Verify when Enter is pressed inside the name / Order ID field.
     orderIdInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         generateBtn.click();
+      }
+    });
+
+    // ---- Live connection awareness ----
+    window.addEventListener("offline", () => {
+      setStatus("You're offline. Connect to the internet to generate or download your certificate.", true);
+    });
+
+    window.addEventListener("online", () => {
+      if (status.classList.contains("error")) {
+        setStatus("You're back online. You can try again now.");
       }
     });
   </script>
