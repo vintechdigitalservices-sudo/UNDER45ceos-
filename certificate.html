@@ -939,7 +939,8 @@
           } else if (matches.length > 0) {
             notFoundMsg = "We found your registration, but a certificate requires a paid Growth, Executive, or Founders Inner Circle ticket. Essential and free registrations are not eligible.";
           } else {
-            notFoundMsg = "No registration found for the name you entered. Use exactly the name you provided at registration.";
+            // ✅ UPDATED: Name not found in database — generate certificate anyway.
+            candidates = [queryText];
           }
         }
       } catch (err) {
