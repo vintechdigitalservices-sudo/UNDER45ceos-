@@ -672,31 +672,74 @@
       return snap.exists ? snap.data() : null;
     }
 
-    // Case-insensitive name search across every checkout. Returns every
-    // matching attendee with an `eligible` flag, so we can tell an Essential
+    // Case-insensitive name search across every checkout, the i_will_attend
+    // collection and the volunteers collection — people who paid via Selar (or
+    // were registered manually) and never went through the checkout flow are
+    // captured outside `checkouts`. Returns every
+    // matching attendee with an `eligible` flag so we can tell a non-ticket
     // holder apart from someone who didn't register at all.
     async function searchByName(query) {
       const q = collapse(query);
       const hits = [];
-      const snap = await db.collection("checkouts").get();
-      snap.forEach((doc) => {
+      const addHit = (name, eligible) => {
+        if (!name) return;
+        const existing = hits.find((h) => collapse(h.name) === collapse(name));
+        if (existing) existing.eligible = existing.eligible || eligible;
+        else hits.push({ name, eligible });
+      };
+
+      // 1) Paid ticket orders (checkout flow).
+      const checkoutSnap = await db.collection("checkouts").get();
+      checkoutSnap.forEach((doc) => {
         const data = doc.data() || {};
         const attendees = Array.isArray(data.attendees) ? data.attendees : [];
         attendees.forEach((a) => {
           if (attendeeMatches(a, q)) {
-            const name = attendeeName(a);
-            if (name) {
-              const eligible = isEligibleTier(a.ticketTier || a.tier);
-              const existing = hits.find((h) => h.name === name);
-              if (existing) {
-                existing.eligible = existing.eligible || eligible;
-              } else {
-                hits.push({ name, eligible });
-              }
-            }
+            addHit(attendeeName(a), isEligibleTier(a.ticketTier || a.tier));
           }
         });
       });
+
+      // 2) i_will_attend — Selar / manual registrations (may carry a ticketType).
+      try {
+        const attendSnap = await db.collection("i_will_attend").get();
+        attendSnap.forEach((doc) => {
+          const data = doc.data() || {};
+          const tier = data.ticketType || data.ticket_type || data.tier;
+          const asAttendee = {
+            firstname: data.firstName,
+            lastname: data.lastName,
+            name: data.fullName || data.name
+          };
+          if (attendeeMatches(asAttendee, q)) {
+            addHit(attendeeName(asAttendee), isEligibleTier(tier));
+          }
+        });
+      } catch (err) {
+        // Reading i_will_attend can be blocked by security rules — never let
+        // that stop the checkout lookup from working.
+        console.warn("i_will_attend lookup skipped:", err && err.code);
+      }
+
+      // 3) volunteers — the referral team; a matching name is eligible.
+      try {
+        const volunteerSnap = await db.collection("volunteers").get();
+        volunteerSnap.forEach((doc) => {
+          const data = doc.data() || {};
+          const asAttendee = {
+            firstname: data.firstname || data.firstName,
+            lastname: data.lastname || data.lastName,
+            name: data.name || data.fullName
+          };
+          if (attendeeMatches(asAttendee, q)) {
+            addHit(attendeeName(asAttendee), true);
+          }
+        });
+      } catch (err) {
+        // Volunteers may not be publicly readable — skip quietly if so.
+        console.warn("volunteers lookup skipped:", err && err.code);
+      }
+
       return hits;
     }
 
@@ -886,7 +929,7 @@
           }
         } else {
           const matches = await runWithRetry(
-            () => withTimeout(searchByName(queryText), 15000, "Name search"),
+            () => withTimeout(searchByName(queryText), 20000, "Name search"),
             3,
             onRetry
           );
@@ -894,7 +937,7 @@
           if (eligibleMatches.length > 0) {
             candidates = eligibleMatches.map((m) => m.name);
           } else if (matches.length > 0) {
-            notFoundMsg = "We found a registration for that name, but the Essential ticket tier isn't eligible for a certificate. " + ELIGIBILITY_NOTE;
+            notFoundMsg = "We found your registration, but a certificate requires a paid Growth, Executive, or Founders Inner Circle ticket. Essential and free registrations are not eligible.";
           } else {
             notFoundMsg = "No registration found for the name you entered. Use exactly the name you provided at registration.";
           }

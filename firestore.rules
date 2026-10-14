@@ -64,12 +64,15 @@ service cloud.firestore {
     // ── Public form submissions ──────────────────────────────────
     match /contact_messages/{id} { allow create: if true; allow read, update, delete: if false; }
     match /sponsorship/{id}       { allow create: if true; allow read, update, delete: if false; }
-    match /i_will_attend/{id}     { allow create: if true; allow read, update, delete: if false; }
+    // Readable so the public certificate page can find registrants by name.
+    match /i_will_attend/{id}     { allow create: if true; allow read: if true; allow update, delete: if false; }
     match /award_nominations/{id} { allow create: if true; allow read, update, delete: if false; }
 
     // ── Authenticated areas (volunteers) ─────────────────────────
     match /volunteers/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
+      // Publicly readable so the certificate page can find a volunteer by
+      // name. Writes stay locked to the volunteer's own account.
+      allow read: if true;
       allow write: if request.auth != null && request.auth.uid == uid;
     }
 
